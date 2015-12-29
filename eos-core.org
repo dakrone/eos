@@ -1,0 +1,1585 @@
+#+TITLE: EOS: Core Computing System
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-core)
+#+END_SRC
+
+* Bootstrapping the Emacs environment
+To start with emacs, we need a =~/.emacs.d/init.el= file that can be loaded.
+This file will be tangled to a file called =eos-core.el= which will be installed
+as the init.el file for loading Emacs.
+
+** =package.el= Setup
+My strategy with regard to packaging is simple, I make heavy use of use-package.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(package-initialize)
+
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives
+             '("gnu" . "http://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+#+END_SRC
+
+Let's also set up a custom file and load it before we do anything too fancy, we
+want to make sure to keep customize settings in their own file instead of
+init.el.
+
+#+BEGIN_SRC emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(when (file-exists-p custom-file)
+  (load custom-file))
+#+END_SRC
+
+I define =eos/did-refresh-packages=, which is used as a signal in =install-pkgs=
+that we need to refresh the package archives.
+
+#+begin_src emacs-lisp
+(defvar eos/did-refresh-packages nil
+  "Flag for whether packages have been refreshed yet")
+#+end_src
+
+=install-pkgs= is a simple elisp function that will iterate over a list, and
+install each package in it, if it is not installed. If
+=eos/did-refresh-packages= is set to =nil=, it'll also refresh the package
+manager.
+
+#+begin_src emacs-lisp :tangle yes
+(defun install-pkgs (list)
+  (dolist (pkg list)
+    (progn
+      (if (not (package-installed-p pkg))
+          (progn
+            (if (not eos/did-refresh-packages)
+                (progn (package-refresh-contents)
+                       (setq eos/did-refresh-packages t)))
+            (package-install pkg))))))
+#+end_src
+
+Pin some of the packages that go wonky if I use the bleeding edge.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(when (boundp 'package-pinned-packages)
+  (setq package-pinned-packages
+        '((org-plus-contrib                  . "org")
+          (cider                             . "melpa-stable")
+          (ac-cider                          . "melpa-stable")
+          (clojure-mode                      . "melpa-stable")
+          (clojure-mode-extra-font-locking   . "melpa-stable")
+          (company-cider                     . "melpa-stable"))))
+#+END_SRC
+
+Now, install the things we need in the future for all other package
+installation/configuration
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(install-pkgs '(use-package))
+;; Load use-package, used for loading packages everywhere else
+(require 'use-package nil t)
+;; Set to t to debug package loading or nil to disable
+(setq use-package-verbose nil)
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle sh/eos-core.sh
+
+#+END_SRC
+
+** Helper Methods
+These are shell script helpers, a cache warming function that'll automatically
+get added to =eos-core.sh=, and some functions that'll need to be sourced in
+from other scripts.
+
+#+BEGIN_SRC sh :tangle sh/eos-core.sh
+test -f /etc/os-release && . /etc/os-release
+[[ $ID = "debian" ]] && sudo apt-get update
+[[ $ID = "fedora" ]] && sudo dnf makecache
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/eos-core.sh
+function deb-install () {
+    test -f /etc/os-release && . /etc/os-release
+    [[ $ID = "debian" ]] && sudo apt-get install $@
+}
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/eos-core.sh
+function rpm-install () {
+    test -f /etc/os-release && . /etc/os-release
+    [[ $ID = "fedora" ]] && sudo dnf install $@
+}
+#+END_SRC
+
+** Bash Configuration Loader
+It's possible for multiple EOS modules to push out Bash configurations, so each
+one tangles to its own file which is then executed as so:
+
+#+BEGIN_SRC sh :tangle out/bashrc
+for file in ~/.bashrc.d/*.sh; do
+  . $file
+done
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/eos-core.sh
+test -f /etc/bash_profile && . /etc/bash_profile
+
+MANPATH=/opt/local/man:/usr/local/man:$MANPATH
+
+test -f /usr/bin/mg && export EDITOR=mg
+export PAGER=less
+
+# Update path with local ~/bin and cabal's bin dir
+export PATH=~/bin:~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH
+
+# Node/npm
+export PATH=$PATH:~/node_modules/.bin
+
+# Cask
+export PATH=$PATH:~/.cask/bin
+
+# rbenv
+export PATH=~/.rbenv/bin:$PATH
+
+# Virtualenvwrapper environment home
+export WORKON_HOME=~/.venvs
+if [ -d "$WORKON_HOME" ]; then
+    mkdir -p "$WORKON_HOME"
+fi
+
+# Set the default provider for vagrant to use virtualbox
+export VAGRANT_DEFAULT_PROVIDER=virtualbox
+
+## Things to help with Tramp hangs.
+[[ $TERM == "dumb" ]] && export PS1='$ '
+[[ ! $TERM == "dumb" ]] && export TERM=xterm-256color
+#+END_SRC
+
+* Booting up the system
+** Systemd services
+
+*** Redshift
+:PROPERTIES:
+:ID:       daa62f71-28bc-4c5a-b792-c4748606f81a
+:END:
+
+Redshift is like Flux, but nicer.
+
+#+BEGIN_SRC conf :tangle out/redshift.service
+[Unit]
+Description=Redshift
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/redshift -l geoclue2 -t 6500:3700
+ExecStop=/usr/bin/pkill redshift
+Environment=DISPLAY=:0
+Restart=always
+
+[Install]
+WantedBy=default.target
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle sh/install-redshift.sh
+deb-install redshift
+rpm-install redshift
+ln -sfv $PWD/out/redshift.service ~/.config/systemd/user/redshift.service
+systemctl --user daemon-reload
+systemctl --user enable redshift
+systemctl --user start redshift
+#+END_SRC
+
+* EOS Core Configuration Setup
+
+First, let's determine whether I'm going to be using a dark background, or a
+light background. I set a var to either '=light= or '=dark= depending on
+whatever I'm in the mood for. This is used later on for the modeline theme, as
+well as the general theme for look-and-feel things.
+
+#+BEGIN_SRC emacs-lisp
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
+#+END_SRC
+
+Now some personal information about me:
+
+#+BEGIN_SRC emacs-lisp
+(setq user-full-name "Lee Hinman"
+      user-mail-address "leehinman@fastmail.com")
+#+END_SRC
+
+Always, *always*, prefer UTF-8, anything else is insanity
+
+#+BEGIN_SRC emacs-lisp
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq default-buffer-file-coding-system 'utf-8)
+#+END_SRC
+
+Turn on syntax highlighting for all buffers:
+
+#+BEGIN_SRC emacs-lisp
+(global-font-lock-mode t)
+#+END_SRC
+
+Raise the maximum number of logs in the =*Messages*= buffer:
+
+#+BEGIN_SRC emacs-lisp
+(setq message-log-max 16384)
+#+END_SRC
+
+We don't really need to garbage collect as frequently as Emacs
+would like to by default, so set the threshold up higher:
+
+#+BEGIN_SRC emacs-lisp
+(setq gc-cons-threshold (* 100 1024 1024)) ;; 100 mb
+;; Allow font-lock-mode to do background parsing
+(setq jit-lock-stealth-time 1
+      ;; jit-lock-stealth-load 200
+      jit-lock-chunk-size 1000
+      jit-lock-defer-time 0.05)
+#+END_SRC
+
+=line-number-mode= displays the current line number in the mode line, however it
+stops doing that in buffers when encountering at least one overly long line and
+displays two question marks instead. This is pretty unhelpful, the only
+workaround I've been able to find was to increase line-number-display-width to a
+substantially higher value.
+
+#+BEGIN_SRC emacs-lisp
+(setq line-number-display-limit-width 10000)
+#+END_SRC
+
+Make gnutls a bit safer
+
+#+BEGIN_SRC emacs-lisp
+(setq gnutls-min-prime-bits 4096)
+#+END_SRC
+
+When I select a region and start typing, just delete the region automatically
+
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode 1)
+#+END_SRC
+
+Don't warn me about large files unless they're at least 25mb:
+
+#+BEGIN_SRC emacs-lisp
+(setq large-file-warning-threshold (* 25 1024 1024))
+#+END_SRC
+
+If you change buffer, or focus, disable the current buffer's mark:
+
+#+BEGIN_SRC emacs-lisp
+(transient-mark-mode 1)
+#+END_SRC
+
+Don't indicate empty lines or the end of a buffer with visual
+marks (the lines are cleaned up automatically anyway)
+
+#+BEGIN_SRC emacs-lisp
+(setq-default indicate-empty-lines nil)
+(setq-default indicate-buffer-boundaries nil)
+#+END_SRC
+
+Turn off all kinds of modes, I don't need the menu bar, or the tool bar:
+
+#+BEGIN_SRC emacs-lisp
+(when (functionp 'menu-bar-mode)
+  (menu-bar-mode -1))
+(when (functionp 'set-scroll-bar-mode)
+  (set-scroll-bar-mode 'nil))
+(when (functionp 'mouse-wheel-mode)
+  (mouse-wheel-mode -1))
+(when (functionp 'tooltip-mode)
+  (tooltip-mode -1))
+(when (functionp 'tool-bar-mode)
+  (tool-bar-mode -1))
+(when (functionp 'blink-cursor-mode)
+  (blink-cursor-mode -1))
+#+END_SRC
+
+Don't beep. Just don't. Also, don't show the startup message, I
+know Emacs is starting.
+
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function (lambda ()))
+(setq inhibit-startup-screen t
+      initial-major-mode 'fundamental-mode)
+#+END_SRC
+
+Why would you not want to know lines/columns in your mode-line?
+
+#+BEGIN_SRC emacs-lisp
+(line-number-mode 1)
+(column-number-mode 1)
+#+END_SRC
+
+Ignore case when using completion for file names:
+
+#+BEGIN_SRC emacs-lisp
+(setq read-file-name-completion-ignore-case t)
+#+END_SRC
+
+Nobody likes to have to type "yes" to questions, so change it to
+just hitting the =y= key to confirm:
+
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+Confirm before killing emacs, but only on graphical sessions
+
+#+BEGIN_SRC emacs-lisp
+(when (window-system)
+  (setq confirm-kill-emacs 'yes-or-no-p))
+#+END_SRC
+
+It's much easier to move around lines based on how they are
+displayed, rather than the actual line. This helps a ton with long
+log file lines that may be wrapped:
+
+#+BEGIN_SRC emacs-lisp
+(setq line-move-visual t)
+#+END_SRC
+
+Hide the mouse while typing:
+
+#+BEGIN_SRC emacs-lisp
+(setq make-pointer-invisible t)
+#+END_SRC
+
+Set up the fill-column to 80 characters and set tab width to 2
+
+#+BEGIN_SRC emacs-lisp
+(setq-default fill-column 80)
+(setq-default default-tab-width 2)
+(setq-default indent-tabs-mode nil)
+#+END_SRC
+
+Fix some weird color escape sequences
+
+#+BEGIN_SRC emacs-lisp
+(setq system-uses-terminfo nil)
+#+END_SRC
+
+Resolve symlinks:
+
+#+BEGIN_SRC emacs-lisp
+(setq-default find-file-visit-truename t)
+#+END_SRC
+
+Require a newline at the end of files:
+
+#+BEGIN_SRC emacs-lisp
+(setq require-final-newline t)
+#+END_SRC
+
+Uniquify buffers, using angle brackets, so you get =foo= and
+=foo<2>=:
+
+#+BEGIN_SRC emacs-lisp
+(use-package uniquify
+  :config
+  (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
+#+END_SRC
+
+Search (and search/replace) using regex by default, since that's
+usually what I want to do:
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "M-%") 'query-replace-regexp)
+#+END_SRC
+
+Single space still ends a sentence:
+
+#+BEGIN_SRC emacs-lisp
+(setq sentence-end-double-space nil)
+#+END_SRC
+
+Split windows a bit better (don't split horizontally, I have a
+widescreen :P)
+
+#+BEGIN_SRC emacs-lisp
+(setq split-height-threshold nil)
+(setq split-width-threshold 180)
+#+END_SRC
+
+Make sure auto automatically rescan for imenu changes:
+
+#+BEGIN_SRC emacs-lisp
+(set-default 'imenu-auto-rescan t)
+#+END_SRC
+
+Seed the random number generator:
+
+#+BEGIN_SRC emacs-lisp
+(random t)
+#+END_SRC
+
+Switch to unified diffs by default:
+
+#+BEGIN_SRC emacs-lisp
+(setq diff-switches "-u")
+#+END_SRC
+
+Turn on auto-fill mode in text buffers:
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+(use-package diminish
+  :init (diminish 'auto-fill-function ""))
+#+END_SRC
+
+Set the internal calculator not to go to scientific form quite so quickly:
+
+#+BEGIN_SRC emacs-lisp
+(setq calc-display-sci-low -5)
+#+END_SRC
+
+Bury the =*scratch*= buffer, never kill it:
+
+#+BEGIN_SRC emacs-lisp
+(defadvice kill-buffer (around kill-buffer-around-advice activate)
+  (let ((buffer-to-kill (ad-get-arg 0)))
+    (if (equal buffer-to-kill "*scratch*")
+        (bury-buffer)
+      ad-do-it)))
+#+END_SRC
+
+These are some settings for version control stuff.
+
+Automatically revert file if it's changed on disk:
+
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode 1)
+;; be quiet about reverting files
+(setq auto-revert-verbose nil)
+#+END_SRC
+
+Start a server if not running, but a only for gui-only:
+
+#+BEGIN_SRC emacs-lisp
+;; Lame, server has bad autoloads :(
+(require 'server nil t)
+(use-package server
+  :if window-system
+  :init
+  (when (not (server-running-p server-name))
+    (server-start)))
+#+END_SRC
+
+Prettify all the symbols, if available (an Emacs 24.4 feature):
+
+#+BEGIN_SRC emacs-lisp
+(when (boundp 'global-prettify-symbols-mode)
+  (add-hook 'emacs-lisp-mode-hook
+            (lambda ()
+              (push '("lambda" . ?λ) prettify-symbols-alist)))
+  (add-hook 'clojure-mode-hook
+            (lambda ()
+              (push '("fn" . ?ƒ) prettify-symbols-alist)))
+  (global-prettify-symbols-mode +1))
+#+END_SRC
+
+Display the time and load on the modeline
+
+#+BEGIN_SRC emacs-lisp
+(setq
+ ;; don't display info about mail
+ display-time-mail-function (lambda () nil)
+ ;; update every 15 seconds instead of 60 seconds
+ display-time-interval 15)
+(display-time-mode 1)
+#+END_SRC
+
+Emacs (foolishly) defaults to adding the =--insecure= flag. It also supports the
+(incredibly broken) SSL version 3. What are you thinking Emacs!?!
+
+Here I set it back to a *sane* value:
+
+#+BEGIN_SRC emacs-lisp
+(setq tls-program
+      ;; Defaults:
+      ;; '("gnutls-cli --insecure -p %p %h"
+      ;;   "gnutls-cli --insecure -p %p %h --protocols ssl3"
+      ;;   "openssl s_client -connect %h:%p -no_ssl2 -ign_eof")
+      '("gnutls-cli -p %p %h"
+        "openssl s_client -connect %h:%p -no_ssl2 -no_ssl3 -ign_eof"))
+#+END_SRC
+
+Desktop Save Mode[fn:18:
+http://www.gnu.org/software/emacs/manual/html_node/elisp/Desktop-Save-Mode.html]
+is the session management system for Emacs; it holds state of open buffers and
+session variables across instantiation of Emacs, which is super useful in mobile
+setups like laptops which reboot a lot. To make startup sane, I'm choosing to
+eagerly restore the 10 most recently used buffers on startup, and then in Idle
+the system will restore the remaining buffers.
+
+#+BEGIN_src emacs-lisp
+(desktop-save-mode 1)
+(setq desktop-restore-eager 10)
+(setq desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\|KILL\\)")
+(setq desktop-restore-frames nil)
+#+END_SRC
+
+Emacs should automatically save my state, and does so every five minutes.
+
+#+begin_src emacs-lisp
+(defun eos/desktop-save ()
+  "Write the desktop save file to ~/.emacs.d"
+  (desktop-save user-emacs-directory))
+
+(if (not (boundp 'eos/desktop-save-timer))
+    (setq eos/desktop-save-timer
+          (run-with-idle-timer 300 t #'eos/desktop-save)))
+#+end_src
+
+Moving by visual line is far superior when dealing with large bodies of text
+that have unbroken lines. So let's enable it everywhere.
+
+#+BEGIN_SRC emacs-lisp
+(global-visual-line-mode 1)
+#+END_SRC
+
+By default, my machine drops me in to a =*scratch*= buffer. Originally designed
+to be an lisp playground that you could dive right in to on start up, it's sort
+of eclipsed that for me in to a general purpose buffer, where I will put things
+like elisp I am prototyping or playtesting, small snippets of code that I want
+to use in dayjob, etc. But when you kill emacs, or it dies, that buffer
+disappears. This code will save the Scratch buffer every five minutes and
+restores it on Emacs startup.
+
+#+BEGIN_src emacs-lisp
+(defun save-persistent-scratch ()
+  "Write the contents of *scratch* to the file name
+`persistent-scratch-file-name'."
+  (with-current-buffer (get-buffer-create "*scratch*")
+    (write-region (point-min) (point-max) "~/.emacs.d/persistent-scratch")))
+
+(defun load-persistent-scratch ()
+  "Load the contents of `persistent-scratch-file-name' into the
+  scratch buffer, clearing its contents first."
+  (if (file-exists-p "~/.emacs-persistent-scratch")
+      (with-current-buffer (get-buffer "*scratch*")
+        (delete-region (point-min) (point-max))
+        (insert-file-contents "~/.emacs.d/persistent-scratch"))))
+
+(add-hook 'after-init-hook 'load-persistent-scratch)
+(add-hook 'kill-emacs-hook 'save-persistent-scratch)
+
+(if (not (boundp 'tsp/save-persistent-scratch-timer))
+    (setq tsp/save-persistent-scratch-timer
+          (run-with-idle-timer 300 t #'save-persistent-scratch)))
+#+END_SRC
+
+I restart emacs a lot, especially on my n900, and it would be nice to have the
+history of things like =M-x= saved across those sessions. =savehist= mode gives
+us that[fn:20:
+https://github.com/qdot/conf_emacs/blob/master/emacs_conf.org#global-minor-modes
+http://www.emacswiki.org/emacs/SaveHist].
+
+#+begin_src emacs-lisp
+(require 'savehist)
+(setq savehist-file (concat user-emacs-directory "savehist"))
+(savehist-mode 1)
+(setq savehist-save-minibuffer-history 1)
+(setq savehist-additional-variables
+      '(kill-ring
+        search-ring
+        regexp-search-ring))
+(setq-default save-place t)
+
+;; delete-auto-save-files
+(setq delete-auto-save-files t)
+(setq backup-directory-alist
+      '(("." . "~/.emacs_backups")))
+
+;; delete old backups silently
+(setq delete-old-versions t)
+#+end_src
+
+Toggle line wrapping with =C-x C-l=
+
+#+begin_src emacs-lisp
+(global-set-key (kbd "C-x C-l") #'toggle-truncate-lines)
+#+end_src
+
+Set up keeping track of recent files, up to 2000 of them.
+
+If emacs has been idle for 10 minutes, clean up the recent files. Also save the
+list of recent files every 5 minutes.
+
+#+BEGIN_SRC emacs-lisp
+(setq recentf-max-saved-items 300
+      recentf-exclude '("/auto-install/" ".recentf" "/repos/" "/elpa/"
+                        "\\.mime-example" "\\.ido.last" "COMMIT_EDITMSG"
+                        ".gz" "~$" "/tmp/" "/ssh:" "/sudo:" "/scp:")
+      recentf-auto-cleanup 600)
+
+;; Enable when running interactively
+(when (not noninteractive) (recentf-mode 1))
+
+(defun recentf-save-list ()
+  "Save the recent list.
+Load the list from the file specified by `recentf-save-file',
+merge the changes of your current session, and save it back to
+the file."
+  (interactive)
+  (let ((instance-list (cl-copy-list recentf-list)))
+    (recentf-load-list)
+    (recentf-merge-with-default-list instance-list)
+    (recentf-write-list-to-file)))
+
+(defun recentf-merge-with-default-list (other-list)
+  "Add all items from `other-list' to `recentf-list'."
+  (dolist (oitem other-list)
+    ;; add-to-list already checks for equal'ity
+    (add-to-list 'recentf-list oitem)))
+
+(defun recentf-write-list-to-file ()
+  "Write the recent files list to file.
+Uses `recentf-list' as the list and `recentf-save-file' as the
+file to write to."
+  (condition-case error
+      (with-temp-buffer
+        (erase-buffer)
+        (set-buffer-file-coding-system recentf-save-file-coding-system)
+        (insert (format recentf-save-file-header (current-time-string)))
+        (recentf-dump-variable 'recentf-list recentf-max-saved-items)
+        (recentf-dump-variable 'recentf-filter-changer-current)
+        (insert "\n \n;;; Local Variables:\n"
+                (format ";;; coding: %s\n" recentf-save-file-coding-system)
+                ";;; End:\n")
+        (write-file (expand-file-name recentf-save-file))
+        (when recentf-save-file-modes
+          (set-file-modes recentf-save-file recentf-save-file-modes))
+        nil)
+    (error
+     (warn "recentf mode: %s" (error-message-string error)))))
+#+END_SRC
+
+Change the clipboard settings to better integrate into Linux:
+
+#+BEGIN_SRC emacs-lisp
+(setq x-select-enable-clipboard t)
+;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+#+END_SRC
+
+Save whatever's in the current (system) clipboard before replacing it with the
+Emacs' text.
+
+#+BEGIN_SRC emacs-lisp
+(setq save-interprogram-paste-before-kill t)
+#+END_SRC
+
+Settings for what to do with temporary files.
+
+#+BEGIN_SRC emacs-lisp
+;; delete-auto-save-files
+(setq delete-auto-save-files t)
+(setq backup-directory-alist
+      '(("." . "~/.emacs_backups")))
+
+;; delete old backups silently
+(setq delete-old-versions t)
+#+END_SRC
+
+Need to make sure the directory exists in the initializing shell script
+
+#+BEGIN_SRC sh :tangle sh/core-eos.sh
+mkdir -p ~/.emacs_backups
+#+END_SRC
+
+These are miscellaneous bindings used all over the place that don't
+really fit in anywhere else.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-x +") 'balance-windows-area)
+
+(global-set-key (kbd "C-x C-l") 'toggle-truncate-lines)
+
+(defun eos/turn-on-viewing-mode ()
+  "Turn on the viewing mode, to make looking through logs easier"
+  (interactive)
+  (view-mode 1)
+  (hl-line-mode 1))
+
+;; join on killing lines
+(defun kill-and-join-forward (&optional arg)
+  "If at end of line, join with following; otherwise kill line.
+Deletes whitespace at join."
+  (interactive "P")
+  (if (and (eolp) (not (bolp)))
+      (delete-indentation t)
+    (kill-line arg)))
+
+(global-set-key (kbd "C-k") 'kill-and-join-forward)
+
+;; join line to next line
+(global-set-key (kbd "M-j")
+                (lambda ()
+                  (interactive)
+                  (join-line -1)))
+
+;; Completion that uses many different methods to find options.
+(global-set-key (kbd "M-/") 'hippie-expand)
+
+;; Font size
+(define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
+
+;; Use regex searches by default.
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "\C-r") 'isearch-backward-regexp)
+
+(global-set-key (kbd "C-c y") 'bury-buffer)
+(global-set-key (kbd "C-c r") 'revert-buffer)
+
+;; Start eshell or switch to it if it's active.
+(global-set-key (kbd "C-x m") 'eshell)
+
+;; Start a regular shell if you prefer that.
+(global-set-key (kbd "C-x C-m") 'shell)
+
+;; If you want to be able to M-x without meta (phones, etc)
+(global-set-key (kbd "C-c C-x") 'execute-extended-command)
+
+;; Activate occur easily inside isearch
+(define-key isearch-mode-map (kbd "C-o")
+  (lambda () (interactive)
+    (let ((case-fold-search isearch-case-fold-search))
+      (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
+
+;; ==== Window switching ====
+(defun eos/other-window-backwards ()
+  (interactive)
+  (other-window -1))
+
+(global-set-key (kbd "M-'") #'other-window)
+(global-set-key (kbd "M-\"") #'eos/other-window-backwards)
+(global-set-key (kbd "H-'") #'other-window)
+(global-set-key (kbd "H-\"") #'eos/other-window-backwards)
+#+END_SRC
+
+Before saving a buffer, deleting the trailing whitespace, no one needs that and
+it's pretty useful in general.
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'before-save-hook #'delete-trailing-whitespace)
+#+END_SRC
+
+Let's configure some popup rules, so buffers don't take over the whole workspace
+when they are popped up. I do this with Popwin
+
+#+BEGIN_SRC emacs-lisp
+(use-package popwin
+  :ensure t
+  :commands popwin-mode
+  :init (popwin-mode 1)
+  :config
+  (progn
+    (defvar popwin:special-display-config-backup popwin:special-display-config)
+    (setq display-buffer-function 'popwin:display-buffer)
+
+    ;; basic
+    (push '("*Help*" :stick t :noselect t) popwin:special-display-config)
+    (push '("*Pp Eval Output*" :stick t) popwin:special-display-config)
+
+    ;; dictionaly
+    (push '("*dict*" :stick t) popwin:special-display-config)
+    (push '("*sdic*" :stick t) popwin:special-display-config)
+
+    ;; popwin for slime
+    (push '(slime-repl-mode :stick t) popwin:special-display-config)
+
+    ;; man
+    (push '(Man-mode :stick t :height 20) popwin:special-display-config)
+
+    ;; Elisp
+    (push '("*ielm*" :stick t) popwin:special-display-config)
+    (push '("*eshell pop*" :stick t) popwin:special-display-config)
+
+    ;; pry
+    (push '(inf-ruby-mode :stick t :height 20) popwin:special-display-config)
+
+    ;; python
+    (push '("*Python*"   :stick t) popwin:special-display-config)
+    (push '("*Python Help*" :stick t :height 20) popwin:special-display-config)
+    (push '("*jedi:doc*" :stick t :noselect t) popwin:special-display-config)
+
+    ;; Haskell
+    (push '("*haskell*" :stick t) popwin:special-display-config)
+    (push '("*GHC Info*") popwin:special-display-config)
+
+    ;; sgit
+    (push '("*sgit*" :position right :width 0.5 :stick t)
+          popwin:special-display-config)
+
+    ;; git-gutter
+    (push '("*git-gutter:diff*" :width 0.5 :stick t)
+          popwin:special-display-config)
+
+    ;; es-results-mode
+    (push '(es-result-mode :stick t :width 0.5)
+          popwin:special-display-config)
+
+    ;; direx
+    (push '(direx:direx-mode :position left :width 40 :dedicated t)
+          popwin:special-display-config)
+
+    (push '("*Occur*" :stick t) popwin:special-display-config)
+
+    ;; prodigy
+    (push '("*prodigy*" :stick t) popwin:special-display-config)
+
+    ;; malabar-mode
+    (push '("*Malabar Compilation*" :stick t :height 30)
+          popwin:special-display-config)
+
+    ;; org-mode
+    (push '("*Org tags*" :stick t :height 30)
+          popwin:special-display-config)
+
+    ;; Completions
+    (push '("*Completions*" :stick t :noselect t) popwin:special-display-config)
+
+    ;; ggtags
+    (push '("*ggtags-global*" :stick t :noselect t :height 30) popwin:special-display-config)
+
+    ;; async shell commands
+    (push '("*Async Shell Command*" :stick t) popwin:special-display-config)
+
+    (global-set-key (kbd "C-h e") 'popwin:messages)))
+#+END_SRC
+
+Paren-face adds a face for parentheses, which is used by themes to darken the
+parens.
+
+#+BEGIN_SRC emacs-lisp
+(use-package paren-face
+  :ensure t
+  :init (global-paren-face-mode))
+#+END_SRC
+
+Undo-tree allows me to have sane undo defaults, as well as being able to
+visualize it in ascii art if needed.
+
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :ensure t
+  :init (global-undo-tree-mode t)
+  :defer t
+  :diminish ""
+  :config
+  (progn
+    (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize)
+    (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
+#+END_SRC
+
+Usually =M-SPC= is bound to ~just-one-space~, but [[https://github.com/jcpetkovich/shrink-whitespace.el][shrink-whitespace]] is actually
+a better alternative because it can shrink space between lines.
+
+Thanks to
+http://pragmaticemacs.com/emacs/delete-blank-lines-and-shrink-whitespace/ for
+the link to this package.
+
+#+BEGIN_SRC emacs-lisp
+(use-package shrink-whitespace
+  :ensure t
+  :bind ("M-SPC" . shrink-whitespace))
+#+END_SRC
+
+Extended bookmarks, which I've started used for dired buffers and so on
+
+#+BEGIN_SRC emacs-lisp
+(use-package bookmark+
+  :ensure t
+  :defer 10
+  :config
+  (progn
+    (setq bookmark-version-control t
+          ;; auto-save bookmarks
+          bookmark-save-flag 1)))
+#+END_SRC
+
+Anzu shows the number of search hits in the modeline, which is handy.
+
+It can also be used for a "refactor-like" thing similar to query-replace.
+
+#+BEGIN_SRC emacs-lisp
+(use-package anzu
+  :ensure t
+  :defer t
+  :bind ("M-%" . anzu-query-replace-regexp)
+  :config
+  (progn
+    (use-package thingatpt)
+    (setq anzu-mode-lighter "")
+    (set-face-attribute 'anzu-mode-line nil :foreground "yellow")))
+
+(add-hook 'prog-mode-hook #'anzu-mode)
+(add-hook 'org-mode-hook #'anzu-mode)
+#+END_SRC
+
+Also, add a thing for yanking the entire symbol into the query while searching:
+
+#+BEGIN_SRC emacs-lisp
+(defun isearch-yank-symbol ()
+  (interactive)
+  (isearch-yank-internal (lambda () (forward-symbol 1) (point))))
+
+(define-key isearch-mode-map (kbd "C-M-w") #'isearch-yank-symbol)
+#+END_SRC
+
+* GPG and gpg-agent (as well as SSH agent)
+
+I use =gpg-agent= [fn:30:
+https://www.debian-administration.org/article/452/Using_gnupg-agent_to_securely_retain_keys]
+as an ssh agent.
+
+#+begin_src emacs-lisp :tangle yes
+(defun tsp/gpg-version ()
+  "Return the version of gpg as a string"
+  (save-window-excursion
+    (with-temp-buffer
+      (shell-command (concat epg-gpg-program " --version") (current-buffer))
+      (goto-char (point-min))
+      (string-match "gpg (GnuPG) \\(.*\\)" (buffer-string))
+      (tsp/str-chomp
+       (match-string 1)))))
+#+end_src
+
+Getting ssh and friends to use =gpg-agent= is as simple as pointing them to it:
+
+#+begin_src sh :tangle out/bashrc.d/eos-core.sh
+export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"
+#+end_src
+
+Let's make sure that all the GPG things we need are installed, and GPG-Agent is configured to enable
+the SSH agent support.
+
+#+BEGIN_SRC sh :tangle sh/core-eos.sh
+rpm-install gnupg2 gnupg2-smime
+deb-install gnupg2
+echo enable-ssh-support > ~/.gnupg/gpg-agent.conf
+ln -sfv $PWD/out/gpg.conf ~/.gnupg/gpg.conf
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle out/gpg.conf
+default-key 3ACECAE0
+default-recipient-self
+
+ask-cert-level
+auto-check-trustdb
+no-greeting
+no-expert
+
+auto-key-locate keyserver cert pka
+keyserver hkp://pool.sks-keyservers.net
+
+list-options no-show-photos show-uid-validity no-show-unusable-uids no-show-unusable-subkeys show-keyring show-policy-urls show-notations show-keyserver-urls show-sig-expire
+verify-options show-uid-validity
+fixed-list-mode
+keyid-format 0xlong
+
+personal-digest-preferences SHA512
+personal-cipher-preferences AES256 AES192 AES
+cert-digest-algo SHA512
+default-preference-list SHA512 SHA384 SHA256 SHA224 AES256 AES192 AES CAST5 ZLIB BZIP2 ZIP Uncompressed
+
+s2k-cipher-algo AES256
+s2k-digest-algo SHA512
+s2k-mode 3
+s2k-count 65011712
+
+completes-needed 2
+marginals-needed 5
+max-cert-depth 7
+min-cert-level 2
+#+END_SRC
+
+I use =gpg2= everywhere, including in Emacs.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(setq epg-gpg-program "gpg2")
+#+END_SRC
+
+* OS-specific settings
+
+** Linux
+
+#+BEGIN_SRC emacs-lisp
+(when (eq system-type 'gnu/linux)
+
+  ;; Don't use GTK tooltips, use emacs ones
+  (setq x-gtk-use-system-tooltips nil)
+
+  (defun tsp/max-fullscreen ()
+    (interactive)
+    (toggle-frame-maximized))
+
+  ;; fullscreen
+  (add-hook 'after-init-hook #'tsp/max-fullscreen)
+
+  (setq dired-listing-switches "-lFaGh1v --group-directories-first")
+
+  ;; suspend-frame isn't working on Linux?
+  (global-unset-key (kbd "C-z"))
+  (global-unset-key (kbd "C-x C-z")))
+#+END_SRC
+
+** Mac OSX
+
+#+BEGIN_SRC emacs-lisp
+(when (eq system-type 'darwin)
+  (setq ns-use-native-fullscreen nil)
+  ;; brew install coreutils
+  (if (executable-find "gls")
+      (progn
+        (setq insert-directory-program "gls")
+        (setq dired-listing-switches "-lFaGh1v --group-directories-first"))
+    (setq dired-listing-switches "-ahlF"))
+  (defun copy-from-osx ()
+    "Handle copy/paste intelligently on osx."
+    (let ((pbpaste (purecopy "/usr/bin/pbpaste")))
+      (if (and (eq system-type 'darwin)
+               (file-exists-p pbpaste))
+          (let ((tramp-mode nil)
+                (default-directory "~"))
+            (shell-command-to-string pbpaste)))))
+
+  (defun paste-to-osx (text &optional push)
+    (let ((process-connection-type nil))
+      (let ((proc (start-process "pbcopy" "*Messages*" "/usr/bin/pbcopy")))
+        (process-send-string proc text)
+        (process-send-eof proc))))
+  (setq interprogram-cut-function 'paste-to-osx
+        interprogram-paste-function 'copy-from-osx)
+
+  (defun move-file-to-trash (file)
+    "Use `trash' to move FILE to the system trash.
+When using Homebrew, install it using \"brew install trash\"."
+    (call-process (executable-find "trash")
+                  nil 0 nil
+                  file)))
+#+END_SRC
+
+Sometimes I use the OSX =emacs-mac= port:
+https://github.com/railwaycat/emacs-mac-port , which has a whole other set of
+issues, so this is special handling of it...
+
+#+BEGIN_SRC emacs-lisp
+(when (eq window-system 'mac)
+
+  (defun eos/max-fullscreen ()
+    (interactive)
+    (set-frame-parameter nil 'fullscreen 'fullboth))
+
+  ;; fullscreen
+  (add-hook 'after-init-hook #'eos/max-fullscreen)
+  ;; use alt as hyper
+  (setq mac-option-modifier 'meta)
+  ;; use command as meta
+  (setq mac-command-modifier 'hyper))
+#+END_SRC
+* Color Theme
+:PROPERTIES:
+:ID:       EADAA476-50E8-416E-AC6F-13F278735435
+:CUSTOM_ID: eba05de0-2322-4a52-b762-2d54b9e8eb56
+:END:
+If using OSX, the colors and fonts look a bit wonky, so let's fix that
+
+#+BEGIN_SRC emacs-lisp
+(setq ns-use-srgb-colorspace t)
+;; Anti-aliasing
+(setq mac-allow-anti-aliasing t)
+#+END_SRC
+
+For light-colored backgrounds, I used [[https://github.com/fniessen/emacs-leuven-theme][leuven-theme]]. For dark-colored backgrounds
+(most of the time), I use the tomorrow-night theme, which I find to be a good
+balanced of color and pleasing to my eyes.
+
+#+BEGIN_SRC emacs-lisp
+(if (eq eos/background 'dark)
+    (use-package color-theme-sanityinc-tomorrow
+      :ensure t
+      :init (load-theme 'sanityinc-tomorrow-night t))
+  (use-package leuven-theme
+    :ensure t
+    :init (load-theme 'leuven t)))
+#+END_SRC
+
+* Fonts
+:PROPERTIES:
+:ID:       92694D10-4647-46AD-A9A7-35B59DF46512
+:CUSTOM_ID: ab893513-3d80-47b9-b666-7cee1fab621f
+:END:
+I've been using [[https://github.com/belluzj/fantasque-sans][Fantasque Sans Mono]] lately, it looks pretty nice to me. On Linux
+I've been using Bitstream Vera Sans Mono. I also use [[http://www.marksimonson.com/fonts/view/anonymous-pro][Anonymous Pro]] and
+Inconsolata a lot.
+
+Config for OSX:
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/setup-osx-fonts ()
+  (when (eq system-type 'darwin)
+    (set-default-font "Bitstream Vera Sans Mono")
+    (set-face-attribute 'default nil :height 120)
+    (set-face-attribute 'fixed-pitch nil :height 120)))
+
+(when (eq system-type 'darwin)
+  (add-hook 'after-init-hook #'eos/setup-osx-fonts))
+#+END_SRC
+
+Config for Linux/X11 systems:
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/setup-x11-fonts ()
+  (when (eq window-system 'x)
+    (set-frame-font "DejaVu Sans Mono")
+    (set-face-attribute 'default nil :height 105)))
+
+(when (eq window-system 'x)
+  (add-hook 'after-init-hook #'eos/setup-x11-fonts))
+#+END_SRC
+
+* Emacs' Mode-line
+
+#+BEGIN_SRC emacs-lisp
+(use-package smart-mode-line
+  :ensure t
+  :init
+  (progn
+    (setq sml/theme eos/background)
+    (sml/setup))
+  :config
+  (setq sml/shorten-directory t
+        sml/shorten-modes t)
+  (add-to-list 'sml/replacer-regexp-list '("^~/es/x-plugins/" ":X:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch/" ":ES:") t))
+#+END_SRC
+
+* The Editor Fringe
+
+So, fringe is nice actually, I set it to the same color as the background so it
+blends into the foreground
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/set-fringe-background ()
+  "Set the fringe background to the same color as the regular background."
+  (setq eos/fringe-background-color
+        (face-background 'default))
+  (custom-set-faces
+   `(fringe ((t (:background ,eos/fringe-background-color))))))
+
+(add-hook 'after-init-hook #'eos/set-fringe-background)
+#+END_SRC
+
+Show where the buffer ends on the right-hand fringe
+
+#+BEGIN_SRC emacs-lisp
+(setq-default indicate-buffer-boundaries 'right)
+#+END_SRC
+
+* Helm, an Incremental Completion Framework
+There are many helm things. I use it a lot.
+
+A lot of things are taken from taken from
+https://tuhdo.github.io/helm-intro.html
+
+Before we load any helm things, need to load [[https://github.com/PythonNut/helm-flx][helm-flx]] so it uses flx instead of
+helm's fuzzy matching.
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-flx
+  :ensure t
+  :init (helm-flx-mode +1))
+#+END_SRC
+
+Now we can do our Helm things
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-config
+  :ensure helm
+  :demand t ;; demand it be loaded!
+  :diminish helm-mode
+  :bind
+  (("C-M-z" . helm-resume)
+   ("C-x C-f" . helm-find-files)
+   ("C-x C-r" . helm-mini)
+   ("C-c C-o" . helm-occur)
+   ("C-x M-o" . helm-occur)
+   ("C-x C-o" . helm-occur)
+   ("M-y" . helm-show-kill-ring)
+   ("C-h a" . helm-apropos)
+   ("C-h m" . helm-man-woman)
+   ("C-h SPC" . helm-all-mark-rings)
+   ("C-x C-i" . helm-semantic-or-imenu)
+   ("M-x" . helm-M-x)
+   ("C-x C-b" . helm-buffers-list)
+   ("C-x C-r" . helm-mini)
+   ("C-x b" . helm-mini)
+   ("C-h t" . helm-world-time))
+  :config
+  (use-package helm-files
+    :config (setq helm-ff-file-compressed-list '("gz" "bz2" "zip" "tgz" "xz" "txz")))
+  (use-package helm-buffers)
+  (use-package helm-mode
+    :diminish helm-mode
+    :init (add-hook 'after-init-hook #'helm-mode))
+  (use-package helm-grep
+    :config
+    (progn
+      (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
+      (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
+      (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)))
+  (use-package helm-man)
+  (use-package helm-misc)
+  (use-package helm-elisp)
+  (use-package helm-imenu)
+  (use-package helm-semantic)
+  (use-package helm-ring)
+  (use-package helm-bookmark
+    :bind ("C-x M-b" . helm-bookmarks)
+    :init (use-package bookmark+ :ensure t))
+  (use-package helm-projectile
+    :ensure t
+    :bind (("C-x f" . helm-projectile)
+           ("C-c p f" . helm-projectile-find-file)
+           ("C-c p s" . helm-projectile-switch-project)))
+
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+
+  ;; Via: https://www.reddit.com/r/emacs/comments/3asbyn/new_and_very_useful_helm_feature_enter_search/
+  (setq helm-echo-input-in-header-line t)
+  (defun helm-hide-minibuffer-maybe ()
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+                                `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+
+  (setq helm-truncate-lines t
+        ;; may be overridden if 'ggrep' is in path (see below)
+        helm-grep-default-command
+        "grep -a -d skip %e -n%cH -e %p %f"
+        helm-grep-default-recurse-command
+        "grep -a -d recurse %e -n%cH -e %p %f"
+        ;; do not display invisible candidates
+        helm-quick-update t
+        ;; be idle for this many seconds, before updating in delayed sources.
+        ;; helm-idle-delay 0.01
+        ;; helm-input-idle-delay 0.01
+        ;; wider buffer name in helm-buffers-list
+        helm-buffer-max-length 25 ;; default is 20
+        ;; open helm buffer in another window
+        helm-split-window-default-side 'other
+        ;; open helm buffer inside current window, don't occupy whole other window
+        helm-split-window-in-side-p t
+        ;; limit the number of displayed canidates
+        ;; helm-candidate-number-limit 200
+        ;; don't use recentf stuff in helm-ff, I use C-x C-r for this
+        helm-ff-file-name-history-use-recentf nil
+        ;; move to end or beginning of source when reaching top or bottom
+        ;; of source
+        helm-move-to-line-cycle-in-source t
+        ;; don't display the header line
+        helm-display-header-line nil
+        ;; fuzzy matching
+        helm-recentf-fuzzy-match t
+        helm-locate-fuzzy-match nil ;; locate fuzzy is worthless
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-semantic-fuzzy-match t
+        helm-apropos-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-lisp-fuzzy-completion t
+        helm-completion-in-region-fuzzy-match t
+        ;; Here are the things helm-mini shows, I add `helm-source-bookmarks'
+        ;; here to the regular default list
+        helm-mini-default-sources '(helm-source-buffers-list
+                                    helm-source-recentf
+                                    helm-source-bookmarks
+                                    helm-source-buffer-not-found))
+
+  ;; List of times to show in helm-world-time
+  (setq display-time-world-list '(("PST8PDT" "Los Altos")
+                                  ("America/Denver" "Denver")
+                                  ("EST5EDT" "Boston")
+                                  ("UTC" "UTC")
+                                  ("Europe/London" "London")
+                                  ("Europe/Amsterdam" "Amsterdam")
+                                  ("Asia/Bangkok" "Bangkok")
+                                  ("Asia/Tokyo" "Tokyo")
+                                  ("Australia/Sydney" "Sydney")))
+
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+  (define-key helm-map (kbd "C-p")   'helm-previous-line)
+  (define-key helm-map (kbd "C-n")   'helm-next-line)
+  (define-key helm-map (kbd "C-M-n") 'helm-next-source)
+  (define-key helm-map (kbd "C-M-p") 'helm-previous-source)
+  (define-key helm-map (kbd "M-N")   'helm-next-source)
+  (define-key helm-map (kbd "M-P")   'helm-previous-source)
+  ;; The normal binding is C-c h M-g s which is insane
+  (global-set-key (kbd "C-c h g")    'helm-do-grep)
+  (global-set-key (kbd "C-c h a")    'helm-do-ag)
+
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+
+  ;; ggrep is gnu grep on OSX
+  (when (executable-find "ggrep")
+    (setq helm-grep-default-command
+          "ggrep -a -d skip %e -n%cH -e %p %f"
+          helm-grep-default-recurse-command
+          "ggrep -a -d recurse %e -n%cH -e %p %f"))
+
+  ;; helm-mini instead of recentf
+  (define-key 'help-command (kbd "C-f") 'helm-apropos)
+  (define-key 'help-command (kbd "r") 'helm-info-emacs)
+
+  (defvar helm-httpstatus-source
+    '((name . "HTTP STATUS")
+      (candidates . (("100 Continue") ("101 Switching Protocols")
+                     ("102 Processing") ("200 OK")
+                     ("201 Created") ("202 Accepted")
+                     ("203 Non-Authoritative Information") ("204 No Content")
+                     ("205 Reset Content") ("206 Partial Content")
+                     ("207 Multi-Status") ("208 Already Reported")
+                     ("300 Multiple Choices") ("301 Moved Permanently")
+                     ("302 Found") ("303 See Other")
+                     ("304 Not Modified") ("305 Use Proxy")
+                     ("307 Temporary Redirect") ("400 Bad Request")
+                     ("401 Unauthorized") ("402 Payment Required")
+                     ("403 Forbidden") ("404 Not Found")
+                     ("405 Method Not Allowed") ("406 Not Acceptable")
+                     ("407 Proxy Authentication Required") ("408 Request Timeout")
+                     ("409 Conflict") ("410 Gone")
+                     ("411 Length Required") ("412 Precondition Failed")
+                     ("413 Request Entity Too Large")
+                     ("414 Request-URI Too Large")
+                     ("415 Unsupported Media Type")
+                     ("416 Request Range Not Satisfiable")
+                     ("417 Expectation Failed") ("418 I'm a teapot")
+                     ("422 Unprocessable Entity") ("423 Locked")
+                     ("424 Failed Dependency") ("425 No code")
+                     ("426 Upgrade Required") ("428 Precondition Required")
+                     ("429 Too Many Requests")
+                     ("431 Request Header Fields Too Large")
+                     ("449 Retry with") ("500 Internal Server Error")
+                     ("501 Not Implemented") ("502 Bad Gateway")
+                     ("503 Service Unavailable") ("504 Gateway Timeout")
+                     ("505 HTTP Version Not Supported")
+                     ("506 Variant Also Negotiates")
+                     ("507 Insufficient Storage") ("509 Bandwidth Limit Exceeded")
+                     ("510 Not Extended")
+                     ("511 Network Authentication Required")))
+      (action . message)))
+
+  (defvar helm-clj-http-source
+    '((name . "clj-http options")
+      (candidates
+       .
+       ((":accept - keyword for content type to accept")
+        (":as - output coercion: :json, :json-string-keys, :clojure, :stream, :auto or string")
+        (":basic-auth - string or vector of basic auth creds")
+        (":body - body of request")
+        (":body-encoding - encoding type for body string")
+        (":client-params - apache http client params")
+        (":coerce - when to coerce response body: :always, :unexceptional, :exceptional")
+        (":conn-timeout - timeout for connection")
+        (":connection-manager - connection pooling manager")
+        (":content-type - content-type for request")
+        (":cookie-store - CookieStore object to store/retrieve cookies")
+        (":cookies - map of cookie name to cookie map")
+        (":debug - boolean to print info to stdout")
+        (":debug-body - boolean to print body debug info to stdout")
+        (":decode-body-headers - automatically decode body headers")
+        (":decompress-body - whether to decompress body automatically")
+        (":digest-auth - vector of digest authentication")
+        (":follow-redirects - boolean whether to follow HTTP redirects")
+        (":form-params - map of form parameters to send")
+        (":headers - map of headers")
+        (":ignore-unknown-host? - whether to ignore inability to resolve host")
+        (":insecure? - boolean whether to accept invalid SSL certs")
+        (":json-opts - map of json options to be used for form params")
+        (":keystore - file path to SSL keystore")
+        (":keystore-pass - password for keystore")
+        (":keystore-type - type of SSL keystore")
+        (":length - manually specified length of body")
+        (":max-redirects - maximum number of redirects to follow")
+        (":multipart - vector of multipart options")
+        (":oauth-token - oauth token")
+        (":proxy-host - hostname of proxy server")
+        (":proxy-ignore-hosts - set of hosts to ignore for proxy")
+        (":proxy-post - port for proxy server")
+        (":query-params - map of query parameters")
+        (":raw-headers - boolean whether to return raw headers with response")
+        (":response-interceptor - function called for each redirect")
+        (":retry-handler - function to handle HTTP retries on IOException")
+        (":save-request? - boolean to return original request with response")
+        (":socket-timeout - timeout for establishing socket")
+        (":throw-entire-message? - whether to throw the entire response on errors")
+        (":throw-exceptions - boolean whether to throw exceptions on 5xx & 4xx")
+        (":trust-store - file path to trust store")
+        (":trust-store-pass - password for trust store")
+        (":trust-store-type - type of trust store")))
+      (action . message)))
+
+  (defun helm-httpstatus ()
+    (interactive)
+    (helm-other-buffer '(helm-httpstatus-source) "*helm httpstatus*"))
+
+  (defun helm-clj-http ()
+    (interactive)
+    (helm-other-buffer '(helm-clj-http-source) "*helm clj-http flags*")))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-ls-git
+  :ensure t
+  :bind ("C-x C-d" . helm-browse-project))
+#+END_SRC
+
+Best way to search in a buffer ever
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-swoop
+  :ensure t
+  :bind (("M-i" . helm-swoop)
+         ("M-I" . helm-swoop-back-to-last-point)
+         ("C-c M-i" . helm-multi-swoop))
+  :config
+  ;; When doing isearch, hand the word over to helm-swoop
+  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+  ;; From helm-swoop to helm-multi-swoop-all
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  ;; Save buffer when helm-multi-swoop-edit complete
+  (setq helm-multi-swoop-edit-save t
+        ;; If this value is t, split window inside the current window
+        helm-swoop-split-with-multiple-windows t
+        ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
+        helm-swoop-split-direction 'split-window-vertically
+        ;; If nil, you can slightly boost invoke speed in exchange for text color
+        helm-swoop-speed-or-color nil))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-descbinds
+  :ensure t
+  :bind ("C-h b" . helm-descbinds)
+  :init (fset 'describe-bindings 'helm-descbinds))
+#+END_SRC
+
+* Multiple Emacs Perspectives with Eyebrowse
+Eyebrowse is a great package for workspaces in Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package eyebrowse
+  :init
+  (progn
+    (defun eos/create-eyebrowse-setup ()
+      (interactive)
+      "Create a default window config, if none is present"
+      (when (not (eyebrowse--window-config-present-p 2))
+        ;; there's probably a better way to do this, creating two workspaces
+        (eyebrowse-switch-to-window-config-2)
+        (eyebrowse-switch-to-window-config-1)))
+    (setq eyebrowse-wrap-around t
+          eyebrowse-new-workspace t)
+    (eyebrowse-mode 1)
+    (global-set-key (kbd "C-'") 'eyebrowse-next-window-config)
+    (add-hook 'after-init-hook #'eos/create-eyebrowse-setup)))
+#+END_SRC
+
+* Services started and Run from Emacs
+
+I basically use this to start up ES when I need to test something really quickly
+
+I have been trying out [[https://www.npmjs.com/package/esvm][esvm]] for this lately also, check out my ESVM
+configuration elsewhere in my dotfiles
+
+So I configure prodigy like so:
+
+#+BEGIN_SRC emacs-lisp
+(use-package prodigy
+  :ensure t
+  :defer t
+  :bind ("C-x P" . prodigy)
+  :config
+  (progn
+    (prodigy-define-service
+      :name "ES 2.x, 3 nodes"
+      :cwd "~/ies/"
+      :command "esvm"
+      :args '("3node")
+      :tags '(work test es)
+      :port 9200)
+
+    (prodigy-define-service
+      :name "ES 2.x, 2 nodes"
+      :cwd "~/ies/"
+      :command "esvm"
+      :args '("2node")
+      :tags '(work test es)
+      :port 9200)
+
+    (prodigy-define-service
+      :name "ES master branch"
+      :cwd "~/ies/"
+      :command "esvm"
+      :args '("master")
+      :tags '(work test es)
+      :port 9200)
+
+    (prodigy-define-service
+      :name "Kibana 4.2.0"
+      :cwd "~/ies/kibana-4.2.0-linux-x64"
+      :command "~/ies/kibana-4.2.0-linux-x64/bin/kibana"
+      :tags '(work kibana)
+      :port 5601)
+
+    (prodigy-define-service
+      :name "Kibana 4.3.0"
+      :cwd "~/ies/kibana-4.3.0-linux-x64"
+      :command "~/ies/kibana-4.3.0-linux-x64/bin/kibana"
+      :tags '(work kibana)
+      :port 5601)
+
+    (prodigy-define-service
+      :name "Elasticsearch 1.7.3"
+      :cwd "~/ies/elasticsearch-1.7.3"
+      :command "~/ies/elasticsearch-1.7.3/bin/elasticsearch"
+      :tags '(work test es)
+      :port 9200)
+    (prodigy-define-service
+      :name "Elasticsearch 2.0.0"
+      :cwd "~/ies/elasticsearch-2.0.0"
+      :command "~/ies/elasticsearch-2.0.0/bin/elasticsearch"
+      :tags '(work test es)
+      :port 9200)
+    (prodigy-define-service
+      :name "Elasticsearch 2.1.0"
+      :cwd "~/ies/elasticsearch-2.1.0"
+      :command "~/ies/elasticsearch-2.1.0/bin/elasticsearch"
+      :tags '(work test es)
+      :port 9200)))
+#+END_SRC

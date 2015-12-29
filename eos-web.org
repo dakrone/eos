@@ -1,0 +1,48 @@
+#+TITLE: EOS: Web Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-web)
+#+END_SRC
+
+* Web browsers, EWW and Firefox
+Ewwwwww...
+
+Wait, no, I mean the Emacs web browser built in to 24.4+
+
+We can browse to anything that looks like a URL with =C-x m=.
+
+#+begin_src emacs-lisp :tangle yes
+(global-set-key (kbd "C-x m") 'browse-url-at-point)
+#+end_src
+
+I use EWW as my default browser in Emacs; certain things, I need to jump out of
+EWW and in to a real browser with javascript; which I can do if I just hit =&=
+or =O= -- it'll drop me in to a firefox session without a hassle.
+
+There are certain sites that, despite my best abilities, I cannot make work in
+EWW. For these, I launch Firefox directly, instead of hitting a silly man in the
+middle.
+
+#+BEGIN_SRC emacs-lisp
+(use-package eww
+  :defer t
+  :config
+  (use-package s
+    :ensure t)
+  (define-key eww-mode-map "o" 'eww)
+  (define-key eww-mode-map "O" 'eww-browse-with-external-browser)
+  (setq browse-url-browser-function
+        '((".*google.*maps.*" . browse-url-generic)
+          ;; Github goes to firefox, but not gist
+          ("http.*\/\/github.com" . browse-url-generic)
+          ("." . eww-browse-url)))
+  (setq shr-external-browser 'browse-url-generic)
+  (setq browse-url-generic-program (executable-find "firefox"))
+
+  (use-package eww-lnum
+    :config
+    (bind-key "f" #'eww-lnum-follow eww-mode-map)
+    (bind-key "F" #'eww-lnum-universal eww-mode-map)))
+#+END_SRC

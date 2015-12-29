@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# -*- mode: shell-script -*-
+#
+# Byte compile .el file with emacs
+# Example usage:
+#    ∴ byte-compile thing.el
+#    Byte-compiling: thing.el
+
+# Set this to the location of your emacs executable
+EMACSCMD="emacs"
+
+# wrap each argument in the code required to byte-compile it
+DIR=`pwd`
+FILES=""
+for file in $@; do
+    echo "Byte-compiling: $file"
+    $EMACSCMD -nw --batch --eval "
+(progn
+  (byte-compile-file (expand-file-name \"$file\" \"$DIR\")))" 2>&1
+done

@@ -1,0 +1,60 @@
+#+TITLE: EOS: IRC Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-irc)
+#+END_SRC
+
+* IRC With ZNC and ERC
+IRC in Emacs
+
+#+BEGIN_SRC emacs-lisp
+(defun start-erc ()
+  (interactive)
+  (load-file "~/.ercpass")
+  (use-package erc
+    :init
+    (setq erc-nick "dakrone"
+          erc-keywords '("clj-http")
+          erc-pals '("hiredman"
+                     "technomancy"
+                     "leathekd"
+                     "joegallo"
+                     "danlarkin"
+                     "yazirian"
+                     "pjstadig"
+                     "scgilardi"
+                     "drewr")
+          erc-hide-list '("JOIN" "PART" "QUIT"))
+    (defun my/disable-font-lock ()
+      (font-lock-mode -1))
+    ;; ERC is crazy, for some reason it doesn't like font-lock...
+    (add-hook 'erc-mode-hook #'my/disable-font-lock))
+  (use-package erc-hl-nicks :ensure t)
+  (use-package ercn
+    :ensure t
+    :init
+    (setq ercn-notify-rules
+          '((current-nick . all)
+            (keyword . all)
+            (pal . ("#emacs" "#elasticsearch"))
+            (query-buffer . all)))
+
+    (use-package s :ensure t)
+    (when (fboundp 'alert)
+      (defun do-notify (nickname message)
+        (interactive)
+        (alert (concat nickname ": "
+                       (s-trim (s-collapse-whitespace message)))
+               :title (buffer-name)))
+      (add-hook 'ercn-notify-hook 'do-notify)))
+  (let ((tls-program
+         '("gnutls-cli --priority secure256 --x509certfile ~/host.pem -p %p %h"
+           "openssl s_client -connect %h:%p -no_ssl2 -ign_eof -cert ~/host.pem")))
+    (erc-tls :server "irc.writequit.org"
+             :port 31425
+             :nick "dakrone"
+             :password freenode-znc-pass)))
+#+END_SRC
+

@@ -1,0 +1,164 @@
+#+TITLE: EOS: Java Development Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-java)
+#+END_SRC
+
+* Java
+Java uses eclim and/or malabar to make life at least a little bit livable.
+
+=intellij-java-style= is a copy of our Intellij indentation rules for
+Elasticsearch, which are a little weird in some cases, but needed in order to
+work with the ES codebase.
+
+#+BEGIN_SRC emacs-lisp
+;; via http://emacs.stackexchange.com/questions/17327/how-to-have-c-offset-style-correctly-detect-a-java-constructor-and-change-indent
+(defun my/point-in-defun-declaration-p ()
+  (let ((bod (save-excursion (c-beginning-of-defun)
+                             (point))))
+    (<= bod
+        (point)
+        (save-excursion (goto-char bod)
+                        (re-search-forward "{")
+                        (point)))))
+
+(defun my/is-string-concatenation-p ()
+  "Returns true if the previous line is a string concatenation"
+  (save-excursion
+    (let ((start (point)))
+      (forward-line -1)
+      (if (re-search-forward " \\\+$" start t) t nil))))
+
+(defun my/inside-java-lambda-p ()
+  "Returns true if point is the first statement inside of a lambda"
+  (save-excursion
+    (c-beginning-of-statement-1)
+    (let ((start (point)))
+      (forward-line -1)
+      (if (search-forward " -> {" start t) t nil))))
+
+(defun my/trailing-paren-p ()
+  "Returns true if point is a training paren and semicolon"
+  (save-excursion
+    (end-of-line)
+    (let ((endpoint (point)))
+      (beginning-of-line)
+      (if (re-search-forward "[ ]*);$" endpoint t) t nil))))
+
+(defun my/prev-line-call-with-no-args-p ()
+  "Return true if the previous line is a function call with no arguments"
+  (save-excursion
+    (let ((start (point)))
+      (forward-line -1)
+      (if (re-search-forward ".($" start t) t nil))))
+
+(defun my/arglist-cont-nonempty-indentation (arg)
+  (if (my/inside-java-lambda-p)
+      '+
+    (if (my/is-string-concatenation-p)
+        16 ;; TODO don't hard-code
+      (unless (my/point-in-defun-declaration-p) '++))))
+
+(defun my/statement-block-intro (arg)
+  (if (and (c-at-statement-start-p) (my/inside-java-lambda-p)) 0 '+))
+
+(defun my/block-close (arg)
+  (if (my/inside-java-lambda-p) '- 0))
+
+(defun my/arglist-close (arg) (if (my/trailing-paren-p) 0 '--))
+
+(defun my/arglist-intro (arg)
+  (if (my/prev-line-call-with-no-args-p) '++ 0))
+
+(defconst intellij-java-style
+  '((c-basic-offset . 4)
+    (c-comment-only-line-offset . (0 . 0))
+    ;; the following preserves Javadoc starter lines
+    (c-offsets-alist
+     .
+     ((inline-open . 0)
+      (topmost-intro-cont    . +)
+      (statement-block-intro . my/statement-block-intro)
+      (block-close           . my/block-close)
+      (knr-argdecl-intro     . +)
+      (substatement-open     . +)
+      (substatement-label    . +)
+      (case-label            . +)
+      (label                 . +)
+      (statement-case-open   . +)
+      (statement-cont        . +)
+      (arglist-intro         . my/arglist-intro)
+      (arglist-cont-nonempty . (my/arglist-cont-nonempty-indentation c-lineup-arglist))
+      (arglist-close         . my/arglist-close)
+      (inexpr-class          . 0)
+      (access-label          . 0)
+      (inher-intro           . ++)
+      (inher-cont            . ++)
+      (brace-list-intro      . +)
+      (func-decl-cont        . ++))))
+  "Elasticsearch's Intellij Java Programming Style")
+
+(c-add-style "intellij" intellij-java-style)
+(customize-set-variable 'c-default-style
+                        '((java-mode . "intellij")
+                          (awk-mode . "awk")
+                          (other . "gnu")))
+
+(defun setup-java ()
+  (interactive)
+  (define-key java-mode-map (kbd "M-,") 'pop-tag-mark)
+  (define-key java-mode-map (kbd "C-c M-i") 'java-imports-add-import)
+  (c-set-style "intellij" t)
+  ;; automatically add newline after { in java
+  (setq-local electric-layout-rules '((?{ . after)))
+  (subword-mode 1)
+  (toggle-truncate-lines 1)
+  ;; Generic java stuff things
+  (setq-local fci-rule-column 99)
+  (setq-local fill-column 140)
+  ;; remove the stupid company-eclim backend
+  (when (boundp 'company-backends)
+    (delete 'company-eclim company-backends)))
+
+(add-hook 'java-mode-hook #'setup-java)
+
+;; Make emacs' compile recognize broken gradle output
+(require 'compile)
+(add-to-list 'compilation-error-regexp-alist
+             '("^:[^/.\n]+\\(/.+\\):\\([[:digit:]]+\\):" 1 2))
+#+END_SRC
+
+** java-imports
+
+I also have a custom package, [[https://github.com/dakrone/emacs-java-imports][java-imports]], which I use to quickly add imports
+for things.
+
+#+BEGIN_SRC emacs-lisp
+(use-package java-imports
+  :ensure t
+  :config
+  ;; Elasticsearch's import style
+  (setq java-imports-find-block-function 'java-imports-find-place-sorted-block))
+#+END_SRC
+
+** eclim
+Eclim is decent for emacs-java integration, but isn't quite there for showing
+errors or things like that. Unfortunately I still have to jump back into
+Intellij all the time for things.
+
+#+BEGIN_SRC emacs-lisp
+(use-package emacs-eclim
+  :ensure t
+  :init
+  (progn
+    ;; only show errors
+    (setq-default eclim--problems-filter "e")
+    (global-eclim-mode))
+  :config
+  (progn
+    (use-package company-emacs-eclim
+      :ensure t
+      :init (company-emacs-eclim-setup))))
+#+END_SRC

@@ -1,0 +1,22 @@
+#+TITLE: EOS: Fun and Leisure Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-leisure)
+#+END_SRC
+
+* Leisurely Things
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/popup-downloads ()
+  "Pop up the downloads buffer"
+  (interactive)
+  (when (not (get-buffer "*eshell downloads*"))
+    (let ((eshell-buffer-name "*eshell downloads*"))
+      (eshell)))
+  (popwin:popup-buffer "*eshell downloads*"))
+
+;; eshell 4 is always my "download stuff" buffer
+(global-set-key (kbd "C-x M-d") #'eos/popup-downloads)
+#+END_SRC

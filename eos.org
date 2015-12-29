@@ -1,0 +1,146 @@
+#+TITLE: The Emacs Operating System (EOS)
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+* Emacs Operating System
+People call it that, so let's prove them right.
+
+* How to use these files
+
+* Initial Preparation
+We need to prepare the system for running EOS, so we need to tangle an
+initialization script and invoke it. This is handled by the =Makefile= which
+special-cases this one file.
+
+#+BEGIN_SRC sh :tangle initialize.sh
+# Directory for user-installed scripts
+mkdir -p ~/bin
+
+# GnuPG
+mkdir -p ~/.gnupg
+chmod 700 ~/.gnupg
+
+# SSH
+mkdir -p ~/.ssh
+chmod 700 ~/.ssh
+
+# Emacs configuration folders
+mkdir -p ~/.emacs.d
+mkdir -p ~/.emacs.d/snippets
+mkdir -p ~/.emacs.d/eshell
+#+END_SRC
+
+** Installation script
+In addition to the prep script, there needs to be a script used for
+installation that actually links up the appropriate parts.
+
+Warning! This will overwrite your current configuration!
+
+#+BEGIN_SRC sh :tangle install.sh :eval no
+ln -sfv $PWD/out/bashrc.d ~/.bashrc.d
+ln -sfv $PWD/out/bashrc ~/.profile
+# An extra symlink gets created, I have no idea why, but remove it
+rm -fv $PWD/out/bashrc.d/bashrc.d
+ln -sfv $PWD/eos.el ~/.emacs.d/init.el
+ln -sfv $PWD ~/.emacs.d/eos
+#+END_SRC
+
+* The EOS Module Set
+There is of course the prerequisite, which is this file, and then the EOS
+contains a number of different configurations and modules. This is a basic
+overview of the modules, which you should visit should you desire more
+information about a particular module.
+
+Ideally, each module except for the "Core" module is optional and can be skipped
+if not desired.
+
+- [[./eos-core.org][Core Computing System]]
+- Notification System
+- Development (programming) System
+  - Java
+  - Clojure
+- Org-mode and agenda
+- Web browsing
+- Shell
+- Mail (Email)
+- IRC
+- RSS
+- Twitter
+- Fun and Leisure
+
+* =init.el=
+
+#+BEGIN_SRC emacs-lisp
+(setq debug-on-error t)
+(setq debug-on-quit t)
+#+END_SRC
+
+Also, let's make =cl= things available right from the start
+
+#+BEGIN_SRC emacs-lisp
+(require 'cl)
+#+END_SRC
+
+I can't live without this, "x" on Dvorak is where "b" is on Qwerty, and it's
+just too hard for all the C-x things I have to hit. Maybe one day I'll just
+switch to evil and be done with it.
+
+#+BEGIN_SRC emacs-lisp
+(define-key key-translation-map "\C-t" "\C-x")
+#+END_SRC
+
+And now, let's start things up.
+
+#+BEGIN_SRC emacs-lisp
+(defvar after-eos-hook nil
+  "Hooks to run after all of the EOS has been loaded")
+
+(defvar emacs-start-time (current-time)
+  "Time Emacs was started.")
+
+;; Installed by `make install`
+(add-to-list 'load-path "~/.emacs.d/eos/")
+
+;; The EOS modules
+(require 'eos-core)
+(require 'eos-notify)
+(require 'eos-develop)
+(require 'eos-org)
+(require 'eos-java)
+(require 'eos-clojure)
+(require 'eos-web)
+(require 'eos-shell)
+(require 'eos-mail)
+(require 'eos-irc)
+(require 'eos-rss)
+(require 'eos-twitter)
+(require 'eos-leisure)
+
+;; Hooks
+(add-hook 'after-eos-hook
+          (lambda ()
+            (message "The Emacs Operating System has been loaded")))
+
+(defun eos/time-since-start ()
+  (float-time (time-subtract (current-time)
+                             emacs-start-time)))
+
+(add-hook 'after-eos-hook
+          `(lambda ()
+             (let ((elapsed (eos/time-since-start)))
+               (message "Loading %s...done (%.3fs)"
+                        ,load-file-name elapsed))) t)
+(add-hook 'after-init-hook
+          `(lambda ()
+             (let ((elapsed (eos/time-since-start)))
+               (message "Loading %s...done (%.3fs) [after-init]"
+                        ,load-file-name elapsed))) t)
+(run-hooks 'after-eos-hook)
+#+END_SRC
+
+Turn debugging back off, if there were no errors then things successfully got loaded.
+
+#+BEGIN_SRC emacs-lisp
+(setq debug-on-error nil)
+(setq debug-on-quit nil)
+#+END_SRC

@@ -1,0 +1,7 @@
+initialize.sh
+*.sh
+*.el
+*.el~
+*.elc
+out/
+sh/

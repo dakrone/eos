@@ -1,0 +1,7 @@
+#+TITLE: EOS: RSS Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-rss)
+#+END_SRC

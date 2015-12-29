@@ -1,0 +1,62 @@
+#+TITLE: EOS: Notification Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-notify)
+#+END_SRC
+
+* A Word about Notifications and Alerting
+
+Yep. I need to actually make this work for OSX, for Linux it's no problem
+though.
+
+#+BEGIN_SRC emacs-lisp
+(use-package alert
+  :ensure t
+  :config
+  (when (eq system-type 'darwin)
+    (setq alert-default-style 'notifier))
+  (when (eq system-type 'gnu/linux)
+    (setq alert-default-style 'notifications))
+
+  (defun eos/compilation-finish (buffer msg)
+    (interactive)
+    (alert (format "[%s]: %s" buffer msg)))
+  (add-to-list 'compilation-finish-functions #'eos/compilation-finish)
+
+  (defun finish ()
+    (interactive)
+    (alert (concat "Finished command in " (buffer-name))
+           :severity 'medium
+           :category 'eshell
+           :title (buffer-name)
+           :persistent t)))
+#+END_SRC
+
+To use this, I just need to do =(alert "this is a message")=.
+
+The all-seeing eye of Sauron
+
+#+BEGIN_SRC emacs-lisp
+(use-package sauron
+  :ensure t
+  :init
+  (setq sauron-max-line-length 120
+        sauron-watch-patterns '("dakrone" "thnetos" "okenezak")
+        sauron-watch-nicks '("dakrone" "thnetos")
+        sauron-frame-geometry "120x48+0+0")
+  ;; filter out IRC spam
+  (defun tsp/hide-irc-user-spam (origin priority msg &optional properties)
+    (or (string-match "^*** Users" msg)))
+  (defun tsp/hide-tweet-counts (origin priority msg &optional properties)
+    (or (string-match "^[0-9]+ new tweets" msg)))
+  (add-hook 'sauron-event-block-functions #'tsp/hide-irc-user-spam)
+  (add-hook 'sauron-event-block-functions #'tsp/hide-tweet-counts)
+
+  (sauron-start-hidden)
+  ;; Turn this off!
+  (remove-hook 'sauron-event-added-functions #'sauron-alert-el-adapter)
+  :commands (sauron-toggle-hide-show)
+  :bind ("M-o" . sauron-toggle-hide-show))
+#+END_SRC

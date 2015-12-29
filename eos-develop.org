@@ -1,0 +1,369 @@
+#+TITLE: EOS: Development Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-develop)
+#+END_SRC
+
+* EOS Development Module Configuration
+Let's make .zsh also be a shell script
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
+#+END_SRC
+
+This contains the configuration for elisp programming
+
+Remove some back-ends from vc-mode, no need to check all these things, I use
+=magit= for everything anyway:
+
+#+BEGIN_SRC emacs-lisp
+(setq vc-handled-backends '(git svn))
+#+END_SRC
+
+I need to hide the lighter for subword mode:
+
+#+BEGIN_SRC emacs-lisp
+(use-package subword
+  :diminish subword-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package log4j-mode
+  :ensure t
+  :init
+  (add-hook #'log4j-mode-hook #'view-mode)
+  (add-hook #'log4j-mode-hook #'read-only-mode))
+#+END_SRC
+
+** Semantic Editing
+First, use a development version of cedet if applicable, I download the latest
+snapshot from http://www.randomsample.de/cedet-snapshots/ and extract it in
+~/src/elisp. Don't forget to run =make= in it!
+
+And then things to set up semantic mode
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/setup-semantic-mode ()
+  (interactive)
+  (use-package semantic
+    :init
+    (require 'semantic/ia)
+    (require 'semantic/wisent)
+    (semantic-mode t)))
+
+(add-hook 'c-mode-hook #'eos/setup-semantic-mode)
+(add-hook 'java-mode-hook #'eos/setup-semantic-mode)
+#+END_SRC
+
+** Programming Mode Hooks
+
+In programming modes, make sure things like FIXME and TODO are
+highlighted so they stand out:
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/add-watchwords ()
+  "Highlight FIXME, TODO, and NOCOMMIT in code TODO"
+  (font-lock-add-keywords
+   nil '(("\\<\\(FIXME:?\\|TODO:?\\|NOCOMMIT:?\\)\\>"
+          1 '((:foreground "#d7a3ad") (:weight bold)) t))))
+
+(add-hook 'prog-mode-hook #'eos/add-watchwords)
+#+END_SRC
+
+Also highlight the line in prog-mode:
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook #'hl-line-mode)
+#+END_SRC
+* Autocomplete with Company
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+#+END_SRC
+
+I use =company= for more than just programming completions (see 💕=company-emoji=💕, f.e.), so let's
+just enable it everywhere.
+
+#+BEGIN_SRC emacs-lisp :tangle yes
+(use-package company
+  :ensure t
+  :diminish company-mode
+  :bind ("C-i" . company-complete)
+  :init
+  (add-hook 'after-init-hook #'global-company-mode)
+  (use-package company-quickhelp
+    :ensure t
+    :init (add-hook 'company-mode-hook #'company-quickhelp-mode))
+  :config
+  (setq company-selection-wrap-around t
+        ;; don't downcase dabbrev suggestions
+        company-dabbrev-downcase nil
+        ;; sort completions by occurrence
+        company-transformers '(company-sort-by-occurrence))
+  (bind-keys :map company-active-map
+             ("C-n" . company-select-next)
+             ("C-p" . company-select-previous)
+             ("C-d" . company-show-doc-buffer)
+             ("C-l" . company-show-location)
+             ("<tab>" . company-complete)))
+#+END_SRC
+
+Used smart-tab to complete everywhere except for ERC, shell and mu4e.
+
+#+BEGIN_SRC emacs-lisp
+(use-package smart-tab
+  :ensure t
+  :defer t
+  :diminish ""
+  :init (global-smart-tab-mode 1)
+  :config
+  (progn
+    (add-to-list 'smart-tab-disabled-major-modes 'mu4e-compose-mode)
+    (add-to-list 'smart-tab-disabled-major-modes 'erc-mode)
+    (add-to-list 'smart-tab-disabled-major-modes 'shell-mode)))
+#+END_SRC
+
+* Managing Projects with Projectile
+Per-project navigation
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :defer 5
+  :commands projectile-global-mode
+  :diminish projectile-mode
+  :init (add-hook 'after-init-hook #'projectile-global-mode)
+  :config
+  (bind-key "C-c p b" #'projectile-switch-to-buffer #'projectile-command-map)
+  (bind-key "C-c p K" #'projectile-kill-buffers #'projectile-command-map)
+
+  ;; global ignores
+  (add-to-list 'projectile-globally-ignored-files ".tern-port")
+  (add-to-list 'projectile-globally-ignored-files "GTAGS")
+  (add-to-list 'projectile-globally-ignored-files "GPATH")
+  (add-to-list 'projectile-globally-ignored-files "GRTAGS")
+  (add-to-list 'projectile-globally-ignored-files "GSYMS")
+  (add-to-list 'projectile-globally-ignored-files ".DS_Store")
+  ;; always ignore .class files
+  (add-to-list 'projectile-globally-ignored-file-suffixes ".class")
+  (use-package helm-projectile
+    :ensure t
+    :init
+    (use-package grep) ;; required for helm-ag to work properly
+    (setq projectile-completion-system 'helm)
+    ;; no fuzziness for projectile-helm
+    (setq helm-projectile-fuzzy-match nil)
+    (helm-projectile-on)))
+#+END_SRC
+
+* Git Magit with Magit and friends
+I use =M-g M-g= everywhere to go directly to Magit.
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :bind (("M-g M-g" . magit-status)
+         ("C-x g" . magit-status))
+  :init (add-hook 'magit-mode-hook 'hl-line-mode)
+  :config
+  (setenv "GIT_PAGER" "")
+  (if (file-exists-p  "/usr/local/bin/emacsclient")
+      (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")
+    (setq magit-emacsclient-executable (executable-find "emacsclient")))
+  (defun eos/magit-browse ()
+    "Browse to the project's github URL, if available"
+    (interactive)
+    (let ((url (with-temp-buffer
+                 (unless (zerop (call-process-shell-command
+                                 "git remote -v" nil t))
+                   (error "Failed: 'git remote -v'"))
+                 (goto-char (point-min))
+                 (when (re-search-forward
+                        "github\\.com[:/]\\(.+?\\)\\.git" nil t)
+                   (format "https://github.com/%s" (match-string 1))))))
+      (unless url
+        (error "Can't find repository URL"))
+      (browse-url url)))
+
+  (define-key magit-mode-map (kbd "C-c C-b") #'eos/magit-browse)
+  ;; Magit has its own binding, so re-bind them
+  (bind-key "M-1" #'eos/create-or-switch-to-eshell-1 magit-mode-map)
+  (bind-key "M-2" #'eos/create-or-switch-to-eshell-2 magit-mode-map)
+  (bind-key "M-3" #'eos/create-or-switch-to-eshell-3 magit-mode-map)
+  (bind-key "M-4" #'eos/create-or-switch-to-eshell-4 magit-mode-map))
+#+END_SRC
+
+Quite useful, as well as the =C-x n= and =C-x p= bindings.
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-gutter
+  :ensure t
+  :defer t
+  :bind (("C-x =" . git-gutter:popup-hunk)
+         ("C-c P" . git-gutter:previous-hunk)
+         ("C-c N" . git-gutter:next-hunk)
+         ("C-x p" . git-gutter:previous-hunk)
+         ("C-x n" . git-gutter:next-hunk)
+         ("C-c G" . git-gutter:popup-hunk))
+  :diminish ""
+  :init
+  (add-hook 'prog-mode-hook #'git-gutter-mode)
+  (add-hook 'org-mode-hook #'git-gutter-mode))
+#+END_SRC
+
+* Elisp
+:PROPERTIES:
+:ID:       5AA7C6BC-6DAD-45D9-ABD5-36BF0BD344F1
+:CUSTOM_ID: 8711a5dd-fbbd-452c-bc18-85318d9c9c9b
+:END:
+This contains the configuration for elisp programming
+
+First, turn on paredit and eldoc everywhere it's useful:
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+(add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
+(add-hook 'ielm-mode-hook #'paredit-mode)
+(add-hook 'ielm-mode-hook #'eldoc-mode)
+#+END_SRC
+
+And some various eldoc settings:
+
+#+BEGIN_SRC emacs-lisp
+(use-package eldoc
+  :diminish eldoc-mode
+  :config
+  (setq eldoc-idle-delay 0.3))
+#+END_SRC
+
+For paredit, make sure to diminish it
+
+#+BEGIN_SRC emacs-lisp
+(use-package paredit
+  :ensure t
+  :diminish paredit-mode)
+#+END_SRC
+
+Define some niceties for popping up an ielm buffer:
+
+#+BEGIN_SRC emacs-lisp
+(defun ielm-other-window ()
+  "Run ielm on other window"
+  (interactive)
+  (switch-to-buffer-other-window
+   (get-buffer-create "*ielm*"))
+  (call-interactively 'ielm))
+
+(define-key emacs-lisp-mode-map (kbd "C-c C-z") 'ielm-other-window)
+(define-key lisp-interaction-mode-map (kbd "C-c C-z") 'ielm-other-window)
+#+END_SRC
+
+Turn on elisp-slime-nav if available, so =M-.= works to jump to function
+definitions:
+
+#+BEGIN_SRC emacs-lisp
+(use-package elisp-slime-nav
+  :ensure t
+  :diminish elisp-slime-nav-mode
+  :init (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
+#+END_SRC
+
+Borrowed from Steve Purcell's config. This pretty-prints the results.
+
+#+begin_src emacs-lisp
+(bind-key "M-:" #'pp-eval-expression)
+
+(defun eos/eval-last-sexp-or-region (prefix)
+ "Eval region from BEG to END if active, otherwise the last sexp."
+ (interactive "P")
+ (if (and (mark) (use-region-p))
+ (eval-region (min (point) (mark)) (max (point) (mark)))
+ (pp-eval-last-sexp prefix)))
+
+(bind-key "C-x C-e" 'eos/eval-last-sexp-or-region emacs-lisp-mode-map)
+
+(define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
+#+end_src
+
+
+* Python
+:PROPERTIES:
+:ID:       772D69FD-48DB-4A5C-B107-06CD508CAE05
+:CUSTOM_ID: 651c592a-1ac5-4282-8bcb-ca696c4013bd
+:END:
+Some various python settings, including loading jedi if needed to set up
+keys, the custom hook only loads jedi when editing python files:
+
+#+BEGIN_SRC emacs-lisp
+(use-package python
+  :defer t
+  :config
+  (define-key python-mode-map (kbd "<backtab>") 'python-back-indent))
+#+END_SRC
+
+I'm using the [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]] package for managing these
+
+#+BEGIN_SRC emacs-lisp
+(use-package virtualenvwrapper
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell)
+    (setq venv-location (or (getenv "WORKON_HOME")
+                            "~/.venvs"))))
+#+END_SRC
+
+
+* Ruby
+Using rbenv, set it up correctly when idle
+
+#+BEGIN_SRC emacs-lisp
+(use-package rbenv
+  :ensure t
+  :defer 25
+  :init
+  ;; I don't really care about the active ruby in the modeline
+  (setq rbenv-show-active-ruby-in-modeline nil)
+  (global-rbenv-mode t))
+#+END_SRC
+
+* Haskell
+Use GHC for haskell mode, and turn on auto-complete and some doc/indent
+modes:
+
+#+BEGIN_SRC emacs-lisp
+(use-package haskell-mode
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (add-hook 'haskell-mode-hook #'haskell-indentation-mode)
+    (add-hook 'haskell-mode-hook #'turn-on-haskell-doc-mode)
+    (add-hook 'haskell-mode-hook #'subword-mode)))
+#+END_SRC
+
+* Javascript
+I want indentation of 2 for json/js.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default js-indent-level 2)
+#+END_SRC
+
+Bleh javascript. js2-mode is better than nothing.
+
+#+BEGIN_SRC emacs-lisp
+(use-package js2-mode
+  :ensure t
+  :mode "\\.js\\'"
+  :config (js2-imenu-extras-setup))
+#+END_SRC
+
+There's =tern= also, but I leave it turned off by default, just installed
+
+#+BEGIN_SRC emacs-lisp
+(use-package tern
+  :ensure t)
+#+END_SRC
