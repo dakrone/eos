@@ -5,3 +5,21 @@
 #+BEGIN_SRC emacs-lisp
 (provide 'eos-twitter)
 #+END_SRC
+
+* Twitter with twittering-mode
+
+Load up twittering mode, but defer it since I'm probably not loading emacs to
+immediately use Twitter :P
+
+#+BEGIN_SRC emacs-lisp
+(use-package twittering-mode
+  :ensure t
+  :config
+  (setq twittering-icon-mode t
+        twittering-use-master-password t
+        twittering-timer-interval 600
+        ;; Start up with home and "emacs" search
+        twittering-initial-timeline-spec-string
+         '("(:home+@)"
+           "(:search/emacs/)")))
+#+END_SRC
