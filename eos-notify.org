@@ -20,11 +20,6 @@ though.
   (when (eq system-type 'gnu/linux)
     (setq alert-default-style 'notifications))
 
-  (defun eos/compilation-finish (buffer msg)
-    (interactive)
-    (alert (format "[%s]: %s" buffer msg)))
-  (add-to-list 'compilation-finish-functions #'eos/compilation-finish)
-
   (defun finish ()
     (interactive)
     (alert (concat "Finished command in " (buffer-name))
@@ -45,6 +40,7 @@ The all-seeing eye of Sauron
   (setq sauron-max-line-length 120
         sauron-watch-patterns '("dakrone" "thnetos" "okenezak")
         sauron-watch-nicks '("dakrone" "thnetos")
+        sauron-nick-insensitivity 20
         sauron-frame-geometry "120x48+0+0")
   ;; filter out IRC spam
   (defun tsp/hide-irc-user-spam (origin priority msg &optional properties)
@@ -58,5 +54,14 @@ The all-seeing eye of Sauron
   ;; Turn this off!
   (remove-hook 'sauron-event-added-functions #'sauron-alert-el-adapter)
   :commands (sauron-toggle-hide-show)
-  :bind ("M-o" . sauron-toggle-hide-show))
+  :bind ("M-o" . sauron-toggle-hide-show)
+  :config
+  (defun eos/compilation-finish (buffer msg)
+    (interactive)
+    (sauron-add-event 'compilation
+                      3
+                      (format "[%s]: %s" buffer msg)
+                      (lambda () (switch-to-buffer-other-window "*compilation*"))
+                      nil))
+  (add-to-list 'compilation-finish-functions #'eos/compilation-finish))
 #+END_SRC

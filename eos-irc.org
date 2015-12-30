@@ -57,4 +57,3 @@ IRC in Emacs
              :nick "dakrone"
              :password freenode-znc-pass)))
 #+END_SRC
-
