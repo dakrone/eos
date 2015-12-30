@@ -503,6 +503,12 @@ Display the time and load on the modeline
 (display-time-mode 1)
 #+END_SRC
 
+Let's also display the battery status in the mode-line
+
+#+BEGIN_SRC emacs-lisp
+(display-battery-mode 1)
+#+END_SRC
+
 Emacs (foolishly) defaults to adding the =--insecure= flag. It also supports the
 (incredibly broken) SSL version 3. What are you thinking Emacs!?!
 
