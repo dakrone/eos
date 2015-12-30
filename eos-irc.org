@@ -45,9 +45,12 @@ IRC in Emacs
     (when (fboundp 'alert)
       (defun do-notify (nickname message)
         (interactive)
-        (alert (concat nickname ": "
-                       (s-trim (s-collapse-whitespace message)))
-               :title (buffer-name)))
+        ;; Alert not needed, Sauron handles this now
+        ;; (alert (concat nickname ": "
+        ;;                (s-trim (s-collapse-whitespace message)))
+        ;;        :title (buffer-name))
+        (message "[%s] %s: %s"
+                 (buffer-name) nickname (s-trim (s-collapse-whitespace message))))
       (add-hook 'ercn-notify-hook 'do-notify)))
   (let ((tls-program
          '("gnutls-cli --priority secure256 --x509certfile ~/host.pem -p %p %h"

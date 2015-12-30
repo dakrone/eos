@@ -18,15 +18,7 @@ though.
   (when (eq system-type 'darwin)
     (setq alert-default-style 'notifier))
   (when (eq system-type 'gnu/linux)
-    (setq alert-default-style 'notifications))
-
-  (defun finish ()
-    (interactive)
-    (alert (concat "Finished command in " (buffer-name))
-           :severity 'medium
-           :category 'eshell
-           :title (buffer-name)
-           :persistent t)))
+    (setq alert-default-style 'notifications)))
 #+END_SRC
 
 To use this, I just need to do =(alert "this is a message")=.
@@ -51,17 +43,28 @@ The all-seeing eye of Sauron
   (add-hook 'sauron-event-block-functions #'tsp/hide-tweet-counts)
 
   (sauron-start-hidden)
-  ;; Turn this off!
-  (remove-hook 'sauron-event-added-functions #'sauron-alert-el-adapter)
+  ;; Need to stop tracking notifications, because sauron will be sending notifications!
+  (sauron-notifications-stop)
+  (add-hook 'sauron-event-added-functions 'sauron-alert-el-adapter)
   :commands (sauron-toggle-hide-show)
   :bind ("M-o" . sauron-toggle-hide-show)
   :config
   (defun eos/compilation-finish (buffer msg)
+    "Send a sauron notification for compilation completing"
     (interactive)
     (sauron-add-event 'compilation
                       3
                       (format "[%s]: %s" buffer msg)
                       (lambda () (switch-to-buffer-other-window "*compilation*"))
                       nil))
-  (add-to-list 'compilation-finish-functions #'eos/compilation-finish))
+  (add-to-list 'compilation-finish-functions #'eos/compilation-finish)
+
+  (defun finish ()
+    "Generic function for signaling something is \"done\"."
+    (interactive)
+    (sauron-add-event major-mode
+                      3
+                      (concat "Finished command in " (buffer-name))
+                      (lambda () (switch-to-buffer-other-window (buffer-name)))
+                      nil)))
 #+END_SRC
