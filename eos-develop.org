@@ -37,6 +37,25 @@ I need to hide the lighter for subword mode:
   (add-hook #'log4j-mode-hook #'read-only-mode))
 #+END_SRC
 
+I have to hack something around this to make it fixed for org->html exports
+
+#+BEGIN_SRC emacs-lisp
+(use-package fill-column-indicator
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'fci-mode)
+  :config
+  ;; fix for org -> html export
+  (defun fci-mode-override-advice (&rest args))
+  (use-package org)
+  (advice-add 'org-html-fontify-code :around
+              (lambda (fun &rest args)
+                (advice-add 'fci-mode :override #'fci-mode-override-advice)
+                (let ((result  (apply fun args)))
+                  (advice-remove 'fci-mode #'fci-mode-override-advice)
+                  result))))
+#+END_SRC
+
 ** Semantic Editing
 First, use a development version of cedet if applicable, I download the latest
 snapshot from http://www.randomsample.de/cedet-snapshots/ and extract it in
@@ -56,6 +75,42 @@ And then things to set up semantic mode
 (add-hook 'c-mode-hook #'eos/setup-semantic-mode)
 (add-hook 'java-mode-hook #'eos/setup-semantic-mode)
 #+END_SRC
+
+** Emacs' Built In Electric Modes (pair/indent/layout)
+Emacs finally has better support for automatically doing things like indentation
+and pairing parentheses. So, let's enable (some) of that
+
+First, stuff for automatically inserting pairs of characters:
+
+#+BEGIN_SRC emacs-lisp
+(electric-pair-mode 1)
+(setq electric-pair-preserve-balance t
+      electric-pair-delete-adjacent-pairs t
+      electric-pair-open-newline-between-pairs nil)
+(show-paren-mode 1)
+#+END_SRC
+
+Now, how about some auto-indentation:
+
+#+BEGIN_SRC emacs-lisp
+(electric-indent-mode 1)
+
+;; Ignore electric indentation for python and yaml
+(defun electric-indent-ignore-mode (char)
+  "Ignore electric indentation for python-mode"
+  (if (or (equal major-mode 'python-mode)
+          (equal major-mode 'yaml-mode))
+      'no-indent
+    nil))
+(add-hook 'electric-indent-functions 'electric-indent-ignore-mode)
+#+END_SRC
+
+Finally, perhaps we want some automatic layout:
+
+#+BEGIN_SRC emacs-lisp
+(electric-layout-mode 1)
+#+END_SRC
+
 
 ** Programming Mode Hooks
 
@@ -150,6 +205,8 @@ Per-project navigation
   (use-package helm-projectile
     :ensure t
     :init
+    (use-package helm-ag
+      :ensure t)
     (use-package grep) ;; required for helm-ag to work properly
     (setq projectile-completion-system 'helm)
     ;; no fuzziness for projectile-helm
@@ -212,6 +269,44 @@ Quite useful, as well as the =C-x n= and =C-x p= bindings.
   (add-hook 'org-mode-hook #'git-gutter-mode))
 #+END_SRC
 
+Ediff is fantastic for looking through diffs
+
+#+BEGIN_SRC emacs-lisp
+(use-package ediff
+  :config
+  (progn
+    (setq
+     ;; Always split nicely for wide screens
+     ediff-split-window-function 'split-window-horizontally)))
+#+END_SRC
+
+* Flycheck - Syntax Checking On The Fly
+
+Pretty minimally configured, but awesome tool for most dynamic languages.
+
+#+BEGIN_SRC emacs-lisp
+(use-package flycheck
+  :ensure t
+  :defer 5
+  :bind (("M-g M-n" . flycheck-next-error)
+         ("M-g M-p" . flycheck-previous-error)
+         ("M-g M-=" . flycheck-list-errors))
+  :init (global-flycheck-mode)
+  :diminish flycheck-mode
+  :config
+  (progn
+    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc json-jsonlint json-python-json))
+    (use-package flycheck-pos-tip
+      :ensure t
+      :init (flycheck-pos-tip-mode))
+    (use-package helm-flycheck
+      :ensure t
+      :init (define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
+    (use-package flycheck-haskell
+      :ensure t
+      :init (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))))
+#+END_SRC
+
 * Elisp
 :PROPERTIES:
 :ID:       5AA7C6BC-6DAD-45D9-ABD5-36BF0BD344F1
@@ -222,27 +317,29 @@ This contains the configuration for elisp programming
 First, turn on paredit and eldoc everywhere it's useful:
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'emacs-lisp-mode-hook #'paredit-mode)
-(add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
-(add-hook 'ielm-mode-hook #'paredit-mode)
-(add-hook 'ielm-mode-hook #'eldoc-mode)
+(use-package paredit
+  :ensure t
+  :commands paredit-mode
+  :diminish "()"
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'paredit-mode)
+  (add-hook 'ielm-mode-hook #'paredit-mode)
+  :config
+  (bind-key "M-)" #'paredit-forward-slurp-sexp paredit-mode-map)
+  (bind-key "C-(" #'paredit-forward-barf-sexp paredit-mode-map)
+  (bind-key "C-)" #'paredit-forward-slurp-sexp paredit-mode-map)
+  (bind-key ")" #'paredit-close-parenthesis paredit-mode-map)
+  (bind-key "M-\"" #'my/other-window-backwards paredit-mode-map))
 #+END_SRC
-
-And some various eldoc settings:
 
 #+BEGIN_SRC emacs-lisp
 (use-package eldoc
   :diminish eldoc-mode
+  :init
+  (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
+  (add-hook 'ielm-mode-hook #'eldoc-mode)
   :config
   (setq eldoc-idle-delay 0.3))
-#+END_SRC
-
-For paredit, make sure to diminish it
-
-#+BEGIN_SRC emacs-lisp
-(use-package paredit
-  :ensure t
-  :diminish paredit-mode)
 #+END_SRC
 
 Define some niceties for popping up an ielm buffer:
@@ -285,7 +382,6 @@ Borrowed from Steve Purcell's config. This pretty-prints the results.
 
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 #+end_src
-
 
 * Python
 :PROPERTIES:

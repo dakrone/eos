@@ -1,0 +1,58 @@
+#+TITLE: EOS: Dired Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-dired)
+#+END_SRC
+
+* Directory Editing and Navigation with Dired
+
+Dired is sweet, I require =dired-x= also so I can hit =C-x C-j=
+and go directly to a dired buffer.
+
+Setting =ls-lisp-dirs-first= means directories are always at the
+top. Always copy and delete recursively. Also enable
+=hl-line-mode= in dired, since it's easier to see the cursor then.
+
+And then some other things to setup when dired runs. =C-x C-q= to edit
+writable-dired mode is aawwweeeesssoooommee, it makes renames super easy.
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/dired-mode-hook ()
+  (setq-local truncate-lines t))
+
+(use-package dired
+  :bind ("C-x C-j" . dired-jump)
+  :config
+  (use-package dired-x
+    :init (setq-default dired-omit-files-p t)
+    :config
+    (add-to-list 'dired-omit-extensions ".DS_Store"))
+  (customize-set-variable 'diredp-hide-details-initially-flag nil)
+  (use-package dired+
+    :ensure t)
+  (use-package dired-aux
+    :init
+    (use-package dired-async
+      :ensure async))
+  (put 'dired-find-alternate-file 'disabled nil)
+  (setq ls-lisp-dirs-first t
+        dired-recursive-copies 'always
+        dired-recursive-deletes 'always
+        dired-dwim-target t
+        ;; -F marks links with @
+        dired-ls-F-marks-symlinks t
+        delete-by-moving-to-trash t
+        ;; Auto refresh dired
+        global-auto-revert-non-file-buffers t
+        wdired-allow-to-change-permissions t)
+  (define-key dired-mode-map (kbd "RET") #'dired-find-alternate-file)
+  (define-key dired-mode-map (kbd "C-M-u") #'dired-up-directory)
+  (define-key dired-mode-map (kbd "M-o") #'my/dired-open)
+  (define-key dired-mode-map (kbd "C-x C-q") #'wdired-change-to-wdired-mode)
+  (bind-key "l" #'dired-up-directory dired-mode-map)
+  (bind-key "M-!" #'async-shell-command dired-mode-map)
+  (add-hook 'dired-mode-hook #'hl-line-mode)
+  (add-hook 'dired-mode-hook #'eos/dired-mode-hook))
+#+END_SRC

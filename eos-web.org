@@ -28,11 +28,7 @@ middle.
 #+BEGIN_SRC emacs-lisp
 (use-package eww
   :defer t
-  :config
-  (use-package s
-    :ensure t)
-  (define-key eww-mode-map "o" 'eww)
-  (define-key eww-mode-map "O" 'eww-browse-with-external-browser)
+  :init
   (setq browse-url-browser-function
         '((".*google.*maps.*" . browse-url-generic)
           ;; Github goes to firefox, but not gist
@@ -40,8 +36,14 @@ middle.
           ("." . eww-browse-url)))
   (setq shr-external-browser 'browse-url-generic)
   (setq browse-url-generic-program (executable-find "firefox"))
+  :config
+  (use-package s
+    :ensure t)
+  (define-key eww-mode-map "o" 'eww)
+  (define-key eww-mode-map "O" 'eww-browse-with-external-browser)
 
   (use-package eww-lnum
+    :ensure t
     :config
     (bind-key "f" #'eww-lnum-follow eww-mode-map)
     (bind-key "F" #'eww-lnum-universal eww-mode-map)))

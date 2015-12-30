@@ -164,6 +164,7 @@ completion, prompt and term settings:
 
   ;; See: https://github.com/kaihaosw/eshell-prompt-extras
   (use-package eshell-prompt-extras
+    :ensure t
     :init
     (progn
       (setq eshell-highlight-prompt nil

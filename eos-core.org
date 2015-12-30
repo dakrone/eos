@@ -545,13 +545,6 @@ Emacs should automatically save my state, and does so every five minutes.
           (run-with-idle-timer 300 t #'eos/desktop-save)))
 #+end_src
 
-Moving by visual line is far superior when dealing with large bodies of text
-that have unbroken lines. So let's enable it everywhere.
-
-#+BEGIN_SRC emacs-lisp
-(global-visual-line-mode 1)
-#+END_SRC
-
 By default, my machine drops me in to a =*scratch*= buffer. Originally designed
 to be an lisp playground that you could dive right in to on start up, it's sort
 of eclipsed that for me in to a general purpose buffer, where I will put things
@@ -941,6 +934,41 @@ Also, add a thing for yanking the entire symbol into the query while searching:
   (isearch-yank-internal (lambda () (forward-symbol 1) (point))))
 
 (define-key isearch-mode-map (kbd "C-M-w") #'isearch-yank-symbol)
+#+END_SRC
+
+Smooth scrolling means when you hit =C-n= to go to the next line at the bottom
+of the page, instead of doing a page-down, it shifts down by a single line. The
+margin means that much space is kept between the cursor and the bottom of the
+buffer.
+
+#+BEGIN_SRC emacs-lisp
+(use-package smooth-scrolling
+  :ensure t
+  :defer t
+  :config
+  (setq smooth-scroll-margin 3
+        scroll-margin 3
+        scroll-conservatively 101
+        scroll-preserve-screen-position t
+        auto-window-vscroll nil))
+#+END_SRC
+
+Automagically resizes the windows to be the golden ratio (1.618), nice when
+using a big font size and I need more eshell space
+
+#+BEGIN_SRC emacs-lisp
+(use-package golden-ratio
+  :ensure t
+  :diminish golden-ratio-mode
+  :defer t
+  :config
+  (defun eos/helm-alive-p ()
+    (if (boundp 'helm-alive-p)
+        (symbol-value 'helm-alive-p)))
+  (add-to-list 'golden-ratio-exclude-modes #'messages-buffer-mode)
+  (add-to-list 'golden-ratio-exclude-modes #'fundamental-mode)
+  ;; Inhibit helm
+  (add-to-list 'golden-ratio-inhibit-functions #'eos/helm-alive-p))
 #+END_SRC
 
 * GPG and gpg-agent (as well as SSH agent)
@@ -1494,6 +1522,7 @@ Eyebrowse is a great package for workspaces in Emacs.
 
 #+BEGIN_SRC emacs-lisp
 (use-package eyebrowse
+  :ensure t
   :init
   (progn
     (defun eos/create-eyebrowse-setup ()
