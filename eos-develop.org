@@ -144,7 +144,7 @@ just enable it everywhere.
 (use-package company
   :ensure t
   :diminish company-mode
-  :bind ("C-i" . company-complete)
+  :bind ("C-." . company-complete)
   :init
   (add-hook 'after-init-hook #'global-company-mode)
   (use-package company-quickhelp

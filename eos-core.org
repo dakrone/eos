@@ -1221,6 +1221,57 @@ Show where the buffer ends on the right-hand fringe
 (setq-default indicate-buffer-boundaries 'right)
 #+END_SRC
 
+* Spell check and flyspell settings
+:PROPERTIES:
+:ID:       0B80EB46-83A6-484B-90E5-32F71985DC20
+:CUSTOM_ID: 1cb51ce4-c282-41b1-9457-524533f5d14e
+:END:
+I use Hunspell and Aspell checking spelling, ignoring words under 3 characters
+and running very quickly. My personal word dictionary is at =~/.flydict=.
+
+First, set up some Hunspell things if applicable, falling back to Aspell if
+Hunspell isn't available:
+
+#+BEGIN_SRC emacs-lisp
+;; Standard location of personal dictionary
+(setq ispell-personal-dictionary "~/.flydict")
+
+;; Mostly taken from
+;; http://blog.binchen.org/posts/what-s-the-best-spell-check-set-up-in-emacs.html
+(when (executable-find "aspell")
+  (setq ispell-program-name (executable-find "aspell"))
+  (setq ispell-extra-args
+        (list "--sug-mode=fast" ;; ultra|fast|normal|bad-spellers
+              "--lang=en_US"
+              "--ignore=4")))
+
+;; hunspell
+(when (executable-find "hunspell")
+  (setq ispell-program-name (executable-find "hunspell"))
+  (setq ispell-extra-args '("-d en_US")))
+
+(add-to-list 'ispell-skip-region-alist '("[^\000-\377]+"))
+(add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
+(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_SRC" . "#\\+END_SRC"))
+(add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
+#+END_SRC
+
+In most non-programming modes, =M-.= can be used to spellcheck the word
+(otherwise it would jump to the definition)
+
+#+BEGIN_SRC emacs-lisp
+(use-package flyspell
+  :ensure t
+  :defer t
+  :diminish ""
+  :init (add-hook 'prog-mode-hook #'flyspell-prog-mode)
+  :config
+  (use-package helm-flyspell
+    :ensure t
+    :init
+    (define-key flyspell-mode-map (kbd "M-S") #'helm-flyspell-correct)))
+#+END_SRC
+
 * Helm, an Incremental Completion Framework
 There are many helm things. I use it a lot.
 
