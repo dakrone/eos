@@ -1003,6 +1003,59 @@ re-indenting and un-tabification is done."
 (global-set-key (kbd "C-c n") #'cleanup-buffer)
 #+END_SRC
 
+Read-only viewing of files is quite useful. Keybindings for paging through stuff
+in a less/vim manner.
+
+Make sure you install =mupdf= for the best quality PDFs on Linux and OSX. (=brew
+install mupdf= on osx)
+
+#+BEGIN_SRC sh sh/install-mupdf.sh
+deb-install mupdf
+rpm-install mupdf
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package view
+  :defer 15
+  :bind
+  (("C-M-n" . View-scroll-half-page-forward)
+   ("C-M-p" . View-scroll-half-page-backward))
+  :config
+  (progn
+    (defun View-goto-line-last (&optional line)
+      "goto last line"
+      (interactive "P")
+      (goto-line (line-number-at-pos (point-max))))
+
+    ;; less like
+    (define-key view-mode-map (kbd "N") 'View-search-last-regexp-backward)
+    (define-key view-mode-map (kbd "?") 'View-search-regexp-backward?)
+    (define-key view-mode-map (kbd "g") 'View-goto-line)
+    (define-key view-mode-map (kbd "G") 'View-goto-line-last)
+    ;; vi/w3m like
+    (define-key view-mode-map (kbd "h") 'backward-char)
+    (define-key view-mode-map (kbd "j") 'next-line)
+    (define-key view-mode-map (kbd "k") 'previous-line)
+    (define-key view-mode-map (kbd "l") 'forward-char)))
+
+(use-package doc-view
+  :config
+  (define-key doc-view-mode-map (kbd "j")
+    #'doc-view-next-line-or-next-page)
+  (define-key doc-view-mode-map (kbd "k")
+    #'doc-view-previous-line-or-previous-page)
+  ;; use 'q' to kill the buffer, not just hide it
+  (define-key doc-view-mode-map (kbd "q")
+    #'kill-this-buffer))
+#+END_SRC
+
+I also use the 'pdf-tools' package, which is *really* nice for viewing PDF files
+
+#+BEGIN_SRC emacs-lisp
+(use-package pdf-tools
+  :ensure t)
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 
 I use =gpg-agent= [fn:30:
