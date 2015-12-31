@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# Script that looks in a number of different of different places for
+# `emacsclient`, and uses it if found. Otherwise it falls back to `emacsclient`
+# in the path.
+
+TERM=xterm-256color
+EC=emacsclient
+
+if [ -s /usr/local/bin/emacsclient ]; then
+    EC=/usr/local/bin/emacsclient
+elif [ -s $EMACS_HOME/emacsclient ]; then
+    EC=$EMACS_HOME/emacsclient
+elif [ -s /usr/local/Cellar/emacs/HEAD/bin/emacsclient ]; then
+    EC=/usr/local/Cellar/emacs/HEAD/bin/emacsclient
+elif [ -s /usr/bin/emacsclient ]; then
+    EC=/bin/emacsclient
+else
+    echo "Unable to find emacsclient!"
+    exit 1
+fi
+
+$EC -t "$@"
