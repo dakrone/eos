@@ -13,10 +13,6 @@
   :ensure t
   :bind ("C-x w" . elfeed)
   :init
-  ;; Entries older than 4 weeks are marked as read automatically
-  (add-hook 'elfeed-new-entry-hook
-            (elfeed-make-tagger :before "4 weeks ago"
-                                :remove 'unread))
   ;; URLs in no particular order
   (setq elfeed-urls
         '(;; Blogs

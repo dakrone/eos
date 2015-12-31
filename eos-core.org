@@ -1489,6 +1489,14 @@ Now we can do our Helm things
                                     helm-source-bookmarks
                                     helm-source-buffer-not-found))
 
+  ;; Files that helm should know how to open
+  (setq helm-external-programs-associations
+        '(("avi" . "vlc")
+          ("part" . "vlc")
+          ("mkv" . "vlc")
+          ("webm" . "vlc")
+          ("mp4" . "vlc")))
+
   ;; List of times to show in helm-world-time
   (setq display-time-world-list '(("PST8PDT" "Los Altos")
                                   ("America/Denver" "Denver")
