@@ -92,6 +92,14 @@ First, a function to be called when eshell-mode is entered
   (hl-line-mode -1))
 #+END_SRC
 
+Add a nice helper to sudo-edit a file
+
+#+BEGIN_SRC emacs-lisp
+(defun sudoec (file)
+  (interactive)
+  (find-file (concat "/sudo::" (expand-file-name file))))
+#+END_SRC
+
 Also, after eshell has loaded its options, let's load some other niceties like
 completion, prompt and term settings:
 
