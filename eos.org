@@ -43,6 +43,7 @@ ln -sfv $PWD/out/bashrc ~/.bashrc
 rm -fv $PWD/out/bashrc.d/bashrc.d
 ln -sfv $PWD/eos.el ~/.emacs.d/init.el
 ln -sfv $PWD ~/.emacs.d/eos
+cp -vf bin/* ~/bin
 #+END_SRC
 
 * The EOS Module Set
