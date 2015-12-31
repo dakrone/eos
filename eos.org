@@ -38,7 +38,7 @@ Warning! This will overwrite your current configuration!
 
 #+BEGIN_SRC sh :tangle install.sh :eval no
 ln -sfv $PWD/out/bashrc.d ~/.bashrc.d
-ln -sfv $PWD/out/bashrc ~/.profile
+ln -sfv $PWD/out/bashrc ~/.bashrc
 # An extra symlink gets created, I have no idea why, but remove it
 rm -fv $PWD/out/bashrc.d/bashrc.d
 ln -sfv $PWD/eos.el ~/.emacs.d/init.el

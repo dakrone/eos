@@ -1084,8 +1084,8 @@ rpm-install keychain
 
 And make sure bash uses it
 
-#+BEGIN_SRC sh :tangle out/bashrc.d/eos-core.sh
-eval $(keychain --eval --agents ssh,gpg -Q id_rsa)
+#+BEGIN_SRC sh :tangle out/bashrc.d/keychain.sh
+eval $(keychain --noask --eval --agents ssh,gpg -Q id_rsa)
 #+END_SRC
 
 Let's make sure that all the GPG things we need are installed, and GPG-Agent is configured to enable

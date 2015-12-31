@@ -33,15 +33,17 @@ pager:
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
-(setq comint-scroll-to-bottom-on-input t    ; always insert at the bottom
-      comint-scroll-to-bottom-on-output nil ; always add output at the bottom
-      comint-scroll-show-maximum-output t   ; scroll to show max possible output
-      comint-input-ignoredups t             ; no duplicates in command history
-      comint-completion-addsuffix t         ; insert space/slash after file completion
-      comint-prompt-read-only nil           ; if this is t, it breaks shell-command
-      comint-get-old-input (lambda () "")   ; what to run when i press enter on a
-                                            ; line above the current prompt
-      )
+(setq comint-scroll-to-bottom-on-input t ;; always insert at the bottom
+      ;; always add output at the bottom
+      comint-scroll-to-bottom-on-output nil
+      ;; scroll to show max possible output
+      comint-scroll-show-maximum-output t
+      ;; no duplicates in command history
+      comint-input-ignoredups t
+      ;; insert space/slash after file completion
+      comint-completion-addsuffix t
+      ;; if this is t, it breaks shell-command
+      comint-prompt-read-only nil)
 
 (defun eos/shell-kill-buffer-sentinel (process event)
   (when (memq (process-status process) '(exit signal))
@@ -365,4 +367,358 @@ function fix-agent() {
     export SSH_AUTH_SOCK=`ls -t1 $(find /tmp/ -uid $UID -path \\*ssh\\* -type s 2> /dev/null) | head -1`
     enable -a ls
 }
+#+END_SRC
+
+* Nested Tmux for SSH sessions
+
+I couldn't live without [[https://tmux.github.io/][tmux]], so much of my work is done on remote machines
+where I need to be able to disconnect running work and re-attach later.
+
+To go even more insane, I have an interesting setup with I nest tmux inside of
+itself to act like terminal tabs, because, well, it's better than terminal tabs.
+In order to do this, I do some fancy work with multiple configuration files, so
+it works out like this:
+
+On Linux, the =tmux= command reads =~/.tmux.conf=. On OSX, the =tmux= command is
+aliased to read =~/.tmux.osx.conf=, which, after setting a couple of
+OSX-specific settings, sources =~/.tmux.conf=.
+
+When I am running a
+
+So, starting with the most specific
+
+** .tmux.osx.conf
+:PROPERTIES:
+:CUSTOM_ID: 090fb087-4356-4605-8e0a-f3a97f100e74
+:ID:       5cd2cdf8-57c3-435a-97ae-615347ec5e4a
+:END:
+
+#+BEGIN_SRC conf :tangle out/tmux.osx.conf
+# OSX tmux config that uses the wrapper from
+# https://github.com/ChrisJohnsen/tmux-MacOSX-pasteboard
+
+set-option -g default-command "reattach-to-user-namespace -l zsh"
+
+source-file ~/.tmux.conf
+
+bind-key > run-shell "tmux saveb -| pbcopy"
+#+END_SRC
+
+And make sure it's installed
+
+#+BEGIN_SRC sh :tangle sh/link-osx-tmux.sh
+ln -sfv $PWD/out/tmux.osx.conf ~/.tmux.osx.conf
+#+END_SRC
+
+** .tmux.conf
+:PROPERTIES:
+:CUSTOM_ID: e0f382e6-c54a-41b9-bbb2-729d20ab3072
+:ID:       a8538cd5-a960-4e08-a689-c1f5101cbf80
+:END:
+I set the =bind-key= to =C-z= (control-z) here and not in =~/.tmux.shared.conf=
+because I use a different bind-key for the master tmux, so I only want it in
+certain cases.
+
+#+BEGIN_SRC conf :tangle out/tmux.conf
+source-file ~/.tmux.shared.conf
+
+# Set the prefix to ^z
+#unbind-key C-b
+set-option -g prefix C-z
+bind-key C-z send-prefix
+
+# keybindings to make resizing easier
+bind -r C-h resize-pane -L
+bind -r C-j resize-pane -D
+bind -r C-k resize-pane -U
+bind -r C-l resize-pane -R
+
+# make it so that I can hold down prefix key for these
+bind-key C-d detach
+bind-key C-n next-window
+bind-key C-p previous-window
+
+# number windows from 0
+set -g base-index 0
+#+END_SRC
+
+** .tmux.master.conf
+:PROPERTIES:
+:CUSTOM_ID: 3114f9a9-f258-4174-b356-cd3a852ca57d
+:ID:       fe8e9776-5914-49b9-8eeb-44ac7bd0d275
+:END:
+First, a nice alias to help us. I start it on a separate socket so it doesn't
+really interfere with anything.
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/tmux.sh
+# start a master tmux
+alias tmaster='tmux -2 -u -S /tmp/mastermux -f .tmux.master.conf'
+#+END_SRC
+
+And then, the master-specific configuration. This config only gets run if tmux
+is invoked using the =tmaster= alias.
+
+The =bind-key= in this case gets changed to =M-C-z= (control-alt-z) instead of
+my regular =C-z= bind-key, which allows nesting to work.
+
+#+BEGIN_SRC conf :tangle out/tmux.master.conf
+# master client conf
+
+source-file ~/.tmux.shared.conf
+
+# change bind key to M-C-z
+set-option -g prefix M-C-z
+
+# prefix again goes to last window
+bind-key M-C-z last-window
+
+# reload
+bind r source-file ~/.tmux.master
+
+# keybindings to make resizing easier
+bind -r M-C-h resize-pane -L
+bind -r M-C-j resize-pane -D
+bind -r M-C-k resize-pane -U
+bind -r M-C-l resize-pane -R
+
+# make it so that I can hold down prefix key for these
+bind-key M-C-d detach
+bind-key M-C-n next-window
+bind-key M-C-p previous-window
+
+# window navigation
+#bind-key -n M-C-h prev
+#bind-key -n M-C-l next
+bind-key -n M-C-n select-pane -t :.-
+bind-key -n M-C-p select-pane -t :.+
+
+# number windows from 1
+set -g base-index 1
+
+# Alt-# window nav
+bind-key -n M-1 select-window -t 1
+bind-key -n M-2 select-window -t 2
+bind-key -n M-3 select-window -t 3
+bind-key -n M-4 select-window -t 4
+bind-key -n M-5 select-window -t 5
+bind-key -n M-6 select-window -t 6
+bind-key -n M-7 select-window -t 7
+bind-key -n M-8 select-window -t 8
+
+bind-key -n s-1 select-window -t 1
+bind-key -n s-2 select-window -t 2
+bind-key -n s-3 select-window -t 3
+bind-key -n s-4 select-window -t 4
+bind-key -n s-5 select-window -t 5
+bind-key -n s-6 select-window -t 6
+bind-key -n s-7 select-window -t 7
+bind-key -n s-8 select-window -t 8
+
+## Custom status bar, via https://github.com/myusuf3/dotfiles
+## Powerline symbols: ⮂ ⮃ ⮀ ⮁ ⭤
+## If you do not have a patched font (see: https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher)
+## comment out the lines below to get a "regular" statusbar without special symbols
+set-option -g status-bg colour234
+set-option -g message-fg colour16
+set-option -g message-bg colour221
+set-option -g status-left-length 40
+set-option -g status-right-length 40
+set-option -g status-interval 5
+set-option -g pane-border-fg colour245
+set-option -g pane-active-border-fg colour39
+set-option -g status-justify left
+
+set-option -g status-left '#[fg=colour16,bg=colour254,bold] #S #[fg=colour254,bg=colour238,nobold]#[fg=colour15,bg=colour238,bold] #(up) #[fg=colour238,bg=colour234,nobold]'
+
+set-option -g status-right '#[fg=colour245]%R %d %b #[fg=colour254,bg=colour234,nobold]#[fg=colour16,bg=colour254,bold] #h '
+
+set-option -g window-status-format "#[fg=white,bg=colour234] #I #W "
+set-option -g window-status-current-format "#[fg=colour234,bg=colour39]#[fg=colour16,bg=colour39,noreverse,bold] #I #W #[fg=colour39,bg=colour234,nobold]"
+
+set-option -g default-terminal "screen-256color"
+#+END_SRC
+
+** .tmux.shared.conf
+:PROPERTIES:
+:CUSTOM_ID: 67e23454-a3a0-4f49-ac63-e15f5d22056e
+:ID:       6e1a66c6-16ac-4eef-a1eb-4c07c0d37ae9
+:END:
+Finally, all the tmux configuration that gets shared between all tmux instances,
+regardless or where or how they're invoked.
+
+TODO: document all of this.
+
+#+BEGIN_SRC conf :tangle out/tmux.shared.conf
+# Emacs mode keys
+setw -g mode-keys emacs
+
+# reload
+bind r source-file ~/.tmux.conf \; display-message "Config reloaded..."
+bind R source-file ~/.tmux.conf \; display-message "Config reloaded..."
+
+# make it easy to grab a pane and put it into the current window
+bind-key @ command-prompt -p "create pane from:"  "join-pane -s ':%%'"
+
+# and to break the current pane into a new window thing
+bind-key B break-pane
+
+# easily toggle synchronization (mnemonic: e is for echo)
+bind e setw synchronize-panes on
+bind E setw synchronize-panes off
+
+# " windowlist -b
+unbind-key '"'
+bind-key '"' choose-window
+
+# don't wait after escape
+set -s escape-time 0
+
+# UTF-8 everywhere
+set-option -g status-utf8 on
+
+# monitor activity
+setw -g monitor-activity on
+set -g visual-activity off
+bind m setw monitor-activity off
+bind M setw monitor-activity on
+
+############
+
+# screen ^C c
+unbind-key ^C
+bind-key ^C new-window
+unbind-key C-M-c
+bind-key C-M-c new-window
+unbind-key c
+bind-key c new-window
+
+# detach ^D d
+unbind-key ^D
+bind-key ^D detach
+
+# displays *
+unbind-key *
+bind-key * list-clients
+
+# next ^@ ^N sp n
+unbind-key ^@
+bind-key ^@ next-window
+unbind-key ^N
+bind-key ^N next-window
+unbind-key " "
+bind-key " " next-window
+unbind-key n
+bind-key n next-window
+
+# title A
+unbind-key A
+bind-key A command-prompt "rename-window %%"
+
+# prev ^H ^P p ^?
+unbind-key ^H
+bind-key ^H previous-window
+unbind-key ^P
+bind-key ^P previous-window
+unbind-key p
+bind-key p previous-window
+# unbind-key BSpace
+# bind-key BSpace previous-window
+
+# windows ^W w
+unbind-key ^W
+bind-key ^W list-windows
+unbind-key w
+bind-key w list-windows
+
+# redisplay ^L l
+unbind-key ^L
+bind-key ^L refresh-client
+unbind-key l
+bind-key l refresh-client
+
+# " windowlist -b
+unbind-key '"'
+bind-key '"' choose-window
+
+# Copy mode
+bind-key ^[ copy-mode
+bind-key Escape copy-mode
+
+# Paste mode
+bind-key ] choose-buffer
+bind-key ^] choose-buffer
+# bind-key ] paste-buffer
+# bind-key ^] paste-buffer
+set-window-option -g mode-keys emacs
+# Make mouse useful in copy mode
+#set-window-option -g mode-mouse on
+
+# drew paste
+bind-key P run-shell 'tmux saveb -| curl -s -XPOST -H "Content-type: text/plain" --data-binary @- http://p.draines.com/'
+# x clipboard
+bind-key > run-shell "tmux saveb -| xclip -selection clipboard -i"
+
+# More straight forward key bindings for splitting
+#unbind-key %
+bind-key | split-window -h
+bind-key h split-window -h
+#unbind-key '"'
+bind-key - split-window -v
+bind-key v split-window -v
+
+# History
+set-option -g history-limit 15000
+
+# Notifying if other windows has activities
+set-window-option -g monitor-activity off
+set-option -g visual-activity off
+
+# Highlighting the active window in status bar
+#set-window-option -g window-status-current-bg cyan
+set-window-option -g window-status-current-fg cyan
+
+# Clock
+set-window-option -g clock-mode-colour green
+set-window-option -g clock-mode-style 24
+
+# don't clobber ssh agent
+set-option -g update-environment "DISPLAY WINDOWID GPG_AGENT_INFO"
+
+# term
+set-option -g default-terminal "screen-256color"
+
+## Custom status bar, via https://github.com/myusuf3/dotfiles
+## Powerline symbols: ⮂ ⮃ ⮀ ⮁ ⭤
+## If you do not have a patched font (see: https://github.com/Lokaltog/vim-powerline/tree/develop/fontpatcher)
+## comment out the lines below to get a "regular" statusbar without special symbols
+set-option -g status-bg colour234
+set-option -g message-fg colour16
+set-option -g message-bg colour221
+set-option -g status-left-length 40
+set-option -g status-right-length 40
+set-option -g status-interval 5
+set-option -g pane-border-fg colour245
+set-option -g pane-active-border-fg colour39
+set-option -g status-justify left
+
+set-option -g status-left '#[fg=colour16,bg=colour254,bold] #S #[fg=colour254,bg=colour238,nobold]#[fg=colour15,bg=colour238,bold] #(up) #[fg=colour238,bg=colour234,nobold]'
+
+set-option -g status-right '#[fg=colour245]%R %d %b #[fg=colour254,bg=colour234,nobold]#[fg=colour16,bg=colour254,bold] #h '
+
+set-option -g window-status-format "#[fg=white,bg=colour234] #I #W "
+set-option -g window-status-current-format "#[fg=colour234,bg=colour39]#[fg=colour16,bg=colour39,noreverse,bold] #I #W #[fg=colour39,bg=colour234,nobold]"
+
+set-option -g default-terminal "screen-256color"
+
+#+END_SRC
+
+** Installing generated TMUX configurations
+
+And make sure the generated tmux files are installed
+
+#+BEGIN_SRC sh :tangle sh/link-tmux.sh
+ln -sfv $PWD/out/tmux.osx.conf ~/.tmux.osx.conf
+ln -sfv $PWD/out/tmux.master.conf ~/.tmux.master.conf
+ln -sfv $PWD/out/tmux.shared.conf ~/.tmux.shared.conf
+ln -sfv $PWD/out/tmux.conf ~/.tmux.conf
 #+END_SRC
