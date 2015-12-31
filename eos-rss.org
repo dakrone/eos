@@ -5,3 +5,110 @@
 #+BEGIN_SRC emacs-lisp
 (provide 'eos-rss)
 #+END_SRC
+
+* RSS feed reading with Elfeed
+
+#+BEGIN_SRC emacs-lisp
+(use-package elfeed
+  :ensure t
+  :bind ("C-x w" . elfeed)
+  :init
+  ;; Entries older than 4 weeks are marked as read automatically
+  (add-hook 'elfeed-new-entry-hook
+            (elfeed-make-tagger :before "4 weeks ago"
+                                :remove 'unread))
+  ;; URLs in no particular order
+  (setq elfeed-urls
+        '(;; Blogs
+          ("http://harryrschwartz.com/atom.xml" blog)
+          ("http://zinascii.com/writing-feed.xml" blog)
+          ("http://githubengineering.com/atom.xml" blog)
+          ("http://blog.smola.org/rss" blog)
+          ("http://briancarper.net/feed" blog)
+          ("https://kotka.de/blog/index.rss" blog)
+          ("http://fiftyfootshadows.net/feed/" blog)
+          ("http://blag.xkcd.com/feed/" blog)
+          ("http://youdisappear.net/files/page1.xml" blog music)
+          ("http://normanmaurer.me/blog.atom" blog)
+          ("http://blog.mikemccandless.com/feeds/posts/default" elasticsearch blog)
+          ("http://lethain.com/feeds/all/" blog)
+          ("http://whatthefuck.computer/rss.xml" blog)
+          ("http://feeds.feedburner.com/jamesshelley" blog)
+          ("http://www.marco.org/rss" blog)
+          ("http://gnuvince.wordpress.com/feed/" blog)
+          ("http://elliotth.blogspot.com/feeds/posts/default" blog)
+          ("http://feeds.feedburner.com/Hyperbole-and-a-half" blog)
+          ("http://lcamtuf.blogspot.com/feeds/posts/default" blog)
+          ("http://blog.isabel-drost.de/index.php/feed" blog)
+          ("http://feeds2.feedburner.com/CodersTalk" blog)
+          ("http://feeds.feedburner.com/codinghorror/" blog)
+          ("http://lambda-the-ultimate.org/rss.xml" blog)
+          ("http://danluu.com/atom.xml" blog)
+          ("http://wingolog.org/feed/atom" blog)
+          ("http://ferd.ca/feed.rss" blog)
+          ("http://blog.fsck.com/atom.xml" blog)
+          ("http://jvns.ca/atom.xml" blog)
+
+          ;; Theology
+          ("http://www.speculativefaith.com/feed/" christianity)
+          ("http://feeds.feedburner.com/christiangeekcentral?format=xml" christianity)
+          ("http://feeds.feedburner.com/canon-fodder" christianity)
+          ("http://feeds.feedburner.com/tgcblog?format=xml" christianity)
+          ("http://www.rzim.org/let-my-people-think-broadcasts/feed/" christianity)
+          ("http://adam4d.com/feed/" christianity)
+
+          ;; Github feeds
+          ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
+          ("https://github.com/elasticsearch/elasticsearch/commits/master.atom" github elasticsearch)
+          ("https://github.com/aphyr/jepsen/commits/master.atom" github)
+
+          ;; Linux
+          ("http://www.phoronix.com/rss.php" linux)
+          ("http://fedoramagazine.org/feed/" linux)
+          ("http://feeds.feedburner.com/mylinuxrig" linux)
+
+          ;; Java
+          ("http://psy-lob-saw.blogspot.com/feeds/posts/default" java)
+          ("http://vanillajava.blogspot.de/feeds/posts/default" blog java)
+
+          ;; Clojure
+          ("http://feeds.feedburner.com/ClojureAndMe" clojure)
+          ("http://clojure.com/blog/atom.xml" clojure)
+          ("http://feeds.feedburner.com/disclojure" clojure)
+
+          ;; Emacs
+          ("http://oremacs.com/atom.xml" emacs)
+          ("http://www.lunaryorn.com/feed.atom" emacs)
+          ("http://emacsnyc.org/atom.xml" emacs)
+          ("http://emacsredux.com/atom.xml" emacs)
+          ("http://www.masteringemacs.org/feed/" emacs)
+          ("http://planet.emacsen.org/atom.xml" emacs)
+          ("http://endlessparentheses.com/atom.xml" emacs)
+          ("http://s-expressions.com/feed/" emacs)
+
+          ;; News
+          ("http://feeds.arstechnica.com/arstechnica/index/" news)
+          ("http://www.osnews.com/files/recent.xml" news)
+          ("http://rss.slashdot.org/Slashdot/slashdot" news)
+          ("http://feeds2.feedburner.com/boingboing/iBag" news)
+          ("http://thefeature.net/rss" news)
+
+          ;; Flickr
+          ("http://api.flickr.com/services/feeds/photos_public.gne?id=76499814@N00&format=atom" flickr)
+          ("http://api.flickr.com/services/feeds/photos_public.gne?id=22397765@N00&format=atom" flickr)
+          ("http://api.flickr.com/services/feeds/photos_public.gne?id=86882399@N00&format=atom" flickr)
+          ("http://api.flickr.com/services/feeds/photos_public.gne?id=47372492@N00&format=atom" flickr)
+          ("http://api.flickr.com/services/feeds/photos_public.gne?id=71413926@N00&format=atom" flickr)
+          ("http://api.flickr.com/services/feeds/photos_public.gne?id=40347643@N00&format=atom" flickr)
+          ("http://api.flickr.com/services/feeds/photos_public.gne?id=43319799@N00&format=atom" flickr)
+
+          ;; Other
+          ("http://gtofficial.tumblr.com/rss" gaming)
+          ("http://speeddemosarchive.com/sda100.atom" gaming)
+          ("http://www.elastic.co/blog/feed/" elasticsearch)
+          "http://git-annex.branchable.com/tips/index.atom"
+          "http://git-annex.branchable.com/devblog/index.atom"
+          "https://github.com/blog.atom"
+          "http://blog.chromium.org/feeds/posts/default"
+          )))
+#+END_SRC
