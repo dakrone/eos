@@ -1074,11 +1074,19 @@ as an ssh agent.
        (match-string 1)))))
 #+end_src
 
-Getting ssh and friends to use =gpg-agent= is as simple as pointing them to it:
+Before we start, let's install a nice little tool for setting up ssh-agent and
+gpg-agent, =keychain=
 
-#+begin_src sh :tangle out/bashrc.d/eos-core.sh
-export SSH_AUTH_SOCK="$HOME/.gnupg/S.gpg-agent.ssh"
-#+end_src
+#+BEGIN_SRC sh :tangle sh/core-eos.sh
+deb-install keychain
+rpm-install keychain
+#+END_SRC
+
+And make sure bash uses it
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/eos-core.sh
+eval $(keychain --eval --agents ssh,gpg -Q id_rsa)
+#+END_SRC
 
 Let's make sure that all the GPG things we need are installed, and GPG-Agent is configured to enable
 the SSH agent support.
