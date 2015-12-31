@@ -582,11 +582,8 @@ restores it on Emacs startup.
           (run-with-idle-timer 300 t #'save-persistent-scratch)))
 #+END_SRC
 
-I restart emacs a lot, especially on my n900, and it would be nice to have the
-history of things like =M-x= saved across those sessions. =savehist= mode gives
-us that[fn:20:
-https://github.com/qdot/conf_emacs/blob/master/emacs_conf.org#global-minor-modes
-http://www.emacswiki.org/emacs/SaveHist].
+I restart emacs a lot, and it is nice to have the history of things like =M-x=
+saved across those sessions. =savehist= mode gives us that.
 
 #+begin_src emacs-lisp
 (require 'savehist)

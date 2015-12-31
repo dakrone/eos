@@ -48,3 +48,12 @@ middle.
     (bind-key "f" #'eww-lnum-follow eww-mode-map)
     (bind-key "F" #'eww-lnum-universal eww-mode-map)))
 #+END_SRC
+
+Let's also add some code so we get vimperator/eww-lnum style link hints
+everywhere
+
+#+BEGIN_SRC emacs-lisp
+(use-package link-hint
+  :ensure t
+  :bind ("C-c f" . link-hint-open-link))
+#+END_SRC

@@ -55,19 +55,19 @@ Ideally, each module except for the "Core" module is optional and can be skipped
 if not desired.
 
 - [[./eos-core.org][Core Computing System]]
-- Notification System
-- Development (programming) System
-  - Java
-  - Clojure
-- Org-mode and agenda
-- Dired
-- Web browsing
-- Shell
-- Mail (Email)
-- IRC
-- RSS
-- Twitter
-- Fun and Leisure
+- [[./eos-notify.org][Notification System]]
+- [[./eos-develop.org][Development (programming) System]]
+  - [[./eos-java.org][Java]]
+  - [[./eos-clojure.org][Clojure]]
+- [[./eos-org.org][Org-mode and agenda]]
+- [[./eos-dired.org][Dired]]
+- [[./eos-web.org][Web browsing]]
+- [[./eos-shell.org][Shell]]
+- [[./eos-mail.org][Mail (Email)]]
+- [[./eos-irc.org][IRC]]
+- [[./eos-rss.org][RSS]]
+- [[./eos-twitter.org][Twitter]]
+- [[./eos-leisure.org][Fun and Leisure]]
 
 * =init.el=
 
