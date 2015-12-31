@@ -1,0 +1,3 @@
+#!/bin/sh
+
+fgrep -i --color=auto $@
