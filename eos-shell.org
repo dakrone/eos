@@ -281,3 +281,88 @@ And we need something to install them
 mkdir -p ~/.emacs.d/eshell
 ln -sfv $PWD/out/eshell-alias ~/.emacs.d/eshell/alias
 #+END_SRC
+
+* Bash for Necessary non-Emacs things
+:PROPERTIES:
+:ID:       41c5b06e-0a00-4df4-a529-b729f6477f9c
+:END:
+
+So at one point I was a very heavy ZSH user, however, my workflow has since
+moved almost entirely into Emacs, therefore, I don't have need of many of the
+powerful features that ZSH uses, instead I've opted for bash so that things are
+faster and a bit more standard.
+
+Change to a really basic prompt, no color or anything, I don't really need it
+(spend most of the time in eshell)
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/prompt.sh
+PS1='[\u@\h \W]\$ '
+#+END_SRC
+
+There are some aliases I want everywhere however
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/aliases.sh
+# colorful ls for whichever platform
+if ls -F --color=auto >&/dev/null; then
+    alias ls="ls --color=auto -F"
+else
+    alias ls="ls -GF"
+fi
+# various ls helpers
+alias l.='ls -d .*'
+alias ll='ls -lh'
+alias l='ls -lh'
+alias la='ls -alh'
+alias lr='ls -lR'
+# colorize greps
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+# make less a little more sane
+alias less='less -RX'
+# various port forwarding and hole-punching
+alias scsetup='sudo socat -d -d TCP4-listen:6666,fork OPENSSL:typoet.com:443,cert=host.pem,verify=0'
+alias scsetup2='sudo socat -d -d TCP4-listen:7777,fork OPENSSL:blackex:443,cert=host.pem,verify=0'
+# reverse proxy & keepopen
+alias prox='ssh -nNT -R 4444:localhost:22 writequit.org'
+alias autoprox='autossh -M 22000 -nNT -R 4444:localhost:22 writequit.org'
+alias awq='autossh -M 23000 writequit.org'
+alias aiv='autossh -M 24000 ivalice'
+# open elinks quickly
+alias el='TERM=xterm-color elinks'
+# datetime aliases
+alias dt='gdate "+%Y-%m-%dT%H:%M:%S.%3N%zZ"'
+# Elasticsearch's basic_date_time
+alias bdt='gdate "+%Y%m%dT%H%M%S.%3N%z"'
+alias epoch='date +%s'
+# jump start to magit
+alias magit='emacs -f magit-status'
+# simple-extract
+alias se="tar zxvf"
+alias ga="git annex"
+# download manager
+alias aria2c='aria2c -c -x5 -s10 -m0'
+# sync org files
+alias org2ivalice='rsync -azP --delete ~/org/ ivalice-local:~/org'
+alias ivalice2org='rsync -azP --delete ivalice-local:~/org/ ~/org'
+alias xanadu2org='rsync -azP --delete xanadu:~/org/ ~/org'
+alias org2xanadu='rsync -azP --delete ~/org/ xanadu:~/org'
+# start a master tmux
+alias tmaster='tmux -2 -u -S /tmp/mastermux -f .tmux.master.conf'
+# HTTP verbs
+alias get='curl -s -XGET'
+alias post='curl -s -XPOST'
+alias put='curl -s -XPUT'
+alias delete='curl -s -XDELETE'
+#+END_SRC
+
+A helpful function to fix the SSH agent should it ever get out of whack
+(re-attaching to TMUX sessions for instance)
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/fix-agent.sh
+function fix-agent() {
+    disable -a ls
+    export SSH_AUTH_SOCK=`ls -t1 $(find /tmp/ -uid $UID -path \\*ssh\\* -type s 2> /dev/null) | head -1`
+    enable -a ls
+}
+#+END_SRC
