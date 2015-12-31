@@ -163,6 +163,21 @@ Intellij all the time for things.
       :init (company-emacs-eclim-setup))))
 #+END_SRC
 
+* Configuring SDKMan for Groovy/Gradle
+
+This will have to be downloaded from http://sdkman.io, there is no package for it
+
+We need to source that for SDKMan if needed too
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/sdkman.sh
+export PATH=$PATH:~/.sdkman/candidates/gradle/current/bin
+export PATH=$PATH:~/.sdkman/candidates/groovy/current/bin
+
+if [ -f ~/.sdkman/bin/sdkman-init.sh ]; then
+    source ~/.sdkman/bin/sdkman-init.sh
+fi
+#+END_SRC
+
 * Configure GNU Global and Gtags
 
 See: https://github.com/leoliu/ggtags
