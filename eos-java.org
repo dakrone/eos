@@ -162,3 +162,84 @@ Intellij all the time for things.
       :ensure t
       :init (company-emacs-eclim-setup))))
 #+END_SRC
+
+* Configure GNU Global and Gtags
+
+See: https://github.com/leoliu/ggtags
+
+If on OSX, you'll need to:
+
+: brew install ctags
+: wget -c http://tamacom.com/global/global-6.3.1.tar.gz
+: tar zxvf global-6.3.1.tar.gz
+: cd global-6.3.1
+: ./configure --prefix=/usr/local --with-exuberant-ctags=/usr/local/bin/ctags
+: make install
+
+I also add this to my shell configuration:
+
+: export GTAGSCONF=/usr/local/share/gtags/gtags.conf
+: export GTAGSLABEL=ctags
+
+I actually choose to do this because the fedora/debian/ubuntu version of
+=global= is so older it doesn't work well.
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/setup-helm-gtags ()
+  (interactive)
+  ;; this variables must be set before load helm-gtags
+  ;; you can change to any prefix key of your choice
+  (setq helm-gtags-prefix-key "\C-cg")
+  (setq helm-gtags-ignore-case t
+        helm-gtags-auto-update t
+        helm-gtags-use-input-at-cursor t
+        helm-gtags-pulse-at-cursor t
+        helm-gtags-suggested-key-mapping t)
+  (use-package helm-gtags
+    :ensure t
+    :init (helm-gtags-mode t)
+    :diminish "")
+  ;; key bindings
+  (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-select)
+  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
+  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
+  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
+  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
+
+(defun eos/setup-ggtags ()
+  (interactive)
+  (ggtags-mode 1)
+  ;; turn on eldoc with ggtags
+  (setq-local eldoc-documentation-function #'ggtags-eldoc-function)
+  ;; add ggtags to the hippie completion
+  (setq-local hippie-expand-try-functions-list
+              (cons 'ggtags-try-complete-tag
+                    hippie-expand-try-functions-list))
+  ;; use helm for completion
+  (setq ggtags-completing-read-function nil))
+
+(use-package ggtags
+  :ensure t
+  :defer t
+  :init
+  (progn
+    (add-hook 'c-mode-common-hook
+              (lambda ()
+                (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
+                  (eos/setup-semantic-mode)
+                  (eos/setup-helm-gtags) ;; helm-gtags
+                  ;;(my/setup-ggtags) ;; regular gtags
+                  )))))
+#+END_SRC
+
+Need to set up some bash things for gtags to work
+
+#+BEGIN_SRC sh :tangle out/bashrc.d/gtags.sh
+if [ -f ~/.globalrc ]; then
+    export GTAGSCONF=$HOME/.globalrc
+elif [ -f /usr/local/share/gtags/gtags.conf ] ; then
+    export GTAGSCONF=/usr/local/share/gtags/gtags.conf
+fi
+
+export GTAGSLABEL=ctags
+#+END_SRC
