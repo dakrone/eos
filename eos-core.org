@@ -1056,6 +1056,57 @@ I also use the 'pdf-tools' package, which is *really* nice for viewing PDF files
   :ensure t)
 #+END_SRC
 
+I'm not really a huge fan of hydra, mostly because I don't need popups for every
+little thing under the sun. I'm only using it for my toggle map right now, so I
+can remember what all I can toggle.
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra
+  :ensure t
+  :init
+  (progn
+    (defhydra hydra-toggle-map nil
+      "
+^Toggle^
+^^^^^^^^--------------------
+_d_: debug-on-error
+_D_: debug-on-quit
+_f_: auto-fill-mode
+_l_: toggle-truncate-lines
+_h_: hl-line-mode
+_r_: read-only-mode
+_v_: viewing-mode
+_n_: narrow-or-widen-dwim
+_g_: golden-ratio-mode
+_q_: quit
+"
+      ("d" toggle-debug-on-error :exit t)
+      ("D" toggle-debug-on-quit :exit t)
+      ("g" golden-ratio-mode :exit t)
+      ("f" auto-fill-mode :exit t)
+      ("l" toggle-truncate-lines :exit t)
+      ("r" read-only-mode :exit t)
+      ("h" hl-line-mode :exit t)
+      ("v" my/turn-on-viewing-mode :exit t)
+      ("n" my/narrow-or-widen-dwim :exit t)
+      ("q" nil :exit t))
+
+    (global-set-key (kbd "C-x t") 'hydra-toggle-map/body)
+
+    ;; Jump between errors in a buffer:
+    (defhydra hydra-next-error nil
+      "next-error"
+      ("`" next-error "next")
+      ("j" next-error "next" :bind nil)
+
+      ("n" next-error "next" :bind nil)
+      ("k" previous-error "previous" :bind nil)
+      ("p" previous-error "previous" :bind nil)
+      ("l" flycheck-list-errors "list-errors" :exit t))
+
+    (global-set-key (kbd "C-x `") 'hydra-next-error/body)))
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 
 I use =gpg-agent= [fn:30:
