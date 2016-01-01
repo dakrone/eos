@@ -6,6 +6,7 @@ el-modules = eos-core.el \
 						 eos-develop.el \
 						 eos-org.el \
 						 eos-dired.el \
+						 eos-remote.el \
 						 eos-java.el \
              eos-clojure.el \
              eos-web.el \
