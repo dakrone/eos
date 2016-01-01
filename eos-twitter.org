@@ -17,6 +17,7 @@ immediately use Twitter :P
   :config
   (setq twittering-icon-mode t
         twittering-use-master-password t
+        twittering-username "thnetos"
         twittering-timer-interval 600
         ;; Start up with home and "emacs" search
         twittering-initial-timeline-spec-string

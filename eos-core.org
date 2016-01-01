@@ -790,7 +790,7 @@ when they are popped up. I do this with Popwin
     (setq display-buffer-function 'popwin:display-buffer)
 
     ;; basic
-    (push '("*Help*" :stick t :noselect t) popwin:special-display-config)
+    (push '("*Help*" :stick t) popwin:special-display-config)
     (push '("*Pp Eval Output*" :stick t) popwin:special-display-config)
 
     ;; dictionaly
@@ -829,10 +829,6 @@ when they are popped up. I do this with Popwin
 
     ;; es-results-mode
     (push '(es-result-mode :stick t :width 0.5)
-          popwin:special-display-config)
-
-    ;; direx
-    (push '(direx:direx-mode :position left :width 40 :dedicated t)
           popwin:special-display-config)
 
     (push '("*Occur*" :stick t) popwin:special-display-config)
@@ -1638,6 +1634,7 @@ Now we can do our Helm things
                      ("415 Unsupported Media Type")
                      ("416 Request Range Not Satisfiable")
                      ("417 Expectation Failed") ("418 I'm a teapot")
+                     ("421 Misdirected Request")
                      ("422 Unprocessable Entity") ("423 Locked")
                      ("424 Failed Dependency") ("425 No code")
                      ("426 Upgrade Required") ("428 Precondition Required")
