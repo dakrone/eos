@@ -556,8 +556,8 @@ to be an lisp playground that you could dive right in to on start up, it's sort
 of eclipsed that for me in to a general purpose buffer, where I will put things
 like elisp I am prototyping or playtesting, small snippets of code that I want
 to use in dayjob, etc. But when you kill emacs, or it dies, that buffer
-disappears. This code will save the Scratch buffer every five minutes and
-restores it on Emacs startup.
+disappears. This code will save the Scratch buffer every minute and restores it
+on Emacs startup.
 
 #+BEGIN_src emacs-lisp
 (defun save-persistent-scratch ()
@@ -579,7 +579,7 @@ restores it on Emacs startup.
 
 (if (not (boundp 'tsp/save-persistent-scratch-timer))
     (setq tsp/save-persistent-scratch-timer
-          (run-with-idle-timer 300 t #'save-persistent-scratch)))
+          (run-with-idle-timer 60 t #'save-persistent-scratch)))
 #+END_SRC
 
 I restart emacs a lot, and it is nice to have the history of things like =M-x=
@@ -1129,6 +1129,16 @@ _q_: quit
       ("l" flycheck-list-errors "list-errors" :exit t))
 
     (global-set-key (kbd "C-x `") 'hydra-next-error/body)))
+#+END_SRC
+
+Expand region is useful it's insane.
+
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :ensure t
+  :defer t
+  :bind (("C-c e" . er/expand-region)
+         ("C-M-@" . er/contract-region)))
 #+END_SRC
 
 * GPG and gpg-agent (as well as SSH agent)
