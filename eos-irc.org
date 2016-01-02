@@ -26,7 +26,9 @@ IRC in Emacs
                      "pjstadig"
                      "scgilardi"
                      "drewr")
-          erc-hide-list '("JOIN" "PART" "QUIT"))
+          erc-hide-list '("JOIN" "PART" "QUIT")
+          erc-server-reconnect-timeout 5
+          erc-server-reconnect-attempts 3)
     (defun my/disable-font-lock ()
       (font-lock-mode -1))
     ;; ERC is crazy, for some reason it doesn't like font-lock...
