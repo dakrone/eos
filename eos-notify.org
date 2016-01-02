@@ -49,6 +49,9 @@ The all-seeing eye of Sauron
   :commands (sauron-toggle-hide-show)
   :bind ("M-o" . sauron-toggle-hide-show)
   :config
+  ;; Add the unread sauron notification count to the modeline
+  ;;(add-to-list 'global-mode-string '(cdr (sauron-count-events)))
+
   (defun eos/compilation-finish (buffer msg)
     "Send a sauron notification for compilation completing"
     (interactive)
