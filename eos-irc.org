@@ -27,6 +27,7 @@ IRC in Emacs
                      "scgilardi"
                      "drewr")
           erc-hide-list '("JOIN" "PART" "QUIT")
+          erc-fill-column 100
           erc-server-reconnect-timeout 5
           erc-server-reconnect-attempts 3)
     (defun my/disable-font-lock ()
