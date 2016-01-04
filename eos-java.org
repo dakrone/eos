@@ -106,7 +106,7 @@ work with the ES codebase.
                           (awk-mode . "awk")
                           (other . "gnu")))
 
-(defun setup-java ()
+(defun eos/setup-java ()
   (interactive)
   (define-key java-mode-map (kbd "M-,") 'pop-tag-mark)
   (define-key java-mode-map (kbd "C-c M-i") 'java-imports-add-import-dwim)
@@ -122,7 +122,7 @@ work with the ES codebase.
   (when (boundp 'company-backends)
     (delete 'company-eclim company-backends)))
 
-(add-hook 'java-mode-hook #'setup-java)
+(add-hook 'java-mode-hook #'eos/setup-java)
 
 ;; Make emacs' compile recognize broken gradle output
 (require 'compile)
