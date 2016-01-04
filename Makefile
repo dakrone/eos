@@ -16,6 +16,7 @@ el-modules = eos-core.el \
              eos-rss.el \
              eos-twitter.el \
              eos-leisure.el \
+             eos-music.el \
              eos.el
 
 all: init $(el-modules)

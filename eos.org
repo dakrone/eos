@@ -70,6 +70,7 @@ if not desired.
 - [[./eos-rss.org][RSS]]
 - [[./eos-twitter.org][Twitter]]
 - [[./eos-leisure.org][Fun and Leisure]]
+- Music
 
 * =init.el=
 
@@ -120,6 +121,7 @@ And now, let's start things up.
 (require 'eos-rss)
 (require 'eos-twitter)
 (require 'eos-leisure)
+(require 'eos-music)
 
 ;; Hooks
 (add-hook 'after-eos-hook
