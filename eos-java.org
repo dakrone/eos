@@ -109,7 +109,7 @@ work with the ES codebase.
 (defun setup-java ()
   (interactive)
   (define-key java-mode-map (kbd "M-,") 'pop-tag-mark)
-  (define-key java-mode-map (kbd "C-c M-i") 'java-imports-add-import)
+  (define-key java-mode-map (kbd "C-c M-i") 'java-imports-add-import-dwim)
   (c-set-style "intellij" t)
   ;; automatically add newline after { in java
   (setq-local electric-layout-rules '((?{ . after)))
@@ -130,7 +130,7 @@ work with the ES codebase.
              '("^:[^/.\n]+\\(/.+\\):\\([[:digit:]]+\\):" 1 2))
 #+END_SRC
 
-** java-imports
+* Managing Java Imports with the =java-imports= Package
 
 I also have a custom package, [[https://github.com/dakrone/emacs-java-imports][java-imports]], which I use to quickly add imports
 for things.
@@ -143,7 +143,7 @@ for things.
   (setq java-imports-find-block-function 'java-imports-find-place-sorted-block))
 #+END_SRC
 
-** eclim
+* Connecting Emacs and Eclipse with Eclim
 Eclim is decent for emacs-java integration, but isn't quite there for showing
 errors or things like that. Unfortunately I still have to jump back into
 Intellij all the time for things.
