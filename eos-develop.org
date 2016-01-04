@@ -56,6 +56,52 @@ I have to hack something around this to make it fixed for org->html exports
                   result))))
 #+END_SRC
 
+Highlight idle things, but only in certain modes
+
+#+BEGIN_SRC emacs-lisp
+(use-package idle-highlight-mode
+  :ensure t
+  :init
+  (add-hook 'java-mode-hook #'idle-highlight-mode)
+  (add-hook 'emacs-lisp-mode-hook #'idle-highlight-mode)
+  (add-hook 'clojure-lisp-mode-hook #'idle-highlight-mode))
+#+END_SRC
+
+Hide-show is kind of like Vim's folding, but manually done right now.
+
+I'm in the process of trying out [[https://github.com/gregsexton/origami.el][Origami]] as a replacement, since it's a bit
+easier on the brain and has nicer functions (supposedly), however, Origami is
+much slower than hideshow for large buffers.
+
+#+BEGIN_SRC emacs-lisp
+(use-package hideshow
+  :bind (("C-c TAB" . hs-toggle-hiding)
+         ("C-\\" . hs-toggle-hiding)
+         ("M-\\" . hs-hide-all)
+         ("M-+" . hs-show-all))
+  :init (add-hook #'prog-mode-hook #'hs-minor-mode)
+  :diminish hs-minor-mode
+  :config
+  (defvar hs-special-modes-alist
+    (mapcar 'purecopy
+            '((c-mode "{" "}" "/[*/]" nil nil)
+              (c++-mode "{" "}" "/[*/]" nil nil)
+              (bibtex-mode ("@\\S(*\\(\\s(\\)" 1))
+              (java-mode "{" "}" "/[*/]" nil nil)
+              (js-mode "{" "}" "/[*/]" nil)
+              (javascript-mode  "{" "}" "/[*/]" nil)))))
+#+END_SRC
+
+Uses =M-n= and =M-p= to jump between the same variable in multiple places
+
+#+BEGIN_SRC emacs-lisp
+(use-package smartscan
+  :ensure t
+  :init (add-hook #'prog-mode-hook #'smartscan-mode)
+  :config
+  (bind-key "M-'" #'other-window smartscan-map))
+#+END_SRC
+
 ** Semantic Editing
 First, use a development version of cedet if applicable, I download the latest
 snapshot from http://www.randomsample.de/cedet-snapshots/ and extract it in
@@ -134,9 +180,6 @@ Also highlight the line in prog-mode:
 #+END_SRC
 * Autocomplete with Company
 
-#+BEGIN_SRC emacs-lisp :tangle yes
-#+END_SRC
-
 I use =company= for more than just programming completions (see 💕=company-emoji=💕, f.e.), so let's
 just enable it everywhere.
 
@@ -144,7 +187,8 @@ just enable it everywhere.
 (use-package company
   :ensure t
   :diminish company-mode
-  :bind ("C-." . company-complete)
+  ;; stupid flyspell steals the binding I really want, `C-.`
+  :bind ("C-c ." . company-complete)
   :init
   (add-hook 'after-init-hook #'global-company-mode)
   (use-package company-quickhelp
@@ -152,6 +196,8 @@ just enable it everywhere.
     :init (add-hook 'company-mode-hook #'company-quickhelp-mode))
   :config
   (setq company-selection-wrap-around t
+        ;; don't automatically start completion
+        company-idle-delay nil
         ;; don't downcase dabbrev suggestions
         company-dabbrev-downcase nil
         ;; sort completions by occurrence
