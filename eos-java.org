@@ -178,6 +178,13 @@ if [ -f ~/.sdkman/bin/sdkman-init.sh ]; then
 fi
 #+END_SRC
 
+Let's also add it to the tramp remote path
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'tramp-remote-path "/home/hinmanm/.sdkman/candidates/gradle/current/bin")
+(add-to-list 'tramp-remote-path "/home/hinmanm/.sdkman/candidates/groovy/current/bin")
+#+END_SRC
+
 * Configure GNU Global and Gtags
 
 See: https://github.com/leoliu/ggtags
