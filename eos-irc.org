@@ -30,10 +30,10 @@ IRC in Emacs
           erc-fill-column 100
           erc-server-reconnect-timeout 5
           erc-server-reconnect-attempts 3)
-    (defun my/disable-font-lock ()
+    (defun eos/disable-font-lock ()
       (font-lock-mode -1))
     ;; ERC is crazy, for some reason it doesn't like font-lock...
-    (add-hook 'erc-mode-hook #'my/disable-font-lock))
+    (add-hook 'erc-mode-hook #'eos/disable-font-lock))
   (use-package erc-hl-nicks :ensure t)
   (use-package ercn
     :ensure t
@@ -61,5 +61,9 @@ IRC in Emacs
     (erc-tls :server "irc.writequit.org"
              :port 31425
              :nick "dakrone"
-             :password freenode-znc-pass)))
+             :password freenode-znc-pass)
+    (erc-tls :server "elastic.irc.slack.com"
+             :port 6697
+             :nick "dakrone"
+             :password (format "%s-novoice" elastic-slack-pass))))
 #+END_SRC
