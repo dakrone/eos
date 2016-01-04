@@ -1141,6 +1141,71 @@ Expand region is useful it's insane.
          ("C-M-@" . er/contract-region)))
 #+END_SRC
 
+Mulitple cursors is like rectangular selection/insertion but on steroids
+
+#+BEGIN_SRC emacs-lisp
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-S-c C-S-c" . mc/edit-lines)
+         ("C->" . mc/mark-next-like-this)
+         ("C-<" . mc/mark-previous-like-this)
+         ("C-c C-<" . mc/mark-all-like-this)))
+#+END_SRC
+
+VLF lets me handle things like 2gb files gracefully, which is good, because
+sometimes I need to look at someone's 5gb log file.
+
+#+BEGIN_SRC emacs-lisp
+(use-package vlf-setup
+  :ensure vlf)
+#+END_SRC
+
+Export an HTML version of the buffer and scp it somewhere
+
+#+BEGIN_SRC emacs-lisp
+(defvar fci-enabled? nil)
+(defvar fc-enabled? nil)
+(defun eos/surround-scpaste (fun &rest args)
+  (if fci-mode
+      (progn
+        (setq fci-enabled? t)
+        (fci-mode -1))
+    (setq fci-enabled? nil))
+  (if flycheck-mode
+      (progn
+        (setq fc-enabled? t)
+        (flycheck-mode -1))
+    (setq fc-enabled? nil))
+  (let ((result  (apply fun args)))
+    (when fci-enabled?
+      (fci-mode 1))
+    (when fc-enabled?
+      (flycheck-mode 1))
+    result))
+
+(install-pkgs '(scpaste))
+(require 'scpaste)
+(setq scpaste-http-destination "http://writequit.org/paste"
+      scpaste-scp-destination "writequit.org:www/paste"
+      scpaste-user-name "dakrone"
+      scpaste-user-address "http://writequit.org/")
+;; Disable fill-column-indicator while scpasting
+(advice-add 'scpaste :around #'eos/surround-scpaste)
+#+END_SRC
+
+Beacon flashes the cursor whenever you adjust position, really helpful when
+jumping between a billion windows and having no idea where the cursor actually
+is.
+
+#+BEGIN_SRC emacs-lisp
+(use-package beacon
+  :ensure t
+  :diminish beacon-mode
+  :init (beacon-mode 1)
+  :config
+  (add-to-list 'beacon-dont-blink-major-modes 'eshell-mode))
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 
 I use =gpg-agent= [fn:30:
@@ -1444,6 +1509,7 @@ In most non-programming modes, =M-.= can be used to spellcheck the word
   :diminish ""
   :init (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :config
+  (define-key flyspell-mode-map (kbd "C-.") 'company-complete)
   (use-package helm-flyspell
     :ensure t
     :init
