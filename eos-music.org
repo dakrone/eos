@@ -37,6 +37,23 @@ export MPD_HOST=thulcandra
 export MPD_PORT=16600
 #+END_SRC
 
+We also need to set up the systemd service for MPD
+
+#+BEGIN_SRC conf :tangle out/mpd.service
+[Unit]
+Description=MPD
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/mpd --no-daemon /home/hinmanm/.mpd.conf
+ExecStop=/usr/bin/pkill mpd
+Environment=DISPLAY=:0
+Restart=always
+
+[Install]
+WantedBy=default.target
+#+END_SRC
+
 Install the required software
 
 #+BEGIN_SRC sh :tangle sh/install-mpd.sh
@@ -47,6 +64,10 @@ rpm-install mpc
 mkdir -p ~/Music
 mkdir -p ~/.mpd/playlists
 ln -svf $PWD/out/mpd.conf ~/.mpd.conf
+ln -sfv $PWD/out/mpd.service ~/.config/systemd/user/mpd.service
+systemctl --user daemon-reload
+systemctl --user enable mpd
+systemctl --user start mpd
 #+END_SRC
 
 * Mingus MPD frontend
@@ -55,7 +76,8 @@ I haven't actually used this, but we can install it to try it out...
 
 #+BEGIN_SRC emacs-lisp
 (use-package mingus
-  :ensure t)
+  :ensure t
+  :init (setq mingus-mpd-port 16600))
 #+END_SRC
 
 * Hydra Music Controller
@@ -65,10 +87,8 @@ keybindings out of the box. I'd like global MPD bindings, and this goes a long
 way to get there.
 
 #+begin_src emacs-lisp :tangle yes
-(defhydra hydra-mpd (global-map "C-c M")
-  ("g" (progn (async-shell-command "ogg123 http://fort.kickass.systems:28000/mpd.ogg"
-                                   (get-buffer-create "*ogg123*")))
-   "Start stream")
+(defhydra eos/hydra-mpd nil
+  "MPD Actions\n"
   ("p" (progn (save-window-excursion
                 (async-shell-command "mpc toggle" (get-buffer-create "*tmp*"))))
    "Play/Pause")
@@ -81,4 +101,6 @@ way to get there.
   ("n" (progn (ansi-term (executable-find "ncmpcpp")))
    "ncmpcpp")
   ("q" nil "Quit"))
+
+(global-set-key (kbd "C-c M") #'eos/hydra-mpd/body)
 #+end_src
