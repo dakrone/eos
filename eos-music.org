@@ -26,7 +26,7 @@ playlist_directory "/home/hinmanm/.mpd/playlists"
 db_file "/home/hinmanm/.mpd/mpd.db"
 log_file "/home/hinmanm/.mpd/mpd.log"
 state_file "/home/hinmanm/.mpd/mpdstate"
-port "16600"
+port "6600"
 bind_to_address "127.0.0.1"
 #+END_SRC
 
@@ -34,7 +34,7 @@ Configure the address and port in Bash
 
 #+BEGIN_SRC sh :tangle out/bashrc.d/mpd.sh
 export MPD_HOST=thulcandra
-export MPD_PORT=16600
+export MPD_PORT=6600
 #+END_SRC
 
 We also need to set up the systemd service for MPD
@@ -76,8 +76,7 @@ I haven't actually used this, but we can install it to try it out...
 
 #+BEGIN_SRC emacs-lisp
 (use-package mingus
-  :ensure t
-  :init (setq mingus-mpd-port 16600))
+  :ensure t)
 #+END_SRC
 
 * Hydra Music Controller
