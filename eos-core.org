@@ -210,7 +210,7 @@ Now some personal information about me:
 
 #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Lee Hinman"
-      user-mail-address "leehinman@fastmail.com")
+      user-mail-address "lee@writequit.org")
 #+END_SRC
 
 Always, *always*, prefer UTF-8, anything else is insanity
