@@ -1,0 +1,21 @@
+#+TITLE: EOS: Writing Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-writing)
+#+END_SRC
+
+* Installing Markup Languages
+
+Let's install markdown mode, since all of Github seems enamored with it.
+
+#+BEGIN_SRC emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :init (add-hook 'markdown-mode-hook #'whitespace-mode)
+  :mode (("\\`README\\.md\\'" . gfm-mode)
+         ("github\\.com.*\\.txt\\'" . gfm-mode)
+         ("\\.md\\'"          . markdown-mode)
+         ("\\.markdown\\'"    . markdown-mode)))
+#+END_SRC

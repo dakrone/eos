@@ -5,6 +5,7 @@ el-modules = eos-core.el \
 						 eos-notify.el \
 						 eos-develop.el \
 						 eos-org.el \
+						 eos-writing.el \
 						 eos-dired.el \
 						 eos-remote.el \
 						 eos-java.el \
