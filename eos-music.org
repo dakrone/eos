@@ -85,7 +85,7 @@ Mingus is a nifty little minimalist MPD frontend, but it doesn't ship with any
 keybindings out of the box. I'd like global MPD bindings, and this goes a long
 way to get there.
 
-#+begin_src emacs-lisp :tangle yes
+#+begin_src emacs-lisp
 (defhydra eos/hydra-mpd nil
   "MPD Actions\n"
   ("p" (progn (save-window-excursion
