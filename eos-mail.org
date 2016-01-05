@@ -29,9 +29,6 @@ to return the correct path depending on the account the email is from.
 (defun mail ()
   (interactive)
   (add-to-list 'load-path "~/src/mu-0.9.15/mu4e")
-  (use-package nyan-mode
-    :disabled t
-    :init (nyan-mode 1)) ;; nyan-mode for mail!
   (use-package mu4e
     :config
     (progn
