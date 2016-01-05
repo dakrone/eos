@@ -351,3 +351,8 @@ passed in. Also supports ignoring the msg at the point."
   (global-set-key (kbd "C-c m") 'mu4e))
 #+END_SRC
 
+* Gnus
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c m") #'gnus)
+#+END_SRC
