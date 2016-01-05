@@ -111,8 +111,6 @@ work with the ES codebase.
   (define-key java-mode-map (kbd "M-,") 'pop-tag-mark)
   (define-key java-mode-map (kbd "C-c M-i") 'java-imports-add-import-dwim)
   (c-set-style "intellij" t)
-  ;; automatically add newline after { in java
-  (setq-local electric-layout-rules '((?{ . after)))
   (subword-mode 1)
   (toggle-truncate-lines 1)
   ;; Generic java stuff things
