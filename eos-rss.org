@@ -14,7 +14,7 @@
   :bind ("C-x w" . elfeed)
   :init
   ;; URLs in no particular order
-  (setq elfeed-urls
+  (setq elfeed-feeds
         '(;; Blogs
           ("http://harryrschwartz.com/atom.xml" blog)
           ("http://zinascii.com/writing-feed.xml" blog)
@@ -59,7 +59,7 @@
           ("https://github.com/aphyr/jepsen/commits/master.atom" github)
 
           ;; Linux
-          ("http://www.phoronix.com/rss.php" linux)
+          ("http://www.phoronix.com/rss.php" linux news)
           ("http://fedoramagazine.org/feed/" linux)
           ("http://feeds.feedburner.com/mylinuxrig" linux)
 
