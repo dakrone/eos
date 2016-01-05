@@ -296,6 +296,8 @@ alias post curl -s -XPOST $*
 alias put curl -s -XPUT $*
 alias se tar zxvf $*
 alias xanadu2org rsync -azP --delete xanadu:~/org/ ~/org
+alias xp cd ~/es/x-plugins
+alias es cd ~/es/elasticsearch
 #+END_SRC
 
 And we need something to install them
