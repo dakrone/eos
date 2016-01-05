@@ -62,8 +62,9 @@ IRC in Emacs
              :port 31425
              :nick "dakrone"
              :password freenode-znc-pass)
-    (erc-tls :server "elastic.irc.slack.com"
-             :port 6697
-             :nick "dakrone"
-             :password (format "%s-novoice" elastic-slack-pass))))
+    ;; (erc-tls :server "elastic.irc.slack.com"
+    ;;          :port 6697
+    ;;          :nick "dakrone"
+    ;;          :password (format "%s-novoice" elastic-slack-pass))
+    ))
 #+END_SRC
