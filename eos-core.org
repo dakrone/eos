@@ -503,6 +503,12 @@ Display the time and load on the modeline
 (display-time-mode 1)
 #+END_SRC
 
+Buuuutttt... I don't really care about the time, so ignore it
+
+#+BEGIN_SRC emacs-lisp
+(setq display-time-format "")
+#+END_SRC
+
 Let's also display the battery status in the mode-line
 
 #+BEGIN_SRC emacs-lisp
