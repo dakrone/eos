@@ -25,6 +25,19 @@ run. I use it for the path on OSX and JAVA_HOME everywhere else.
     (exec-path-from-shell-initialize)))
 #+END_SRC
 
+Sets up the =with-editor= package so things that invoke =$EDITOR= will use the
+current emacs if I'm already inside of emacs
+
+#+BEGIN_SRC emacs-lisp
+(use-package with-editor
+  :ensure t
+  :init
+  (progn
+    (add-hook 'shell-mode-hook  'with-editor-export-editor)
+    (add-hook 'eshell-mode-hook 'with-editor-export-editor)))
+#+END_SRC
+
+
 First, Emacs doesn't handle =less= well, so use =cat= instead for the shell
 pager:
 
