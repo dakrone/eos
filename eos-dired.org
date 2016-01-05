@@ -56,3 +56,15 @@ writable-dired mode is aawwweeeesssoooommee, it makes renames super easy.
   (add-hook 'dired-mode-hook #'hl-line-mode)
   (add-hook 'dired-mode-hook #'eos/dired-mode-hook))
 #+END_SRC
+
+Quick-preview provides a nice preview of the thing at point for files, great
+when using dired.
+
+#+BEGIN_SRC emacs-lisp
+(use-package quick-preview
+  :ensure t
+  :init
+  (progn
+    (global-set-key (kbd "C-c q") 'quick-preview-at-point)
+    (define-key dired-mode-map (kbd "Q") 'quick-preview-at-point)))
+#+END_SRC
