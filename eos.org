@@ -62,7 +62,7 @@ if not desired.
   - [[./eos-clojure.org][Clojure]]
 - [[./eos-org.org][Org-mode and agenda]]
 - [[./eos-dired.org][Dired]]
-- Working with Remote Servers
+- [[./eos-remote.org][Working with Remote Servers]]
 - [[./eos-web.org][Web browsing]]
 - [[./eos-shell.org][Shell]]
 - [[./eos-mail.org][Mail (Email)]]
@@ -70,7 +70,7 @@ if not desired.
 - [[./eos-rss.org][RSS]]
 - [[./eos-twitter.org][Twitter]]
 - [[./eos-leisure.org][Fun and Leisure]]
-- Music
+- [[./eos-music.org][Music]]
 
 * =init.el=
 

@@ -13,7 +13,7 @@ Ensure that Emacs knows where MPD is listening
 
 #+BEGIN_SRC emacs-lisp
 (setenv "MPD_HOST" "thulcandra")
-(setenv "MPD_PORT" "16600")
+(setenv "MPD_PORT" "6600")
 #+END_SRC
 
 * MPD configuration
@@ -91,15 +91,15 @@ way to get there.
   ("p" (progn (save-window-excursion
                 (async-shell-command "mpc toggle" (get-buffer-create "*tmp*"))))
    "Play/Pause")
-  ("/" mingus-search "Search")
-  ("s" mingus "Show Mingus")
+  ("/" mingus-search "Search" :exit t)
+  ("s" mingus "Show Mingus" :exit t)
   ("<" (progn (require 'mpc) (mpc-prev)) "Previous")
   (">" (progn (require 'mpc) (mpc-next)) "Next")
   ("+" (dotimes (i 5) (mingus-vol-up)) "Louder")
   ("-" (dotimes (i 5) (mingus-vol-down)) "Quieter")
-  ("n" (progn (ansi-term (executable-find "ncmpcpp")))
-   "ncmpcpp")
+  ("n" (ansi-term (executable-find "ncmpcpp"))
+   "ncmpcpp" :exit t)
   ("q" nil "Quit"))
 
-(global-set-key (kbd "C-c M") #'eos/hydra-mpd/body)
+(global-set-key (kbd "C-x M-m") #'eos/hydra-mpd/body)
 #+end_src
