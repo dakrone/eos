@@ -284,16 +284,8 @@ And now the huge org-mode configuration
     (setq org-refile-target-verify-function 'my/verify-refile-target)
 
     ;; org-mode bindings
-    (define-key org-mode-map (kbd "C-M-<return>") 'org-insert-todo-heading)
     (define-key org-mode-map (kbd "C-c t") 'org-todo)
-    (define-key org-mode-map (kbd "M-G") 'org-plot/gnuplot)
     (define-key org-mode-map (kbd "RET") 'org-return-indent)
-    ;; swap C-RET and M-RET
-    (define-key org-mode-map (kbd "C-<return>") 'org-insert-heading)
-    (define-key org-mode-map (kbd "M-<return>")
-      'org-insert-heading-after-current)
-
-    (local-unset-key (kbd "M-S-<return>"))
 
     ;; org-babel stuff
     (use-package ob-clojure
