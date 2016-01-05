@@ -538,8 +538,11 @@ setups like laptops which reboot a lot. To make startup sane, I'm choosing to
 eagerly restore the 10 most recently used buffers on startup, and then in Idle
 the system will restore the remaining buffers.
 
+I've recently disabled this, because I enjoy starting clean when I restart
+Emacs, so it's nice to have the option if desired..
+
 #+BEGIN_src emacs-lisp
-(desktop-save-mode 1)
+;;(desktop-save-mode 1)
 (setq desktop-restore-eager 10)
 (setq desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\|KILL\\)")
 (setq desktop-restore-frames nil)
