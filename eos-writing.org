@@ -19,3 +19,10 @@ Let's install markdown mode, since all of Github seems enamored with it.
          ("\\.md\\'"          . markdown-mode)
          ("\\.markdown\\'"    . markdown-mode)))
 #+END_SRC
+
+YAML is used all over the place
+
+#+BEGIN_SRC emacs-lisp
+(use-package yaml-mode
+  :ensure t)
+#+END_SRC
