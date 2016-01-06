@@ -138,7 +138,8 @@ for things.
   :ensure t
   :config
   ;; Elasticsearch's import style
-  (setq java-imports-find-block-function 'java-imports-find-place-sorted-block))
+  (setq java-imports-find-block-function 'java-imports-find-place-sorted-block)
+  (add-hook 'java-mode-hook 'java-imports-scan-file))
 #+END_SRC
 
 * Connecting Emacs and Eclipse with Eclim
