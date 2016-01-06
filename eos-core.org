@@ -1222,6 +1222,7 @@ kill them and all that, when I do, I want it to auto-update
 (setq-default proced-auto-update-flag t)
 (setq proced-auto-update-interval 3)
 (add-hook 'proced-mode-hook 'proced-toggle-auto-update)
+(add-hook 'proced-mode-hook 'hl-line-mode)
 #+END_SRC
 
 Let's try enabling automatic saving of buffers when they lose focus
