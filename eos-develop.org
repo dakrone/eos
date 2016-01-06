@@ -188,7 +188,8 @@ just enable it everywhere.
   :ensure t
   :diminish company-mode
   ;; stupid flyspell steals the binding I really want, `C-.`
-  :bind ("C-c ." . company-complete)
+  :bind (("C-c ." . company-complete)
+         ("C-." . company-complete))
   :init
   (add-hook 'after-init-hook #'global-company-mode)
   (use-package company-quickhelp
