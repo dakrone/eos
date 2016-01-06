@@ -80,8 +80,9 @@ And now the huge org-mode configuration
           org-export-coding-system 'utf-8
           ;; don't use ido completion (I use helm)
           org-completion-use-ido nil
-          ;; start up org files with indentation (same as #+STARTUP: indent)
-          org-startup-indented t
+          ;; don't start up org files with indentation
+          ;; (same as #+STARTUP: noindent)
+          org-startup-indented nil
           ;; don't indent source code
           org-edit-src-content-indentation 0
           ;; don't adapt indentation
@@ -278,10 +279,10 @@ And now the huge org-mode configuration
              nil)))
 
     ;; Exclude DONE state tasks from refile targets
-    (defun my/verify-refile-target ()
+    (defun eos/verify-refile-target ()
       "Exclude todo keywords with a done state from refile targets"
       (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-    (setq org-refile-target-verify-function 'my/verify-refile-target)
+    (setq org-refile-target-verify-function 'eos/verify-refile-target)
 
     ;; org-mode bindings
     (define-key org-mode-map (kbd "C-c t") 'org-todo)
@@ -328,97 +329,6 @@ And now the huge org-mode configuration
     (add-to-list 'org-babel-default-header-args:python
                  '(:shebang . "#!/usr/bin/env python"))
 
-    ;; Clojure-specific org-babel stuff
-    (defvar org-babel-default-header-args:clojure
-      '((:results . "silent")))
-
-    (defun org-babel-execute:clojure (body params)
-      "Execute a block of Clojure code with Babel."
-      (let ((result-plist
-             (nrepl-send-string-sync
-              (org-babel-expand-body:clojure body params) nrepl-buffer-ns))
-            (result-type  (cdr (assoc :result-type params))))
-        (org-babel-script-escape
-         (cond ((eq result-type 'value) (plist-get result-plist :value))
-               ((eq result-type 'output) (plist-get result-plist :value))
-               (t (message "Unknown :results type!"))))))
-
-    ;; Function declarations
-    (defun my/skip-non-archivable-tasks ()
-      "Skip trees that are not available for archiving"
-      (save-restriction
-        (widen)
-        ;; Consider only tasks with done todo headings as archivable candidates
-        (let ((next-headline (save-excursion
-                               (or (outline-next-heading) (point-max))))
-              (subtree-end (save-excursion (org-end-of-subtree t))))
-          (if (member (org-get-todo-state) org-todo-keywords-1)
-              (if (member (org-get-todo-state) org-done-keywords)
-                  (let* ((daynr (string-to-int
-                                 (format-time-string "%d" (current-time))))
-                         (a-month-ago (* 60 60 24 (+ daynr 1)))
-                         (this-month
-                          (format-time-string "%Y-%m-" (current-time)))
-                         (subtree-is-current
-                          (save-excursion
-                            (forward-line 1)
-                            (and (< (point) subtree-end)
-                                 (re-search-forward this-month
-                                                    subtree-end t)))))
-                    (if subtree-is-current
-                        subtree-end     ; Has a date in this month, skip it
-                      nil))             ; available to archive
-                (or subtree-end (point-max)))
-            next-headline))))
-
-    (defun my/save-all-agenda-buffers ()
-      "Function used to save all agenda buffers that are
-   currently open, based on `org-agenda-files'."
-      (interactive)
-      (save-current-buffer
-        (dolist (buffer (buffer-list t))
-          (set-buffer buffer)
-          (when (member (buffer-file-name)
-                        (mapcar 'expand-file-name (org-agenda-files t)))
-            (save-buffer)))))
-
-    ;; save all the agenda files after each capture
-    (add-hook 'org-capture-after-finalize-hook 'my/save-all-agenda-buffers)
-
-    (use-package org-id
-      :config
-      (progn
-        (setq org-id-link-to-org-use-id t)
-
-        (defun my/org-custom-id-get (&optional pom create prefix)
-          "Get the CUSTOM_ID property of the entry at point-or-marker POM.
-   If POM is nil, refer to the entry at point. If the entry does
-   not have an CUSTOM_ID, the function returns nil. However, when
-   CREATE is non nil, create a CUSTOM_ID if none is present
-   already. PREFIX will be passed through to `org-id-new'. In any
-   case, the CUSTOM_ID of the entry is returned."
-          (interactive)
-          (org-with-point-at pom
-            (let ((id (org-entry-get nil "CUSTOM_ID")))
-              (cond
-               ((and id (stringp id) (string-match "\\S-" id))
-                id)
-               (create
-                (setq id (org-id-new prefix))
-                (org-entry-put pom "CUSTOM_ID" id)
-                (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
-                id)))))
-
-        (defun my/org-add-ids-to-headlines-in-file ()
-          "Add CUSTOM_ID properties to all headlines in the
-   current file which do not already have one."
-          (interactive)
-          (org-map-entries (lambda () (my/org-custom-id-get (point) 'create))))
-
-        ;; automatically add ids to captured headlines
-        (add-hook 'org-capture-prepare-finalize-hook
-                  (lambda () (my/org-custom-id-get (point) 'create)))))
-
     (defun my/org-inline-css-hook (exporter)
       "Insert custom inline css to automatically set the
    background of code to whatever theme I'm using's background"
@@ -434,7 +344,41 @@ And now the huge org-mode configuration
              "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
              my-pre-bg my-pre-fg))))))
 
-    (add-hook 'org-export-before-processing-hook #'my/org-inline-css-hook)))
+    (add-hook 'org-export-before-processing-hook #'my/org-inline-css-hook)
+
+    (use-package org-id
+      :init
+      (setq org-id-link-to-org-use-id 'use-existing)
+
+      (defun eos/org-custom-id-get (&optional pom create prefix)
+        "Get the CUSTOM_ID property of the entry at point-or-marker POM.
+   If POM is nil, refer to the entry at point. If the entry does
+   not have an CUSTOM_ID, the function returns nil. However, when
+   CREATE is non nil, create a CUSTOM_ID if none is present
+   already. PREFIX will be passed through to `org-id-new'. In any
+   case, the CUSTOM_ID of the entry is returned."
+        (interactive)
+        (org-with-point-at pom
+          (let ((id (org-entry-get nil "CUSTOM_ID")))
+            (cond
+             ((and id (stringp id) (string-match "\\S-" id))
+              id)
+             (create
+              (setq id (org-id-new prefix))
+              (org-entry-put pom "CUSTOM_ID" id)
+              (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
+              id)))))
+
+      (defun eos/org-add-ids-to-headlines-in-file ()
+        "Add CUSTOM_ID properties to all headlines in the
+   current file which do not already have one."
+        (interactive)
+        (org-map-entries (lambda () (eos/org-custom-id-get (point) 'create))))
+
+      ;; automatically add ids to captured headlines
+      ;; (add-hook 'org-capture-prepare-finalize-hook
+      ;;           (lambda () (my/org-custom-id-get (point) 'create))))
+      )))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
