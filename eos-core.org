@@ -1224,6 +1224,14 @@ kill them and all that, when I do, I want it to auto-update
 (add-hook 'proced-mode-hook 'proced-toggle-auto-update)
 #+END_SRC
 
+Let's try enabling automatic saving of buffers when they lose focus
+
+#+BEGIN_SRC emacs-lisp
+(use-package super-save
+  :ensure t
+  :init (super-save-initialize))
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 
 I use =gpg-agent= [fn:30:
