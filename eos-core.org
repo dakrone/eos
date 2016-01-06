@@ -1587,7 +1587,10 @@ Now we can do our Helm things
   (use-package helm-buffers)
   (use-package helm-mode
     :diminish helm-mode
-    :init (add-hook 'after-init-hook #'helm-mode))
+    :init
+    (add-hook 'after-init-hook #'helm-mode)
+    (add-hook 'after-init-hook #'helm-adaptive-mode)
+    (add-hook 'after-init-hook #'helm-push-mark-mode))
   (use-package helm-grep
     :config
     (progn
@@ -1629,8 +1632,10 @@ Now we can do our Helm things
         "grep -a -d skip %e -n%cH -e %p %f"
         helm-grep-default-recurse-command
         "grep -a -d recurse %e -n%cH -e %p %f"
-        ;; do not display invisible candidates
+        ;; don't display invisible candidates
         helm-quick-update t
+        ;; use CURL, not url-retrieve-synchronously
+        helm-net-prefer-curl t
         ;; be idle for this many seconds, before updating in delayed sources.
         ;; helm-idle-delay 0.01
         ;; helm-input-idle-delay 0.01
