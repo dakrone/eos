@@ -93,6 +93,7 @@ way to get there.
    "Play/Pause")
   ("/" mingus-search "Search" :exit t)
   ("s" mingus "Show Mingus" :exit t)
+  ("m" mingus "Mingus" :exit t)
   ("<" (progn (require 'mpc) (mpc-prev)) "Previous")
   (">" (progn (require 'mpc) (mpc-next)) "Next")
   ("+" (dotimes (i 5) (mingus-vol-up)) "Louder")
