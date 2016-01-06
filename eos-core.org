@@ -1215,6 +1215,15 @@ is.
   (add-to-list 'beacon-dont-blink-major-modes 'eshell-mode))
 #+END_SRC
 
+I use M-x =proced= a lot to get a top-like (or htop-like) display of processes,
+kill them and all that, when I do, I want it to auto-update
+
+#+BEGIN_SRC emacs-lisp
+(setq-default proced-auto-update-flag t)
+(setq proced-auto-update-interval 3)
+(add-hook 'proced-mode-hook 'proced-toggle-auto-update)
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 
 I use =gpg-agent= [fn:30:
