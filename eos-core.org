@@ -1230,7 +1230,9 @@ Let's try enabling automatic saving of buffers when they lose focus
 #+BEGIN_SRC emacs-lisp
 (use-package super-save
   :ensure t
-  :init (super-save-initialize))
+  :init
+  (require 'super-save)
+  (add-hook 'after-init-hook 'super-save-initialize))
 #+END_SRC
 
 * GPG and gpg-agent (as well as SSH agent)
