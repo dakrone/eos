@@ -6,6 +6,17 @@
 (provide 'eos-writing)
 #+END_SRC
 
+Used more often than you'd think...
+
+#+BEGIN_SRC emacs-lisp
+(defun lod ()
+  "Well. This is disappointing."
+  (interactive)
+  (insert "ಠ_ಠ"))
+
+(global-set-key (kbd "C-c M-d") #'lod)
+#+END_SRC
+
 * Installing Markup Languages
 
 Let's install markdown mode, since all of Github seems enamored with it.
@@ -25,4 +36,142 @@ YAML is used all over the place
 #+BEGIN_SRC emacs-lisp
 (use-package yaml-mode
   :ensure t)
+#+END_SRC
+
+* Functions for Skeleton Code
+Skeletons are kind of like yasnippet, but they don't mess with my keybindings
+all over the place and take forever to load ಠ_ಠ
+
+#+BEGIN_SRC emacs-lisp
+(require 'skeleton)
+
+(define-skeleton eos/org-header
+  "Insert a standard header for org-mode files"
+  "Title: "
+  "#+TITLE: " str \n
+  "#+AUTHOR: " (user-full-name) \n
+  "#+EMAIL: " user-mail-address \n
+  "#+LANGUAGE: en
+,#+PROPERTY: header-args :results code replace :exports both :noweb yes :tangle no
+,#+HTML_HEAD: <link rel=\"stylesheet\" href=\"http://dakrone.github.io/org.css\" type=\"text/css\" />
+,#+EXPORT_EXCLUDE_TAGS: noexport
+,#+OPTIONS: H:4 num:nil toc:t \\n:nil @:t ::t |:t ^:{} -:t f:t *:t
+,#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
+,#+TODO: TODO(t) | DONE(d)
+,#+TODO: TODO(t) SOMEDAY(s) INPROGRESS(i) HOLD(h) WAITING(w@/!) NEEDSREVIEW(n@/!) | DONE(d)
+,#+TODO: TODO(t) INPROGRESS(i) | CANCELLED(c@/!)
+,#+STARTUP: fold nodlcheck lognotestate content
+
+,* ")
+
+(define-skeleton eos/org-wrap-elisp
+  "Wrap text with #+BEGIN_SRC / #+END_SRC for the emacs-lisp code"
+  nil
+  > "#+BEGIN_SRC emacs-lisp" \n
+  > _ \n
+  > "#+END_SRC" \n)
+
+(define-skeleton eos/org-wrap-source
+  "Wrap text with #+BEGIN_SRC / #+END_SRC for a code type"
+  "Language: "
+  > "#+BEGIN_SRC " str \n
+  > _ \n
+  > "#+END_SRC" \n)
+
+(define-skeleton eos/es-make-index
+  "Insert boilerplate to create an index with `es-mode' syntax"
+  "Index name: "
+  "POST /" str \n
+  "{" \n
+  > "\"settings\": {" \n
+  > "\"index\": {" \n
+  > "\"number_of_shards\": 1," \n
+  > "\"number_of_replicas\": 0" \n
+  > "}" \n ;; index
+  > "}," \n ;; settings
+  > "\"mappings\": {" \n
+  > "\"" (skeleton-read "Type name: ") "\": {" \n
+  > "\"properties\": {" \n
+  > "\"body\": {" \n
+  > "\"type\": \"string\"" \n
+  > "}" \n ;; body
+  > "}" \n ;; properties
+  > "}" \n ;; type
+  > "}" \n ;; mappings
+  > "}" \n)
+
+(define-skeleton eos/java-try-catch
+  "Wrap code in a Java try/catch"
+  nil
+  > "try {" \n
+  > _
+  > "} catch (Exception e) {" \n
+  > "throw e;" \n
+  > "}" \n)
+#+END_SRC
+
+* Inserting Abbreviations with Abbrev-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package abbrev
+  :init (add-hook 'after-init-hook 'abbrev-mode)
+  :config
+  (define-abbrev-table
+    'global-abbrev-table
+    '(("ooc" "out of curiosity" nil 0)))
+  (define-abbrev-table
+    'org-mode-abbrev-table
+    '(("<el" "" 'eos/org-wrap-elisp 0))))
+#+END_SRC
+
+* Numbering rectangles
+:PROPERTIES:
+:ID:       7E1A9E29-8EA0-4AB9-9599-29D0A5DD945B
+:CUSTOM_ID: 5fd147b8-6ce9-400d-8f44-3e7529b1f1d7
+:END:
+Let's say you have a list like:
+
+#+BEGIN_SRC fundamental :tangle no
+First Item
+Second Item
+Third Item
+Fourth Item
+#+END_SRC
+
+And you want to number it to look like:
+
+#+BEGIN_SRC fundamental :tangle no
+1. First Item
+2. Second Item
+3. Third Item
+4. Fourth Item
+#+END_SRC
+
+This function allows you to hit =C-x r N= and specify the pattern
+and starting offset to number lines in rectangular-selection mode:
+
+#+BEGIN_SRC emacs-lisp
+(defun number-rectangle (start end format-string from)
+  "Delete (don't save) text in the region-rectangle, then number it."
+  (interactive
+   (list (region-beginning) (region-end)
+         (read-string "Number rectangle: "
+                      (if (looking-back "^ *") "%d. " "%d"))
+         (read-number "From: " 1)))
+  (save-excursion
+    (goto-char start)
+    (setq start (point-marker))
+    (goto-char end)
+    (setq end (point-marker))
+    (delete-rectangle start end)
+    (goto-char start)
+    (loop with column = (current-column)
+          while (and (<= (point) end) (not (eobp)))
+          for i from from   do
+          (move-to-column column t)
+          (insert (format format-string i))
+          (forward-line 1)))
+  (goto-char start))
+
+(global-set-key (kbd "C-x r N") 'number-rectangle)
 #+END_SRC
