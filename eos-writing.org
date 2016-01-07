@@ -110,6 +110,17 @@ all over the place and take forever to load ಠ_ಠ
   > "}" \n)
 #+END_SRC
 
+And now let's add a hydra for the skeletons
+
+#+BEGIN_SRC emacs-lisp
+(defhydra eos/hydra-skeleton nil
+  "Insert Skeleton"
+  ("e" eos/org-wrap-elisp "Wrap as elisp" :exit t)
+  ("s" eos/org-wrap-source "Wrap as source" :exit t)
+  ("i" eos/es-make-index "ES Index" :exit t)
+  ("t" eos/java-try-catch "Wrap with try/catch" :exit t))
+#+END_SRC
+
 * Inserting Abbreviations with Abbrev-mode
 
 #+BEGIN_SRC emacs-lisp
