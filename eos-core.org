@@ -1813,7 +1813,7 @@ interface to the parts of EOS.
 (use-package hydra :ensure t)
 
 (defhydra eos/hydra-toggle-map nil
-    "
+  "
 ^Toggle^
 ^^^^^^^^--------------------
 _d_: debug-on-error
@@ -1827,35 +1827,72 @@ _n_: narrow-or-widen-dwim
 _g_: golden-ratio-mode
 _q_: quit
 "
-    ("d" toggle-debug-on-error :exit t)
-    ("D" toggle-debug-on-quit :exit t)
-    ("g" golden-ratio-mode :exit t)
-    ("f" auto-fill-mode :exit t)
-    ("l" toggle-truncate-lines :exit t)
-    ("r" read-only-mode :exit t)
-    ("h" hl-line-mode :exit t)
-    ("v" eos/turn-on-viewing-mode :exit t)
-    ("n" eos/narrow-or-widen-dwim :exit t)
-    ("q" nil :exit t))
+  ("d" toggle-debug-on-error :exit t)
+  ("D" toggle-debug-on-quit :exit t)
+  ("g" golden-ratio-mode :exit t)
+  ("f" auto-fill-mode :exit t)
+  ("l" toggle-truncate-lines :exit t)
+  ("r" read-only-mode :exit t)
+  ("h" hl-line-mode :exit t)
+  ("v" eos/turn-on-viewing-mode :exit t)
+  ("n" eos/narrow-or-widen-dwim :exit t)
+  ("q" nil :exit t))
 
 (defhydra eos/hydra-next-error nil
-    "Error Selection"
-    ("`" next-error "next")
-    ("j" next-error "next" :bind nil)
+  "Error Selection"
+  ("`" next-error "next")
+  ("j" next-error "next" :bind nil)
 
-    ("n" next-error "next" :bind nil)
-    ("k" previous-error "previous" :bind nil)
-    ("p" previous-error "previous" :bind nil)
-    ("l" flycheck-list-errors "list-errors" :exit t))
+  ("n" next-error "next" :bind nil)
+  ("k" previous-error "previous" :bind nil)
+  ("p" previous-error "previous" :bind nil)
+  ("l" flycheck-list-errors "list-errors" :exit t))
+
+(defhydra eos/hydra-macro
+  (:pre
+   (when defining-kbd-macro
+     (kmacro-end-macro 1)))
+  "
+  ^Create-Cycle^   ^Basic^           ^Insert^        ^Save^         ^Edit^
+╭─────────────────────────────────────────────────────────────────────────╯
+     ^_k_^           [_e_] execute    [_n_] insert    [_b_] name      [_'_] previous
+     ^^↑^^           [_d_] delete     [_t_] set       [_K_] key       [_,_] last
+ ( ←   → )       [_o_] edit       [_a_] add       [_x_] register
+     ^^↓^^           [_r_] region     [_f_] format    [_B_] defun
+     ^_j_^           [_m_] step
+    ^^   ^^          [_s_] swap
+"
+  ("(" kmacro-start-macro :color blue)
+  (")" kmacro-end-or-call-macro-repeat)
+  ("k" kmacro-cycle-ring-previous)
+  ("j" kmacro-cycle-ring-next)
+  ("r" apply-macro-to-region-lines)
+  ("d" kmacro-delete-ring-head)
+  ("e" kmacro-end-or-call-macro-repeat)
+  ("o" kmacro-edit-macro-repeat)
+  ("m" kmacro-step-edit-macro)
+  ("s" kmacro-swap-ring)
+  ("n" kmacro-insert-counter)
+  ("t" kmacro-set-counter)
+  ("a" kmacro-add-counter)
+  ("f" kmacro-set-format)
+  ("b" kmacro-name-last-macro)
+  ("K" kmacro-bind-to-key)
+  ("B" insert-kbd-macro)
+  ("x" kmacro-to-register)
+  ("'" kmacro-edit-macro)
+  ("," edit-kbd-macro)
+  ("q" nil :color blue))
 
 (defhydra eos/hydra nil
   "EOS Hydra"
   ("`" eos/hydra-next-error/body "Flycheck Errors" :exit t)
+  ("(" eos/hydra-macro/body "Macros" :exit t)
   ("t" eos/hydra-toggle-map/body "Toggle" :exit t)
   ("T" eos/start-or-jump-to-twitter "Twitter" :exit t)
   ("m" gnus "Mail" :exit t)
   ("M" eos/hydra-mpd/body "Music" :exit t)
-  ("e" start-erc "Start ERC" :exit t)
+  ("e" (when (y-or-n-p "Really start ERC?") (start-erc)) "Start ERC" :exit t)
   ("r" elfeed "RSS" :exit t)
   ("s" eos/hydra-skeleton/body "Skeletons" :exit t)
   ("p" proced "Proc Ed" :exit t)

@@ -92,6 +92,8 @@ way to get there.
                 (async-shell-command "mpc toggle" (get-buffer-create "*tmp*"))))
    "Play/Pause")
   ("/" mingus-search "Search" :exit t)
+  ("c" (message "Currently Playing: %s"
+                (shell-command-to-string "mpc status")) "Currently Playing")
   ("s" mingus "Show Mingus" :exit t)
   ("m" mingus "Mingus" :exit t)
   ("<" (progn (require 'mpc) (mpc-prev)) "Previous")
