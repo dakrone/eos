@@ -119,6 +119,7 @@ completion, prompt and term settings:
 #+BEGIN_SRC emacs-lisp
 (use-package eshell
   :commands (eshell eshell-command)
+  :bind ("C-c m" . eshell)
   :config
   (defalias 'emacs 'find-file)
   (defalias 'sec 'sudoec)
