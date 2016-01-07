@@ -101,6 +101,6 @@ way to get there.
   ("n" (ansi-term (executable-find "ncmpcpp"))
    "ncmpcpp" :exit t)
   ("q" nil "Quit"))
-
-(global-set-key (kbd "C-x M-m") #'eos/hydra-mpd/body)
 #+end_src
+
+This actually gets bound in [[file:eos-core.org::*Binding%20the%20EOS%20mega-map%20with%20Hydra][eos-core.org]]

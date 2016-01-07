@@ -22,5 +22,18 @@ immediately use Twitter :P
         ;; Start up with home and "emacs" search
         twittering-initial-timeline-spec-string
          '("(:home+@)"
-           "(:search/emacs/)")))
+           "(:search/emacs/)"))
+  ;; Don't kill the twittering buffer, just bury it
+  (define-key twittering-mode-map (kbd "q") 'bury-buffer))
+#+END_SRC
+
+And then a nice helper for starting that will be called from the main EOS hydra
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/start-or-jump-to-twitter ()
+  "If twittering-mode is already active, jump to it, otherwise start it."
+  (interactive)
+  (if (get-buffer "(:home+@)")
+      (switch-to-buffer "(:home+@)")
+    (twittering-mode)))
 #+END_SRC

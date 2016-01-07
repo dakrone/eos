@@ -1089,57 +1089,6 @@ narrowed."
         (t (narrow-to-defun))))
 #+END_SRC
 
-I'm not really a huge fan of hydra, mostly because I don't need popups for every
-little thing under the sun. I'm only using it for my toggle map right now, so I
-can remember what all I can toggle.
-
-#+BEGIN_SRC emacs-lisp
-(use-package hydra
-  :ensure t
-  :init
-  (progn
-    (defhydra hydra-toggle-map nil
-      "
-^Toggle^
-^^^^^^^^--------------------
-_d_: debug-on-error
-_D_: debug-on-quit
-_f_: auto-fill-mode
-_l_: toggle-truncate-lines
-_h_: hl-line-mode
-_r_: read-only-mode
-_v_: viewing-mode
-_n_: narrow-or-widen-dwim
-_g_: golden-ratio-mode
-_q_: quit
-"
-      ("d" toggle-debug-on-error :exit t)
-      ("D" toggle-debug-on-quit :exit t)
-      ("g" golden-ratio-mode :exit t)
-      ("f" auto-fill-mode :exit t)
-      ("l" toggle-truncate-lines :exit t)
-      ("r" read-only-mode :exit t)
-      ("h" hl-line-mode :exit t)
-      ("v" eos/turn-on-viewing-mode :exit t)
-      ("n" eos/narrow-or-widen-dwim :exit t)
-      ("q" nil :exit t))
-
-    (global-set-key (kbd "C-x t") 'hydra-toggle-map/body)
-
-    ;; Jump between errors in a buffer:
-    (defhydra hydra-next-error nil
-      "next-error"
-      ("`" next-error "next")
-      ("j" next-error "next" :bind nil)
-
-      ("n" next-error "next" :bind nil)
-      ("k" previous-error "previous" :bind nil)
-      ("p" previous-error "previous" :bind nil)
-      ("l" flycheck-list-errors "list-errors" :exit t))
-
-    (global-set-key (kbd "C-x `") 'hydra-next-error/body)))
-#+END_SRC
-
 Expand region is useful it's insane.
 
 #+BEGIN_SRC emacs-lisp
@@ -1527,6 +1476,13 @@ Hunspell isn't available:
 (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 #+END_SRC
 
+#+RESULTS:
+: ((#\+BEGIN_EXAMPLE . #\+END_EXAMPLE) (#\+BEGIN_SRC . #\+END_SRC) (:\(PROPERTIES\|LOGBOOK\): . :END:) ([^ -\377]+) (ispell-words-keyword forward-line) (ispell-dictionary-keyword forward-line) (ispell-pdict-keyword forward-line) (ispell-parsing-keyword forward-line) (^---*BEGIN PGP [A-Z ]*--* . ^---*END PGP [A-Z ]*--*) (^begin [0-9][0-9][0-9] [^ 	]+$ .
+: end
+: ) (^%!PS-Adobe-[123].0 .
+: %%EOF
+: ) (^---* \(Start of \)?[Ff]orwarded [Mm]essage . ^---* End of [Ff]orwarded [Mm]essage))
+
 In most non-programming modes, =M-.= can be used to spellcheck the word
 (otherwise it would jump to the definition)
 
@@ -1852,6 +1808,67 @@ Best way to search in a buffer ever
   :ensure t
   :bind ("C-h b" . helm-descbinds)
   :init (fset 'describe-bindings 'helm-descbinds))
+#+END_SRC
+
+* Binding the EOS mega-map with Hydra
+
+I'm used to not be a fan of hydra, mostly because I don't need popups for every
+little thing under the sun. However, I lately decided I wanted a unified
+interface to the parts of EOS.
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra :ensure t)
+
+(defhydra eos/hydra-toggle-map nil
+    "
+^Toggle^
+^^^^^^^^--------------------
+_d_: debug-on-error
+_D_: debug-on-quit
+_f_: auto-fill-mode
+_l_: toggle-truncate-lines
+_h_: hl-line-mode
+_r_: read-only-mode
+_v_: viewing-mode
+_n_: narrow-or-widen-dwim
+_g_: golden-ratio-mode
+_q_: quit
+"
+    ("d" toggle-debug-on-error :exit t)
+    ("D" toggle-debug-on-quit :exit t)
+    ("g" golden-ratio-mode :exit t)
+    ("f" auto-fill-mode :exit t)
+    ("l" toggle-truncate-lines :exit t)
+    ("r" read-only-mode :exit t)
+    ("h" hl-line-mode :exit t)
+    ("v" eos/turn-on-viewing-mode :exit t)
+    ("n" eos/narrow-or-widen-dwim :exit t)
+    ("q" nil :exit t))
+
+(defhydra eos/hydra-next-error nil
+    "Error Selection"
+    ("`" next-error "next")
+    ("j" next-error "next" :bind nil)
+
+    ("n" next-error "next" :bind nil)
+    ("k" previous-error "previous" :bind nil)
+    ("p" previous-error "previous" :bind nil)
+    ("l" flycheck-list-errors "list-errors" :exit t))
+
+(defhydra eos/hydra nil
+  "EOS Hydra"
+  ("`" eos/hydra-next-error/body "Flycheck Errors" :exit t)
+  ("t" eos/hydra-toggle-map/body "Toggle" :exit t)
+  ("T" eos/start-or-jump-to-twitter "Twitter" :exit t)
+  ("m" gnus "Mail" :exit t)
+  ("M" eos/hydra-mpd/body "Music" :exit t)
+  ("e" start-erc "Start ERC" :exit t)
+  ("r" elfeed "RSS" :exit t)
+  ("p" proced "Proc Ed" :exit t)
+  ("q" nil "quit" :exit t))
+
+;; Bind the main EOS hydra to M-t
+(global-set-key (kbd "M-t") 'eos/hydra/body)
 #+END_SRC
 
 * Multiple Emacs Perspectives with Eyebrowse
