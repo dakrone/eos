@@ -60,3 +60,23 @@ everywhere
   :ensure t
   :bind ("C-c f" . link-hint-open-link))
 #+END_SRC
+
+Search backwards, prompting to open any URL found. This is
+fantastic for ERC buffers. I bind this to =C-c u= because I use it
+a lot.
+
+#+BEGIN_SRC emacs-lisp
+(defun browse-last-url-in-brower ()
+  (interactive)
+  (save-excursion
+    (let ((ffap-url-regexp
+           (concat
+            "\\("
+            "news\\(post\\)?:\\|mailto:\\|file:"
+            "\\|"
+            "\\(ftp\\|https?\\|telnet\\|gopher\\|www\\|wais\\)://"
+            "\\).")))
+      (ffap-next t t))))
+
+(global-set-key (kbd "C-c u") 'browse-last-url-in-brower)
+#+END_SRC
