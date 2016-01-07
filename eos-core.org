@@ -1476,13 +1476,6 @@ Hunspell isn't available:
 (add-to-list 'ispell-skip-region-alist '("#\\+BEGIN_EXAMPLE" . "#\\+END_EXAMPLE"))
 #+END_SRC
 
-#+RESULTS:
-: ((#\+BEGIN_EXAMPLE . #\+END_EXAMPLE) (#\+BEGIN_SRC . #\+END_SRC) (:\(PROPERTIES\|LOGBOOK\): . :END:) ([^ -\377]+) (ispell-words-keyword forward-line) (ispell-dictionary-keyword forward-line) (ispell-pdict-keyword forward-line) (ispell-parsing-keyword forward-line) (^---*BEGIN PGP [A-Z ]*--* . ^---*END PGP [A-Z ]*--*) (^begin [0-9][0-9][0-9] [^ 	]+$ .
-: end
-: ) (^%!PS-Adobe-[123].0 .
-: %%EOF
-: ) (^---* \(Start of \)?[Ff]orwarded [Mm]essage . ^---* End of [Ff]orwarded [Mm]essage))
-
 In most non-programming modes, =M-.= can be used to spellcheck the word
 (otherwise it would jump to the definition)
 
@@ -1864,6 +1857,7 @@ _q_: quit
   ("M" eos/hydra-mpd/body "Music" :exit t)
   ("e" start-erc "Start ERC" :exit t)
   ("r" elfeed "RSS" :exit t)
+  ("s" eos/hydra-skeleton/body "Skeletons" :exit t)
   ("p" proced "Proc Ed" :exit t)
   ("q" nil "quit" :exit t))
 
