@@ -24,7 +24,6 @@ Let's install markdown mode, since all of Github seems enamored with it.
 #+BEGIN_SRC emacs-lisp
 (use-package markdown-mode
   :ensure t
-  :init (add-hook 'markdown-mode-hook #'whitespace-mode)
   :mode (("\\`README\\.md\\'" . gfm-mode)
          ("github\\.com.*\\.txt\\'" . gfm-mode)
          ("\\.md\\'"          . markdown-mode)
@@ -118,6 +117,7 @@ And now let's add a hydra for the skeletons
   ("e" eos/org-wrap-elisp "Wrap as elisp" :exit t)
   ("s" eos/org-wrap-source "Wrap as source" :exit t)
   ("i" eos/es-make-index "ES Index" :exit t)
+  ("h" eos/org-header "Org Header" :exit t)
   ("t" eos/java-try-catch "Wrap with try/catch" :exit t))
 #+END_SRC
 
