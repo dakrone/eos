@@ -87,7 +87,7 @@ way to get there.
 
 #+begin_src emacs-lisp
 (defhydra eos/hydra-mpd nil
-  "MPD Actions\n"
+  "MPD Actions"
   ("p" (progn (save-window-excursion
                 (async-shell-command "mpc toggle" (get-buffer-create "*tmp*"))))
    "Play/Pause")

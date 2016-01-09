@@ -20,7 +20,10 @@ el-modules = eos-core.el \
              eos-music.el \
              eos.el
 
-all: init $(el-modules)
+sh-modules = .zshrc \
+						 .zshenv
+
+all: init $(el-modules) $(sh-modules)
 
 clean:
 	rm -fv *.el
@@ -34,6 +37,11 @@ install.sh: eos.org
 	bin/tangle eos.org
 run-init: init
 	bash initialize.sh
+
+.zshrc: zsh.org
+	bin/tangle zsh.org
+.zshenv: zsh.org
+	bin/tangle zsh.org
 
 %.el: %.org
 	bin/tangle $<

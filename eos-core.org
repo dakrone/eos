@@ -555,9 +555,9 @@ Emacs should automatically save my state, and does so every five minutes.
   "Write the desktop save file to ~/.emacs.d"
   (desktop-save user-emacs-directory))
 
-(if (not (boundp 'eos/desktop-save-timer))
-    (setq eos/desktop-save-timer
-          (run-with-idle-timer 300 t #'eos/desktop-save)))
+;; (if (not (boundp 'eos/desktop-save-timer))
+;;     (setq eos/desktop-save-timer
+;;           (run-with-idle-timer 300 t #'eos/desktop-save)))
 #+end_src
 
 By default, my machine drops me in to a =*scratch*= buffer. Originally designed

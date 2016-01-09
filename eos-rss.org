@@ -40,7 +40,6 @@
           ("http://feeds.feedburner.com/codinghorror/" blog)
           ("http://lambda-the-ultimate.org/rss.xml" blog)
           ("http://danluu.com/atom.xml" blog)
-          ("http://wingolog.org/feed/atom" blog)
           ("http://ferd.ca/feed.rss" blog)
           ("http://blog.fsck.com/atom.xml" blog)
           ("http://jvns.ca/atom.xml" blog)

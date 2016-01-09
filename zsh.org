@@ -1,0 +1,834 @@
+#+LANGUAGE: en
+#+PROPERTY: header-args :eval no :results code replace :noweb no :tangle no
+#+HTML_HEAD: <link rel="stylesheet" href="http://dakrone.github.io/org.css" type="text/css" />
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
+#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
+#+TODO: SOMEDAY(s) TODO(t) INPROGRESS(i) WAITING(w@/!) NEEDSREVIEW(n@/!) | DONE(d)
+#+TODO: WAITING(w@/!) HOLD(h@/!) | CANCELLED(c@/!)
+#+TAGS: export(e) noexport(n)
+#+STARTUP: fold nodlcheck lognotestate content
+
+* Introduction
+
+We need a way of installing these, so let's generate one:
+
+#+BEGIN_SRC sh :tangle sh/install-zsh-things.sh
+ln -sfv $PWD/.zshenv ~/.zshenv
+ln -sfv $PWD/.zshrc ~/.zshrc
+ln -sfv $PWD/.zsh.d ~/.zsh.d
+#+END_SRC
+
+** ~/.zshenv
+:PROPERTIES:
+:ID:       9d6ddeea-1fea-443f-8c6e-bcb1309aed86
+:CUSTOM_ID: 1a4af27a-34c9-4b31-9370-e312fd2b2ec9
+:END:
+The =~/.zshenv= file is read for all shells, regardless of login state or not,
+and it's a pretty good place to put PATH stuff and other env variables that
+don't cause a lot of interaction.
+
+#+BEGIN_SRC sh :tangle .zshenv
+[[ -o interactive ]] && echo "+++Reading .zshenv"
+
+MANPATH=/opt/local/man:/usr/local/man:$MANPATH
+WORDCHARS='*?_[]~=&;!#$%^(){}'
+# default is: *?_-.[]~=/&;!#$%^(){}<>
+# other: "*?_-.[]~=&;!#$%^(){}<>\\"
+WORDCHARS=${WORDCHARS:s,/,,}
+LEDGER_FILE=$HOME/ledger.dat; export LEDGER_FILE
+
+export EDITOR=nano # to be overwritten later
+export PAGER=less
+
+# Update path with local ~/bin and cabal's bin dir
+export PATH=~/bin:~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH
+
+# Node/npm
+export PATH=$PATH:~/node_modules/.bin
+
+# Cask
+export PATH=$PATH:~/.cask/bin
+
+# rbenv
+export PATH=~/.rbenv/bin:$PATH
+
+# Virtualenvwrapper environment home
+export WORKON_HOME=~/.venvs
+if [ -d "$WORKON_HOME" ]; then
+    mkdir -p "$WORKON_HOME"
+fi
+
+# Read sdkman config for all shells
+if [ -f ~/.sdkman/bin/sdkman-init.sh ]; then
+    source ~/.sdkman/bin/sdkman-init.sh
+fi
+
+# history
+HISTFILE=$HOME/.zsh-history
+HISTSIZE=10000
+SAVEHIST=5000
+#+END_SRC
+
+I read OS and machine-specific things in .zshenv, usually because they're pretty
+small and just set up paths.
+
+#+BEGIN_SRC sh :tangle .zshenv
+## Sourcing OS-specific things
+OS=$(uname -s); export OS
+if [[ -f ~/.zsh.d/zsh.${OS} ]]; then
+    if [[ ! -z $ZSHDEBUG ]]; then
+        echo +++ ~/.zsh.d/zsh.${OS}
+    fi
+    source ~/.zsh.d/zsh.${OS}
+fi
+
+## Sourcing machine-specific things
+export HOSTPREFIX=`hostname | cut -d. -f1 | sed 's/.*/\L&/'`
+if [[ -f ~/.zsh.d/zsh.${HOSTPREFIX} ]]; then
+    if [[ ! -z $ZSHDEBUG ]]; then
+        echo +++ ~/.zsh.d/zsh.${HOSTPREFIX}
+    fi
+    source ~/.zsh.d/zsh.${HOSTPREFIX}
+fi
+#+END_SRC
+
+Vagrant seems to want to use libvirt instead of VirtualBox on my machines, so I
+want to force it to use virtualbox.
+
+#+BEGIN_SRC sh :tangle .zshenv
+export VAGRANT_DEFAULT_PROVIDER=virtualbox
+#+END_SRC
+
+Finally, if this a dumb term (running =M-x shell= in Emacs, unset some things
+and make it really dumb.
+
+#+BEGIN_SRC sh :tangle .zshenv
+## With Emacs 23, I've found this needs to go in ~root/.zshrc too to
+## help with Tramp hangs.
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ '
+[[ ! $TERM == "dumb" ]] && TERM=xterm-256color
+#+END_SRC
+
+** ~/.zprofile
+:PROPERTIES:
+:CUSTOM_ID: d9eab449-a655-4864-bd37-570a9fcc85d6
+:END:
+I don't currently use =~/.zprofile=, but I should...
+
+** ~/.zshrc
+:PROPERTIES:
+:ID:       8b6bcd43-d9ab-42b2-942c-a3feeb5eec6f
+:CUSTOM_ID: 13612b8d-4a0f-40da-b6ee-4fb89b3dcae3
+:END:
+
+#+BEGIN_SRC sh :tangle .zshrc
+# Handle dumb terms
+[[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
+
+echo -n "+++Reading .zshrc"
+[[ -o interactive ]] && echo -n " (for interactive use)"
+echo .
+
+# Used for reporting how load loading takes
+zmodload zsh/datetime
+start=$EPOCHREALTIME
+
+# for $PATH see ~/.zshenv
+
+# report things that take more than 5 seconds
+export REPORTTIME=5
+
+# 10 second poll time for autossh
+export AUTOSSH_POLL=10
+
+# don't show load in prompt by default
+export SHOW_LOAD=false
+
+# start with a pre-title of nothing
+export PRETITLE=""
+
+# "persistent history"
+# just write important commands you always need to ~/.important_commands
+if [[ -r ~/.important_commands ]] ; then
+    fc -R ~/.important_commands
+fi
+
+# support colors in less
+export LESS_TERMCAP_mb=$'\E[01;31m'
+export LESS_TERMCAP_md=$'\E[01;31m'
+export LESS_TERMCAP_me=$'\E[0m'
+export LESS_TERMCAP_se=$'\E[0m'
+export LESS_TERMCAP_so=$'\E[01;44;33m'
+export LESS_TERMCAP_ue=$'\E[0m'
+export LESS_TERMCAP_us=$'\E[01;32m'
+
+# zsh completion
+if [ -d ~/.zsh/zsh-completions ] ; then
+    fpath=(~/.zsh/zsh-completions/src $fpath)
+fi
+
+autoload -U compinit zrecompile
+
+zsh_cache=${HOME}/.zsh-cache
+if [ $UID -eq 0 ]; then
+    compinit
+else
+    compinit -d $zsh_cache/zcomp-$HOST
+
+    for f in ~/.zshrc $zsh_cache/zcomp-$HOST; do
+        zrecompile -p $f && rm -f $f.zwc.old
+    done
+fi
+
+zstyle ':completion:::::' completer _complete _approximate
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ~/.zsh-cache
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' hosts $ssh_hosts
+zstyle ':completion:*:my-accounts' users-hosts $my_accounts
+zstyle ':completion:*:other-accounts' users-hosts $other_accounts
+zstyle -e ':completion:*:approximate:*' max-errors 'reply=( $(( ($#PREFIX + $#SUFFIX) / 3 )) )'
+zstyle ':completion:*:descriptions' format "- %d -"
+zstyle ':completion:*:corrections' format "- %d - (errors %e})"
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:manuals' separate-sections true
+zstyle ':completion:*:manuals.(^1*)' insert-sections true
+zstyle ':completion:*' verbose yes
+zstyle ':completion:*' file-list list=20 insert=10
+
+
+### OPTIONS ###
+setopt multios               # allow pipes to be split/duplicated
+# ^^ try this: cat foo.clj > >(fgrep java | wc -l) > >(fgrep copy | wc -l)
+setopt auto_cd
+setopt extended_glob
+setopt append_history
+setopt extended_history
+setopt share_history
+setopt histignorealldups
+setopt nohup
+setopt longlistjobs
+setopt notify
+# I use dvorak, so correct spelling mistakes that a dvorak user would make
+setopt dvorak
+
+autoload -U url-quote-magic
+zle -N self-insert url-quote-magic
+
+# Source z.sh if available
+if [ -s ~/bin/z.sh ] ; then
+    source ~/bin/z.sh ;
+fi
+
+# Use zsh syntax highlighting if available
+if [ -s ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] ; then
+    source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+# Source ~/.zsh.d/*
+setopt EXTENDED_GLOB
+for zshrc in ~/.zsh.d/[0-9][0-9]*[^~] ; do
+    if [[ ! -z $ZSHDEBUG ]]; then
+        echo +++ $(basename $zshrc)
+    fi
+    source $zshrc
+done
+unsetopt EXTENDED_GLOB
+
+end=$EPOCHREALTIME
+
+printf "+++Loaded files in %0.4f seconds\n" $(($end-$start))
+#+END_SRC
+
+** Other ZSH configuration
+:PROPERTIES:
+:ID:       9e5907a2-1003-43f3-a186-04c560da6671
+:CUSTOM_ID: 21158852-28e5-4b97-997a-36d0803e3316
+:END:
+I try to segment out different things I need into separate zsh files, all inside
+of =.zsh.d= and loaded by order. This includes
+
+- aliases
+- functions
+- OS-specific things
+- host specific things
+
+First, aliases, for which I have many!
+
+*** Aliases
+:PROPERTIES:
+:ID:       2c906b8d-cb4b-44bc-94ab-7ef4c43fe17e
+:CUSTOM_ID: 34939e9e-7b4d-47f1-ab59-b196849cd834
+:END:
+
+#+BEGIN_SRC sh :tangle .zsh.d/00-aliases.zsh
+# colorful ls for whichever platform
+if ls -F --color=auto >&/dev/null; then
+    alias ls="ls --color=auto -F"
+else
+    alias ls="ls -GF"
+fi
+# various ls helpers
+alias l.='ls -d .*'
+alias ll='ls -lh'
+alias l='ls -lh'
+alias la='ls -alh'
+alias lr='ls -lR'
+# colorize greps
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+# make less a little more sane
+alias less='less -RX'
+# various port forwarding and hole-punching
+alias scsetup='sudo socat -d -d TCP4-listen:6666,fork OPENSSL:typoet.com:443,cert=host.pem,verify=0'
+alias scsetup2='sudo socat -d -d TCP4-listen:7777,fork OPENSSL:blackex:443,cert=host.pem,verify=0'
+# reverse proxy & keepopen
+alias prox='ssh -nNT -R 4444:localhost:22 writequit.org'
+alias autoprox='autossh -M 22000 -nNT -R 4444:localhost:22 writequit.org'
+alias awq='autossh -M 23000 writequit.org'
+alias aiv='autossh -M 24000 ivalice'
+# open elinks quickly
+alias el='TERM=xterm-color elinks'
+# datetime aliases
+alias dt='gdate "+%Y-%m-%dT%H:%M:%S.%3N%zZ"'
+# Elasticsearch's basic_date_time
+alias bdt='gdate "+%Y%m%dT%H%M%S.%3N%z"'
+alias epoch='date +%s'
+# jump start to magit
+alias magit='emacs -f magit-status'
+# simple-extract
+alias se="tar zxvf"
+alias ga="git annex"
+# download manager
+alias aria2c='aria2c -c -x5 -s10 -m0'
+# sync org files
+alias org2ivalice='rsync -azP --delete ~/org/ ivalice-local:~/org'
+alias ivalice2org='rsync -azP --delete ivalice-local:~/org/ ~/org'
+alias xanadu2org='rsync -azP --delete xanadu:~/org/ ~/org'
+alias org2xanadu='rsync -azP --delete ~/org/ xanadu:~/org'
+# start a master tmux
+alias tmaster='tmux -2 -u -S /tmp/mastermux -f .tmux.master.conf'
+#+END_SRC
+
+*** Functions
+:PROPERTIES:
+:ID:       19d19b57-9b31-4f01-8dea-0dece600f59a
+:CUSTOM_ID: 549ce8e2-22ed-45c1-830a-6d07e8640b39
+:END:
+
+Next, some functions, when shell aliases just won't do!
+
+#+BEGIN_SRC sh :tangle .zsh.d/01-functions.zsh
+# functions
+function history-all { history -E 1 }
+
+# function to fix ssh agent
+function fix-agent() {
+    disable -a ls
+    export SSH_AUTH_SOCK=`ls -t1 $(find /tmp/ -uid $UID -path \\*ssh\\* -type s 2> /dev/null) | head -1`
+    enable -a ls
+}
+
+## TODO make these scripts instead of functions
+
+# Check if a URL is up
+function chk-url() {
+    curl -sL -w "%{http_code} %{url_effective}\\n" "$1" -o /dev/null
+}
+
+# Tunnel ES from somewhere to here locally on port 9400
+function es-tunnel() {
+    autossh -M0 $1 -L 9400:localhost:9200 -CNf
+}
+
+# Tunnel logstash/kibana locally
+function kibana-tunnel() {
+    autossh -M0 $1 -L 9292:localhost:9292 -CNf
+}
+
+# Delete a branch locally and on my (dakrone) fork
+function del-branch() {
+    git branch -D $1
+    git push dakrone :$1
+}
+
+# look up a process quickly
+function pg {
+    # doing it again afterwards for the coloration
+    ps aux | grep -F -i $1 | grep -F -v grep | grep -F -i $1
+}
+
+# cd back up to the highest level git repo dir
+# thanks Dan!
+function cds () {
+    ORIGINAL_PWD=`pwd`
+    while [ ! -d ".git" -a `pwd` != "/" ]
+    do
+        cd ..
+    done
+    if [ ! -d ".git" ]
+    then
+        cd $ORIGINAL_PWD
+    fi
+}
+#+END_SRC
+
+*** Keybindings
+:PROPERTIES:
+:ID:       373dc813-91c4-4f7e-9309-258b37633f81
+:CUSTOM_ID: 37a26bb7-88d0-4fa8-b9bb-101d64d1bd2e
+:END:
+Keybindings for the shell, in this case, mostly Emacs-compatible, but with some
+disabled to prevent dumb things. (Mostly me being dumb)
+
+#+BEGIN_SRC sh :tangle .zsh.d/02-bindkey.zsh
+bindkey -e
+bindkey "^?"    backward-delete-char
+bindkey "^H"    backward-delete-char
+bindkey "^[[3~" backward-delete-char
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+
+bindkey '^r' history-incremental-search-backward
+bindkey "^[[5~" up-line-or-history
+bindkey "^[[6~" down-line-or-history
+bindkey "^A" beginning-of-line
+bindkey "^E" end-of-line
+bindkey "^W" backward-delete-word
+bindkey "^k" kill-line
+bindkey ' ' magic-space    # also do history expansion on space
+bindkey '^I' complete-word # complete on tab, leave expansion to _expand
+bindkey -r '^j' #unbind ctrl-j, I hit it all the time accidentaly
+bindkey -r '^[x' # remove M-x for emacs-things
+#+END_SRC
+
+*** SSH
+:PROPERTIES:
+:ID:       ed5d98f3-c28e-4333-9cec-3fd9114e74b6
+:CUSTOM_ID: 5dd48b83-8508-4f4a-88f4-988dd862721b
+:END:
+I'm using [[http://www.funtoo.org/Keychain][Keychain]] to manage SSH agent inheritance, so it just needs to be
+eval-ed when nodes start up. It loads the key in =~/.ssh/id_rsa=.
+
+#+BEGIN_SRC sh :tangle .zsh.d/03-ssh.zsh
+eval $(keychain --eval --agents ssh -Q id_rsa)
+#+END_SRC
+
+*** Git
+:PROPERTIES:
+:ID:       409d8ed0-3cc7-4b59-b316-6e8d0130fb3b
+:CUSTOM_ID: 91460da2-8c8c-4d1b-b3c5-269670c19e45
+:END:
+Next, I need to set up some colors and formatting that ZSH will use for VCS info
+
+#+BEGIN_SRC sh :tangle .zsh.d/05-vcs.zsh
+autoload colors
+colors
+
+git_branch() {
+    git branch --no-color 2>/dev/null | grep '^*' | colrm 1 2
+    # $pipestatus[1] for the git exit code
+}
+
+autoload -Uz vcs_info
+
+if [[ ! $TERM = "dumb" ]]; then
+    zstyle ":vcs_info:*" check-for-changes true
+    zstyle ":vcs_info:*" stagedstr "%F{green}*"
+    zstyle ":vcs_info:*" unstagedstr "%F{yellow}*"
+    zstyle ":vcs_info:(sv[nk]|bzr):*" branchformat "%b%F{1}:%F{yellow}%r%{$reset_color%}"
+    zstyle ":vcs_info:*" enable git svn bzr hg
+    precmd () {
+        if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
+               zstyle ":vcs_info:*" formats "%b%c%u%{$reset_color%}"
+           } else {
+               zstyle ":vcs_info:*" formats "%b%c%u%F{red}*%{$reset_color%}"
+           }
+           vcs_info
+    }
+else
+    zstyle ":vcs_info:*" check-for-changes true
+    zstyle ":vcs_info:*" stagedstr "*"
+    zstyle ":vcs_info:*" unstagedstr "*"
+    zstyle ":vcs_info:(sv[nk]|bzr):*" branchformat "%b:%r"
+    zstyle ":vcs_info:*" enable git svn bzr hg
+    precmd () {
+        if [[ -z $(git ls-files --other --exclude-standard 2> /dev/null) ]] {
+               zstyle ":vcs_info:*" formats "%b%c%u"
+           } else {
+               zstyle ":vcs_info:*" formats "%b%c%u*"
+           }
+           vcs_info
+    }
+fi
+#+END_SRC
+
+*** HTTP helpers
+:PROPERTIES:
+:ID:       09fe5584-d326-461b-99d3-c190d138e373
+:CUSTOM_ID: 1106de79-c828-41d2-b027-16efc456887e
+:END:
+Very small, but since I do so much HTTP testing for Elasticsearch on the command
+line, they end up saving a lot of time.
+
+#+BEGIN_SRC sh :tangle .zsh.d/10-http.zsh
+# HTTP verbs
+alias get='curl -s -XGET'
+alias post='curl -s -XPOST'
+alias put='curl -s -XPUT'
+alias delete='curl -s -XDELETE'
+#+END_SRC
+
+*** Gtags
+:PROPERTIES:
+:ID:       65075d89-510e-41a7-9cdf-cb2a54c509ab
+:CUSTOM_ID: 5651e50e-2ae3-4bd2-ab88-41d75d83745f
+:END:
+For Java development in Emacs, I rely heavily on [[http://www.gnu.org/software/global/][GNU Global]], which I usually
+install by hand since most package managers have outdated versions. So I set
+some various things for the config here
+
+#+BEGIN_SRC sh :tangle .zsh.d/15-gtags.zsh
+if [ -f ~/.globalrc ]; then
+    export GTAGSCONF=$HOME/.globalrc
+elif [ -f /usr/local/share/gtags/gtags.conf ] ; then
+    export GTAGSCONF=/usr/local/share/gtags/gtags.conf
+fi
+
+export GTAGSLABEL=ctags
+#+END_SRC
+
+*** Ruby (rbenv)
+I need to set up the [[https://github.com/sstephenson/rbenv#installation][rbenv]] wrapper so I can have sane ruby building. If it
+exists, anyway.
+
+#+BEGIN_SRC sh :tangle .zsh.d/17-ruby.zsh
+if [ -f ~/.rbenv/bin/rbenv ]; then
+    eval "$(rbenv init -)"
+fi
+#+END_SRC
+
+*** Python (virtualenvwrapper)
+So [[http://virtualenvwrapper.readthedocs.org/en/latest/][virtualenvwrapper]] is a handy thing for managing virtualenv sessions, but it
+needs to be sourced if available.
+
+Use =pip install virtualenvwrapper= to install it
+
+#+BEGIN_SRC sh :tangle .zsh.d/17-python.zsh
+if whence -cp virtualenvwrapper.sh > /dev/null 2>&1; then
+    source `whence -cp virtualenvwrapper.sh`
+fi
+#+END_SRC
+
+*** Opam (ocaml)
+I'm checking this out...
+
+#+BEGIN_SRC sh :tangle .zsh.d/18-opam.zsh
+if [ -f ~/.opam/opam-init/init.zsh ]; then
+  . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
+fi
+#+END_SRC
+
+*** Prompt
+:PROPERTIES:
+:ID:       072a7074-27aa-4f32-b6c3-1952716675a6
+:CUSTOM_ID: 6be62d59-045b-461e-8e2c-256e12c2c3ef
+:END:
+I would I have a medium-level prompt in terms of ridiculousness. It's two lines,
+displays git information, and has decent colors, so it's not too bad. I've never
+been a fan of ZSH frameworks though, so mine is hand-written and mostly combined
+from various places around the internet.
+
+I used to have a nethack pet (the dog) in it too, that would randomly wander
+around, but yeah, it didn't last.
+
+When used, it looks something like this (with more colors):
+
+#+BEGIN_SRC sh
+~/src/elasticsearch (git) ac32f3d3 * master [origin/master +1/-2] (1 stashed)
+»
+#+END_SRC
+
+And it's not /too/ unreadable...
+
+#+BEGIN_SRC sh :tangle .zsh.d/90-prompt.zsh
+autoload -U add-zsh-hook
+autoload -U colors && colors
+autoload -Uz vcs_info
+setopt prompt_subst
+
+local gray="%{$fg_bold[black]%}"
+local green="%{$fg_bold[green]%}"
+local blue="%{$fg[blue]%}"
+local red="%{$fg[red]%}"
+local yellow="%{$fg[yellow]%}"
+
+zstyle ':vcs_info:*' enable git svn cvs hg
+zstyle ':vcs_info:git*:*' get-revision true
+zstyle ':vcs_info:git*:*' check-for-changes true
+
+# hash changes branch misc
+zstyle ':vcs_info:git*' formats "(%s) %8.8i ${green}%c${red}%u${gray} %b%m"
+zstyle ':vcs_info:git*' actionformats "(%s|${yellow}%a${gray}) %8.8i ${green}%c${red}%u${gray} %b%m"
+zstyle ':vcs_info:git*+set-message:*' hooks git-st git-stash
+
+# Show remote ref name and number of commits ahead-of or behind
+function +vi-git-st() {
+    local ahead behind remote
+    local -a gitstatus
+
+    # Are we on a remote-tracking branch?
+    remote=${$(git rev-parse --verify ${hook_com[branch]}@{upstream} \
+                   --symbolic-full-name 2>/dev/null)/refs\/remotes\/}
+
+    if [[ -n ${remote} ]] ; then
+        ahead=$(git rev-list ${hook_com[branch]}@{upstream}..HEAD 2>/dev/null | wc -l | tr -d " ")
+        (( $ahead )) && gitstatus+=( "${green}+${ahead}${gray}" )
+
+        behind=$(git rev-list HEAD..${hook_com[branch]}@{upstream} 2>/dev/null | wc -l | tr -d " ")
+        (( $behind )) && gitstatus+=( "${red}-${behind}${gray}" )
+
+        if [[ -n ${gitstatus} ]] ; then
+            hook_com[branch]="${hook_com[branch]} [${remote} ${(j:/:)gitstatus}]"
+        else
+            hook_com[branch]="${hook_com[branch]} [${remote}]"
+        fi
+    fi
+}
+
+# Show count of stashed changes
+function +vi-git-stash() {
+    local -a stashes
+    if [[ -s ${hook_com[base]}/.git/refs/stash ]] ; then
+        stashes=$(git stash list 2>/dev/null | wc -l | tr -d " ")
+        hook_com[misc]+=" (${stashes} stashed)"
+    fi
+}
+
+function colorSetup {
+    # A script to make using 256 colors in zsh less painful.
+    # P.C. Shyamshankar <sykora@lucentbeing.com>
+    # Copied from http://github.com/sykora/etc/blob/master/zsh/functions/spectrum/
+
+    typeset -Ag FX FG BG
+
+    FX=(
+        reset     "%{[00m%}"
+        bold      "%{[01m%}" no-bold      "%{[22m%}"
+        italic    "%{[03m%}" no-italic    "%{[23m%}"
+        underline "%{[04m%}" no-underline "%{[24m%}"
+        blink     "%{[05m%}" no-blink     "%{[25m%}"
+        reverse   "%{[07m%}" no-reverse   "%{[27m%}"
+    )
+
+    for color in {000..255}; do
+        FG[$color]="%{[38;5;${color}m%}"
+        BG[$color]="%{[48;5;${color}m%}"
+    done
+
+    # Show all 256 colors with color number
+    function spectrum_ls() {
+        for code in {000..255}; do
+            print -P -- "$code: %F{$code}Test%f"
+        done
+    }
+
+    # Show all 256 colors where the background is set to specific color
+    function spectrum_bls() {
+        for code in {000..255}; do
+            ((cc = code + 1))
+            print -P -- "$BG[$code]$code: Test %{$reset_color%}"
+        done
+    }
+}
+
+# Initialize colors for setprompt2
+colorSetup
+
+# old-prompt
+PROMPT='$FG[032]%~ $FG[237]${vcs_info_msg_0_}
+$FG[105]%(?..${red}%?$FG[105] )%(!.#.»)%{$reset_color%} '
+
+add-zsh-hook precmd vcs_info
+#+END_SRC
+
+Here's a commented out (but much less extravagant) version of a prompt that I
+keep around, just in case.
+
+#+BEGIN_SRC sh :tangle .zsh.d/90-prompt.zsh
+# Simple prompt setup
+# if not_in_cloud; then
+#     # PROMPT='%n@%m %w %* %! %? %B%3~%b(${vcs_info_msg_0_})%# '; export PROMPT
+#     PROMPT='%n@%m %? %B%3~%b(${vcs_info_msg_0_})%# '; export PROMPT
+# else
+#     PROMPT='%n@%m %? %~%# '; export PROMPT
+# fi
+#+END_SRC
+
+*** Dumb terminal setup
+:PROPERTIES:
+:ID:       89826739-6442-4490-be44-13af5d372226
+:CUSTOM_ID: 1796add0-7e52-4e85-8def-955079704f25
+:END:
+Just a couple of left overs for very dumb terminals (running shells inside of
+things, mostly). It tangles to =99-dumb.zsh= to ensure it's loaded last.
+
+#+BEGIN_SRC sh :tangle .zsh.d/99-dumb.zsh
+# Things for dumb terminals
+if [[ "$EMACSx" == "tx" || "$TERM" == "dumb" ]]; then
+    unsetopt zle
+    #unfunction precmd
+    export DISABLE_AUTO_TITLE=true
+    export ZSH_HIGHLIGHT_MAXLENGTH=0
+else
+    alias ag="ag --pager='less -FRX'"
+fi
+#+END_SRC
+
+*** Machine/OS-specific shell configuration
+:PROPERTIES:
+:CUSTOM_ID: 156e4e15-8aad-4dd2-9102-069ff18ec8e8
+:END:
+Finally, I have some either OS-specific or host-specific configurations, which
+are loaded by =~/.zshenv= by looking for
+
+#+BEGIN_SRC sh
+~/.zsh.d/zsh.$OS
+#+END_SRC
+
+Where =$OS= is something like 'Darwin' or 'Linux'
+
+And then also loading
+
+#+BEGIN_SRC sh
+~/.zsh.d/zsh.$HOSTPREFIX
+#+END_SRC
+
+Which =$HOSTPREFIX= is the output of
+
+#+BEGIN_SRC sh
+hostname | cut -d. -f1 | sed 's/.*/\L&/'
+#+END_SRC
+
+which essentially calls =hostname=, takes only the first part and lowercases it.
+
+**** Darwin (OSX)
+:PROPERTIES:
+:ID:       bec8e175-a04e-4b54-8d89-edd5f3ad228c
+:CUSTOM_ID: 3d1eab53-e973-4d70-80bd-f5a0e8c2b4d9
+:END:
+On OSX, I mostly just have to do a lot of nonsense to get Emacs stuff to work
+correctly.
+
+#+BEGIN_SRC sh :tangle .zsh.d/zsh.Darwin
+export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
+
+export EMACS_HOME="/Applications/Emacs.app/Contents/MacOS"
+export ERC_HOME="/Applications/ERC.app/Contents/MacOS"
+export GNUS_HOME="/Applications/Gnus.app/Contents/MacOS"
+
+if [ -s /usr/local/bin/emacs ]; then
+    alias emacs='TERM=xterm-256color emacs'
+    alias hb_emacs='/usr/local/bin/emacs'
+fi
+
+#function ec() { TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH emacsclient -t $@ }
+alias e="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
+alias ec="emacsclient"
+
+#function el() { ps ax|grep Emacs }
+function ekill() { emacsclient -e '(kill-emacs)' }
+
+alias emacs="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
+alias gemacs="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs 2>&1 > /dev/null &"
+alias erc="TERM=xterm-256color PATH=$ERC_HOME/bin:$PATH $ERC_HOME/Emacs 2>&1 > /dev/null &"
+alias gnus="TERM=xterm-256color PATH=$GNUS_HOME/bin:$PATH $GNUS_HOME/Emacs 2>&1 > /dev/null &"
+
+# for connection to a running emacs
+export EDITOR="emacsclient"
+export ALTERNATIVE_EDITOR="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
+
+# Use MacVim's vim for terminal sessions, since it has everything compiled in.
+alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
+
+# Remove ctrl+y from the keybinds for delayed suspend
+stty dsusp undef
+
+# awesome
+alias gps="ps -c -r -ax -o command,pid,pcpu,time | sed 's/\(PID *\)%/\1 %/' | head -n 11 && echo && ps -c -m -ax -o command,pid,pmem,rss=RSIZE | sed 's/\(.\{23\}\)/\1 /' | head -n 9"
+
+alias tmux='tmux -2 -f .tmux.osx.conf'
+
+# A function to mimic Linux's strace, whichout running the program as root
+function strace {
+    sudo dtruss -f sudo -u `whoami` $*
+}
+#+END_SRC
+
+**** Linux
+:PROPERTIES:
+:ID:       42c65a61-7db1-47dd-aaf7-51fe87a4882d
+:CUSTOM_ID: 917b95e1-5f9e-485d-8e91-cc4e9217fc2e
+:END:
+Linux has less customization, mostly differing aliases.
+
+#+BEGIN_SRC sh :tangle .zsh.d/zsh.Linux
+# make emacs have 256 colors
+alias -g emacs='TERM=xterm-256color /usr/local/bin/emacs -nw'
+
+alias -g ec="/home/hinmanm/bin/emacsclient"
+
+function ekill() { emacsclient -e '(kill-emacs)' }
+
+export EDITOR="emacs -nw"
+
+alias tmux='tmux -2'
+
+# awesome
+alias gps='ps -eo cmd,fname,pid,pcpu,time --sort=-pcpu | head -n 11 && echo && ps -eo cmd,fname,pid,pmem,rss --sort=-rss | head -n 9'
+#+END_SRC
+
+**** Thulcandra (main laptop)
+There's probably more I need to put here, but for now it's empty.
+
+#+BEGIN_SRC sh :tangle .zsh.d/zsh.thulcandra
+# Thulcandra had better be a linux machine...
+if [[ $OS == "Linux" ]]; then
+   export JAVA_HOME=/opt/jdk1.8.0_60
+   export PATH=$JAVA_HOME/bin:$PATH
+fi
+#+END_SRC
+
+**** Xanadu (old laptop)
+:PROPERTIES:
+:ID:       75a87db8-21e2-4059-91f2-0baa7a5318ad
+:CUSTOM_ID: df929141-bd90-4999-aa09-e4b7d1225860
+:END:
+There's probably more I need to put here, but for now it's empty.
+
+#+BEGIN_SRC sh :tangle .zsh.d/zsh.xanadu
+# Xanadu had better be a linux machine...
+if [[ $OS == "Linux" ]]; then
+   export JAVA_HOME=/opt/jdk1.8.0_51
+   export PATH=$JAVA_HOME/bin:$PATH
+fi
+#+END_SRC
+
+**** Ivalice (main desktop)
+:PROPERTIES:
+:ID:       bf837b71-d4da-44e3-aefb-3eb4695e7215
+:CUSTOM_ID: 04947773-8433-4d95-a509-0b5da919afd3
+:END:
+I am using a specific JDK on this machine, so I set it here.
+
+#+BEGIN_SRC sh :tangle .zsh.d/zsh.ivalice
+# Ivalice had better be a linux machine...
+if [[ $OS == "Linux" ]]; then
+   export JAVA_HOME=/opt/jdk1.8.0_45
+   export PATH=$JAVA_HOME/bin:$PATH
+fi
+#+END_SRC

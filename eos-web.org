@@ -35,6 +35,7 @@ middle.
           ("http.*\/\/github.com" . browse-url-generic)
           ("groups.google.com" . browse-url-generic)
           ("build.*\.elastic.co" . browse-url-generic)
+          ("zendesk.com" . browse-url-generic)
           ("." . eww-browse-url)))
   (setq shr-external-browser 'browse-url-generic)
   (setq browse-url-generic-program (executable-find "firefox"))
