@@ -20,8 +20,8 @@ el-modules = eos-core.el \
              eos-music.el \
              eos.el
 
-sh-modules = .zshrc \
-						 .zshenv
+sh-modules = out/zshrc \
+						 out/zshenv
 
 all: init $(el-modules) $(sh-modules)
 
