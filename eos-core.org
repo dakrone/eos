@@ -1854,6 +1854,7 @@ And finally, the main EOS Hydra for entry:
   ("a" (org-agenda nil " ") "Org Agenda" :exit t)
   ("t" eos/hydra-toggle-map/body "Toggle" :exit t)
   ("T" eos/start-or-jump-to-twitter "Twitter" :exit t)
+  ("g" gnus "Gnus" :exit t)
   ("m" eos/switch-to-mail "Mail" :exit t)
   ("M" eos/hydra-mpd/body "Music" :exit t)
   ("e" eww "EWW" :exit t)

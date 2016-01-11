@@ -353,4 +353,85 @@ passed in. Also supports ignoring the msg at the point."
     (mu4e)))
 #+END_SRC
 
-* TODO Gnus
+* Gnus
+
+#+BEGIN_SRC sh :tangle sh/link-gnus.sh
+ln -sfv $PWD/out/gnus.el ~/.gnus.el
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp :tangle out/gnus.el
+(require 'nnir)
+
+(setq user-full-name "Lee Hinman"
+      user-mail-address "lee@writequit.org"
+      message-user-fqdn "writequit.org"
+      gnus-use-adaptive-scoring t)
+
+;; Modify the summary line to show score
+(setq gnus-summary-line-format
+      "%U%R%z %d %I%(%[%4L: %-23,23f%]%') %[%3V%] %s\n")
+
+(setq gnus-select-method '(nntp "news.gmane.org"))
+
+(setq gnus-thread-sort-functions
+      '((not gnus-thread-sort-by-date)
+        (not gnus-thread-sort-by-number)))
+
+(defun my-gnus-group-list-subscribed-groups ()
+  "List all subscribed groups with or without un-read messages"
+  (interactive)
+  (gnus-group-list-all-groups 5))
+
+(define-key gnus-group-mode-map
+  ;; list all the subscribed groups even they contain zero un-read messages
+  (kbd "o") 'my-gnus-group-list-subscribed-groups)
+
+;; bury the buffer with 'q' in gnus
+(define-key gnus-group-mode-map (kbd "q") 'bury-buffer)
+
+;; NO 'passive
+(setq gnus-use-cache t)
+
+;; ask encyption password once
+(setq epa-file-cache-passphrase-for-symmetric-encryption t)
+
+;; Fetch only part of the article if we can.
+;; I saw this in someone's .gnus
+(setq gnus-read-active-file 'some)
+
+;; Tree view for groups.  I like the organisational feel this has.
+(add-hook 'gnus-group-mode-hook 'gnus-topic-mode)
+
+;; Threads!  I hate reading un-threaded email -- especially mailing
+;; lists.  This helps a ton!
+(setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject)
+
+;; Enable hl-line-mode in gnus summary
+(add-hook 'gnus-summary-mode-hook 'hl-line-mode)
+
+;; Also, I prefer to see only the top level message.  If a message has
+;; several replies or is part of a thread, only show the first
+;; message.  'gnus-thread-ignore-subject' will ignore the subject and
+;; look at 'In-Reply-To:' and 'References:' headers.
+(setq gnus-thread-hide-subtree t)
+(setq gnus-thread-ignore-subject t)
+
+;; http://www.gnu.org/software/emacs/manual/html_node/gnus/_005b9_002e2_005d.html
+(setq gnus-use-correct-string-widths nil)
+
+(defun my-gnus-group-list-subscribed-groups ()
+  "List all subscribed groups with or without un-read messages"
+  (interactive)
+  (gnus-group-list-all-groups 5))
+
+(define-key gnus-group-mode-map
+  ;; list all the subscribed groups even they contain zero un-read messages
+  (kbd "o") 'my-gnus-group-list-subscribed-groups)
+
+(define-key gnus-summary-mode-map (kbd "j") 'next-line)
+(define-key gnus-summary-mode-map (kbd "k") 'previous-line)
+
+(define-key gnus-article-mode-map (kbd "j") 'next-line)
+(define-key gnus-article-mode-map (kbd "k") 'previous-line)
+
+#+END_SRC

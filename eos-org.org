@@ -82,7 +82,7 @@ And now the huge org-mode configuration
           org-completion-use-ido nil
           ;; don't start up org files with indentation
           ;; (same as #+STARTUP: noindent)
-          org-startup-indented nil
+          org-startup-indented t
           ;; don't indent source code
           org-edit-src-content-indentation 0
           ;; don't adapt indentation
