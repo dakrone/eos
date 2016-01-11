@@ -68,3 +68,11 @@ when using dired.
     (global-set-key (kbd "C-c q") 'quick-preview-at-point)
     (define-key dired-mode-map (kbd "Q") 'quick-preview-at-point)))
 #+END_SRC
+
+Let's also use async everything in dired
+
+#+BEGIN_SRC emacs-lisp
+(use-package async :ensure t)
+(autoload 'dired-async-mode "dired-async.el" nil t)
+(dired-async-mode 1)
+#+END_SRC
