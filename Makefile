@@ -38,9 +38,9 @@ install.sh: eos.org
 run-init: init
 	zsh initialize.sh
 
-.zshrc: zsh.org
+out/zshrc: zsh.org
 	bin/tangle zsh.org
-.zshenv: zsh.org
+out/zshenv: zsh.org
 	bin/tangle zsh.org
 
 %.el: %.org
