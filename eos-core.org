@@ -1142,6 +1142,12 @@ Let's try enabling automatic saving of buffers when they lose focus
   (add-hook 'after-init-hook 'super-save-initialize))
 #+END_SRC
 
+I don't really need bi-directional display, so let's speed up long lines
+
+#+BEGIN_SRC emacs-lisp
+(setq-default bidi-display-reordering nil)
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 
 I use =gpg-agent= [fn:30:
