@@ -36,7 +36,7 @@ initialize.sh: eos.org
 install.sh: eos.org
 	bin/tangle eos.org
 run-init: init
-	bash initialize.sh
+	zsh initialize.sh
 
 .zshrc: zsh.org
 	bin/tangle zsh.org
@@ -54,9 +54,9 @@ byte-compile-all: all
 run: all
 	for f in sh/*.sh; do \
 		echo "Running: $$f"; \
-		bash -l $$f; \
+		zsh -l $$f; \
 	done
 
 install: run-init run install.sh
 	echo "I don't quite work yet..."
-	bash -l install.sh
+	zsh -l install.sh

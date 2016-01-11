@@ -37,10 +37,6 @@ installation that actually links up the appropriate parts.
 Warning! This will overwrite your current configuration!
 
 #+BEGIN_SRC sh :tangle install.sh :eval no
-ln -sfv $PWD/out/bashrc.d ~/.bashrc.d
-ln -sfv $PWD/out/bashrc ~/.bashrc
-# An extra symlink gets created, I have no idea why, but remove it
-rm -fv $PWD/out/bashrc.d/bashrc.d
 ln -sfv $PWD/eos.el ~/.emacs.d/init.el
 ln -sfv $PWD ~/.emacs.d/eos
 cp -vf bin/* ~/bin

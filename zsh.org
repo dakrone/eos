@@ -15,9 +15,9 @@
 We need a way of installing these, so let's generate one:
 
 #+BEGIN_SRC sh :tangle sh/install-zsh-things.sh
-ln -sfv $PWD/.zshenv ~/.zshenv
-ln -sfv $PWD/.zshrc ~/.zshrc
-ln -sfv $PWD/.zsh.d ~/.zsh.d
+ln -sfv $PWD/out/zshenv ~/.zshenv
+ln -sfv $PWD/out/zshrc ~/.zshrc
+ln -sfv $PWD/out/zsh.d ~/.zsh.d
 #+END_SRC
 
 ** ~/.zshenv
@@ -29,7 +29,7 @@ The =~/.zshenv= file is read for all shells, regardless of login state or not,
 and it's a pretty good place to put PATH stuff and other env variables that
 don't cause a lot of interaction.
 
-#+BEGIN_SRC sh :tangle .zshenv
+#+BEGIN_SRC sh :tangle out/zshenv
 [[ -o interactive ]] && echo "+++Reading .zshenv"
 
 MANPATH=/opt/local/man:/usr/local/man:$MANPATH
@@ -74,7 +74,7 @@ SAVEHIST=5000
 I read OS and machine-specific things in .zshenv, usually because they're pretty
 small and just set up paths.
 
-#+BEGIN_SRC sh :tangle .zshenv
+#+BEGIN_SRC sh :tangle out/zshenv
 ## Sourcing OS-specific things
 OS=$(uname -s); export OS
 if [[ -f ~/.zsh.d/zsh.${OS} ]]; then
@@ -97,14 +97,14 @@ fi
 Vagrant seems to want to use libvirt instead of VirtualBox on my machines, so I
 want to force it to use virtualbox.
 
-#+BEGIN_SRC sh :tangle .zshenv
+#+BEGIN_SRC sh :tangle out/zshenv
 export VAGRANT_DEFAULT_PROVIDER=virtualbox
 #+END_SRC
 
 Finally, if this a dumb term (running =M-x shell= in Emacs, unset some things
 and make it really dumb.
 
-#+BEGIN_SRC sh :tangle .zshenv
+#+BEGIN_SRC sh :tangle out/zshenv
 ## With Emacs 23, I've found this needs to go in ~root/.zshrc too to
 ## help with Tramp hangs.
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ '
@@ -123,7 +123,7 @@ I don't currently use =~/.zprofile=, but I should...
 :CUSTOM_ID: 13612b8d-4a0f-40da-b6ee-4fb89b3dcae3
 :END:
 
-#+BEGIN_SRC sh :tangle .zshrc
+#+BEGIN_SRC sh :tangle out/zshrc
 # Handle dumb terms
 [[ $TERM == "dumb" ]] && unsetopt zle && PS1='$ ' && return
 
@@ -182,6 +182,11 @@ else
     done
 fi
 
+# Create the cache directory
+if [ ! -d ~/.zsh-cache ]; then
+    mkdir -p ~/.zsh-cache
+fi
+
 zstyle ':completion:::::' completer _complete _approximate
 zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ~/.zsh-cache
@@ -217,11 +222,6 @@ setopt dvorak
 
 autoload -U url-quote-magic
 zle -N self-insert url-quote-magic
-
-# Source z.sh if available
-if [ -s ~/bin/z.sh ] ; then
-    source ~/bin/z.sh ;
-fi
 
 # Use zsh syntax highlighting if available
 if [ -s ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ] ; then
@@ -264,7 +264,7 @@ First, aliases, for which I have many!
 :CUSTOM_ID: 34939e9e-7b4d-47f1-ab59-b196849cd834
 :END:
 
-#+BEGIN_SRC sh :tangle .zsh.d/00-aliases.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/00-aliases.zsh
 # colorful ls for whichever platform
 if ls -F --color=auto >&/dev/null; then
     alias ls="ls --color=auto -F"
@@ -322,7 +322,7 @@ alias tmaster='tmux -2 -u -S /tmp/mastermux -f .tmux.master.conf'
 
 Next, some functions, when shell aliases just won't do!
 
-#+BEGIN_SRC sh :tangle .zsh.d/01-functions.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/01-functions.zsh
 # functions
 function history-all { history -E 1 }
 
@@ -385,7 +385,7 @@ function cds () {
 Keybindings for the shell, in this case, mostly Emacs-compatible, but with some
 disabled to prevent dumb things. (Mostly me being dumb)
 
-#+BEGIN_SRC sh :tangle .zsh.d/02-bindkey.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/02-bindkey.zsh
 bindkey -e
 bindkey "^?"    backward-delete-char
 bindkey "^H"    backward-delete-char
@@ -414,7 +414,7 @@ bindkey -r '^[x' # remove M-x for emacs-things
 I'm using [[http://www.funtoo.org/Keychain][Keychain]] to manage SSH agent inheritance, so it just needs to be
 eval-ed when nodes start up. It loads the key in =~/.ssh/id_rsa=.
 
-#+BEGIN_SRC sh :tangle .zsh.d/03-ssh.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/03-ssh.zsh
 eval $(keychain --eval --agents ssh -Q id_rsa)
 #+END_SRC
 
@@ -425,7 +425,7 @@ eval $(keychain --eval --agents ssh -Q id_rsa)
 :END:
 Next, I need to set up some colors and formatting that ZSH will use for VCS info
 
-#+BEGIN_SRC sh :tangle .zsh.d/05-vcs.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/05-vcs.zsh
 autoload colors
 colors
 
@@ -475,7 +475,7 @@ fi
 Very small, but since I do so much HTTP testing for Elasticsearch on the command
 line, they end up saving a lot of time.
 
-#+BEGIN_SRC sh :tangle .zsh.d/10-http.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/10-http.zsh
 # HTTP verbs
 alias get='curl -s -XGET'
 alias post='curl -s -XPOST'
@@ -492,7 +492,7 @@ For Java development in Emacs, I rely heavily on [[http://www.gnu.org/software/g
 install by hand since most package managers have outdated versions. So I set
 some various things for the config here
 
-#+BEGIN_SRC sh :tangle .zsh.d/15-gtags.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/15-gtags.zsh
 if [ -f ~/.globalrc ]; then
     export GTAGSCONF=$HOME/.globalrc
 elif [ -f /usr/local/share/gtags/gtags.conf ] ; then
@@ -506,7 +506,7 @@ export GTAGSLABEL=ctags
 I need to set up the [[https://github.com/sstephenson/rbenv#installation][rbenv]] wrapper so I can have sane ruby building. If it
 exists, anyway.
 
-#+BEGIN_SRC sh :tangle .zsh.d/17-ruby.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/17-ruby.zsh
 if [ -f ~/.rbenv/bin/rbenv ]; then
     eval "$(rbenv init -)"
 fi
@@ -518,7 +518,7 @@ needs to be sourced if available.
 
 Use =pip install virtualenvwrapper= to install it
 
-#+BEGIN_SRC sh :tangle .zsh.d/17-python.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/17-python.zsh
 if whence -cp virtualenvwrapper.sh > /dev/null 2>&1; then
     source `whence -cp virtualenvwrapper.sh`
 fi
@@ -527,7 +527,7 @@ fi
 *** Opam (ocaml)
 I'm checking this out...
 
-#+BEGIN_SRC sh :tangle .zsh.d/18-opam.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/18-opam.zsh
 if [ -f ~/.opam/opam-init/init.zsh ]; then
   . ~/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
 fi
@@ -555,7 +555,7 @@ When used, it looks something like this (with more colors):
 
 And it's not /too/ unreadable...
 
-#+BEGIN_SRC sh :tangle .zsh.d/90-prompt.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/90-prompt.zsh
 autoload -U add-zsh-hook
 autoload -U colors && colors
 autoload -Uz vcs_info
@@ -659,7 +659,7 @@ add-zsh-hook precmd vcs_info
 Here's a commented out (but much less extravagant) version of a prompt that I
 keep around, just in case.
 
-#+BEGIN_SRC sh :tangle .zsh.d/90-prompt.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/90-prompt.zsh
 # Simple prompt setup
 # if not_in_cloud; then
 #     # PROMPT='%n@%m %w %* %! %? %B%3~%b(${vcs_info_msg_0_})%# '; export PROMPT
@@ -677,7 +677,7 @@ keep around, just in case.
 Just a couple of left overs for very dumb terminals (running shells inside of
 things, mostly). It tangles to =99-dumb.zsh= to ensure it's loaded last.
 
-#+BEGIN_SRC sh :tangle .zsh.d/99-dumb.zsh
+#+BEGIN_SRC sh :tangle out/zsh.d/99-dumb.zsh
 # Things for dumb terminals
 if [[ "$EMACSx" == "tx" || "$TERM" == "dumb" ]]; then
     unsetopt zle
@@ -724,7 +724,7 @@ which essentially calls =hostname=, takes only the first part and lowercases it.
 On OSX, I mostly just have to do a lot of nonsense to get Emacs stuff to work
 correctly.
 
-#+BEGIN_SRC sh :tangle .zsh.d/zsh.Darwin
+#+BEGIN_SRC sh :tangle out/zsh.d/zsh.Darwin
 export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)
 
 export EMACS_HOME="/Applications/Emacs.app/Contents/MacOS"
@@ -776,7 +776,7 @@ function strace {
 :END:
 Linux has less customization, mostly differing aliases.
 
-#+BEGIN_SRC sh :tangle .zsh.d/zsh.Linux
+#+BEGIN_SRC sh :tangle out/zsh.d/zsh.Linux
 # make emacs have 256 colors
 alias -g emacs='TERM=xterm-256color /usr/local/bin/emacs -nw'
 
@@ -790,45 +790,7 @@ alias tmux='tmux -2'
 
 # awesome
 alias gps='ps -eo cmd,fname,pid,pcpu,time --sort=-pcpu | head -n 11 && echo && ps -eo cmd,fname,pid,pmem,rss --sort=-rss | head -n 9'
-#+END_SRC
 
-**** Thulcandra (main laptop)
-There's probably more I need to put here, but for now it's empty.
-
-#+BEGIN_SRC sh :tangle .zsh.d/zsh.thulcandra
-# Thulcandra had better be a linux machine...
-if [[ $OS == "Linux" ]]; then
-   export JAVA_HOME=/opt/jdk1.8.0_60
-   export PATH=$JAVA_HOME/bin:$PATH
-fi
-#+END_SRC
-
-**** Xanadu (old laptop)
-:PROPERTIES:
-:ID:       75a87db8-21e2-4059-91f2-0baa7a5318ad
-:CUSTOM_ID: df929141-bd90-4999-aa09-e4b7d1225860
-:END:
-There's probably more I need to put here, but for now it's empty.
-
-#+BEGIN_SRC sh :tangle .zsh.d/zsh.xanadu
-# Xanadu had better be a linux machine...
-if [[ $OS == "Linux" ]]; then
-   export JAVA_HOME=/opt/jdk1.8.0_51
-   export PATH=$JAVA_HOME/bin:$PATH
-fi
-#+END_SRC
-
-**** Ivalice (main desktop)
-:PROPERTIES:
-:ID:       bf837b71-d4da-44e3-aefb-3eb4695e7215
-:CUSTOM_ID: 04947773-8433-4d95-a509-0b5da919afd3
-:END:
-I am using a specific JDK on this machine, so I set it here.
-
-#+BEGIN_SRC sh :tangle .zsh.d/zsh.ivalice
-# Ivalice had better be a linux machine...
-if [[ $OS == "Linux" ]]; then
-   export JAVA_HOME=/opt/jdk1.8.0_45
-   export PATH=$JAVA_HOME/bin:$PATH
-fi
+export JAVA_HOME=/opt/java/current
+export PATH=$JAVA_HOME/bin:$PATH
 #+END_SRC

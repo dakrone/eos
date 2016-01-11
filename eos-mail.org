@@ -26,326 +26,331 @@ and they have account-specific mail directories so a lot of functions are needed
 to return the correct path depending on the account the email is from.
 
 #+BEGIN_SRC emacs-lisp
-(defun mail ()
-  (interactive)
-  (add-to-list 'load-path "~/src/mu-0.9.15/mu4e")
-  (use-package mu4e
-    :config
-    (progn
-      (add-hook 'mu4e-compose-mode-hook 'turn-on-flyspell)
-      ;; gpg stuff
-      (use-package epa-file
-        :init (epa-file-enable))
+(add-to-list 'load-path "~/src/mu-0.9.15/mu4e")
+(use-package mu4e
+  :config
+  (progn
+    (add-hook 'mu4e-compose-mode-hook 'turn-on-flyspell)
+    ;; gpg stuff
+    (use-package epa-file
+      :init (epa-file-enable))
 
-      ;;store org-mode links to messages
-      (require 'org-mu4e)
-      ;;store link to message if in header view, not to header query
-      (setq org-mu4e-link-query-in-headers-mode nil)
+    ;;store org-mode links to messages
+    (require 'org-mu4e)
+    ;;store link to message if in header view, not to header query
+    (setq org-mu4e-link-query-in-headers-mode nil)
 
-      ;; Various mu4e settings
-      (setq mu4e-mu-binary (executable-find "mu")
-            ;;mu4e-sent-messages-behavior 'delete
-            mu4e-user-mail-address-list
-            '("matthew.hinman@gmail.com"
-              "lee@writequit.org"
-              "leehinman@fastmail.com"
-              "lee@elastic.co")
-            ;; save attachments to the Downloads folder
-            mu4e-attachment-dir "~/Downloads"
-            ;; attempt to show images
-            mu4e-view-show-images t
-            mu4e-view-image-max-width 800
-            ;; start in non-queuing mode
-            smtpmail-queue-mail nil
-            smtpmail-queue-dir "~/.mail/queue/"
-            mml2015-use 'epg
-            pgg-default-user-id "3acecae0"
-            epg-gpg-program (executable-find "gpg")
-            message-kill-buffer-on-exit t ;; kill sent msg buffers
-            ;; use msmtp
-            message-send-mail-function 'message-send-mail-with-sendmail
-            sendmail-program (executable-find "msmtp")
-            ;; Look at the from header to determine the account from which
-            ;; to send. Might not be needed b/c of mlh-msmtp
-            mail-specify-envelope-from t
-            mail-envelope-from 'header
-            message-sendmail-envelope-from 'header
-            ;; emacs email defaults
-            user-full-name "Lee Hinman"
-            user-mail-address "leehinman@fastmail.com"
-            mail-host-address "fastmail.com"
-            ;; no signature
-            mu4e-compose-signature ";; Lee"
-            ;; mu4e defaults
-            mu4e-maildir       "~/.mail"
-            ;; don't use unicode
-            mu4e-use-fancy-chars nil
-            ;; check for new messages every 90 seconds (3 min)
-            mu4e-update-interval 90)
+    ;; Various mu4e settings
+    (setq mu4e-mu-binary (executable-find "mu")
+          ;;mu4e-sent-messages-behavior 'delete
+          mu4e-user-mail-address-list
+          '("matthew.hinman@gmail.com"
+            "lee@writequit.org"
+            "leehinman@fastmail.com"
+            "lee@elastic.co")
+          ;; save attachments to the Downloads folder
+          mu4e-attachment-dir "~/Downloads"
+          ;; attempt to show images
+          mu4e-view-show-images t
+          mu4e-view-image-max-width 800
+          ;; start in non-queuing mode
+          smtpmail-queue-mail nil
+          smtpmail-queue-dir "~/.mail/queue/"
+          mml2015-use 'epg
+          pgg-default-user-id "3acecae0"
+          epg-gpg-program (executable-find "gpg")
+          message-kill-buffer-on-exit t ;; kill sent msg buffers
+          ;; use msmtp
+          message-send-mail-function 'message-send-mail-with-sendmail
+          sendmail-program (executable-find "msmtp")
+          ;; Look at the from header to determine the account from which
+          ;; to send. Might not be needed b/c of mlh-msmtp
+          mail-specify-envelope-from t
+          mail-envelope-from 'header
+          message-sendmail-envelope-from 'header
+          ;; emacs email defaults
+          user-full-name "Lee Hinman"
+          user-mail-address "leehinman@fastmail.com"
+          mail-host-address "fastmail.com"
+          ;; no signature
+          mu4e-compose-signature ";; Lee"
+          ;; mu4e defaults
+          mu4e-maildir       "~/.mail"
+          ;; don't use unicode
+          mu4e-use-fancy-chars nil
+          ;; check for new messages every 90 seconds (3 min)
+          mu4e-update-interval 90)
 
-      ;; the default is html2text, and elinks does a slightly better option
-      (when (executable-find "elinks")
-        (setq mu4e-html2text-command (concat (executable-find "elinks") " -dump")))
+    ;; the default is html2text, and elinks does a slightly better option
+    (when (executable-find "elinks")
+      (setq mu4e-html2text-command (concat (executable-find "elinks") " -dump")))
 
-      (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
-      (use-package gnus-dired
-        :config
-        (progn
-          ;; make the `gnus-dired-mail-buffers' function also work on
-          ;; message-mode derived modes, such as mu4e-compose-mode
-          (defun gnus-dired-mail-buffers ()
-            "Return a list of active message buffers."
-            (let (buffers)
-              (save-current-buffer
-                (dolist (buffer (buffer-list t))
-                  (set-buffer buffer)
-                  (when (and (derived-mode-p 'message-mode)
-                             (null message-sent-message-via))
-                    (push (buffer-name buffer) buffers))))
-              (nreverse buffers)))
+    (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
+    (use-package gnus-dired
+      :config
+      (progn
+        ;; make the `gnus-dired-mail-buffers' function also work on
+        ;; message-mode derived modes, such as mu4e-compose-mode
+        (defun gnus-dired-mail-buffers ()
+          "Return a list of active message buffers."
+          (let (buffers)
+            (save-current-buffer
+              (dolist (buffer (buffer-list t))
+                (set-buffer buffer)
+                (when (and (derived-mode-p 'message-mode)
+                           (null message-sent-message-via))
+                  (push (buffer-name buffer) buffers))))
+            (nreverse buffers)))
 
-          (setq gnus-dired-mail-mode 'mu4e-user-agent)))
+        (setq gnus-dired-mail-mode 'mu4e-user-agent)))
 
-      ;; Vars used below
-      (defvar mlh-mu4e-new-mail nil
-        "Boolean to represent if there is new mail.")
+    ;; Vars used below
+    (defvar mlh-mu4e-new-mail nil
+      "Boolean to represent if there is new mail.")
 
-      (defvar mlh-mu4e-url-location-list '()
-        "Stores the location of each link in a mu4e view buffer")
+    (defvar mlh-mu4e-url-location-list '()
+      "Stores the location of each link in a mu4e view buffer")
 
-      ;; This is also defined in init.el, but b/c ESK runs all files in the
-      ;; user-dir before init.el it must also be defined here
-      (defvar message-filter-regexp-list '()
-        "regexps to filter matched msgs from the echo area when message is called")
+    ;; This is also defined in init.el, but b/c ESK runs all files in the
+    ;; user-dir before init.el it must also be defined here
+    (defvar message-filter-regexp-list '()
+      "regexps to filter matched msgs from the echo area when message is called")
 
-      ;; Multi-account support
-      (defun mlh-mu4e-current-account (&optional msg ignore-message-at-point)
-        "Figure out what the current account is based on the message being
+    ;; Multi-account support
+    (defun mlh-mu4e-current-account (&optional msg ignore-message-at-point)
+      "Figure out what the current account is based on the message being
 composed, the message under the point, or (optionally) the message
 passed in. Also supports ignoring the msg at the point."
-        (let ((cur-msg (or msg
-                           mu4e-compose-parent-message
-                           (and (not ignore-message-at-point)
-                                (mu4e-message-at-point t)))))
-          (when cur-msg
-            (let ((maildir (mu4e-msg-field cur-msg :maildir)))
-              (string-match "/\\(.*?\\)/" maildir)
-              (match-string 1 maildir)))))
+      (let ((cur-msg (or msg
+                         mu4e-compose-parent-message
+                         (and (not ignore-message-at-point)
+                              (mu4e-message-at-point t)))))
+        (when cur-msg
+          (let ((maildir (mu4e-msg-field cur-msg :maildir)))
+            (string-match "/\\(.*?\\)/" maildir)
+            (match-string 1 maildir)))))
 
-      (defun is-gmail-account? (acct)
-        (if (or (equal "elastic" acct) (equal "gmail" acct))
-            t nil))
+    (defun is-gmail-account? (acct)
+      (if (or (equal "elastic" acct) (equal "gmail" acct))
+          t nil))
 
-      ;; my elisp is bad and I should feel bad
-      (defun mlh-folder-for (acct g-folder-name other-folder-name)
-        (if (or (equal "elastic" acct) (equal "gmail" acct))
-            (format "/%s/[Gmail].%s" acct g-folder-name)
-          (format "/%s/INBOX.%s" acct other-folder-name)))
+    ;; my elisp is bad and I should feel bad
+    (defun mlh-folder-for (acct g-folder-name other-folder-name)
+      (if (or (equal "elastic" acct) (equal "gmail" acct))
+          (format "/%s/[Gmail].%s" acct g-folder-name)
+        (format "/%s/INBOX.%s" acct other-folder-name)))
 
-      ;; Support for multiple accounts
-      (setq mu4e-sent-folder   (lambda (msg)
-                                 (mlh-folder-for (mlh-mu4e-current-account msg)
-                                                 "Sent Mail" "Sent"))
-            mu4e-drafts-folder (lambda (msg)
-                                 (mlh-folder-for (mlh-mu4e-current-account msg)
-                                                 "Drafts" "Drafts"))
-            mu4e-trash-folder  (lambda (msg)
-                                 (mlh-folder-for (mlh-mu4e-current-account msg)
-                                                 "Trash" "Trash"))
-            mu4e-refile-folder (lambda (msg)
-                                 (mlh-folder-for (mlh-mu4e-current-account msg)
-                                                 "All Mail" "Archive"))
-            ;; The following list represents the account followed by key /
-            ;; value pairs of vars to set when the account is chosen
-            mlh-mu4e-account-alist
-            '(("gmail"
-               (user-mail-address   "matthew.hinman@gmail.com")
-               (msmtp-account       "gmail")
-               (mu4e-sent-messages-behavior delete))
-              ("elastic"
-               (user-mail-address   "lee@elastic.co")
-               (msmtp-account       "elastic")
-               (mu4e-sent-messages-behavior delete))
-              ("fastmail"
-               (user-mail-address   "leehinman@fastmail.com")
-               (msmtp-account       "fastmail")
-               (mu4e-sent-messages-behavior sent))
-              )
-            ;; These are used when mu4e checks for new messages
-            mu4e-my-email-addresses
-            (mapcar (lambda (acct) (cadr (assoc 'user-mail-address (cdr acct))))
-                    mlh-mu4e-account-alist))
+    ;; Support for multiple accounts
+    (setq mu4e-sent-folder   (lambda (msg)
+                               (mlh-folder-for (mlh-mu4e-current-account msg)
+                                               "Sent Mail" "Sent"))
+          mu4e-drafts-folder (lambda (msg)
+                               (mlh-folder-for (mlh-mu4e-current-account msg)
+                                               "Drafts" "Drafts"))
+          mu4e-trash-folder  (lambda (msg)
+                               (mlh-folder-for (mlh-mu4e-current-account msg)
+                                               "Trash" "Trash"))
+          mu4e-refile-folder (lambda (msg)
+                               (mlh-folder-for (mlh-mu4e-current-account msg)
+                                               "All Mail" "Archive"))
+          ;; The following list represents the account followed by key /
+          ;; value pairs of vars to set when the account is chosen
+          mlh-mu4e-account-alist
+          '(("gmail"
+             (user-mail-address   "matthew.hinman@gmail.com")
+             (msmtp-account       "gmail")
+             (mu4e-sent-messages-behavior delete))
+            ("elastic"
+             (user-mail-address   "lee@elastic.co")
+             (msmtp-account       "elastic")
+             (mu4e-sent-messages-behavior delete))
+            ("fastmail"
+             (user-mail-address   "leehinman@fastmail.com")
+             (msmtp-account       "fastmail")
+             (mu4e-sent-messages-behavior sent))
+            )
+          ;; These are used when mu4e checks for new messages
+          mu4e-my-email-addresses
+          (mapcar (lambda (acct) (cadr (assoc 'user-mail-address (cdr acct))))
+                  mlh-mu4e-account-alist))
 
-      (defun mlh-mu4e-choose-account ()
-        "Prompt the user for an account to use"
-        (completing-read (format "Compose with account: (%s) "
-                                 (mapconcat #'(lambda (var) (car var))
-                                            mlh-mu4e-account-alist "/"))
-                         (mapcar #'(lambda (var) (car var))
-                                 mlh-mu4e-account-alist)
-                         nil t nil nil (caar mlh-mu4e-account-alist)))
+    (defun mlh-mu4e-choose-account ()
+      "Prompt the user for an account to use"
+      (completing-read (format "Compose with account: (%s) "
+                               (mapconcat #'(lambda (var) (car var))
+                                          mlh-mu4e-account-alist "/"))
+                       (mapcar #'(lambda (var) (car var))
+                               mlh-mu4e-account-alist)
+                       nil t nil nil (caar mlh-mu4e-account-alist)))
 
-      (defun mlh-mu4e-set-compose-account ()
-        "Set various vars when composing a message. The vars to set are
+    (defun mlh-mu4e-set-compose-account ()
+      "Set various vars when composing a message. The vars to set are
   defined in `mlh-mu4e-account-alist'."
-        (let* ((account (or (mlh-mu4e-current-account nil t)
-                            (mlh-mu4e-choose-account)))
-               (account-vars (cdr (assoc account mlh-mu4e-account-alist))))
-          (when account-vars
-            (mapc #'(lambda (var)
-                      (set (car var) (cadr var)))
-                  account-vars))))
-      (add-hook 'mu4e-compose-pre-hook 'mlh-mu4e-set-compose-account)
+      (let* ((account (or (mlh-mu4e-current-account nil t)
+                          (mlh-mu4e-choose-account)))
+             (account-vars (cdr (assoc account mlh-mu4e-account-alist))))
+        (when account-vars
+          (mapc #'(lambda (var)
+                    (set (car var) (cadr var)))
+                account-vars))))
+    (add-hook 'mu4e-compose-pre-hook 'mlh-mu4e-set-compose-account)
 
-      ;; Send mail through msmtp (setq stuff is below)
-      (defun mlh-msmtp ()
-        "Add some arguments to the msmtp call in order to route the message
+    ;; Send mail through msmtp (setq stuff is below)
+    (defun mlh-msmtp ()
+      "Add some arguments to the msmtp call in order to route the message
   through the right account."
-        (if (message-mail-p)
-            (save-excursion
-              (let* ((from (save-restriction (message-narrow-to-headers)
-                                             (message-fetch-field "from"))))
-                (setq message-sendmail-extra-arguments (list "-a" msmtp-account))))))
-      (add-hook 'message-send-mail-hook 'mlh-msmtp)
+      (if (message-mail-p)
+          (save-excursion
+            (let* ((from (save-restriction (message-narrow-to-headers)
+                                           (message-fetch-field "from"))))
+              (setq message-sendmail-extra-arguments (list "-a" msmtp-account))))))
+    (add-hook 'message-send-mail-hook 'mlh-msmtp)
 
-      ;; Notification stuff
-      ;; (setq global-mode-string
-      ;;       (if (string-match-p "mlh-mu4e-new-mail"
-      ;;                           (prin1-to-string global-mode-string))
-      ;;           global-mode-string
-      ;;         (cons
-      ;;          ;;         '(mlh-mu4e-new-mail "✉" "")
-      ;;          '(mlh-mu4e-new-mail "Mail" "")
-      ;;          global-mode-string)))
+    ;; Notification stuff
+    ;; (setq global-mode-string
+    ;;       (if (string-match-p "mlh-mu4e-new-mail"
+    ;;                           (prin1-to-string global-mode-string))
+    ;;           global-mode-string
+    ;;         (cons
+    ;;          ;;         '(mlh-mu4e-new-mail "✉" "")
+    ;;          '(mlh-mu4e-new-mail "Mail" "")
+    ;;          global-mode-string)))
 
-      (defun mlh-mu4e-unread-mail-query ()
-        "The query to look for unread messages in all account INBOXes.
+    (defun mlh-mu4e-unread-mail-query ()
+      "The query to look for unread messages in all account INBOXes.
   More generally, change this code to affect not only when the
   envelope icon appears in the modeline, but also what shows up in
   mu4e under the Unread bookmark"
-        (mapconcat
-         (lambda (acct)
-           (let ((name (car acct)))
-             (format "%s"
-                     (mapconcat (lambda (fmt)
-                                  (format fmt name))
-                                '("flag:unread AND maildir:/%s/INBOX")
-                                " "))))
-         mlh-mu4e-account-alist
-         " OR "))
+      (mapconcat
+       (lambda (acct)
+         (let ((name (car acct)))
+           (format "%s"
+                   (mapconcat (lambda (fmt)
+                                (format fmt name))
+                              '("flag:unread AND maildir:/%s/INBOX")
+                              " "))))
+       mlh-mu4e-account-alist
+       " OR "))
 
-      (defun mlh-mu4e-new-mail-p ()
-        "Predicate for if there is new mail or not"
-        (not (eq 0 (string-to-number
-                    (replace-regexp-in-string
-                     "[ \t\n\r]" "" (shell-command-to-string
-                                     (concat "mu find "
-                                             (mlh-mu4e-unread-mail-query)
-                                             " | wc -l")))))))
+    (defun mlh-mu4e-new-mail-p ()
+      "Predicate for if there is new mail or not"
+      (not (eq 0 (string-to-number
+                  (replace-regexp-in-string
+                   "[ \t\n\r]" "" (shell-command-to-string
+                                   (concat "mu find "
+                                           (mlh-mu4e-unread-mail-query)
+                                           " | wc -l")))))))
 
-      (defun mlh-mu4e-notify ()
-        "Function called to update the new-mail flag used in the mode-line"
-        ;; This delay is to give emacs and mu a chance to have changed the
-        ;; status of the mail in the index
-        (run-with-idle-timer
-         1 nil (lambda () (setq mlh-mu4e-new-mail (mlh-mu4e-new-mail-p)))))
+    (defun mlh-mu4e-notify ()
+      "Function called to update the new-mail flag used in the mode-line"
+      ;; This delay is to give emacs and mu a chance to have changed the
+      ;; status of the mail in the index
+      (run-with-idle-timer
+       1 nil (lambda () (setq mlh-mu4e-new-mail (mlh-mu4e-new-mail-p)))))
 
-      ;; I put a lot of effort (probably too much) into getting the
-      ;; 'new mail' icon to go away by showing or hiding it:
-      ;; - periodically (this runs even when mu4e isn't running)
-      (setq mlh-mu4e-notify-timer (run-with-timer 0 500 'mlh-mu4e-notify))
-      ;; - when the index is updated (this runs when mu4e is running)
-      (add-hook 'mu4e-index-updated-hook 'mlh-mu4e-notify)
-      ;; - after mail is processed (try to make the icon go away)
-      (defadvice mu4e-mark-execute-all
-          (after mu4e-mark-execute-all-notify activate) 'mlh-mu4e-notify)
-      ;; - when a message is opened (try to make the icon go away)
-      (add-hook 'mu4e-view-mode-hook 'mlh-mu4e-notify)
-      ;; wrap lines
-      (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+    ;; I put a lot of effort (probably too much) into getting the
+    ;; 'new mail' icon to go away by showing or hiding it:
+    ;; - periodically (this runs even when mu4e isn't running)
+    (setq mlh-mu4e-notify-timer (run-with-timer 0 500 'mlh-mu4e-notify))
+    ;; - when the index is updated (this runs when mu4e is running)
+    (add-hook 'mu4e-index-updated-hook 'mlh-mu4e-notify)
+    ;; - after mail is processed (try to make the icon go away)
+    (defadvice mu4e-mark-execute-all
+        (after mu4e-mark-execute-all-notify activate) 'mlh-mu4e-notify)
+    ;; - when a message is opened (try to make the icon go away)
+    (add-hook 'mu4e-view-mode-hook 'mlh-mu4e-notify)
+    ;; wrap lines
+    (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
 
-      (defun mlh-mu4e-quit-and-notify ()
-        "Bury the buffer and check for new messages. Mainly this is intended
+    (defun mlh-mu4e-quit-and-notify ()
+      "Bury the buffer and check for new messages. Mainly this is intended
   to clear out the envelope icon when done reading mail."
-        (interactive)
-        (bury-buffer)
-        (mlh-mu4e-notify))
+      (interactive)
+      (bury-buffer)
+      (mlh-mu4e-notify))
 
-      ;; Make 'quit' just bury the buffer
-      (define-key mu4e-headers-mode-map "q" 'mlh-mu4e-quit-and-notify)
-      (define-key mu4e-main-mode-map "q" 'mlh-mu4e-quit-and-notify)
+    ;; Make 'quit' just bury the buffer
+    (define-key mu4e-headers-mode-map "q" 'mlh-mu4e-quit-and-notify)
+    (define-key mu4e-main-mode-map "q" 'mlh-mu4e-quit-and-notify)
 
-      ;; View mode stuff
-      ;; Make it possible to tab between links
-      (defun mlh-mu4e-populate-url-locations (&optional force)
-        "Scans the view buffer for the links that mu4e has identified and
+    ;; View mode stuff
+    ;; Make it possible to tab between links
+    (defun mlh-mu4e-populate-url-locations (&optional force)
+      "Scans the view buffer for the links that mu4e has identified and
   notes their locations"
-        (when (or (null mlh-mu4e-url-location-list) force)
-          (make-local-variable 'mlh-mu4e-url-location-list)
-          (let ((pt (next-single-property-change (point-min) 'face)))
-            (while pt
-              (when (equal (get-text-property pt 'face) 'mu4e-view-link-face)
-                (add-to-list 'mlh-mu4e-url-location-list pt t))
-              (setq pt (next-single-property-change pt 'face)))))
-        mlh-mu4e-url-location-list)
+      (when (or (null mlh-mu4e-url-location-list) force)
+        (make-local-variable 'mlh-mu4e-url-location-list)
+        (let ((pt (next-single-property-change (point-min) 'face)))
+          (while pt
+            (when (equal (get-text-property pt 'face) 'mu4e-view-link-face)
+              (add-to-list 'mlh-mu4e-url-location-list pt t))
+            (setq pt (next-single-property-change pt 'face)))))
+      mlh-mu4e-url-location-list)
 
-      (defun mlh-mu4e-move-to-link (pt)
-        (if pt
-            (goto-char pt)
-          (error "No link found.")))
+    (defun mlh-mu4e-move-to-link (pt)
+      (if pt
+          (goto-char pt)
+        (error "No link found.")))
 
-      (defun mlh-mu4e-forward-url ()
-        "Move the point to the beginning of the next link in the buffer"
-        (interactive)
-        (let* ((pt-list (mlh-mu4e-populate-url-locations)))
-          (mlh-mu4e-move-to-link
-           (or (some (lambda (pt) (when (> pt (point)) pt)) pt-list)
-               (some (lambda (pt) (when (> pt (point-min)) pt)) pt-list)))))
+    (defun mlh-mu4e-forward-url ()
+      "Move the point to the beginning of the next link in the buffer"
+      (interactive)
+      (let* ((pt-list (mlh-mu4e-populate-url-locations)))
+        (mlh-mu4e-move-to-link
+         (or (some (lambda (pt) (when (> pt (point)) pt)) pt-list)
+             (some (lambda (pt) (when (> pt (point-min)) pt)) pt-list)))))
 
-      (defun mlh-mu4e-backward-url ()
-        "Move the point to the beginning of the previous link in the buffer"
-        (interactive)
-        (let* ((pt-list (reverse (mlh-mu4e-populate-url-locations))))
-          (mlh-mu4e-move-to-link
-           (or (some (lambda (pt) (when (< pt (point)) pt)) pt-list)
-               (some (lambda (pt) (when (< pt (point-max)) pt)) pt-list)))))
+    (defun mlh-mu4e-backward-url ()
+      "Move the point to the beginning of the previous link in the buffer"
+      (interactive)
+      (let* ((pt-list (reverse (mlh-mu4e-populate-url-locations))))
+        (mlh-mu4e-move-to-link
+         (or (some (lambda (pt) (when (< pt (point)) pt)) pt-list)
+             (some (lambda (pt) (when (< pt (point-max)) pt)) pt-list)))))
 
-      (define-key mu4e-view-mode-map (kbd "TAB") 'mlh-mu4e-forward-url)
-      (define-key mu4e-view-mode-map (kbd "<backtab>") 'mlh-mu4e-backward-url)
+    (define-key mu4e-view-mode-map (kbd "TAB") 'mlh-mu4e-forward-url)
+    (define-key mu4e-view-mode-map (kbd "<backtab>") 'mlh-mu4e-backward-url)
 
-      ;; Misc
-      ;; The bookmarks for the main screen
-      (setq mu4e-bookmarks
-            `((,(mlh-mu4e-unread-mail-query) "New messages"         ?b)
-              ("maildir:/elastic/build"      "Build failures"       ?B)
-              ("date:today..now"             "Today's messages"     ?t)
-              ("date:7d..now"                "Last 7 days"          ?W)
-              ("maildir:/fastmail/INBOX"     "Fastmail"             ?f)
-              ("maildir:/elastic/INBOX"      "Elastic"              ?s)
-              ("maildir:/gmail/INBOX"        "Gmail"                ?g)
-              ("maildir:/elastic/INBOX OR maildir:/gmail/INBOX OR maildir:/fastmail/INBOX"
-               "All Mail" ?a)
-              ("maildir:/elastic/INBOX AND subject:Production AND from:support@elastic.co"
-               "Production support" ?p)
-              ("maildir:/elastic/INBOX AND subject:Development AND from:support@elastic.co"
-               "Development support" ?d)))
+    ;; Misc
+    ;; The bookmarks for the main screen
+    (setq mu4e-bookmarks
+          `((,(mlh-mu4e-unread-mail-query) "New messages"         ?b)
+            ("maildir:/elastic/build"      "Build failures"       ?B)
+            ("date:today..now"             "Today's messages"     ?t)
+            ("date:7d..now"                "Last 7 days"          ?W)
+            ("maildir:/fastmail/INBOX"     "Fastmail"             ?f)
+            ("maildir:/elastic/INBOX"      "Elastic"              ?s)
+            ("maildir:/gmail/INBOX"        "Gmail"                ?g)
+            ("maildir:/elastic/INBOX OR maildir:/gmail/INBOX OR maildir:/fastmail/INBOX"
+             "All Mail" ?a)
+            ("maildir:/elastic/INBOX AND subject:Production AND from:support@elastic.co"
+             "Production support" ?p)
+            ("maildir:/elastic/INBOX AND subject:Development AND from:support@elastic.co"
+             "Development support" ?d)))
 
-      ;; start mu4e
-      (mu4e~start)
-      ;; check for unread messages
-      (mlh-mu4e-notify)
+    ;; start mu4e
+    (mu4e~start)
+    ;; check for unread messages
+    (mlh-mu4e-notify)
 
-      (add-to-list 'mu4e-view-actions
-                   '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+    (add-to-list 'mu4e-view-actions
+                 '("ViewInBrowser" . mu4e-action-view-in-browser) t)
 
-      (define-key mu4e-view-mode-map (kbd "j") 'next-line)
-      (define-key mu4e-view-mode-map (kbd "k") 'previous-line)
+    (define-key mu4e-view-mode-map (kbd "j") 'next-line)
+    (define-key mu4e-view-mode-map (kbd "k") 'previous-line)
 
-      (define-key mu4e-headers-mode-map (kbd "J") 'mu4e~headers-jump-to-maildir)
-      (define-key mu4e-headers-mode-map (kbd "j") 'next-line)
-      (define-key mu4e-headers-mode-map (kbd "k") 'previous-line)))
+    (define-key mu4e-headers-mode-map (kbd "J") 'mu4e~headers-jump-to-maildir)
+    (define-key mu4e-headers-mode-map (kbd "j") 'next-line)
+    (define-key mu4e-headers-mode-map (kbd "k") 'previous-line)))
 
-  (global-set-key (kbd "C-c m") 'mu4e))
+(global-set-key (kbd "C-c m") #'mu4e)
+
+(defun eos/switch-to-mail ()
+  "Switch to the *eshell* buffer, or create it"
+  (interactive)
+  (if (get-buffer "*mu4e-headers*")
+      (switch-to-buffer "*mu4e-headers*")
+    (mu4e)))
 #+END_SRC
 
 * TODO Gnus

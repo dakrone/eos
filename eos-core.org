@@ -116,50 +116,6 @@ function rpm-install () {
 }
 #+END_SRC
 
-** Bash Configuration Loader
-It's possible for multiple EOS modules to push out Bash configurations, so each
-one tangles to its own file which is then executed as so:
-
-#+BEGIN_SRC sh :tangle out/bashrc
-for file in ~/.bashrc.d/*.sh; do
-  . $file
-done
-#+END_SRC
-
-#+BEGIN_SRC sh :tangle out/bashrc.d/eos-core.sh
-test -f /etc/bash_profile && . /etc/bash_profile
-
-MANPATH=/opt/local/man:/usr/local/man:$MANPATH
-
-test -f /usr/bin/mg && export EDITOR=mg
-export PAGER=less
-
-# Update path with local ~/bin and cabal's bin dir
-export PATH=~/bin:~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH
-
-# Node/npm
-export PATH=$PATH:~/node_modules/.bin
-
-# Cask
-export PATH=$PATH:~/.cask/bin
-
-# rbenv
-export PATH=~/.rbenv/bin:$PATH
-
-# Virtualenvwrapper environment home
-export WORKON_HOME=~/.venvs
-if [ -d "$WORKON_HOME" ]; then
-    mkdir -p "$WORKON_HOME"
-fi
-
-# Set the default provider for vagrant to use virtualbox
-export VAGRANT_DEFAULT_PROVIDER=virtualbox
-
-## Things to help with Tramp hangs.
-[[ $TERM == "dumb" ]] && export PS1='$ '
-[[ ! $TERM == "dumb" ]] && export TERM=xterm-256color
-#+END_SRC
-
 * Booting up the system
 ** Systemd services
 
@@ -1898,7 +1854,7 @@ And finally, the main EOS Hydra for entry:
   ("a" (org-agenda nil " ") "Org Agenda" :exit t)
   ("t" eos/hydra-toggle-map/body "Toggle" :exit t)
   ("T" eos/start-or-jump-to-twitter "Twitter" :exit t)
-  ("m" gnus "Mail" :exit t)
+  ("m" eos/switch-to-mail "Mail" :exit t)
   ("M" eos/hydra-mpd/body "Music" :exit t)
   ("e" eww "EWW" :exit t)
   ("E" (when (y-or-n-p "Really start ERC?") (start-erc)) "Start ERC" :exit t)
