@@ -12,7 +12,7 @@ because there is a nice Emacs interface to it.
 Ensure that Emacs knows where MPD is listening
 
 #+BEGIN_SRC emacs-lisp
-(setenv "MPD_HOST" "thulcandra")
+(setenv "MPD_HOST" "localhost")
 (setenv "MPD_PORT" "6600")
 #+END_SRC
 
@@ -33,7 +33,7 @@ bind_to_address "127.0.0.1"
 Configure the address and port in Bash
 
 #+BEGIN_SRC sh :tangle out/bashrc.d/mpd.sh
-export MPD_HOST=thulcandra
+export MPD_HOST=localhost
 export MPD_PORT=6600
 #+END_SRC
 
