@@ -1,0 +1,18 @@
+#+TITLE: EOS: Elasticsearch Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-es)
+#+END_SRC
+
+* Elasticsearch
+
+#+BEGIN_SRC emacs-lisp
+(use-package es-mode
+  :ensure t
+  :init
+  (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
+  :config
+  (setq es-warn-on-delete-query nil))
+#+END_SRC
