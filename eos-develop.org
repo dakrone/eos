@@ -99,7 +99,8 @@ Uses =M-n= and =M-p= to jump between the same variable in multiple places
   :ensure t
   :init (add-hook #'prog-mode-hook #'smartscan-mode)
   :config
-  (bind-key "M-'" #'other-window smartscan-map))
+  (bind-key "M-'" #'other-window smartscan-map)
+  (setq smartscan-symbol-selector "symbol"))
 #+END_SRC
 
 ** Semantic Editing
