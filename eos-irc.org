@@ -55,6 +55,53 @@ IRC in Emacs
         (message "[%s] %s: %s"
                  (buffer-name) nickname (s-trim (s-collapse-whitespace message))))
       (add-hook 'ercn-notify-hook 'do-notify)))
+
+  (defun erc-cmd-UNTRACK (&optional target)
+    "Add TARGET to the list of target to be tracked."
+    (if target
+        (erc-with-server-buffer
+          (let ((untracked (car (erc-member-ignore-case target erc-track-exclude))))
+            (if untracked
+                (erc-display-line
+                 (erc-make-notice (format "%s is not currently tracked!" target))
+                 'active)
+              (add-to-list 'erc-track-exclude target)
+              (erc-display-line
+               (erc-make-notice (format "Now not tracking %s" target))
+               'active))))
+
+      (if (null erc-track-exclude)
+          (erc-display-line (erc-make-notice "Untracked targets list is empty") 'active)
+
+        (erc-display-line (erc-make-notice "Untracked targets list:") 'active)
+        (mapc #'(lambda (item)
+                  (erc-display-line (erc-make-notice item) 'active))
+              (erc-with-server-buffer erc-track-exclude))))
+    t)
+
+
+  (defun erc-cmd-TRACK (target)
+    "Remove TARGET of the list of targets which they should not be tracked.
+   If no TARGET argument is specified, list the contents of `erc-track-exclude'."
+    (when target
+      (erc-with-server-buffer
+        (let ((tracked (not (car (erc-member-ignore-case target erc-track-exclude)))))
+          (if tracked
+              (erc-display-line
+               (erc-make-notice (format "%s is currently tracked!" target))
+               'active)
+            (setq erc-track-exclude (remove target erc-track-exclude))
+            (erc-display-line
+             (erc-make-notice (format "Now tracking %s" target))
+             'active)))))
+    t)
+
+  (defun eos/add-server-to-chan-name (orig-fun server port target)
+    (let ((generated-name (funcall orig-fun server port target)))
+      (concat (cl-subseq server 0 2) "-" generated-name)))
+
+  ;;(advice-add 'erc-generate-new-buffer-name :around #'eos/add-server-to-chan-name)
+
   (let ((tls-program
          '("gnutls-cli --priority secure256 --x509certfile ~/host.pem -p %p %h"
            "openssl s_client -connect %h:%p -no_ssl2 -ign_eof -cert ~/host.pem")))
