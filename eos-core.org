@@ -418,9 +418,9 @@ These are some settings for version control stuff.
 Automatically revert file if it's changed on disk:
 
 #+BEGIN_SRC emacs-lisp
-(global-auto-revert-mode 1)
+;;(global-auto-revert-mode 1)
 ;; be quiet about reverting files
-(setq auto-revert-verbose nil)
+;;(setq auto-revert-verbose nil)
 #+END_SRC
 
 Start a server if not running, but a only for gui-only:
