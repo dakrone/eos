@@ -1963,9 +1963,9 @@ So I configure prodigy like so:
       :tags '(work test es)
       :port 9200)
     (prodigy-define-service
-      :name "Elasticsearch 2.1.0"
-      :cwd "~/ies/elasticsearch-2.1.0"
-      :command "~/ies/elasticsearch-2.1.0/bin/elasticsearch"
+      :name "Elasticsearch 2.1.1"
+      :cwd "~/ies/elasticsearch-2.1.1"
+      :command "~/ies/elasticsearch-2.1.1/bin/elasticsearch"
       :tags '(work test es)
       :port 9200)))
 #+END_SRC
