@@ -1869,6 +1869,38 @@ _q_: quit
   ("q" nil :color blue))
 #+END_SRC
 
+Here's a Hydra for information about the system (and emacs) that I stole from a
+different user:
+
+#+BEGIN_SRC emacs-lisp
+(defhydra eos/hydra-about-emacs ()
+  "
+    About Emacs                                                        [_q_] quit
+    ^^--------------------------------------------------------------------------
+    PID:             %s(emacs-pid)
+    Uptime:          %s(emacs-uptime)
+    Init time:       %s(emacs-init-time)
+    Directory:       %s(identity user-emacs-directory)
+    Invoked from:    %s(concat invocation-directory invocation-name)
+    Version:         %s(identity emacs-version)
+
+    User Info
+    ^^--------------------------------------------------------------------------
+    User name:       %s(user-full-name)
+    Login (real):    %s(user-login-name) (%s(user-real-login-name))
+      UID (real):    %s(user-uid) (%s(user-real-uid))
+      GID (real):    %s(group-gid) (%s(group-real-gid))
+    Mail address:    %s(identity user-mail-address)
+
+    System Info
+    ^^--------------------------------------------------------------------------
+    System name:     %s(system-name)
+    System type:     %s(identity system-type)
+    System config:   %s(identity system-configuration)
+    "
+  ("q" nil nil))
+#+END_SRC
+
 And finally, the main EOS Hydra for entry:
 
 #+BEGIN_SRC emacs-lisp
@@ -1877,6 +1909,7 @@ And finally, the main EOS Hydra for entry:
   ("`" eos/hydra-next-error/body "Errors" :exit t)
   ("(" eos/hydra-macro/body "Macros" :exit t)
   ("a" (org-agenda nil " ") "Org Agenda" :exit t)
+  ("A" eos/hydra-about-emacs/body "About" :exit t)
   ("t" eos/hydra-toggle-map/body "Toggle" :exit t)
   ("T" eos/start-or-jump-to-twitter "Twitter" :exit t)
   ("g" gnus "Gnus" :exit t)
