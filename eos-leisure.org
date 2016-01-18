@@ -20,3 +20,15 @@
 ;; eshell 4 is always my "download stuff" buffer
 (global-set-key (kbd "C-x M-d") #'eos/popup-downloads)
 #+END_SRC
+
+Let's manage the forecast and weather too, will be managed from the main Hydra
+
+#+BEGIN_SRC emacs-lisp
+(use-package sunshine
+  :ensure t
+  :init
+  (when (file-exists-p "~/.openweathermap.el")
+    (load-file "~/.openweathermap.el"))
+  (setq sunshine-show-icons t
+        sunshine-location "80202,USA"))
+#+END_SRC

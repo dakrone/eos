@@ -1921,6 +1921,7 @@ And finally, the main EOS Hydra for entry:
   ("s" eos/hydra-skeleton/body "Skeletons" :exit t)
   ("p" proced "Proc Ed" :exit t)
   ("P" prodigy "Prodigy" :exit t)
+  ("W" sunshine-forecast "Weather" :exit t)
   ("q" nil "quit" :exit t))
 
 ;; Bind the main EOS hydra to M-t
