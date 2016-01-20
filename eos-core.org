@@ -1830,7 +1830,8 @@ _q_: quit
   ("n" next-error "next" :bind nil)
   ("k" previous-error "previous" :bind nil)
   ("p" previous-error "previous" :bind nil)
-  ("l" flycheck-list-errors "list-errors" :exit t))
+  ("l" flycheck-list-errors "list-errors" :exit t)
+  ("q" nil "quit" :color red))
 
 (defhydra eos/hydra-macro
   (:pre
