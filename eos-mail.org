@@ -26,7 +26,7 @@ and they have account-specific mail directories so a lot of functions are needed
 to return the correct path depending on the account the email is from.
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/src/mu-0.9.15/mu4e")
+(add-to-list 'load-path "~/src/mu-0.9.16/mu4e")
 (use-package mu4e
   :config
   (progn
