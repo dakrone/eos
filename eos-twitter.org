@@ -22,7 +22,8 @@ immediately use Twitter :P
         ;; Start up with home and "emacs" search
         twittering-initial-timeline-spec-string
          '("(:home+@)"
-           "(:search/emacs/)"))
+           "(:search/emacs/)"
+           "(:search/elasticsearch/)"))
   ;; Don't kill the twittering buffer, just bury it
   (define-key twittering-mode-map (kbd "q") 'bury-buffer))
 #+END_SRC
