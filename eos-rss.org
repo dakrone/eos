@@ -43,6 +43,7 @@
           ("http://ferd.ca/feed.rss" blog)
           ("http://blog.fsck.com/atom.xml" blog)
           ("http://jvns.ca/atom.xml" blog)
+          ("http://newartisans.com/rss.xml" blog emacs)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
