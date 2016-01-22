@@ -1167,6 +1167,28 @@ on the left and A on the right.
 (global-set-key (kbd "C-x 4 t") 'transpose-buffers)
 #+END_SRC
 
+There is also some additional configuration that we may want to enable, let's do
+that with additional highlighting modes.
+
+First, highlight numbers in a "special" way, so they stick out:
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-numbers
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'highlight-numbers-mode)
+  (add-hook 'org-mode-hook #'highlight-numbers-mode))
+#+END_SRC
+
+Also highlight quoted symbols in a nice way.
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-quoted
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'highlight-quoted-mode))
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 
 I use =gpg-agent= [fn:30:
