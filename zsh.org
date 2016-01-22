@@ -512,6 +512,15 @@ if [ -f ~/.rbenv/bin/rbenv ]; then
 fi
 #+END_SRC
 
+*** Nix
+Nix is a new package manager I am trying out
+
+#+BEGIN_SRC sh :tangle out/zsh.d/18-nix.sh
+if [ -f ~/.nix-profile/etc/profile.d/nix.sh ]; then
+    . ~/.nix-profile/etc/profile.d/nix.sh
+fi
+#+END_SRC
+
 *** Python (virtualenvwrapper)
 So [[http://virtualenvwrapper.readthedocs.org/en/latest/][virtualenvwrapper]] is a handy thing for managing virtualenv sessions, but it
 needs to be sourced if available.
