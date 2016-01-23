@@ -66,7 +66,9 @@ And now the huge org-mode configuration
     (add-hook 'org-mode-hook #'eos/org-mode-hook)
     ;; enabled export backends
     (use-package ox-rss)
-    (custom-set-variables '(org-export-backends '(ascii html latex md rss)))
+    (use-package ox-twbs
+      :ensure t)
+    (custom-set-variables '(org-export-backends '(ascii html latex md rss twbs)))
     (setq org-directory (file-truename "~/org")
           ;; follow links by pressing ENTER on them
           org-return-follows-link t
