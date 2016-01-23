@@ -112,8 +112,7 @@ First, highlight numbers in a "special" way, so they stick out:
 (use-package highlight-numbers
   :ensure t
   :init
-  (add-hook 'prog-mode-hook #'highlight-numbers-mode)
-  (add-hook 'org-mode-hook #'highlight-numbers-mode))
+  (add-hook 'prog-mode-hook #'highlight-numbers-mode))
 #+END_SRC
 
 Also highlight quoted symbols in a nice way.
