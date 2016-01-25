@@ -560,14 +560,6 @@ saved across those sessions. =savehist= mode gives us that.
         search-ring
         regexp-search-ring))
 (setq-default save-place t)
-
-;; delete-auto-save-files
-(setq delete-auto-save-files t)
-(setq backup-directory-alist
-      '(("." . "~/.emacs_backups")))
-
-;; delete old backups silently
-(setq delete-old-versions t)
 #+end_src
 
 Toggle line wrapping with =C-x C-l=
@@ -650,8 +642,12 @@ Settings for what to do with temporary files.
 #+BEGIN_SRC emacs-lisp
 ;; delete-auto-save-files
 (setq delete-auto-save-files t)
+;; Create the directory for backups if it doesn't exist
+(when (not (file-exists-p "~/.emacs_backups"))
+  (make-directory "~/.emacs_backups"))
+
 (setq backup-directory-alist
-      '(("." . "~/.emacs_backups")))
+      '((".*" . "~/.emacs_backups")))
 
 ;; delete old backups silently
 (setq delete-old-versions t)
@@ -1380,8 +1376,14 @@ Config for Linux/X11 systems:
 #+BEGIN_SRC emacs-lisp
 (defun eos/setup-x11-fonts ()
   (when (eq window-system 'x)
-    (set-frame-font "DejaVu Sans Mono")
-    (set-face-attribute 'default nil :height 105)))
+    ;;(set-frame-font "DejaVu Sans Mono")
+    ;; See:https://github.com/cpitclaudel/monospacifier
+    (set-fontset-font t 'unicode (font-spec :name "DejaVu Sans Mono"))
+    (set-fontset-font
+     t 'unicode
+     (font-spec :name "Asana Math monospacified for DejaVu Sans Mono")
+     nil 'append)
+    (set-face-attribute 'default nil :height 115)))
 
 (when (eq window-system 'x)
   (add-hook 'after-init-hook #'eos/setup-x11-fonts))
