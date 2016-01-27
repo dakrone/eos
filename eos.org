@@ -73,6 +73,13 @@ if not desired.
 * =init.el=
 
 #+BEGIN_SRC emacs-lisp
+;; Load a custom version of org-mode, if available
+(when (file-exists-p "~/src/elisp/org-mode/lisp")
+  (add-to-list 'load-path "~/src/elisp/org-mode/lisp")
+  (require 'org))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 (setq debug-on-error t)
 (setq debug-on-quit t)
 #+END_SRC
@@ -90,6 +97,100 @@ switch to evil and be done with it.
 #+BEGIN_SRC emacs-lisp
 (define-key key-translation-map "\C-t" "\C-x")
 #+END_SRC
+
+** =package.el= Setup
+My strategy with regard to packaging is simple, I make heavy use of use-package.
+
+#+BEGIN_SRC emacs-lisp
+(require 'package)
+(package-initialize)
+
+(add-to-list 'package-archives
+             '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives
+             '("gnu" . "http://elpa.gnu.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+#+END_SRC
+
+Let's also set up a custom file and load it before we do anything too fancy, we
+want to make sure to keep customize settings in their own file instead of
+init.el.
+
+#+BEGIN_SRC emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(when (file-exists-p custom-file)
+  (load custom-file))
+#+END_SRC
+
+I define =eos/did-refresh-packages=, which is used as a signal in =install-pkgs=
+that we need to refresh the package archives.
+
+#+begin_src emacs-lisp
+(defvar eos/did-refresh-packages nil
+  "Flag for whether packages have been refreshed yet")
+#+end_src
+
+=install-pkgs= is a simple elisp function that will iterate over a list, and
+install each package in it, if it is not installed. If
+=eos/did-refresh-packages= is set to =nil=, it'll also refresh the package
+manager.
+
+#+begin_src emacs-lisp
+(defun install-pkgs (list)
+  (dolist (pkg list)
+    (progn
+      (if (not (package-installed-p pkg))
+          (progn
+            (if (not eos/did-refresh-packages)
+                (progn (package-refresh-contents)
+                       (setq eos/did-refresh-packages t)))
+            (package-install pkg))))))
+#+end_src
+
+Pin some of the packages that go wonky if I use the bleeding edge.
+
+#+BEGIN_SRC emacs-lisp
+(when (boundp 'package-pinned-packages)
+  (setq package-pinned-packages
+        '((org-plus-contrib                  . "org")
+          (cider                             . "melpa-stable")
+          (ac-cider                          . "melpa-stable")
+          (clojure-mode                      . "melpa-stable")
+          (clojure-mode-extra-font-locking   . "melpa-stable")
+          (company-cider                     . "melpa-stable"))))
+#+END_SRC
+
+Now, install the things we need in the future for all other package
+installation/configuration
+
+#+BEGIN_SRC emacs-lisp
+(install-pkgs '(use-package))
+;; Load use-package, used for loading packages everywhere else
+(require 'use-package nil t)
+;; Set to t to debug package loading or nil to disable
+(setq use-package-verbose nil)
+#+END_SRC
+
+** =el-get= setup
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+#+END_SRC
+
+** Module setup
 
 And now, let's start things up.
 

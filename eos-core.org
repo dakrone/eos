@@ -11,86 +11,6 @@ To start with emacs, we need a =~/.emacs.d/init.el= file that can be loaded.
 This file will be tangled to a file called =eos-core.el= which will be installed
 as the init.el file for loading Emacs.
 
-** =package.el= Setup
-My strategy with regard to packaging is simple, I make heavy use of use-package.
-
-#+BEGIN_SRC emacs-lisp
-(require 'package)
-(package-initialize)
-
-(add-to-list 'package-archives
-             '("org" . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives
-             '("gnu" . "http://elpa.gnu.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
-#+END_SRC
-
-Let's also set up a custom file and load it before we do anything too fancy, we
-want to make sure to keep customize settings in their own file instead of
-init.el.
-
-#+BEGIN_SRC emacs-lisp
-(setq custom-file "~/.emacs.d/custom.el")
-(when (file-exists-p custom-file)
-  (load custom-file))
-#+END_SRC
-
-I define =eos/did-refresh-packages=, which is used as a signal in =install-pkgs=
-that we need to refresh the package archives.
-
-#+begin_src emacs-lisp
-(defvar eos/did-refresh-packages nil
-  "Flag for whether packages have been refreshed yet")
-#+end_src
-
-=install-pkgs= is a simple elisp function that will iterate over a list, and
-install each package in it, if it is not installed. If
-=eos/did-refresh-packages= is set to =nil=, it'll also refresh the package
-manager.
-
-#+begin_src emacs-lisp :tangle yes
-(defun install-pkgs (list)
-  (dolist (pkg list)
-    (progn
-      (if (not (package-installed-p pkg))
-          (progn
-            (if (not eos/did-refresh-packages)
-                (progn (package-refresh-contents)
-                       (setq eos/did-refresh-packages t)))
-            (package-install pkg))))))
-#+end_src
-
-Pin some of the packages that go wonky if I use the bleeding edge.
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(when (boundp 'package-pinned-packages)
-  (setq package-pinned-packages
-        '((org-plus-contrib                  . "org")
-          (cider                             . "melpa-stable")
-          (ac-cider                          . "melpa-stable")
-          (clojure-mode                      . "melpa-stable")
-          (clojure-mode-extra-font-locking   . "melpa-stable")
-          (company-cider                     . "melpa-stable"))))
-#+END_SRC
-
-Now, install the things we need in the future for all other package
-installation/configuration
-
-#+BEGIN_SRC emacs-lisp :tangle yes
-(install-pkgs '(use-package))
-;; Load use-package, used for loading packages everywhere else
-(require 'use-package nil t)
-;; Set to t to debug package loading or nil to disable
-(setq use-package-verbose nil)
-#+END_SRC
-
-#+BEGIN_SRC sh :tangle sh/eos-core.sh
-
-#+END_SRC
-
 ** Helper Methods
 These are shell script helpers, a cache warming function that'll automatically
 get added to =eos-core.sh=, and some functions that'll need to be sourced in
@@ -857,14 +777,14 @@ the link to this package.
 Extended bookmarks, which I've started used for dired buffers and so on
 
 #+BEGIN_SRC emacs-lisp
-(use-package bookmark+
-  :ensure t
-  :defer 10
-  :config
-  (progn
-    (setq bookmark-version-control t
-          ;; auto-save bookmarks
-          bookmark-save-flag 1)))
+;;(use-package bookmark+
+;;  :ensure t
+;;  :defer 10
+;;  :config
+;;  (progn
+;;    (setq bookmark-version-control t
+;;          ;; auto-save bookmarks
+;;          bookmark-save-flag 1)))
 #+END_SRC
 
 Anzu shows the number of search hits in the modeline, which is handy.
@@ -1096,14 +1016,14 @@ Export an HTML version of the buffer and scp it somewhere
       (flycheck-mode 1))
     result))
 
-(install-pkgs '(scpaste))
-(require 'scpaste)
-(setq scpaste-http-destination "http://writequit.org/paste"
-      scpaste-scp-destination "writequit.org:www/paste"
-      scpaste-user-name "dakrone"
-      scpaste-user-address "http://writequit.org/")
-;; Disable fill-column-indicator while scpasting
-(advice-add 'scpaste :around #'eos/surround-scpaste)
+;;(install-pkgs '(scpaste))
+;;(require 'scpaste)
+;;(setq scpaste-http-destination "http://writequit.org/paste"
+;;      scpaste-scp-destination "writequit.org:www/paste"
+;;      scpaste-user-name "dakrone"
+;;      scpaste-user-address "http://writequit.org/")
+;;;; Disable fill-column-indicator while scpasting
+;;(advice-add 'scpaste :around #'eos/surround-scpaste)
 #+END_SRC
 
 Beacon flashes the cursor whenever you adjust position, really helpful when
@@ -1473,10 +1393,11 @@ In most non-programming modes, =M-.= can be used to spellcheck the word
   :init (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :config
   (define-key flyspell-mode-map (kbd "C-.") 'company-complete)
-  (use-package helm-flyspell
-    :ensure t
-    :init
-    (define-key flyspell-mode-map (kbd "M-S") #'helm-flyspell-correct)))
+;;  (use-package helm-flyspell
+;;    :ensure t
+;;    :init
+;;    (define-key flyspell-mode-map (kbd "M-S") #'helm-flyspell-correct))
+)
 #+END_SRC
 
 * Helm, an Incremental Completion Framework
@@ -1489,9 +1410,9 @@ Before we load any helm things, need to load [[https://github.com/PythonNut/helm
 helm's fuzzy matching.
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm-flx
-  :ensure t
-  :init (helm-flx-mode +1))
+;;(use-package helm-flx
+;;  :ensure t
+;;  :init (helm-flx-mode +1))
 #+END_SRC
 
 Now we can do our Helm things
@@ -1507,8 +1428,7 @@ Now we can do our Helm things
    ("C-x C-r" . helm-mini)
    ("C-c C-o" . helm-occur)
    ("C-x M-o" . helm-occur)
-   ("C-x C-o" . helm-occur)
-   ("M-y" . helm-show-kill-ring)
+   ("C-x C-o" . helm-occur)   ("M-y" . helm-show-kill-ring)
    ("C-h a" . helm-apropos)
    ("C-h m" . helm-man-woman)
    ("C-h SPC" . helm-all-mark-rings)
@@ -1543,12 +1463,13 @@ Now we can do our Helm things
   (use-package helm-ring)
   (use-package helm-bookmark
     :bind ("C-x M-b" . helm-bookmarks)
-    :init (use-package bookmark+ :ensure t))
-  (use-package helm-projectile
-    :ensure t
-    :bind (("C-x f" . helm-projectile)
-           ("C-c p f" . helm-projectile-find-file)
-           ("C-c p s" . helm-projectile-switch-project)))
+;;    :init (use-package bookmark+ :ensure t)
+)
+;;  (use-package helm-projectile
+;;    :ensure t
+;;    :bind (("C-x f" . helm-projectile)
+;;           ("C-c p f" . helm-projectile-find-file)
+;;           ("C-c p s" . helm-projectile-switch-project)))
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))
