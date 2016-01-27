@@ -777,14 +777,14 @@ the link to this package.
 Extended bookmarks, which I've started used for dired buffers and so on
 
 #+BEGIN_SRC emacs-lisp
-;;(use-package bookmark+
-;;  :ensure t
-;;  :defer 10
-;;  :config
-;;  (progn
-;;    (setq bookmark-version-control t
-;;          ;; auto-save bookmarks
-;;          bookmark-save-flag 1)))
+(use-package bookmark+
+  :ensure t
+  :defer 10
+  :config
+  (progn
+    (setq bookmark-version-control t
+          ;; auto-save bookmarks
+          bookmark-save-flag 1)))
 #+END_SRC
 
 Anzu shows the number of search hits in the modeline, which is handy.
@@ -1463,13 +1463,12 @@ Now we can do our Helm things
   (use-package helm-ring)
   (use-package helm-bookmark
     :bind ("C-x M-b" . helm-bookmarks)
-;;    :init (use-package bookmark+ :ensure t)
-)
-;;  (use-package helm-projectile
-;;    :ensure t
-;;    :bind (("C-x f" . helm-projectile)
-;;           ("C-c p f" . helm-projectile-find-file)
-;;           ("C-c p s" . helm-projectile-switch-project)))
+    :init (use-package bookmark+ :ensure t))
+  (use-package helm-projectile
+    :ensure t
+    :bind (("C-x f" . helm-projectile)
+           ("C-c p f" . helm-projectile-find-file)
+           ("C-c p s" . helm-projectile-switch-project)))
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))
