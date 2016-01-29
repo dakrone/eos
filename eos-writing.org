@@ -27,7 +27,9 @@ Let's install markdown mode, since all of Github seems enamored with it.
   :mode (("\\`README\\.md\\'" . gfm-mode)
          ("github\\.com.*\\.txt\\'" . gfm-mode)
          ("\\.md\\'"          . markdown-mode)
-         ("\\.markdown\\'"    . markdown-mode)))
+         ("\\.markdown\\'"    . markdown-mode))
+  :init
+  (add-hook 'markdown-mode-hook #'flyspell-mode))
 #+END_SRC
 
 YAML is used all over the place
