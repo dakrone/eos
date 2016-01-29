@@ -34,6 +34,8 @@ middle.
           ;; Github goes to firefox, but not gist
           ("http.*\/\/github.com" . browse-url-generic)
           ("groups.google.com" . browse-url-generic)
+          ("docs.google.com" . browse-url-generic)
+          ("melpa.org" . browse-url-generic)
           ("build.*\.elastic.co" . browse-url-generic)
           ("zendesk.com" . browse-url-generic)
           ("." . eww-browse-url)))
