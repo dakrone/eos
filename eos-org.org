@@ -17,6 +17,13 @@ A great lot of this was taken from http://doc.norang.ca/org-mode.html, to which
 I owe almost all of the agenda configuration. The capture stuff and regular org
 settings are mine.
 
+Also, in order to export nicely colored HTML of source code, we need htmlize
+
+#+BEGIN_SRC emacs-lisp
+(el-get-bundle htmlize
+  :url "http://fly.srk.fer.hr/~hniksic/emacs/htmlize.git")
+#+END_SRC
+
 First, the hook that gets run every time org-mode is started, to turn on certain
 modes
 
