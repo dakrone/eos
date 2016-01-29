@@ -188,7 +188,9 @@ know Emacs is starting.
 #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function (lambda ()))
 (setq inhibit-startup-screen t
-      initial-major-mode 'fundamental-mode)
+      initial-major-mode 'es-mode
+      initial-scratch-message
+      "// This buffer is for ES notes you don't want to save.")
 #+END_SRC
 
 Why would you not want to know lines/columns in your mode-line?
