@@ -1834,24 +1834,33 @@ And finally, the main EOS Hydra for entry:
 
 #+BEGIN_SRC emacs-lisp
 (defhydra eos/hydra nil
-  "EOS Hydra"
-  ("`" eos/hydra-next-error/body "Errors" :exit t)
-  ("(" eos/hydra-macro/body "Macros" :exit t)
-  ("a" (org-agenda nil " ") "Org Agenda" :exit t)
-  ("A" eos/hydra-about-emacs/body "About" :exit t)
-  ("t" eos/hydra-toggle-map/body "Toggle" :exit t)
-  ("T" eos/start-or-jump-to-twitter "Twitter" :exit t)
-  ("g" gnus "Gnus" :exit t)
-  ("m" eos/switch-to-mail "Mail" :exit t)
-  ("M" eos/hydra-mpd/body "Music" :exit t)
-  ("e" eww "EWW" :exit t)
-  ("E" (when (y-or-n-p "Really start ERC?") (start-erc)) "Start ERC" :exit t)
-  ("r" elfeed "RSS" :exit t)
-  ("s" eos/hydra-skeleton/body "Skeletons" :exit t)
-  ("p" proced "Proc Ed" :exit t)
-  ("P" prodigy "Prodigy" :exit t)
-  ("W" sunshine-forecast "Weather" :exit t)
-  ("q" nil "quit" :exit t))
+  "
+╭────────────────────────────────────────────────╯
+  [_a_] Org Agenda  [_E_] ERC       [_m_] Mail
+  [_t_] Toggle map  [_T_] Twitter   [_M_] Music
+  [_s_] Skeletons   [_P_] Prodigy   [_g_] Gnus
+  [_p_] Proced      [_W_] Weather   [(] Macros
+  [_e_] EWW         [_R_] RSS       [`] Errors
+  [_q_] quit
+"
+
+  ("`" eos/hydra-next-error/body :exit t)
+  ("(" eos/hydra-macro/body :exit t)
+  ("a" (org-agenda nil " ") :exit t)
+  ("A" eos/hydra-about-emacs/body :exit t)
+  ("t" eos/hydra-toggle-map/body :exit t)
+  ("T" eos/start-or-jump-to-twitter :exit t)
+  ("g" gnus :exit t)
+  ("m" eos/switch-to-mail :exit t)
+  ("M" eos/hydra-mpd/body :exit t)
+  ("e" eww :exit t)
+  ("E" (when (y-or-n-p "Really start ERC?") (start-erc)) :exit t)
+  ("R" elfeed :exit t)
+  ("s" eos/hydra-skeleton/body :exit t)
+  ("p" proced :exit t)
+  ("P" prodigy :exit t)
+  ("W" sunshine-forecast :exit t)
+  ("q" nil :exit t))
 
 ;; Bind the main EOS hydra to M-t
 (global-set-key (kbd "M-t") 'eos/hydra/body)
