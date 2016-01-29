@@ -78,8 +78,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-;;(defvar eos/background 'light)
-(defvar eos/background 'dark)
+(defvar eos/background 'light)
+;;(defvar eos/background 'dark)
 #+END_SRC
 
 Now some personal information about me:
@@ -1266,7 +1266,10 @@ balanced of color and pleasing to my eyes.
       :init (load-theme 'sanityinc-tomorrow-night t))
   (use-package leuven-theme
     :ensure t
-    :init (load-theme 'leuven t)))
+    :init
+    (load-theme 'leuven t)
+    ;; Bright white is a bit much, so darken it slightly
+    (set-face-background 'default "#f0f0f0")))
 #+END_SRC
 
 * Fonts
@@ -1315,9 +1318,10 @@ Config for Linux/X11 systems:
 (use-package smart-mode-line
   :ensure t
   :init
-  (progn
-    (setq sml/theme eos/background)
-    (sml/setup))
+  (if (eq eos/background 'dark)
+      (setq sml/theme eos/background)
+    (setq sml/theme 'respectful))
+  (sml/setup)
   :config
   (setq sml/shorten-directory t
         sml/shorten-modes t)
