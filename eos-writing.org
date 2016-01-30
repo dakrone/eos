@@ -222,4 +222,8 @@ already narrowed."
         (t (narrow-to-defun))))
 
 (global-set-key (kbd "C-x C-n") #'narrow-or-widen-dwim)
+;; This line actually replaces Emacs' entire narrowing
+;; keymap, that's how much I like this command. Only copy it
+;; if that's what you want.
+(define-key ctl-x-map "n" #'narrow-or-widen-dwim)
 #+END_SRC
