@@ -190,7 +190,7 @@ know Emacs is starting.
 (setq inhibit-startup-screen t
       initial-major-mode 'es-mode
       initial-scratch-message
-      "// This buffer is for ES notes you don't want to save.")
+      "// This buffer is for ES notes you don't want to save.\n\n")
 #+END_SRC
 
 Why would you not want to know lines/columns in your mode-line?
@@ -568,8 +568,10 @@ Settings for what to do with temporary files.
 (when (not (file-exists-p "~/.emacs_backups"))
   (make-directory "~/.emacs_backups"))
 
-(setq backup-directory-alist
-      '((".*" . "~/.emacs_backups")))
+(setq-default backup-directory-alist
+              '((".*" . "~/.emacs_backups")))
+(setq auto-save-file-name-transforms
+      '((".*" "~/.emacs_backups/" t)))
 
 ;; delete old backups silently
 (setq delete-old-versions t)
