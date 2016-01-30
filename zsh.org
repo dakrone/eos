@@ -43,13 +43,16 @@ export EDITOR=nano # to be overwritten later
 export PAGER=less
 
 # Update path with local ~/bin and cabal's bin dir
-export PATH=~/bin:~/.cabal/bin:/usr/local/bin:/usr/local/sbin:$PATH
+export PATH=~/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
 # Node/npm
 export PATH=$PATH:~/node_modules/.bin
 
 # Cask
 export PATH=$PATH:~/.cask/bin
+
+# Stack/cabal/haskell
+export PATH=$PATH:~/.local/bin:~/.cabal/bin
 
 # rbenv
 export PATH=~/.rbenv/bin:$PATH
@@ -69,6 +72,10 @@ fi
 HISTFILE=$HOME/.zsh-history
 HISTSIZE=10000
 SAVEHIST=5000
+
+# Default JAVA_HOME
+export JAVA_HOME=/opt/java/current
+export PATH=$JAVA_HOME/bin:$PATH
 #+END_SRC
 
 I read OS and machine-specific things in .zshenv, usually because they're pretty
@@ -163,11 +170,6 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
-
-# zsh completion
-if [ -d ~/.zsh/zsh-completions ] ; then
-    fpath=(~/.zsh/zsh-completions/src $fpath)
-fi
 
 autoload -U compinit zrecompile
 
@@ -281,6 +283,7 @@ alias lr='ls -lR'
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
+alias ec='emacsclient'
 # make less a little more sane
 alias less='less -RX'
 # various port forwarding and hole-punching
@@ -312,6 +315,7 @@ alias xanadu2org='rsync -azP --delete xanadu:~/org/ ~/org'
 alias org2xanadu='rsync -azP --delete ~/org/ xanadu:~/org'
 # start a master tmux
 alias tmaster='tmux -2 -u -S /tmp/mastermux -f .tmux.master.conf'
+alias tmux='tmux -2'
 #+END_SRC
 
 *** Functions
@@ -375,6 +379,8 @@ function cds () {
         cd $ORIGINAL_PWD
     fi
 }
+
+function ekill() { emacsclient -e '(kill-emacs)' }
 #+END_SRC
 
 *** Keybindings
@@ -745,27 +751,14 @@ if [ -s /usr/local/bin/emacs ]; then
     alias hb_emacs='/usr/local/bin/emacs'
 fi
 
-#function ec() { TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH emacsclient -t $@ }
-alias e="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
-alias ec="emacsclient"
-
-#function el() { ps ax|grep Emacs }
-function ekill() { emacsclient -e '(kill-emacs)' }
+# Remove ctrl+y from the keybinds for delayed suspend
+stty dsusp undef
 
 alias emacs="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
 alias gemacs="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs 2>&1 > /dev/null &"
-alias erc="TERM=xterm-256color PATH=$ERC_HOME/bin:$PATH $ERC_HOME/Emacs 2>&1 > /dev/null &"
-alias gnus="TERM=xterm-256color PATH=$GNUS_HOME/bin:$PATH $GNUS_HOME/Emacs 2>&1 > /dev/null &"
 
-# for connection to a running emacs
-export EDITOR="emacsclient"
+export EDITOR="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
 export ALTERNATIVE_EDITOR="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
-
-# Use MacVim's vim for terminal sessions, since it has everything compiled in.
-alias vim='/Applications/MacVim.app/Contents/MacOS/Vim'
-
-# Remove ctrl+y from the keybinds for delayed suspend
-stty dsusp undef
 
 # awesome
 alias gps="ps -c -r -ax -o command,pid,pcpu,time | sed 's/\(PID *\)%/\1 %/' | head -n 11 && echo && ps -c -m -ax -o command,pid,pmem,rss=RSIZE | sed 's/\(.\{23\}\)/\1 /' | head -n 9"
@@ -786,20 +779,7 @@ function strace {
 Linux has less customization, mostly differing aliases.
 
 #+BEGIN_SRC sh :tangle out/zsh.d/zsh.Linux
-# make emacs have 256 colors
-alias -g emacs='TERM=xterm-256color /usr/local/bin/emacs -nw'
-
-alias -g ec="/home/hinmanm/bin/emacsclient"
-
-function ekill() { emacsclient -e '(kill-emacs)' }
+alias emacs='emacs -nw'
 
 export EDITOR="emacs -nw"
-
-alias tmux='tmux -2'
-
-# awesome
-alias gps='ps -eo cmd,fname,pid,pcpu,time --sort=-pcpu | head -n 11 && echo && ps -eo cmd,fname,pid,pmem,rss --sort=-rss | head -n 9'
-
-export JAVA_HOME=/opt/java/current
-export PATH=$JAVA_HOME/bin:$PATH
 #+END_SRC
