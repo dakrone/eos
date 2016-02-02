@@ -50,7 +50,7 @@ And now the huge org-mode configuration
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure org-plus-contrib
+;;  :ensure org-plus-contrib
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c b" . org-iswitchb)
@@ -71,9 +71,10 @@ And now the huge org-mode configuration
     (add-hook 'org-mode-hook #'hl-line-mode)
     (add-hook 'org-mode-hook #'eos/org-mode-hook)
     ;; enabled export backends
-    (use-package ox-rss)
+;;    (use-package ox-rss)
     (use-package ox-twbs
-      :ensure t)
+;;      :ensure t
+      )
     (custom-set-variables '(org-export-backends '(ascii html latex md rss twbs)))
     (setq org-directory (file-truename "~/org")
           ;; follow links by pressing ENTER on them
@@ -391,7 +392,7 @@ And now the huge org-mode configuration
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
-  :ensure t
+;;  :ensure t
   :init
   (add-hook 'org-mode-hook #'org-bullets-mode))
 #+END_SRC
@@ -400,7 +401,7 @@ A simple presentation mode for org-mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-present
-  :ensure t
+;;  :ensure t
   :defer 20
   :init
   (add-hook 'org-present-mode-hook
@@ -437,7 +438,7 @@ First, a function to use for clocking in
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure org-plus-contrib
+;;  :ensure org-plus-contrib
   :bind (("C-c I" . eos/org-clock-in)
          ("C-c O" . org-clock-out))
   :config
@@ -482,8 +483,8 @@ Publishing org-mode files to my hosting provider:
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :config
-  (require 'ox-rss)
-  (require 'ox-icalendar)
+;;  (require 'ox-rss)
+;;  (require 'ox-icalendar)
   (setq org-publish-project-alist
         `(;; Main website at http://writequit.org
           ("writequit-org"
@@ -617,7 +618,7 @@ Notifications for upcoming org statuses!
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-alert
-  :ensure t
+;;  :ensure t
   :disabled t
   :init (org-alert-enable))
 #+END_SRC
