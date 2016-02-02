@@ -34,7 +34,8 @@ I need to hide the lighter for subword mode:
   :ensure t
   :init
   (add-hook #'log4j-mode-hook #'view-mode)
-  (add-hook #'log4j-mode-hook #'read-only-mode))
+  (add-hook #'log4j-mode-hook #'read-only-mode)
+  (add-hook #'log4j-mode-hook #'hl-line-mode))
 #+END_SRC
 
 I have to hack something around this to make it fixed for org->html exports
