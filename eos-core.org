@@ -621,10 +621,6 @@ Deletes whitespace at join."
 (define-key global-map (kbd "C-+") 'text-scale-increase)
 (define-key global-map (kbd "C--") 'text-scale-decrease)
 
-;; Use regex searches by default.
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "\C-r") 'isearch-backward-regexp)
-
 (global-set-key (kbd "C-c y") 'bury-buffer)
 (global-set-key (kbd "C-c r") 'revert-buffer)
 
@@ -637,11 +633,27 @@ Deletes whitespace at join."
 ;; If you want to be able to M-x without meta (phones, etc)
 (global-set-key (kbd "C-c C-x") 'execute-extended-command)
 
+;; Use regex searches by default.
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+
 ;; Activate occur easily inside isearch
 (define-key isearch-mode-map (kbd "C-o")
   (lambda () (interactive)
     (let ((case-fold-search isearch-case-fold-search))
       (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
+
+(defun eos/add-watchword (string)
+  "Highlight whatever `string' is in the current buffer
+permanently."
+  (font-lock-add-keywords
+   nil `((,(if isearch-regexp isearch-string (regexp-quote isearch-string))
+          1 '((:background "yellow") (:weight bold)) t))))
+
+(define-key isearch-mode-map (kbd "M-h")
+  (lambda () (interactive)
+    (eos/add-watchword
+     (if isearch-regexp isearch-string (regexp-quote isearch-string)))))
 
 ;; ==== Window switching ====
 (defun eos/other-window-backwards ()
@@ -995,39 +1007,6 @@ sometimes I need to look at someone's 5gb log file.
 #+BEGIN_SRC emacs-lisp
 (use-package vlf-setup
   :ensure vlf)
-#+END_SRC
-
-Export an HTML version of the buffer and scp it somewhere
-
-#+BEGIN_SRC emacs-lisp
-(defvar fci-enabled? nil)
-(defvar fc-enabled? nil)
-(defun eos/surround-scpaste (fun &rest args)
-  (if fci-mode
-      (progn
-        (setq fci-enabled? t)
-        (fci-mode -1))
-    (setq fci-enabled? nil))
-  (if flycheck-mode
-      (progn
-        (setq fc-enabled? t)
-        (flycheck-mode -1))
-    (setq fc-enabled? nil))
-  (let ((result  (apply fun args)))
-    (when fci-enabled?
-      (fci-mode 1))
-    (when fc-enabled?
-      (flycheck-mode 1))
-    result))
-
-;;(install-pkgs '(scpaste))
-;;(require 'scpaste)
-;;(setq scpaste-http-destination "http://writequit.org/paste"
-;;      scpaste-scp-destination "writequit.org:www/paste"
-;;      scpaste-user-name "dakrone"
-;;      scpaste-user-address "http://writequit.org/")
-;;;; Disable fill-column-indicator while scpasting
-;;(advice-add 'scpaste :around #'eos/surround-scpaste)
 #+END_SRC
 
 Beacon flashes the cursor whenever you adjust position, really helpful when
