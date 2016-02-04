@@ -622,3 +622,9 @@ Notifications for upcoming org statuses!
   :disabled t
   :init (org-alert-enable))
 #+END_SRC
+
+* Diary, keeping track of appointments in Emacs
+
+#+BEGIN_SRC emacs-lisp
+(setq diary-file "~/diary")
+#+END_SRC
