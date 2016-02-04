@@ -1824,6 +1824,8 @@ And finally, the main EOS Hydra for entry:
   [_s_] Skeletons   [_P_] Prodigy   [_g_] Gnus
   [_p_] Proced      [_W_] Weather   [(] Macros
   [_e_] EWW         [_R_] RSS       [`] Errors
+  [_d_] Debbugs
+
   [_q_] quit
 "
 
@@ -1834,6 +1836,7 @@ And finally, the main EOS Hydra for entry:
   ("t" eos/hydra-toggle-map/body :exit t)
   ("T" eos/start-or-jump-to-twitter :exit t)
   ("g" gnus :exit t)
+  ("d" debbugs-gnu :exit t)
   ("m" eos/switch-to-mail :exit t)
   ("M" eos/hydra-mpd/body :exit t)
   ("e" eww :exit t)

@@ -564,3 +564,13 @@ There's =tern= also, but I leave it turned off by default, just installed
 (use-package tern
   :ensure t)
 #+END_SRC
+
+* Emacs Development itself
+
+There are some nice things we can install for development on Emacs itself,
+things such as =debbugs=, which allows us to look at the bug database for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package debbugs
+  :ensure t)
+#+END_SRC
