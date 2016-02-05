@@ -583,89 +583,6 @@ Need to make sure the directory exists in the initializing shell script
 mkdir -p ~/.emacs_backups
 #+END_SRC
 
-These are miscellaneous bindings used all over the place that don't
-really fit in anywhere else.
-
-#+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x +") 'balance-windows-area)
-
-(global-set-key (kbd "C-x C-l") 'toggle-truncate-lines)
-
-(defun eos/turn-on-viewing-mode ()
-  "Turn on the viewing mode, to make looking through logs easier"
-  (interactive)
-  (view-mode 1)
-  (hl-line-mode 1))
-
-;; join on killing lines
-(defun kill-and-join-forward (&optional arg)
-  "If at end of line, join with following; otherwise kill line.
-Deletes whitespace at join."
-  (interactive "P")
-  (if (and (eolp) (not (bolp)))
-      (delete-indentation t)
-    (kill-line arg)))
-
-(global-set-key (kbd "C-k") 'kill-and-join-forward)
-
-;; join line to next line
-(global-set-key (kbd "M-j")
-                (lambda ()
-                  (interactive)
-                  (join-line -1)))
-
-;; Completion that uses many different methods to find options.
-(global-set-key (kbd "M-/") 'hippie-expand)
-
-;; Font size
-(define-key global-map (kbd "C-+") 'text-scale-increase)
-(define-key global-map (kbd "C--") 'text-scale-decrease)
-
-(global-set-key (kbd "C-c y") 'bury-buffer)
-(global-set-key (kbd "C-c r") 'revert-buffer)
-
-;; Start eshell or switch to it if it's active.
-(global-set-key (kbd "C-x m") 'eshell)
-
-;; Start a regular shell if you prefer that.
-(global-set-key (kbd "C-x C-m") 'shell)
-
-;; If you want to be able to M-x without meta (phones, etc)
-(global-set-key (kbd "C-c C-x") 'execute-extended-command)
-
-;; Use regex searches by default.
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
-
-;; Activate occur easily inside isearch
-(define-key isearch-mode-map (kbd "C-o")
-  (lambda () (interactive)
-    (let ((case-fold-search isearch-case-fold-search))
-      (occur (if isearch-regexp isearch-string (regexp-quote isearch-string))))))
-
-(defun eos/add-watchword (string)
-  "Highlight whatever `string' is in the current buffer
-permanently."
-  (font-lock-add-keywords
-   nil `((,(if isearch-regexp isearch-string (regexp-quote isearch-string))
-          1 '((:background "yellow") (:weight bold)) t))))
-
-(define-key isearch-mode-map (kbd "M-h")
-  (lambda () (interactive)
-    (eos/add-watchword
-     (if isearch-regexp isearch-string (regexp-quote isearch-string)))))
-
-;; ==== Window switching ====
-(defun eos/other-window-backwards ()
-  (interactive)
-  (other-window -1))
-
-(global-set-key (kbd "M-'") #'other-window)
-(global-set-key (kbd "M-\"") #'eos/other-window-backwards)
-(global-set-key (kbd "H-'") #'other-window)
-(global-set-key (kbd "H-\"") #'eos/other-window-backwards)
-#+END_SRC
-
 Before saving a buffer, deleting the trailing whitespace, no one needs that and
 it's pretty useful in general.
 
@@ -943,9 +860,18 @@ rpm-install mupdf
   ;; use 'q' to kill the buffer, not just hide it
   (define-key doc-view-mode-map (kbd "q")
     #'kill-this-buffer))
+
+(defun eos/turn-on-viewing-mode ()
+  "Turn on the viewing mode, to make looking through logs easier"
+  (interactive)
+  (view-mode 1)
+  (hl-line-mode 1))
 #+END_SRC
 
-I also use the 'pdf-tools' package, which is *really* nice for viewing PDF files
+I also use the 'pdf-tools' package, which is *really* nice for viewing PDF
+files. The only real caveat for it is that it requires you to do the =M-x
+pdf-tools-install= every time the package is updated, to actually *build* the
+tool that it uses.
 
 #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools
@@ -1045,25 +971,6 @@ I don't really need bi-directional display, so let's speed up long lines
 
 #+BEGIN_SRC emacs-lisp
 (setq-default bidi-display-reordering nil)
-#+END_SRC
-
-If you split buffers and have A on the left and B on the right, this will put B
-on the left and A on the right.
-
-#+BEGIN_SRC emacs-lisp
-(defun transpose-buffers (arg)
-  "Transpose the buffers shown in two windows."
-  (interactive "p")
-  (let ((selector (if (>= arg 0) 'next-window 'previous-window)))
-    (while (/= arg 0)
-      (let ((this-win (window-buffer))
-            (next-win (window-buffer (funcall selector))))
-        (set-window-buffer (selected-window) next-win)
-        (set-window-buffer (funcall selector) this-win)
-        (select-window (funcall selector)))
-      (setq arg (if (plusp arg) (1- arg) (1+ arg))))))
-
-(global-set-key (kbd "C-x 4 t") 'transpose-buffers)
 #+END_SRC
 
 * GPG and gpg-agent (as well as SSH agent)
@@ -1415,7 +1322,8 @@ Now we can do our Helm things
    ("C-x C-r" . helm-mini)
    ("C-c C-o" . helm-occur)
    ("C-x M-o" . helm-occur)
-   ("C-x C-o" . helm-occur)   ("M-y" . helm-show-kill-ring)
+   ("C-x o" . helm-occur)
+   ("M-y" . helm-show-kill-ring)
    ("C-h a" . helm-apropos)
    ("C-h m" . helm-man-woman)
    ("C-h SPC" . helm-all-mark-rings)

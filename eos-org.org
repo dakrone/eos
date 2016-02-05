@@ -42,6 +42,7 @@ modes
   (when (fboundp 'eyebrowse-next-window-config)
     (define-key org-mode-map (kbd "C-'") #'eyebrowse-next-window-config))
   (define-key org-mode-map (kbd "C-c C-x C-f") #'org-refile)
+  (define-key org-mode-map (kbd "<C-tab>") #'other-window)
   (when (boundp 'org-agenda-mode-map)
     (define-key org-agenda-mode-map (kbd "C-c C-x C-f") #'org-agenda-refile)))
 #+END_SRC
