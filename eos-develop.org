@@ -312,6 +312,7 @@ I use =M-g M-g= everywhere to go directly to Magit.
          ("C-x g" . magit-status))
   :init (add-hook 'magit-mode-hook 'hl-line-mode)
   :config
+  (setq git-commit-summary-max-length 70)
   (setenv "GIT_PAGER" "")
   (if (file-exists-p  "/usr/local/bin/emacsclient")
       (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")
