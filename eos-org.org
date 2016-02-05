@@ -339,7 +339,7 @@ And now the huge org-mode configuration
     (add-to-list 'org-babel-default-header-args:python
                  '(:shebang . "#!/usr/bin/env python"))
 
-    (defun my/org-inline-css-hook (exporter)
+    (defun eos/org-inline-css-hook (exporter)
       "Insert custom inline css to automatically set the
    background of code to whatever theme I'm using's background"
       (when (eq exporter 'html)
@@ -354,7 +354,7 @@ And now the huge org-mode configuration
              "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
              my-pre-bg my-pre-fg))))))
 
-    (add-hook 'org-export-before-processing-hook #'my/org-inline-css-hook)
+    (add-hook 'org-export-before-processing-hook #'eos/org-inline-css-hook)
 
     (use-package org-id
       :init
@@ -387,7 +387,7 @@ And now the huge org-mode configuration
 
       ;; automatically add ids to captured headlines
       (add-hook 'org-capture-prepare-finalize-hook
-                (lambda () (my/org-custom-id-get (point) 'create)))))))
+                (lambda () (eos/org-custom-id-get (point) 'create)))))))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
