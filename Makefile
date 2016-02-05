@@ -2,6 +2,7 @@
 EOS_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 el-modules = eos-core.el \
+						 eos-navigation.el \
 						 eos-notify.el \
 						 eos-develop.el \
 						 eos-es.el \

@@ -1,0 +1,32 @@
+#+TITLE: EOS: Navigation
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-navigation)
+#+END_SRC
+
+* God-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package god-mode
+  :ensure t
+  :init
+  (god-mode)
+  (global-set-key (kbd "<escape>") 'god-mode-all)
+  (define-key god-local-mode-map (kbd ".") 'repeat)
+  (define-key god-local-mode-map (kbd "i") 'god-local-mode)
+  (defun god-update-cursor ()
+    "Update my cursor."
+    (setq cursor-type
+          (if god-local-mode
+              'box
+            'bar)))
+  (add-hook 'god-mode-enabled-hook 'god-update-cursor)
+  (add-hook 'god-mode-disabled-hook 'god-update-cursor)
+  (add-to-list 'god-exempt-major-modes 'sauron-mode)
+  (add-to-list 'god-exempt-major-modes 'eshell-mode)
+  (add-to-list 'god-exempt-major-modes 'org-agenda-mode)
+  (add-to-list 'god-exempt-major-modes 'mingus-playlist-mode)
+  (add-to-list 'god-exempt-major-modes 'mingus-browse-mode))
+#+END_SRC

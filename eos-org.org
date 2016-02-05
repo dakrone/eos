@@ -357,7 +357,7 @@ And now the huge org-mode configuration
 
     (use-package org-id
       :init
-      (setq org-id-link-to-org-use-id 'use-existing)
+     (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
       (defun eos/org-custom-id-get (&optional pom create prefix)
         "Get the CUSTOM_ID property of the entry at point-or-marker POM.
@@ -385,9 +385,8 @@ And now the huge org-mode configuration
         (org-map-entries (lambda () (eos/org-custom-id-get (point) 'create))))
 
       ;; automatically add ids to captured headlines
-      ;; (add-hook 'org-capture-prepare-finalize-hook
-      ;;           (lambda () (my/org-custom-id-get (point) 'create))))
-      )))
+      (add-hook 'org-capture-prepare-finalize-hook
+                (lambda () (my/org-custom-id-get (point) 'create)))))))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
