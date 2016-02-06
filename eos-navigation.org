@@ -156,8 +156,8 @@ instead suffering from "Emacs-thumb".
   ;; `key-string-after-consuming-key' method, courtesy of
   ;; https://github.com/chrisdone/god-mode/issues/75
   (defun key-string-after-consuming-key (key key-string-so-far)
-    "Interpret god-mode special keys for key (consumes more keys if
- appropriate). Append to keysequence."
+    "Interpret god-mode special keys for key (consumes more keys
+if appropriate). Append to keysequence."
     (let ((key-consumed t) next-modifier next-key)
       (message key-string-so-far)
       (setq next-modifier
@@ -181,15 +181,9 @@ instead suffering from "Emacs-thumb".
             (if key-consumed
                 (god-mode-sanitized-key-string (read-event key-string-so-far))
               key))
-
-      (let* ((next-literal-key-string (concat next-modifier next-key))
-             (translation (lookup-key key-translation-map
-                                      (read-kbd-macro next-literal-key-string t)))
-             (next-interpreted-key-string
-              (if translation
-                  (format-kbd-macro translation)
-                next-literal-key-string)))
-
+      (let* ((literal-key-string (concat next-modifier next-key))
+             (translation (lookup-key key-translation-map (kbd literal-key-string)))
+             (next-interpreted-key-string (or translation literal-key-string)))
         (if key-string-so-far
             (concat key-string-so-far " " next-interpreted-key-string)
           next-interpreted-key-string)))))
