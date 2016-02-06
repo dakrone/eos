@@ -16,8 +16,9 @@ First, some window management and navigation helpers
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x +") 'balance-windows-area)
 
-(global-set-key (kbd "C-c y") 'bury-buffer)
-(global-set-key (kbd "C-c r") 'revert-buffer)
+(global-set-key (kbd "C-c y") #'bury-buffer)
+(global-set-key (kbd "C-c C-y") #'bury-buffer)
+(global-set-key (kbd "C-c r") #'revert-buffer)
 
 ;; ==== Window switching ====
 (defun eos/other-window-backwards ()
