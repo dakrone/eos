@@ -146,6 +146,7 @@ instead suffering from "Emacs-thumb".
   (add-to-list 'god-exempt-major-modes 'mingus-browse-mode)
   (add-to-list 'god-exempt-major-modes 'twittering-mode)
   (add-to-list 'god-exempt-major-modes 'Man-mode)
+  (add-to-list 'god-exempt-major-modes 'proced-mode)
   :config
   ;; Finally, a fix for key-translation-map by redefining the
   ;; `key-string-after-consuming-key' method, courtesy of
