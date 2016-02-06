@@ -387,7 +387,7 @@ And now the huge org-mode configuration
 
       ;; automatically add ids to captured headlines
       (add-hook 'org-capture-prepare-finalize-hook
-                (lambda () (eos/org-custom-id-get (point) 'create)))))))
+                (lambda () (eos/org-custom-id-get (point) 'create))))))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
