@@ -271,6 +271,7 @@ passed in. Also supports ignoring the msg at the point."
 
     ;; Make 'quit' just bury the buffer
     (define-key mu4e-headers-mode-map "q" 'mlh-mu4e-quit-and-notify)
+    (define-key mu4e-headers-mode-map "'" 'eyebrowse-next-window-config)
     (define-key mu4e-main-mode-map "q" 'mlh-mu4e-quit-and-notify)
 
     ;; View mode stuff

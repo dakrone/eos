@@ -148,6 +148,9 @@ instead suffering from "Emacs-thumb".
   (add-to-list 'god-exempt-major-modes 'twittering-mode)
   (add-to-list 'god-exempt-major-modes 'Man-mode)
   (add-to-list 'god-exempt-major-modes 'proced-mode)
+  (add-to-list 'god-exempt-major-modes 'gnus-summary-mode)
+  (add-to-list 'god-exempt-major-modes 'gnus-article-mode)
+  (add-to-list 'god-exempt-major-modes 'gnus-group-mode)
   :config
   ;; Finally, a fix for key-translation-map by redefining the
   ;; `key-string-after-consuming-key' method, courtesy of
