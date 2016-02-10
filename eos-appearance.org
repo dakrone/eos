@@ -118,7 +118,7 @@ blends into the foreground
   (custom-set-faces
    `(fringe ((t (:background ,eos/fringe-background-color))))))
 
-;; (add-hook 'after-init-hook #'eos/set-fringe-background)
+(add-hook 'after-init-hook #'eos/set-fringe-background)
 #+END_SRC
 
 Show where the buffer ends on the right-hand fringe
