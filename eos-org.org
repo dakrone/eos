@@ -628,3 +628,10 @@ Notifications for upcoming org statuses!
 #+BEGIN_SRC emacs-lisp
 (setq diary-file "~/diary")
 #+END_SRC
+
+* Presentations with =epresent=
+
+#+BEGIN_SRC emacs-lisp
+(use-package epresent
+  :ensure t)
+#+END_SRC
