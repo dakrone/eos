@@ -52,6 +52,7 @@ Ideally, each module except for the "Core" module is optional and can be skipped
 if not desired.
 
 - [[./eos-core.org][Core Computing System]]
+- Appearance
 - [[Navigation]]
 - [[./eos-notify.org][Notification System]]
 - [[./eos-develop.org][Development (programming) System]]
@@ -211,6 +212,7 @@ And now, let's start things up.
 
 ;; The EOS modules
 (require 'eos-core)
+(require 'eos-appearance)
 (require 'eos-navigation)
 (require 'eos-notify)
 (require 'eos-develop)
