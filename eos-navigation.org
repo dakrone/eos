@@ -152,6 +152,7 @@ instead suffering from "Emacs-thumb".
   (add-to-list 'god-exempt-major-modes 'gnus-article-mode)
   (add-to-list 'god-exempt-major-modes 'gnus-group-mode)
   (add-to-list 'god-exempt-major-modes 'elfeed-search-mode)
+  (add-to-list 'god-exempt-major-modes 'haskell-interactive-mode)
   :config
   ;; Finally, a fix for key-translation-map by redefining the
   ;; `key-string-after-consuming-key' method, courtesy of
