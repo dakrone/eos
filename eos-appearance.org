@@ -119,7 +119,6 @@ Some helpers to change a buffer to be specifically fixed or variable width
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
-  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
