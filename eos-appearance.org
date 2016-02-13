@@ -35,7 +35,6 @@ balanced of color and pleasing to my eyes.
       :init (load-theme 'sanityinc-tomorrow-night t))
   (progn
     (use-package leuven-theme
-      :disabled t
       :ensure t
       :init
       (load-theme 'leuven t)
@@ -43,6 +42,7 @@ balanced of color and pleasing to my eyes.
       (set-face-background 'default "#f0f0f0"))
     (use-package color-theme-solarized
       :ensure t
+      :disabled t
       :init
       (setq color-themes '()) ;; this is required to fix color-theme-solarized
       (load-theme 'solarized t))))
@@ -88,11 +88,38 @@ Config for Linux/X11 systems:
   (add-hook 'after-init-hook #'eos/setup-x11-fonts))
 #+END_SRC
 
+Experimental test of Greg's extended faces package
+
+#+BEGIN_SRC emacs-lisp
+(when (file-exists-p "~/src/elisp/emacs-extended-faces/")
+  (add-to-list 'load-path "~/src/elisp/emacs-extended-faces/")
+  (require 'extended-faces))
+#+END_SRC
+
+Some helpers to change a buffer to be specifically fixed or variable width
+
+#+BEGIN_SRC emacs-lisp
+;; Use variable width font faces in current buffer
+(defun eos/buffer-face-mode-variable ()
+  "Set font to a variable width (proportional) fonts in current buffer"
+  (interactive)
+  (setq buffer-face-mode-face '(:family "DejaVu Sans" :height 115))
+  (buffer-face-mode))
+
+;; Use monospaced font faces in current buffer
+(defun eos/buffer-face-mode-fixed ()
+  "Sets a fixed width (monospace) font in current buffer"
+  (interactive)
+  (setq buffer-face-mode-face '(:family "DejaVu Sans Mono" :height 115))
+  (buffer-face-mode))
+#+END_SRC
+
 * Emacs' Mode-line
 
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
+  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
