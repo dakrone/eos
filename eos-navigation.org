@@ -158,6 +158,7 @@ instead suffering from "Emacs-thumb".
   (add-to-list 'god-exempt-major-modes 'haskell-interactive-mode)
   (add-to-list 'god-exempt-major-modes 'epresent-mode)
   (add-to-list 'god-exempt-major-modes 'compilation-mode)
+  (add-to-list 'god-exempt-major-modes 'Custom-mode)
   :config
   ;; Finally, a fix for key-translation-map by redefining the
   ;; `key-string-after-consuming-key' method, courtesy of
