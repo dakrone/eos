@@ -322,6 +322,7 @@ passed in. Also supports ignoring the msg at the point."
             ("maildir:/fastmail/INBOX"     "Fastmail"             ?f)
             ("maildir:/elastic/INBOX"      "Elastic"              ?s)
             ("maildir:/gmail/INBOX"        "Gmail"                ?g)
+            ("maildir:/elastic/github"     "Issues (github)"      ?i)
             ("maildir:/elastic/INBOX OR maildir:/gmail/INBOX OR maildir:/fastmail/INBOX"
              "All Mail" ?a)
             ("maildir:/elastic/INBOX AND subject:Production AND from:support@elastic.co"
