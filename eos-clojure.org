@@ -56,3 +56,9 @@ And then finally use them if cider and ac-nrepl packages are available:
     (add-hook #'cider-mode-hook #'ac-cider-setup)
     (add-hook #'cider-repl-mode-hook #'ac-cider-setup)))
 #+END_SRC
+
+For looking up documentation, =helm-clojuredocs= is neat and handy
+#+BEGIN_SRC emacs-lisp
+(use-package helm-clojuredocs
+  :ensure t)
+#+END_SRC
