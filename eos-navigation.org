@@ -130,8 +130,8 @@ instead suffering from "Emacs-thumb".
 #+BEGIN_SRC emacs-lisp
 (use-package god-mode
   :ensure t
-  :init
-  (god-mode)
+  :bind ("<escape>" . god-mode-all)
+  :config
   (global-set-key (kbd "<escape>") 'god-mode-all)
   (define-key god-local-mode-map (kbd ".") 'repeat)
   (define-key god-local-mode-map (kbd "i") 'god-local-mode)
@@ -141,8 +141,8 @@ instead suffering from "Emacs-thumb".
           (if god-local-mode
               'box
             'bar)))
-  (add-hook 'god-mode-enabled-hook 'god-update-cursor)
-  (add-hook 'god-mode-disabled-hook 'god-update-cursor)
+  ;;(add-hook 'god-mode-enabled-hook 'god-update-cursor)
+  ;;(add-hook 'god-mode-disabled-hook 'god-update-cursor)
   (add-to-list 'god-exempt-major-modes 'sauron-mode)
   (add-to-list 'god-exempt-major-modes 'eshell-mode)
   (add-to-list 'god-exempt-major-modes 'org-agenda-mode)
@@ -159,7 +159,6 @@ instead suffering from "Emacs-thumb".
   (add-to-list 'god-exempt-major-modes 'epresent-mode)
   (add-to-list 'god-exempt-major-modes 'compilation-mode)
   (add-to-list 'god-exempt-major-modes 'Custom-mode)
-  :config
   ;; Finally, a fix for key-translation-map by redefining the
   ;; `key-string-after-consuming-key' method, courtesy of
   ;; https://github.com/chrisdone/god-mode/issues/75
