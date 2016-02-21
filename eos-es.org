@@ -17,6 +17,16 @@
   (setq es-warn-on-delete-query nil))
 #+END_SRC
 
+** Documentation for Elasticsearch
+
+I occasionally use =helm-dash= to access the documentation for Elasticsearch
+(and Java)
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-dash
+  :ensure t)
+#+END_SRC
+
 * ES Services started and Run from Emacs
 
 I basically use this to start up ES when I need to test something really quickly
