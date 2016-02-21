@@ -623,6 +623,19 @@ Notifications for upcoming org statuses!
   :init (org-alert-enable))
 #+END_SRC
 
+* Tools used from within org-mode
+
+I tend to use quite a few different tools from org buffers, so let's install the
+modes required:
+
+#+BEGIN_SRC emacs-lisp
+(use-package gnuplot
+  :ensure t)
+
+(use-package gnuplot-mode
+  :ensure t)
+#+END_SRC
+
 * Diary, keeping track of appointments in Emacs
 
 #+BEGIN_SRC emacs-lisp
