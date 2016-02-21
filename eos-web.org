@@ -38,6 +38,7 @@ middle.
           ("melpa.org" . browse-url-generic)
           ("build.*\.elastic.co" . browse-url-generic)
           ("elasticsearch-ci\.elastic.co" . browse-url-generic)
+          ("internal-ci\.elastic\.co" . browse-url-generic)
           ("zendesk.com" . browse-url-generic)
           ("." . eww-browse-url)))
   (setq shr-external-browser 'browse-url-generic)
