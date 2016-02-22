@@ -32,3 +32,12 @@ Let's manage the forecast and weather too, will be managed from the main Hydra
   (setq sunshine-show-icons t
         sunshine-location "80202,USA"))
 #+END_SRC
+
+* Browsing stack overflow
+
+Emacs has a really nice stack overflow client, called "sx"
+
+#+BEGIN_SRC emacs-lisp
+(use-package sx
+  :ensure t)
+#+END_SRC
