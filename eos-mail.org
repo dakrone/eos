@@ -28,6 +28,7 @@ to return the correct path depending on the account the email is from.
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/src/mu-0.9.16/mu4e")
 (use-package mu4e
+  :if window-system
   :config
   (progn
     (add-hook 'mu4e-compose-mode-hook 'turn-on-flyspell)
