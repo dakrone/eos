@@ -118,6 +118,24 @@ permanently."
      (if isearch-regexp isearch-string (regexp-quote isearch-string)))))
 #+END_SRC
 
+* Mouse-based navigation
+
+Need to enable this to get trackpad scrolling to work on my Lenovo T450s
+
+#+BEGIN_SRC emacs-lisp
+;; mouse integration
+(require 'mouse)
+(xterm-mouse-mode t)
+(global-set-key [mouse-4] '(lambda ()
+                           (interactive)
+                           (scroll-down 1)))
+(global-set-key [mouse-5] '(lambda ()
+                           (interactive)
+                           (scroll-up 1)))
+(setq mouse-sel-mode t)
+(defun track-mouse (e))
+#+END_SRC
+
 * God-mode
 God-mode was always something a little strange to me, halfway to =evil-mode=,
 but not quite Emacs.
