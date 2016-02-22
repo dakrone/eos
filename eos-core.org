@@ -78,8 +78,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
-;;(defvar eos/background 'dark)
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
 #+END_SRC
 
 Now some personal information about me:
@@ -755,15 +755,12 @@ margin means that much space is kept between the cursor and the bottom of the
 buffer.
 
 #+BEGIN_SRC emacs-lisp
-(use-package smooth-scrolling
-  :ensure t
-  :defer t
-  :config
-  (setq smooth-scroll-margin 3
-        scroll-margin 3
-        scroll-conservatively 101
-        scroll-preserve-screen-position t
-        auto-window-vscroll nil))
+(setq scroll-margin 3
+      scroll-conservatively 101
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
+      scroll-preserve-screen-position t
+      auto-window-vscroll nil)
 #+END_SRC
 
 Automagically resizes the windows to be the golden ratio (1.618), nice when
