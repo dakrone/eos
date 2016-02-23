@@ -34,7 +34,7 @@ balanced of color and pleasing to my eyes.
 (if (eq eos/background 'dark)
     (use-package color-theme-sanityinc-tomorrow
       :ensure t
-      :init (load-theme 'sanityinc-tomorrow-night t))
+      :init (load-theme 'sanityinc-tomorrow-bright t))
   (progn
     (use-package leuven-theme
       :ensure t
