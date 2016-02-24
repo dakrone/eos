@@ -1058,8 +1058,9 @@ I use =gpg2= everywhere, including in Emacs.
 #+BEGIN_SRC emacs-lisp
 (when (eq system-type 'gnu/linux)
 
-  ;; Don't use GTK tooltips, use emacs ones
-  (setq x-gtk-use-system-tooltips nil)
+  ;; Whether to use GTK tooltips or emacs ones
+  ;; (setq x-gtk-use-system-tooltips nil)
+  (setq x-gtk-use-system-tooltips t)
 
   (defun tsp/max-fullscreen ()
     (interactive)
