@@ -541,6 +541,10 @@ Use GHC for haskell mode, and turn on auto-complete and some doc/indent
 modes:
 
 #+BEGIN_SRC emacs-lisp
+(defun eos/turn-off-flyspell ()
+  (interactive)
+  (flyspell-mode -1))
+
 (use-package haskell-mode
   :ensure t
   :defer t
@@ -549,6 +553,7 @@ modes:
   (add-hook 'haskell-mode-hook #'turn-on-haskell-doc-mode)
   (add-hook 'haskell-mode-hook #'subword-mode)
   (add-hook 'haskell-mode-hook #'interactive-haskell-mode)
+  (add-hook 'haskell-mode-hook #'eos/turn-off-flyspell)
   :config
   (setq haskell-process-suggest-remove-import-lines t
         haskell-process-auto-import-loaded-modules t
@@ -559,7 +564,7 @@ modes:
   (define-key haskell-mode-map (kbd "C-c t") #'haskell-process-do-type)
   (define-key haskell-mode-map (kbd "C-c C-i") #'haskell-process-do-info)
   ;;(define-key haskell-mode-map (kbd "C-c C-c") #'haskell-process-cabal-build)
-  (define-key haskell-mode-map (kbd "C-c C-k") #'haskell-interactive-mode-clear)
+  (define-key haskell-mode-map (kbd "C-c M-k") #'haskell-interactive-mode-clear)
   ;;(define-key haskell-mode-map (kbd "C-c c") #'haskell-process-cabal)
   (define-key haskell-mode-map (kbd "SPC") #'haskell-mode-contextual-space))
 #+END_SRC
