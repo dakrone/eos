@@ -1257,34 +1257,42 @@ Now we can do our Helm things
   (global-unset-key (kbd "C-x c"))
 
   ;; Via: https://www.reddit.com/r/emacs/comments/3asbyn/new_and_very_useful_helm_feature_enter_search/
-  (setq helm-echo-input-in-header-line t)
-  (defun helm-hide-minibuffer-maybe ()
-    (when (with-helm-buffer helm-echo-input-in-header-line)
-      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-        (overlay-put ov 'window (selected-window))
-        (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-                                `(:background ,bg-color :foreground ,bg-color)))
-        (setq-local cursor-type nil))))
-  (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+  ;; (setq helm-echo-input-in-header-line t)
+  ;; (defun helm-hide-minibuffer-maybe ()
+  ;;   (when (with-helm-buffer helm-echo-input-in-header-line)
+  ;;     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+  ;;       (overlay-put ov 'window (selected-window))
+  ;;       (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+  ;;                               `(:background ,bg-color :foreground ,bg-color)))
+  ;;       (setq-local cursor-type nil))))
+  ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
 
   (setq helm-grep-default-command
         "grep -a -d skip %e -n%cH -e %p %f"
         ;; may be overridden if 'ggrep' is in path (see below)
         helm-grep-default-recurse-command
         "grep -a -d recurse %e -n%cH -e %p %f"
-        ;; don't display invisible candidates
-        helm-quick-update t
+        ;; do or don't display invisible candidates
+        helm-quick-update nil
         ;; use CURL, not url-retrieve-synchronously
         helm-net-prefer-curl t
         ;; be idle for this many seconds, before updating in delayed sources.
-        ;; helm-idle-delay 0.01
-        ;; helm-input-idle-delay 0.01
+        helm-idle-delay 0.01
+        helm-input-idle-delay 0.01
         ;; wider buffer name in helm-buffers-list
         helm-buffer-max-length 25 ;; default is 20
         ;; open helm buffer in another window
         helm-split-window-default-side 'other
         ;; open helm buffer inside current window, don't occupy whole other window
         helm-split-window-in-side-p t
+        ;; set to true and use <C-backspace> to toggle it in helm-find-files
+        helm-ff-auto-update-initial-value t
+        ;; if I change the resplit state, re-use my settings
+        helm-reuse-last-window-split-state t
+        ;; don't delete windows to always have 2
+        helm-always-two-windows nil
+        ;; don't check if the file exists on remote files
+        helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
         ;; helm-candidate-number-limit 200
         ;; don't use recentf stuff in helm-ff, I use C-x C-r for this
@@ -1294,6 +1302,8 @@ Now we can do our Helm things
         helm-move-to-line-cycle-in-source t
         ;; don't display the header line
         helm-display-header-line nil
+        ;; be semi-verbose for helm tramp messages
+        helm-tramp-verbose 3
         ;; fuzzy matching
         helm-recentf-fuzzy-match t
         helm-locate-fuzzy-match nil ;; locate fuzzy is worthless
@@ -1304,8 +1314,10 @@ Now we can do our Helm things
         helm-imenu-fuzzy-match t
         helm-lisp-fuzzy-completion t
         helm-completion-in-region-fuzzy-match t
-        helm-autoresize-min-height 40
+        helm-autoresize-min-height 10
         helm-autoresize-max-height 40
+        ;; Testing
+        fit-window-to-buffer-horizontally 1
         ;; Here are the things helm-mini shows, I add `helm-source-bookmarks'
         ;; here to the regular default list
         helm-mini-default-sources '(helm-source-buffers-list
