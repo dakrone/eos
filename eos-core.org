@@ -1311,7 +1311,7 @@ Now we can do our Helm things
         helm-imenu-fuzzy-match t
         helm-lisp-fuzzy-completion t
         helm-completion-in-region-fuzzy-match t
-        helm-autoresize-min-height 10
+        helm-autoresize-min-height 20
         helm-autoresize-max-height 40
         ;; Testing
         fit-window-to-buffer-horizontally 1
