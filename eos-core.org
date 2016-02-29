@@ -463,10 +463,6 @@ on Emacs startup.
 
 (add-hook 'after-init-hook 'load-persistent-scratch)
 (add-hook 'kill-emacs-hook 'save-persistent-scratch)
-
-(if (not (boundp 'tsp/save-persistent-scratch-timer))
-    (setq tsp/save-persistent-scratch-timer
-          (run-with-idle-timer 60 t #'save-persistent-scratch)))
 #+END_SRC
 
 I restart emacs a lot, and it is nice to have the history of things like =M-x=
