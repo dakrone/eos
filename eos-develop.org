@@ -352,6 +352,16 @@ I use =M-g M-g= everywhere to go directly to Magit.
   (bind-key "M-4" #'eos/create-or-switch-to-eshell-4 magit-mode-map))
 #+END_SRC
 
+There's also a package called magit-gh-pulls that shows the pull requests when
+viewing the magit buffer
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit-gh-pulls
+  :ensure t
+  :init
+  (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))
+#+END_SRC
+
 Quite useful, as well as the =C-x n= and =C-x p= bindings.
 
 #+BEGIN_SRC emacs-lisp
