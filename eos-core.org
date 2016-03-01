@@ -946,18 +946,8 @@ kill them and all that, when I do, I want it to auto-update
 
 #+BEGIN_SRC emacs-lisp
 (setq-default proced-auto-update-flag t)
-(setq-default proced-auto-update-interval 3)
+(setq-default proced-auto-update-interval 5)
 (add-hook 'proced-mode-hook 'hl-line-mode)
-#+END_SRC
-
-Let's try enabling automatic saving of buffers when they lose focus
-
-#+BEGIN_SRC emacs-lisp
-(use-package super-save
-  :ensure t
-  :init
-  (require 'super-save)
-  (add-hook 'after-init-hook 'super-save-initialize))
 #+END_SRC
 
 I don't really need bi-directional display, so let's speed up long lines
