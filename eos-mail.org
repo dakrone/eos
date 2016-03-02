@@ -51,6 +51,8 @@ to return the correct path depending on the account the email is from.
             "lee@elastic.co")
           ;; save attachments to the Downloads folder
           mu4e-attachment-dir "~/Downloads"
+          ;; don't show info about indexing new messages
+          mu4e-hide-index-messages t
           ;; attempt to show images
           mu4e-view-show-images t
           mu4e-view-image-max-width 800
