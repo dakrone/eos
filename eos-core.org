@@ -1190,9 +1190,9 @@ Before we load any helm things, need to load [[https://github.com/PythonNut/helm
 helm's fuzzy matching.
 
 #+BEGIN_SRC emacs-lisp
-;;(use-package helm-flx
-;;  :ensure t
-;;  :init (helm-flx-mode +1))
+(use-package helm-flx
+ :ensure t
+ :init (helm-flx-mode +1))
 #+END_SRC
 
 Now we can do our Helm things
