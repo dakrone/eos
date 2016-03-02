@@ -41,7 +41,7 @@ IRC in Emacs
     (setq ercn-notify-rules
           '((current-nick . all)
             (keyword . all)
-            (pal . ("#emacs" "#elasticsearch"))
+            (pal . ("#elasticsearch"))
             (query-buffer . all)))
 
     (use-package s :ensure t)
