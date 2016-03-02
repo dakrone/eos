@@ -53,6 +53,7 @@
           ("http://feeds.feedburner.com/tgcblog?format=xml" christianity)
           ("http://www.rzim.org/let-my-people-think-broadcasts/feed/" christianity)
           ("http://adam4d.com/feed/" christianity)
+          ("http://babylonbee.com/feed/" christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
