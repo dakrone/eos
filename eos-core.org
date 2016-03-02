@@ -579,11 +579,22 @@ Need to make sure the directory exists in the initializing shell script
 mkdir -p ~/.emacs_backups
 #+END_SRC
 
-Before saving a buffer, deleting the trailing whitespace, no one needs that and
-it's pretty useful in general.
+Before saving a buffer, cleans up whitespace only for the lines that I have
+touched. I used to have:
+
+: (add-hook 'before-save-hook #'delete-trailing-whitespace)
+
+But this ends up deleting a looot of whitespace in my work codebase ಠ_ಠ, so now
+I use [[https://github.com/lewang/ws-butler/][ws-butler]].
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
+(use-package ws-butler
+  :ensure t
+  :diminish ws-butler-mode
+  :init
+  (add-hook 'prog-mode-hook #'ws-butler-mode)
+  (add-hook 'org-mode-hook #'ws-butler-mode)
+  (add-hook 'text-mode-hook #'ws-butler-mode))
 #+END_SRC
 
 Let's configure some popup rules, so buffers don't take over the whole workspace
