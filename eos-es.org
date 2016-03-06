@@ -53,6 +53,13 @@ So I configure prodigy like so:
   :config
   (setq prodigy-services '())
   (prodigy-define-service
+    :name "ES 2.2 release"
+    :cwd "~/ies/"
+    :command "esvm"
+    :tags '(work test es)
+    :port 9200)
+
+  (prodigy-define-service
     :name "ES 2.x, 3 nodes"
     :cwd "~/ies/"
     :command "esvm"
@@ -108,4 +115,57 @@ So I configure prodigy like so:
     :args '("run")
     :tags '(work es)
     :port 9200))
+#+END_SRC
+
+* ESVM configuration
+
+I've been using [[https://github.com/simianhacker/esvm][esvm]] for managing starting up multiple ES nodes when I need to
+test something using the rest API. Here's my configuration for it that tangles
+and installs into =~/.esvmrc=
+
+Here is the branch with the latest release I use:
+
+#+NAME: es-branch
+#+BEGIN_SRC json :tangle no
+2.x
+#+END_SRC
+
+#+BEGIN_SRC js :tangle out/esvmrc
+{
+  "clusters": {
+    "<<es-branch>>": {
+      "branch": "<<es-branch>>",
+      "nodes": 1
+    },
+    "2node": {
+      "branch": "<<es-branch>>",
+      "nodes": 2
+    },
+    "3node": {
+      "branch": "<<es-branch>>",
+      "nodes": 3
+    },
+    "master": {
+      "branch": "master",
+      "nodes": 1
+    }
+  },
+  "defaults": {
+    "config": {
+      "cluster.name": "es-lee",
+      "node.add_id_to_custom_path": false,
+      "path.repo": "/tmp",
+      "path.shared_data": "/tmp",
+      "script.indexed": "on",
+      "script.inline": "on"
+    },
+    "plugins": []
+  }
+}
+#+END_SRC
+
+And to install it:
+
+#+BEGIN_SRC sh :tangle sh/install-esvmrc.sh
+ln -sfv out/esvmrc ~/.esvmrc
 #+END_SRC
