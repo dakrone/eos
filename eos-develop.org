@@ -359,7 +359,10 @@ viewing the magit buffer
 (use-package magit-gh-pulls
   :ensure t
   :init
-  (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls))
+  (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls)
+  :config
+  ;; work around https://github.com/sigma/magit-gh-pulls/issues/83
+  (setq magit-gh-pulls-pull-detail-limit 50))
 #+END_SRC
 
 Quite useful, as well as the =C-x n= and =C-x p= bindings.
