@@ -16,7 +16,7 @@ really need.
 #+BEGIN_SRC emacs-lisp
 (use-package beacon
   :ensure t
-  :disable t
+  :disabled t
   :diminish beacon-mode
   :init (beacon-mode 1)
   :config
