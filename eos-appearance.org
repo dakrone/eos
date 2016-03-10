@@ -7,7 +7,21 @@
 #+END_SRC
 
 * Emacs Appearance
-(TODO: put things here)
+
+Beacon flashes the cursor whenever you adjust position, really helpful when
+jumping between a billion windows and having no idea where the cursor actually
+is. It's currently disabled because it causes a bit of CPU churn that I don't
+really need.
+
+#+BEGIN_SRC emacs-lisp
+(use-package beacon
+  :ensure t
+  :disable t
+  :diminish beacon-mode
+  :init (beacon-mode 1)
+  :config
+  (add-to-list 'beacon-dont-blink-major-modes 'eshell-mode))
+#+END_SRC
 
 * Color Theme
 :PROPERTIES:

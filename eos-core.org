@@ -939,19 +939,6 @@ sometimes I need to look at someone's 5gb log file.
   :ensure vlf)
 #+END_SRC
 
-Beacon flashes the cursor whenever you adjust position, really helpful when
-jumping between a billion windows and having no idea where the cursor actually
-is.
-
-#+BEGIN_SRC emacs-lisp
-(use-package beacon
-  :ensure t
-  :diminish beacon-mode
-  :init (beacon-mode 1)
-  :config
-  (add-to-list 'beacon-dont-blink-major-modes 'eshell-mode))
-#+END_SRC
-
 I use M-x =proced= a lot to get a top-like (or htop-like) display of processes,
 kill them and all that, when I do, I want it to auto-update
 
