@@ -320,8 +320,7 @@ I use =M-g M-g= everywhere to go directly to Magit.
 #+BEGIN_SRC emacs-lisp
 (use-package magit
   :ensure t
-  :bind (("M-g M-g" . magit-status)
-         ("C-x g" . magit-status))
+  :bind (("C-x g" . magit-status))
   :init (add-hook 'magit-mode-hook 'hl-line-mode)
   :config
   (setq git-commit-summary-max-length 70)
