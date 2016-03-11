@@ -418,6 +418,19 @@ A simple presentation mode for org-mode
               (org-present-read-write))))
 #+END_SRC
 
+** exporting to Github-flavored markdown
+
+By and large, 90% of the exports I do are to Github's markdown. Usually to share
+for an issue. So there's a nice exporter that does this for me: =ox-gfm=
+
+#+BEGIN_SRC emacs-lisp
+(use-package ox-gfm
+  :ensure t
+  :init
+  (customize-set-variable 'org-export-backends
+                          (cons 'gfm org-export-backends)))
+#+END_SRC
+
 ** org-clock
 :PROPERTIES:
 :ID:       DA59822F-1D94-4E05-B28C-9B984C3E8431
