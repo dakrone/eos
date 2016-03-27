@@ -374,7 +374,7 @@ And now the huge org-mode configuration
              ((and id (stringp id) (string-match "\\S-" id))
               id)
              (create
-              (setq id (org-id-new prefix))
+              (setq id (org-id-new (concat prefix "h")))
               (org-entry-put pom "CUSTOM_ID" id)
               (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
               id)))))

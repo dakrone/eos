@@ -279,6 +279,24 @@ d=, if the buffer doesn't exist it is created.
 (global-set-key (kbd "M-4") 'eos/create-or-switch-to-eshell-4)
 #+END_SRC
 
+** Fixing newlines in eshell like zsh
+So ZSH has this great functionality where if the previous line didn't end in a
+newline, it automatically added one before printing the prompt. Because ES
+routinely doesn't print a newline, it'd be great if eshell did this
+automatically:
+
+#+BEGIN_SRC emacs-lisp
+(use-package eshell
+  :config
+  (defun eos/maybe-add-newline ()
+    "Add a newline, but only if not at the beginning of the line already."
+    (interactive)
+    (when (not (eq (current-column) 0))
+      (insert-string "\n")))
+  ;; (add-hook 'eshell-before-prompt-hook #'eos/maybe-add-newline)
+  )
+#+END_SRC
+
 ** Eshell aliases
 Like zsh, I use a lot of aliases in eshell, so I need to set those up here:
 

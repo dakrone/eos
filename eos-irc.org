@@ -29,7 +29,9 @@ IRC in Emacs
           erc-hide-list '("JOIN" "PART" "QUIT")
           erc-fill-column 100
           erc-server-reconnect-timeout 5
-          erc-server-reconnect-attempts 3)
+          erc-server-reconnect-attempts 3
+          erc-autojoin-channels-alist
+          '(("irc.genevairc.net" "#prosapologian")))
     (defun eos/disable-font-lock ()
       (font-lock-mode -1))
     ;; ERC is crazy, for some reason it doesn't like font-lock...
@@ -109,6 +111,9 @@ IRC in Emacs
              :port 31425
              :nick "dakrone"
              :password freenode-znc-pass)
+    (erc :server "irc.genevairc.net"
+         :port 6667
+         :nick "dakrone")
     ;; (erc-tls :server "elastic.irc.slack.com"
     ;;          :port 6697
     ;;          :nick "dakrone"

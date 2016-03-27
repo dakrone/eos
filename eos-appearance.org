@@ -109,7 +109,8 @@ Experimental test of Greg's extended faces package
 #+BEGIN_SRC emacs-lisp
 (when (file-exists-p "~/src/elisp/emacs-extended-faces/")
   (add-to-list 'load-path "~/src/elisp/emacs-extended-faces/")
-  (require 'extended-faces))
+  (require 'extended-faces)
+  (diminish 'buffer-face-mode))
 #+END_SRC
 
 Some helpers to change a buffer to be specifically fixed or variable width
@@ -167,4 +168,35 @@ Show where the buffer ends on the right-hand fringe
 
 #+BEGIN_SRC emacs-lisp
 (setq-default indicate-buffer-boundaries 'right)
+#+END_SRC
+
+* Shift the color of text with Redshift
+:PROPERTIES:
+:ID:       daa62f71-28bc-4c5a-b792-c4748606f81a
+:END:
+
+Redshift is like Flux, but nicer.
+
+#+BEGIN_SRC conf :tangle out/redshift.service
+[Unit]
+Description=Redshift
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/redshift -l geoclue2 -t 6500:3700
+ExecStop=/usr/bin/pkill redshift
+Environment=DISPLAY=:0
+Restart=always
+
+[Install]
+WantedBy=default.target
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle sh/install-redshift.sh
+deb-install redshift
+rpm-install redshift
+ln -sfv $PWD/out/redshift.service ~/.config/systemd/user/redshift.service
+systemctl --user daemon-reload
+systemctl --user enable redshift
+systemctl --user start redshift
 #+END_SRC

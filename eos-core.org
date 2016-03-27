@@ -36,53 +36,22 @@ function rpm-install () {
 }
 #+END_SRC
 
-* Booting up the system
-** Systemd services
-
-*** Redshift
+* Determining whether this will be a "light" or "dark" session
 :PROPERTIES:
-:ID:       daa62f71-28bc-4c5a-b792-c4748606f81a
+:VISIBILITY: all
 :END:
-
-Redshift is like Flux, but nicer.
-
-#+BEGIN_SRC conf :tangle out/redshift.service
-[Unit]
-Description=Redshift
-
-[Service]
-Type=simple
-ExecStart=/usr/bin/redshift -l geoclue2 -t 6500:3700
-ExecStop=/usr/bin/pkill redshift
-Environment=DISPLAY=:0
-Restart=always
-
-[Install]
-WantedBy=default.target
-#+END_SRC
-
-#+BEGIN_SRC sh :tangle sh/install-redshift.sh
-deb-install redshift
-rpm-install redshift
-ln -sfv $PWD/out/redshift.service ~/.config/systemd/user/redshift.service
-systemctl --user daemon-reload
-systemctl --user enable redshift
-systemctl --user start redshift
-#+END_SRC
-
-* EOS Core Configuration Setup
-
 First, let's determine whether I'm going to be using a dark background, or a
 light background. I set a var to either '=light= or '=dark= depending on
 whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-;;(defvar eos/background 'light)
-(defvar eos/background 'dark)
+(defvar eos/background 'light)
+;;(defvar eos/background 'dark)
 #+END_SRC
 
-Now some personal information about me:
+* EOS Core Configuration Setup
+Let's start with some personal information about me:
 
 #+BEGIN_SRC emacs-lisp
 (setq user-full-name "Lee Hinman"

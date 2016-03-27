@@ -54,7 +54,31 @@ I have to hack something around this to make it fixed for org->html exports
                 (advice-add 'fci-mode :override #'fci-mode-override-advice)
                 (let ((result  (apply fun args)))
                   (advice-remove 'fci-mode #'fci-mode-override-advice)
-                  result))))
+                  result)))
+
+  (defvar eos/fci-disabled nil)
+  (make-variable-buffer-local 'eos/fci-disabled)
+  ;; Add a hook that disables fci if enabled when the window changes and it
+  ;; isn't wide enough to display it.
+  (defun eos/maybe-disable-fci ()
+    (interactive)
+    ;; Disable FCI if necessary
+    (when (and fci-mode
+               (< (window-width) (or fci-rule-column fill-column)))
+      (fci-mode -1)
+      (setq-local eos/fci-disabled t))
+    ;; Enable FCI if necessary
+    (when (and eos/fci-disabled
+               (eq fci-mode nil)
+               (> (window-width) (or fci-rule-column fill-column)))
+      (fci-mode 1)
+      (setq-local eos/fci-disabled nil)))
+
+  (defun eos/add-fci-disabling-hook ()
+    (interactive)
+    (add-hook 'window-configuration-change-hook
+              #'eos/maybe-disable-fci))
+  (add-hook 'prog-mode-hook #'eos/add-fci-disabling-hook))
 #+END_SRC
 
 Highlight idle things, but only in certain modes
@@ -247,13 +271,18 @@ just enable it everywhere.
   (add-hook 'after-init-hook #'global-company-mode)
   (use-package company-quickhelp
     :ensure t
-    :init (add-hook 'company-mode-hook #'company-quickhelp-mode))
+    :init (add-hook 'company-mode-hook #'company-quickhelp-mode)
+    :config (setq company-quickhelp-delay 2))
   :config
   (setq company-selection-wrap-around t
-        ;; don't automatically start completion
-        company-idle-delay nil
+        ;; do or don't automatically start completion
+        ;;company-idle-delay nil
+        company-idle-delay 0.7
+        company-minimum-prefix-length 4
         ;; don't downcase dabbrev suggestions
         company-dabbrev-downcase nil
+        company-dabbrev-ignore-case nil
+        company-dabbrev-code-ignore-case nil
         ;; sort completions by occurrence
         company-transformers '(company-sort-by-occurrence))
   (bind-keys :map company-active-map
@@ -273,10 +302,10 @@ Used smart-tab to complete everywhere except for ERC, shell and mu4e.
   :diminish ""
   :init (global-smart-tab-mode 1)
   :config
-  (progn
-    (add-to-list 'smart-tab-disabled-major-modes 'mu4e-compose-mode)
-    (add-to-list 'smart-tab-disabled-major-modes 'erc-mode)
-    (add-to-list 'smart-tab-disabled-major-modes 'shell-mode)))
+  (setq smart-tab-using-hippie-expand t)
+  (add-to-list 'smart-tab-disabled-major-modes 'mu4e-compose-mode)
+  (add-to-list 'smart-tab-disabled-major-modes 'erc-mode)
+  (add-to-list 'smart-tab-disabled-major-modes 'shell-mode))
 #+END_SRC
 
 * Managing Projects with Projectile
