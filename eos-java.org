@@ -150,6 +150,7 @@ Intellij all the time for things.
 #+BEGIN_SRC emacs-lisp
 (use-package emacs-eclim
   :ensure t
+  :disabled t
   :init
   (progn
     ;; only show errors
