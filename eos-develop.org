@@ -399,9 +399,7 @@ Quite useful, as well as the =C-x n= and =C-x p= bindings.
 (use-package git-gutter
   :ensure t
   :defer t
-  :bind (("C-x =" . git-gutter:popup-hunk)
-         ("C-c P" . git-gutter:previous-hunk)
-         ("C-c N" . git-gutter:next-hunk)
+  :bind (("C-x P" . git-gutter:popup-hunk)
          ("C-x p" . git-gutter:previous-hunk)
          ("C-x n" . git-gutter:next-hunk)
          ("C-c G" . git-gutter:popup-hunk))
