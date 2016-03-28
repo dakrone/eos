@@ -107,10 +107,10 @@ Config for Linux/X11 systems:
 Experimental test of Greg's extended faces package
 
 #+BEGIN_SRC emacs-lisp
-(when (file-exists-p "~/src/elisp/emacs-extended-faces/")
-  (add-to-list 'load-path "~/src/elisp/emacs-extended-faces/")
-  (require 'extended-faces)
-  (diminish 'buffer-face-mode))
+;; (when (file-exists-p "~/src/elisp/emacs-extended-faces/")
+;;   (add-to-list 'load-path "~/src/elisp/emacs-extended-faces/")
+;;   (require 'extended-faces)
+;;   (diminish 'buffer-face-mode))
 #+END_SRC
 
 Some helpers to change a buffer to be specifically fixed or variable width
