@@ -75,6 +75,12 @@ if not desired.
 * =init.el=
 
 #+BEGIN_SRC emacs-lisp
+;; Load a custom version of cedet, if available
+(when (file-exists-p "~/src/elisp/cedet/cedet-devel-load.el")
+  (load "~/src/elisp/cedet/cedet-devel-load.el"))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
 ;; Load a custom version of org-mode, if available
 (when (file-exists-p "~/src/elisp/org-mode/lisp")
   (add-to-list 'load-path "~/src/elisp/org-mode/lisp")
