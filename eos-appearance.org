@@ -41,21 +41,24 @@ For light-colored backgrounds, I used [[https://github.com/fniessen/emacs-leuven
 balanced of color and pleasing to my eyes.
 
 #+BEGIN_SRC emacs-lisp
-(if window-system
-    (set-frame-parameter nil 'background-mode eos/background)
-  (set-terminal-parameter nil 'background-mode eos/background))
+;; (if window-system
+;;     (set-frame-parameter nil 'background-mode eos/background)
+;;   (set-terminal-parameter nil 'background-mode eos/background))
 
 (if (eq eos/background 'dark)
     (use-package color-theme-sanityinc-tomorrow
       :ensure t
       :init (load-theme 'sanityinc-tomorrow-bright t))
   (progn
+    (load-theme 'tsdh-light t)
     (use-package leuven-theme
       :ensure t
+      :disabled t
       :init
       (load-theme 'leuven t)
       ;; Bright white is a bit much, so darken it slightly
-      (set-face-background 'default "#f0f0f0"))
+      ;; (set-face-background 'default "#f0f0f0")
+      )
     (use-package color-theme-solarized
       :ensure t
       :disabled t
@@ -139,7 +142,7 @@ Some helpers to change a buffer to be specifically fixed or variable width
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
-    (setq sml/theme 'respectful))
+    (setq sml/theme 'light))
   (sml/setup)
   :config
   (setq sml/shorten-directory t
