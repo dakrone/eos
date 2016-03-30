@@ -317,6 +317,7 @@ And now the huge org-mode configuration
        (python . t)
        (gnuplot . t)
        (plantuml . t)
+       (ditaa . t)
        (latex . t)))
 
     ;; this is where Fedora installs it, YMMV
