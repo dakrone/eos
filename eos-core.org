@@ -1239,8 +1239,8 @@ Now we can do our Helm things
         helm-split-window-default-side 'other
         ;; open helm buffer inside current window, don't occupy whole other window
         helm-split-window-in-side-p t
-        ;; set to true and use <C-backspace> to toggle it in helm-find-files
-        helm-ff-auto-update-initial-value t
+        ;; set to nil and use <C-backspace> to toggle it in helm-find-files
+        helm-ff-auto-update-initial-value nil
         ;; if I change the resplit state, re-use my settings
         helm-reuse-last-window-split-state t
         ;; don't delete windows to always have 2
