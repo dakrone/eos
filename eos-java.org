@@ -147,6 +147,10 @@ Eclim is decent for emacs-java integration, but isn't quite there for showing
 errors or things like that. Unfortunately I still have to jump back into
 Intellij all the time for things.
 
+Right now I have this disabled, I'm doing Java dev in Emacs 100% of the time,
+but I don't need this. Crazy, I know. I've been meaning to write a blog post
+about it, I just need to find the time.
+
 #+BEGIN_SRC emacs-lisp
 (use-package emacs-eclim
   :ensure t
@@ -238,7 +242,30 @@ I actually choose to do this because the fedora/debian/ubuntu version of
               (lambda ()
                 (when (derived-mode-p 'c-mode 'c++-mode 'java-mode 'asm-mode)
                   (eos/setup-semantic-mode)
-                  (eos/setup-helm-gtags) ;; helm-gtags
-                  ;;(my/setup-ggtags) ;; regular gtags
+                  ;; helm-gtags
+                  (eos/setup-helm-gtags)
+                  ;; regular gtags
+                  ;;(my/setup-ggtags)
                   )))))
+#+END_SRC
+
+* Multi-compile for all the different Gradle compilations I have to run
+
+So, there are a bunch of ways to compile things in the ES codebase, so I'm
+checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to see if it works well for this sort of thing.
+
+#+BEGIN_SRC emacs-lisp
+(use-package multi-compile
+  :ensure t
+  :commands multi-compile-run
+  :config
+  (setq multi-compile-completion-system 'helm
+        multi-compile-alist
+        '((java-mode
+           . (("core compile" .
+               "gradle :core:precommit :core:compileJava :core:compileTestJava --console=plain")
+              ("everything compile" .
+               "gradle precommit compileJava compileTestJava --console=plain")
+              ("precommit" .
+               "gradle precommit"))))))
 #+END_SRC
