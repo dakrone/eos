@@ -26,11 +26,14 @@ and they have account-specific mail directories so a lot of functions are needed
 to return the correct path depending on the account the email is from.
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'load-path "~/src/mu-0.9.16/mu4e")
-(use-package mu4e
-  :if window-system
-  :config
-  (progn
+;; This hides behind a function because it's a lot to load otherwise
+(defun eos/load-mail ()
+  "Load all the EOS mu4e mail configuration"
+  (interactive)
+  (add-to-list 'load-path "~/src/mu-0.9.16/mu4e")
+  (use-package mu4e
+    :if window-system
+    :config
     (add-hook 'mu4e-compose-mode-hook 'turn-on-flyspell)
     ;; gpg stuff
     (use-package epa-file
@@ -348,14 +351,16 @@ passed in. Also supports ignoring the msg at the point."
     (define-key mu4e-headers-mode-map (kbd "j") 'next-line)
     (define-key mu4e-headers-mode-map (kbd "k") 'previous-line)))
 
-(global-set-key (kbd "C-c m") #'mu4e)
-
 (defun eos/switch-to-mail ()
   "Switch to the *eshell* buffer, or create it"
   (interactive)
   (if (get-buffer "*mu4e-headers*")
       (switch-to-buffer "*mu4e-headers*")
-    (mu4e)))
+    (progn
+      (eos/load-mail)
+      (mu4e))))
+
+(global-set-key (kbd "C-c m") 'mu4e)
 #+END_SRC
 
 * Gnus
