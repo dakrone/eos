@@ -249,23 +249,3 @@ I actually choose to do this because the fedora/debian/ubuntu version of
                   )))))
 #+END_SRC
 
-* Multi-compile for all the different Gradle compilations I have to run
-
-So, there are a bunch of ways to compile things in the ES codebase, so I'm
-checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to see if it works well for this sort of thing.
-
-#+BEGIN_SRC emacs-lisp
-(use-package multi-compile
-  :ensure t
-  :commands multi-compile-run
-  :config
-  (setq multi-compile-completion-system 'helm
-        multi-compile-alist
-        '((java-mode
-           . (("core compile" .
-               "gradle :core:precommit :core:compileJava :core:compileTestJava --console=plain")
-              ("everything compile" .
-               "gradle precommit compileJava compileTestJava --console=plain")
-              ("precommit" .
-               "gradle precommit"))))))
-#+END_SRC

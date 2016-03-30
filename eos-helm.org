@@ -362,5 +362,58 @@ Per-project navigation
     (setq projectile-completion-system 'helm)
     ;; no fuzziness for projectile-helm
     (setq helm-projectile-fuzzy-match nil)
-    (helm-projectile-on)))
+    (helm-projectile-on)
+    :config
+    ;; Add multi-compile to the mix for projects
+    (defun helm-projectile-multi-compile-project (dir)
+      "A Helm action to invoke multi-compile on a project.
+`dir' is the project root."
+      (let ((default-directory dir))
+        (multi-compile-run)))
+
+    ;; Add new projectile binding for multi-compile
+    (helm-projectile-define-key helm-projectile-projects-map
+      (kbd "M-m")  #'helm-projectile-multi-compile-project)))
+#+END_SRC
+
+* Multi-compile for different compilations I run
+
+So, there are a bunch of ways to compile things in the ES codebase, so I'm
+checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to see if it works well for this sort of thing.
+
+#+BEGIN_SRC emacs-lisp
+(use-package multi-compile
+  :ensure t
+  :commands multi-compile-run
+  :bind ("<f5>" . multi-compile-run)
+  :config
+  (require 's)
+  (setq multi-compile-completion-system 'helm
+        multi-compile-alist
+        '(;; Elasticsearch-specific compilation commands
+          ((s-contains? "es/elasticsearch" default-directory)
+           . (("ES core compile" .
+               "gradle :core:precommit :core:compileJava :core:compileTestJava --console=plain")
+              ("ES everything compile" .
+               "gradle precommit compileJava compileTestJava --console=plain")
+              ("ES precommit" .
+               "gradle precommit --console=plain")))
+          ;; X-pack specific compilation commands
+          ((s-contains? "es/x-plugins" default-directory)
+           . (("x-pack compile" .
+               "gradle :x-plugins:elasticsearch:x-pack:compileJava :x-plugins:elasticsearch:x-pack:compileTestJava --console=plain")
+              ("x-pack everything compile" .
+               "gradle precommit compileJava compileTestJava --console=plain")
+              ("x-pack precommit" .
+               "gradle precommit --console=plain")))
+          ;; Java compilation commands
+          (java-mode
+           . (("ant compile" .
+               "ant compile compile-test")
+              ("mvn compile" .
+               "mvn compile test-compile")
+              ("gradle compile" .
+               "gradle compileJava compileTestJava --console=plain")))))
+  ;; Make M-x compile invoke multi-compile
+  (defalias 'compile 'multi-compile-run))
 #+END_SRC
