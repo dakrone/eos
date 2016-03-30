@@ -218,6 +218,7 @@ And now, let's start things up.
 
 ;; The EOS modules
 (require 'eos-core)
+(require 'eos-helm)
 (require 'eos-appearance)
 (require 'eos-navigation)
 (require 'eos-notify)

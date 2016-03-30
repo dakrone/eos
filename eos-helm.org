@@ -1,0 +1,366 @@
+#+TITLE: EOS: Helm Module
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-helm)
+#+END_SRC
+
+* Helm, an Incremental Completion Framework
+There are many helm things. I use it a lot.
+
+A lot of things are taken from taken from
+https://tuhdo.github.io/helm-intro.html
+
+Before we load any helm things, need to load [[https://github.com/PythonNut/helm-flx][helm-flx]] so it uses flx instead of
+helm's fuzzy matching.
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-flx
+ :ensure t
+ :init (helm-flx-mode +1))
+#+END_SRC
+
+Now we can do our Helm things
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-config
+  :ensure helm
+  :demand t ;; demand it be loaded!
+  :diminish helm-mode
+  :bind
+  (("C-M-z" . helm-resume)
+   ("C-x C-f" . helm-find-files)
+   ("C-x C-r" . helm-mini)
+   ("C-c C-o" . helm-occur)
+   ("C-x M-o" . helm-occur)
+   ("C-x o" . helm-occur)
+   ("M-y" . helm-show-kill-ring)
+   ("C-h a" . helm-apropos)
+   ("C-h m" . helm-man-woman)
+   ("C-h SPC" . helm-all-mark-rings)
+   ("C-x C-i" . helm-semantic-or-imenu)
+   ("M-x" . helm-M-x)
+   ("C-x C-b" . helm-buffers-list)
+   ("C-x C-r" . helm-mini)
+   ("C-x b" . helm-mini)
+   ("C-h t" . helm-world-time))
+  :config
+  (use-package helm-files
+    :config (setq helm-ff-file-compressed-list '("gz" "bz2" "zip" "tgz" "xz" "txz")))
+  (use-package helm-buffers)
+  (use-package helm-mode
+    :diminish helm-mode
+    :init
+    (add-hook 'after-init-hook #'helm-mode)
+    (add-hook 'after-init-hook #'helm-autoresize-mode)
+    (add-hook 'after-init-hook #'helm-adaptive-mode)
+    (add-hook 'after-init-hook #'helm-push-mark-mode))
+  (use-package helm-grep
+    :config
+    (setq helm-grep-truncate-lines nil)
+    (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
+    (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
+    (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward))
+  (use-package helm-man)
+  (use-package helm-misc)
+  (use-package helm-elisp)
+  (use-package helm-imenu)
+  (use-package helm-semantic)
+  (use-package helm-ring)
+  (use-package helm-bookmark
+    :bind ("C-x M-b" . helm-bookmarks)
+    :init (use-package bookmark+ :ensure t))
+  (use-package helm-projectile
+    :ensure t
+    :bind (("C-x f" . helm-projectile)
+           ("C-c p f" . helm-projectile-find-file)
+           ("C-c p s" . helm-projectile-switch-project)))
+
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+
+  ;; Via: https://www.reddit.com/r/emacs/comments/3asbyn/new_and_very_useful_helm_feature_enter_search/
+  ;; (setq helm-echo-input-in-header-line t)
+  ;; (defun helm-hide-minibuffer-maybe ()
+  ;;   (when (with-helm-buffer helm-echo-input-in-header-line)
+  ;;     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+  ;;       (overlay-put ov 'window (selected-window))
+  ;;       (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
+  ;;                               `(:background ,bg-color :foreground ,bg-color)))
+  ;;       (setq-local cursor-type nil))))
+  ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+
+  (setq helm-grep-default-command
+        "grep -a -d skip %e -n%cH -e %p %f"
+        ;; may be overridden if 'ggrep' is in path (see below)
+        helm-grep-default-recurse-command
+        "grep -a -d recurse %e -n%cH -e %p %f"
+        ;; do or don't display invisible candidates
+        helm-quick-update nil
+        ;; use CURL, not url-retrieve-synchronously
+        helm-net-prefer-curl t
+        ;; be idle for this many seconds, before updating in delayed sources.
+        helm-idle-delay 0.01
+        helm-input-idle-delay 0.01
+        ;; wider buffer name in helm-buffers-list
+        helm-buffer-max-length 25 ;; default is 20
+        ;; open helm buffer in another window
+        helm-split-window-default-side 'other
+        ;; open helm buffer inside current window, don't occupy whole other window
+        helm-split-window-in-side-p t
+        ;; set to nil and use <C-backspace> to toggle it in helm-find-files
+        helm-ff-auto-update-initial-value nil
+        ;; if I change the resplit state, re-use my settings
+        helm-reuse-last-window-split-state t
+        ;; don't delete windows to always have 2
+        helm-always-two-windows nil
+        ;; don't check if the file exists on remote files
+        helm-buffer-skip-remote-checking t
+        ;; limit the number of displayed canidates
+        ;; helm-candidate-number-limit 200
+        ;; don't use recentf stuff in helm-ff, I use C-x C-r for this
+        helm-ff-file-name-history-use-recentf nil
+        ;; move to end or beginning of source when reaching top or bottom
+        ;; of source
+        helm-move-to-line-cycle-in-source t
+        ;; don't display the header line
+        helm-display-header-line nil
+        ;; be semi-verbose for helm tramp messages
+        helm-tramp-verbose 3
+        ;; fuzzy matching
+        helm-recentf-fuzzy-match t
+        helm-locate-fuzzy-match nil ;; locate fuzzy is worthless
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-semantic-fuzzy-match t
+        helm-apropos-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-lisp-fuzzy-completion t
+        helm-completion-in-region-fuzzy-match t
+        helm-autoresize-min-height 20
+        helm-autoresize-max-height 40
+        ;; Testing
+        fit-window-to-buffer-horizontally 1
+        ;; Here are the things helm-mini shows, I add `helm-source-bookmarks'
+        ;; here to the regular default list
+        helm-mini-default-sources '(helm-source-buffers-list
+                                    helm-source-recentf
+                                    helm-source-bookmarks
+                                    helm-source-buffer-not-found))
+
+  ;; Files that helm should know how to open
+  (setq helm-external-programs-associations
+        '(("avi" . "vlc")
+          ("part" . "vlc")
+          ("mkv" . "vlc")
+          ("webm" . "vlc")
+          ("mp4" . "vlc")))
+
+  ;; List of times to show in helm-world-time
+  (setq display-time-world-list '(("PST8PDT" "Los Altos")
+                                  ("America/Denver" "Denver")
+                                  ("EST5EDT" "Boston")
+                                  ("UTC" "UTC")
+                                  ("Europe/London" "London")
+                                  ("Europe/Amsterdam" "Amsterdam")
+                                  ("Asia/Bangkok" "Bangkok")
+                                  ("Asia/Tokyo" "Tokyo")
+                                  ("Australia/Sydney" "Sydney")))
+
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
+  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+
+  (define-key helm-map (kbd "C-p")   'helm-previous-line)
+  (define-key helm-map (kbd "C-n")   'helm-next-line)
+  (define-key helm-map (kbd "C-M-n") 'helm-next-source)
+  (define-key helm-map (kbd "C-M-p") 'helm-previous-source)
+  (define-key helm-map (kbd "M-N")   'helm-next-source)
+  (define-key helm-map (kbd "M-P")   'helm-previous-source)
+  ;; The normal binding is C-c h M-g s which is insane
+  (global-set-key (kbd "C-c h g")    'helm-do-grep)
+  (global-set-key (kbd "C-c h a")    'helm-do-ag)
+
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+
+  ;; ggrep is gnu grep on OSX
+  (when (executable-find "ggrep")
+    (setq helm-grep-default-command
+          "ggrep -a -d skip %e -n%cH -e %p %f"
+          helm-grep-default-recurse-command
+          "ggrep -a -d recurse %e -n%cH -e %p %f"))
+
+  ;; helm-mini instead of recentf
+  (define-key 'help-command (kbd "C-f") 'helm-apropos)
+  (define-key 'help-command (kbd "r") 'helm-info-emacs)
+
+  (defvar helm-httpstatus-source
+    '((name . "HTTP STATUS")
+      (candidates . (("100 Continue") ("101 Switching Protocols")
+                     ("102 Processing") ("200 OK")
+                     ("201 Created") ("202 Accepted")
+                     ("203 Non-Authoritative Information") ("204 No Content")
+                     ("205 Reset Content") ("206 Partial Content")
+                     ("207 Multi-Status") ("208 Already Reported")
+                     ("300 Multiple Choices") ("301 Moved Permanently")
+                     ("302 Found") ("303 See Other")
+                     ("304 Not Modified") ("305 Use Proxy")
+                     ("307 Temporary Redirect") ("400 Bad Request")
+                     ("401 Unauthorized") ("402 Payment Required")
+                     ("403 Forbidden") ("404 Not Found")
+                     ("405 Method Not Allowed") ("406 Not Acceptable")
+                     ("407 Proxy Authentication Required") ("408 Request Timeout")
+                     ("409 Conflict") ("410 Gone")
+                     ("411 Length Required") ("412 Precondition Failed")
+                     ("413 Request Entity Too Large")
+                     ("414 Request-URI Too Large")
+                     ("415 Unsupported Media Type")
+                     ("416 Request Range Not Satisfiable")
+                     ("417 Expectation Failed") ("418 I'm a teapot")
+                     ("421 Misdirected Request")
+                     ("422 Unprocessable Entity") ("423 Locked")
+                     ("424 Failed Dependency") ("425 No code")
+                     ("426 Upgrade Required") ("428 Precondition Required")
+                     ("429 Too Many Requests")
+                     ("431 Request Header Fields Too Large")
+                     ("449 Retry with") ("500 Internal Server Error")
+                     ("501 Not Implemented") ("502 Bad Gateway")
+                     ("503 Service Unavailable") ("504 Gateway Timeout")
+                     ("505 HTTP Version Not Supported")
+                     ("506 Variant Also Negotiates")
+                     ("507 Insufficient Storage") ("509 Bandwidth Limit Exceeded")
+                     ("510 Not Extended")
+                     ("511 Network Authentication Required")))
+      (action . message)))
+
+  (defvar helm-clj-http-source
+    '((name . "clj-http options")
+      (candidates
+       .
+       ((":accept - keyword for content type to accept")
+        (":as - output coercion: :json, :json-string-keys, :clojure, :stream, :auto or string")
+        (":basic-auth - string or vector of basic auth creds")
+        (":body - body of request")
+        (":body-encoding - encoding type for body string")
+        (":client-params - apache http client params")
+        (":coerce - when to coerce response body: :always, :unexceptional, :exceptional")
+        (":conn-timeout - timeout for connection")
+        (":connection-manager - connection pooling manager")
+        (":content-type - content-type for request")
+        (":cookie-store - CookieStore object to store/retrieve cookies")
+        (":cookies - map of cookie name to cookie map")
+        (":debug - boolean to print info to stdout")
+        (":debug-body - boolean to print body debug info to stdout")
+        (":decode-body-headers - automatically decode body headers")
+        (":decompress-body - whether to decompress body automatically")
+        (":digest-auth - vector of digest authentication")
+        (":follow-redirects - boolean whether to follow HTTP redirects")
+        (":form-params - map of form parameters to send")
+        (":headers - map of headers")
+        (":ignore-unknown-host? - whether to ignore inability to resolve host")
+        (":insecure? - boolean whether to accept invalid SSL certs")
+        (":json-opts - map of json options to be used for form params")
+        (":keystore - file path to SSL keystore")
+        (":keystore-pass - password for keystore")
+        (":keystore-type - type of SSL keystore")
+        (":length - manually specified length of body")
+        (":max-redirects - maximum number of redirects to follow")
+        (":multipart - vector of multipart options")
+        (":oauth-token - oauth token")
+        (":proxy-host - hostname of proxy server")
+        (":proxy-ignore-hosts - set of hosts to ignore for proxy")
+        (":proxy-post - port for proxy server")
+        (":query-params - map of query parameters")
+        (":raw-headers - boolean whether to return raw headers with response")
+        (":response-interceptor - function called for each redirect")
+        (":retry-handler - function to handle HTTP retries on IOException")
+        (":save-request? - boolean to return original request with response")
+        (":socket-timeout - timeout for establishing socket")
+        (":throw-entire-message? - whether to throw the entire response on errors")
+        (":throw-exceptions - boolean whether to throw exceptions on 5xx & 4xx")
+        (":trust-store - file path to trust store")
+        (":trust-store-pass - password for trust store")
+        (":trust-store-type - type of trust store")))
+      (action . message)))
+
+  (defun helm-httpstatus ()
+    (interactive)
+    (helm-other-buffer '(helm-httpstatus-source) "*helm httpstatus*"))
+
+  (defun helm-clj-http ()
+    (interactive)
+    (helm-other-buffer '(helm-clj-http-source) "*helm clj-http flags*")))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-ls-git
+  :ensure t
+  :bind ("C-x C-d" . helm-browse-project))
+#+END_SRC
+
+Best way to search in a buffer ever
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-swoop
+  :ensure t
+  :bind (("M-i" . helm-swoop)
+         ("M-I" . helm-swoop-back-to-last-point)
+         ("C-c M-i" . helm-multi-swoop))
+  :config
+  ;; When doing isearch, hand the word over to helm-swoop
+  (define-key isearch-mode-map (kbd "M-i") 'helm-swoop-from-isearch)
+  ;; From helm-swoop to helm-multi-swoop-all
+  (define-key helm-swoop-map (kbd "M-i") 'helm-multi-swoop-all-from-helm-swoop)
+  ;; Save buffer when helm-multi-swoop-edit complete
+  (setq helm-multi-swoop-edit-save t
+        ;; If this value is t, split window inside the current window
+        helm-swoop-split-with-multiple-windows t
+        ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
+        helm-swoop-split-direction 'split-window-vertically
+        ;; If nil, you can slightly boost invoke speed in exchange for text color
+        helm-swoop-speed-or-color nil))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-descbinds
+  :ensure t
+  :bind ("C-h b" . helm-descbinds)
+  :init (fset 'describe-bindings 'helm-descbinds))
+#+END_SRC
+
+* Projects with Helm and Helm-projectile
+Per-project navigation
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :defer 5
+  :commands projectile-global-mode
+  :diminish projectile-mode
+  :init (add-hook 'after-init-hook #'projectile-global-mode)
+  :config
+  (bind-key "C-c p b" #'projectile-switch-to-buffer #'projectile-command-map)
+  (bind-key "C-c p K" #'projectile-kill-buffers #'projectile-command-map)
+
+  ;; global ignores
+  (add-to-list 'projectile-globally-ignored-files ".tern-port")
+  (add-to-list 'projectile-globally-ignored-files "GTAGS")
+  (add-to-list 'projectile-globally-ignored-files "GPATH")
+  (add-to-list 'projectile-globally-ignored-files "GRTAGS")
+  (add-to-list 'projectile-globally-ignored-files "GSYMS")
+  (add-to-list 'projectile-globally-ignored-files ".DS_Store")
+  ;; always ignore .class files
+  (add-to-list 'projectile-globally-ignored-file-suffixes ".class")
+  (use-package helm-projectile
+    :ensure t
+    :init
+    (use-package helm-ag
+      :ensure t)
+    (use-package grep) ;; required for helm-ag to work properly
+    (setq projectile-completion-system 'helm)
+    ;; no fuzziness for projectile-helm
+    (setq helm-projectile-fuzzy-match nil)
+    (helm-projectile-on)))
+#+END_SRC

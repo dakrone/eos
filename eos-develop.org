@@ -308,41 +308,6 @@ Used smart-tab to complete everywhere except for ERC, shell and mu4e.
   (add-to-list 'smart-tab-disabled-major-modes 'shell-mode))
 #+END_SRC
 
-* Managing Projects with Projectile
-Per-project navigation
-
-#+BEGIN_SRC emacs-lisp
-(use-package projectile
-  :ensure t
-  :defer 5
-  :commands projectile-global-mode
-  :diminish projectile-mode
-  :init (add-hook 'after-init-hook #'projectile-global-mode)
-  :config
-  (bind-key "C-c p b" #'projectile-switch-to-buffer #'projectile-command-map)
-  (bind-key "C-c p K" #'projectile-kill-buffers #'projectile-command-map)
-
-  ;; global ignores
-  (add-to-list 'projectile-globally-ignored-files ".tern-port")
-  (add-to-list 'projectile-globally-ignored-files "GTAGS")
-  (add-to-list 'projectile-globally-ignored-files "GPATH")
-  (add-to-list 'projectile-globally-ignored-files "GRTAGS")
-  (add-to-list 'projectile-globally-ignored-files "GSYMS")
-  (add-to-list 'projectile-globally-ignored-files ".DS_Store")
-  ;; always ignore .class files
-  (add-to-list 'projectile-globally-ignored-file-suffixes ".class")
-  (use-package helm-projectile
-    :ensure t
-    :init
-    (use-package helm-ag
-      :ensure t)
-    (use-package grep) ;; required for helm-ag to work properly
-    (setq projectile-completion-system 'helm)
-    ;; no fuzziness for projectile-helm
-    (setq helm-projectile-fuzzy-match nil)
-    (helm-projectile-on)))
-#+END_SRC
-
 * Git Magit with Magit and friends
 I use =M-g M-g= everywhere to go directly to Magit.
 
