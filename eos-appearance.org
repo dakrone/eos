@@ -203,3 +203,93 @@ systemctl --user daemon-reload
 systemctl --user enable redshift
 systemctl --user start redshift
 #+END_SRC
+
+* Variable width font hacks
+
+So, variable font width is really nice in GUI emacs, with org-mode however,
+almost all of my source blocks don't look that great without a fixed-width font
+(as well as tables, verbatim, etc).
+
+So, there is a way to hack around thing. This relies on a custom patch to
+org-mode that looks like:
+
+#+BEGIN_SRC diff :tangle no
+diff --git a/lisp/org-faces.el b/lisp/org-faces.el
+index 941a604..abc646c 100644
+--- a/lisp/org-faces.el
++++ b/lisp/org-faces.el
+@@ -537,6 +537,9 @@ follows a #+DATE:, #+AUTHOR: or #+EMAIL: keyword."
+   "Face used for the line delimiting the end of source blocks."
+   :group 'org-faces)
+
++(defface org-block-background '((t ()))
++  "Face used for the source block background.")
++
+ (defface org-verbatim
+   (org-compatible-face 'shadow
+     '((((class color grayscale) (min-colors 88) (background light))
+diff --git a/lisp/org.el b/lisp/org.el
+index af68539..b2c8309 100644
+--- a/lisp/org.el
++++ b/lisp/org.el
+@@ -5932,6 +5932,15 @@ by a #."
+              (cond
+               ((and lang (not (string= lang "")) org-src-fontify-natively)
+                (org-src-font-lock-fontify-block lang block-start block-end)
++               ;; remove old background overlays
++               (mapc (lambda (ov)
++                       (if (eq (overlay-get ov 'face) 'org-block-background)
++                           (delete-overlay ov)))
++                     (overlays-at (/ (+ beg1 block-end) 2)))
++               ;; add a background overlay
++               (setq ovl (make-overlay beg1 block-end))
++                (overlay-put ovl 'face 'org-block-background)
++                (overlay-put ovl 'evaporate t) ; make it go away when empty
+                (add-text-properties beg1 block-end '(src-block t)))
+               (quoting
+                (add-text-properties beg1 (min (point-max) (1+ end1))
+
+#+END_SRC
+
+To re-add support for the =org-block-background= face that was removed in 8.3+.
+
+Then, you can do something like this:
+
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (add-hook 'text-mode-hook 'variable-pitch-mode)
+
+  (defun eos/adjoin-to-list-or-symbol (element list-or-symbol)
+    (let ((list (if (not (listp list-or-symbol))
+                    (list list-or-symbol)
+                  list-or-symbol)))
+      (require 'cl-lib)
+      (cl-adjoin element list)))
+
+  ;; Fontify certain org things with fixed-width
+  (eval-after-load "org"
+    '(mapc
+      (lambda (face)
+        (set-face-attribute
+         face nil
+         :inherit
+         (eos/adjoin-to-list-or-symbol
+          'fixed-pitch
+          (face-attribute face :inherit))))
+      (list 'org-code 'org-block 'org-table 'org-block-background
+            'org-verbatim 'org-formula 'org-macro)))
+
+  ;; Fontify certain markdown things with fixed-width
+  (eval-after-load "markdown-mode"
+    '(mapc
+      (lambda (face)
+        (set-face-attribute
+         face nil
+         :inherit
+         (eos/adjoin-to-list-or-symbol
+          'fixed-pitch
+          (face-attribute face :inherit))))
+      (list 'markdown-pre-face 'markdown-inline-code-face))))
+#+END_SRC
+
+Great credit for this goes to [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][this blog post.]]
