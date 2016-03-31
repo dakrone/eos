@@ -3,9 +3,19 @@
 #+PROPERTY: header-args:sh :eval no
 
 * Emacs Operating System
-People call it that, so let's prove them right.
+People call it that, so let's prove them right. More documentation is
+forthcoming, but this is my tribute to the [[http://doc.rix.si/cce/cce.html][Complete Computing Environment]].
 
 * How to use these files
+
+So usually you would check out [[https://github.com/dakrone/eos/][this repository]] and then run =make= in the
+directory. That will tangle a bunch of =.el= files. If you want to install this,
+run =make install= (or just =make init= if you only want to run initialization
+things).
+
+Once it's installed, make changes to the files directly and then just run =make=
+to re-tangle the files, no re-installation necessary, since symlinks are set up
+the first time you ran =make install=.
 
 * Initial Preparation
 We need to prepare the system for running EOS, so we need to tangle an
@@ -52,9 +62,10 @@ Ideally, each module except for the "Core" module is optional and can be skipped
 if not desired.
 
 - [[./eos-core.org][Core Computing System]]
-- Appearance
-- [[Navigation]]
+- [[./eos-appearance.org][Appearance]]
+- [[./eos-navigation.org][Navigation]]
 - [[./eos-notify.org][Notification System]]
+- [[./eos-helm.org][Helm]]
 - [[./eos-develop.org][Development (programming) System]]
   - [[./eos-java.org][Java]]
   - [[./eos-clojure.org][Clojure]]

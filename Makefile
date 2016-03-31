@@ -62,5 +62,4 @@ run: all
 	done
 
 install: run-init run install.sh
-	echo "I don't quite work yet..."
 	zsh -l install.sh
