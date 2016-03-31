@@ -76,7 +76,7 @@ I've been using [[https://github.com/belluzj/fantasque-sans][Fantasque Sans Mono
 I've been using Bitstream Vera Sans Mono. I also use [[http://www.marksimonson.com/fonts/view/anonymous-pro][Anonymous Pro]] and
 Inconsolata a lot.
 
-Config for OSX:
+** Config for OSX:
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/setup-osx-fonts ()
@@ -89,49 +89,29 @@ Config for OSX:
   (add-hook 'after-init-hook #'eos/setup-osx-fonts))
 #+END_SRC
 
-Config for Linux/X11 systems:
+** Config for Linux/X11 systems:
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/setup-x11-fonts ()
   (when (eq window-system 'x)
-    ;;(set-frame-font "DejaVu Sans Mono")
-    ;; See:https://github.com/cpitclaudel/monospacifier
-    (set-fontset-font t 'unicode (font-spec :name "DejaVu Sans Mono"))
-    (set-fontset-font
-     t 'unicode
-     (font-spec :name "Asana Math monospacified for DejaVu Sans Mono")
-     nil 'append)
+    ;; default font
+    (set-face-attribute 'default (font-spec :name "DejaVu Sans Mono"))
+    ;; font for all unicode characters
+    (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)
+    ;; Default height for fonts
     (set-face-attribute 'default nil :height 115)))
 
 (when (eq window-system 'x)
   (add-hook 'after-init-hook #'eos/setup-x11-fonts))
 #+END_SRC
 
-Experimental test of Greg's extended faces package
+** Experimental test of Greg's extended-faces package
 
 #+BEGIN_SRC emacs-lisp
 ;; (when (file-exists-p "~/src/elisp/emacs-extended-faces/")
 ;;   (add-to-list 'load-path "~/src/elisp/emacs-extended-faces/")
 ;;   (require 'extended-faces)
 ;;   (diminish 'buffer-face-mode))
-#+END_SRC
-
-Some helpers to change a buffer to be specifically fixed or variable width
-
-#+BEGIN_SRC emacs-lisp
-;; Use variable width font faces in current buffer
-(defun eos/buffer-face-mode-variable ()
-  "Set font to a variable width (proportional) fonts in current buffer"
-  (interactive)
-  (setq buffer-face-mode-face '(:family "DejaVu Sans" :height 115))
-  (buffer-face-mode))
-
-;; Use monospaced font faces in current buffer
-(defun eos/buffer-face-mode-fixed ()
-  "Sets a fixed width (monospace) font in current buffer"
-  (interactive)
-  (setq buffer-face-mode-face '(:family "DejaVu Sans Mono" :height 115))
-  (buffer-face-mode))
 #+END_SRC
 
 * Emacs' Mode-line
