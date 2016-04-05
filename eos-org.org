@@ -324,9 +324,7 @@ And now the huge org-mode configuration
     (setq org-plantuml-jar-path "/usr/share/java/plantuml.jar")
 
     ;; Use org.css from the :wq website for export document stylesheets
-    (setq org-html-head-extra
-          "<link rel=\"stylesheet\" href=\"http://dakrone.github.io/org.css\" type=\"text/css\" />"
-          org-html-head-include-default-style nil)
+    (setq org-html-head-include-default-style nil)
 
     ;; ensure this variable is defined
     (unless (boundp 'org-babel-default-header-args:sh)
