@@ -11,8 +11,25 @@
 #+STARTUP: fold nodlcheck lognotestate content
 
 * Emacs Operating System
-People call it that, so let's prove them right. More documentation is
-forthcoming, but this is my tribute to the [[http://doc.rix.si/cce/cce.html][Complete Computing Environment]].
+This is my attempt at a complete workflow inside of Emacs.
+
+There are many like it, but this one is mine. So let's start with a story.
+
+I used to be a hardcore Vim guy (hence the website named after a Vim command),
+in 2010 I joined a small company called [[http://sonian.com/][Sonian]] doing Clojure as a full-time gig.
+As part of the job, we all pair-programmed together on Clojure code in Emacs
+using TMUX. This meant that I needed to learn Emacs having never used it before.
+I dived in head first and found Emacs to be a more customizable and elegant
+editor.
+
+Around the same time, I switched to typing in [[https://en.wikipedia.org/wiki/Dvorak_Simplified_Keyboard][Dvorak]], so if you are reading this
+configuration and wondering why some of the bindings are the way they are,
+remember that my keys might be different than someone on Qwerty :)
+
+People often say about Emacs "sure it's a great operating system, but it lacks a
+good editor" so I decided to call my configuration "EOS" for the Emacs Operating
+System. This is my tribute to the [[http://doc.rix.si/cce/cce.html][Complete Computing Environment]], which heavily
+inspires this and from which I continue to find interesting tidbits to copy.
 
 * How to use these files
 
@@ -25,10 +42,17 @@ Once it's installed, make changes to the files directly and then just run =make=
 to re-tangle the files, no re-installation necessary, since symlinks are set up
 the first time you ran =make install=.
 
+If you get lost at any point, checking the org source is probably the best way
+to go, or send me an email (lee at writequit dot org) or a message on [[https://twitter.com/thnetos][twitter]].
+
 * Initial Preparation
-We need to prepare the system for running EOS, so we need to tangle an
-initialization script and invoke it. This is handled by the =Makefile= which
-special-cases this one file.
+There is some initial prep that needs to happen before someone could run this,
+basically creating a bunch of directories so the tangled files and symlinks can
+go in the right place.
+
+This will tangle an initialization script and invoke it. This is handled by the
+=Makefile= which special-cases this one file. Basically the following goes into
+=initialize.sh=:
 
 #+BEGIN_SRC sh :tangle initialize.sh
 # Directory for user-installed scripts
@@ -49,10 +73,10 @@ mkdir -p ~/.emacs.d/eshell
 #+END_SRC
 
 ** Installation script
-In addition to the prep script, there needs to be a script used for
-installation that actually links up the appropriate parts.
+In addition to the prep script, there needs to be a script used for installation
+that actually links up the appropriate parts. It ends up in =install.sh=
 
-Warning! This will overwrite your current configuration!
+*Warning! This will overwrite your current configuration if run!*
 
 #+BEGIN_SRC sh :tangle install.sh :eval no
 ln -sfv $PWD/eos.el ~/.emacs.d/init.el
@@ -61,15 +85,15 @@ cp -vf bin/* ~/bin
 #+END_SRC
 
 * The EOS Module Set
-There is of course the prerequisite, which is this file, and then the EOS
-contains a number of different configurations and modules. This is a basic
-overview of the modules, which you should visit should you desire more
-information about a particular module.
+There is of course the prerequisite, which is this file, and then EOS contains a
+number of different configurations and modules. This is a basic overview of the
+modules, which you should visit should you desire more information about a
+particular module.
 
 Ideally, each module except for the "Core" module is optional and can be skipped
 if not desired.
 
-- [[./eos-core.org][Core Computing System]]
+- [[./eos-core.org][Core EOS]]
 - [[./eos-appearance.org][Appearance]]
 - [[./eos-navigation.org][Navigation]]
 - [[./eos-notify.org][Notification System]]
@@ -93,22 +117,40 @@ if not desired.
 
 * =init.el=
 
+=init.el= is the file that Emacs reads when it starts up, so here we do most of
+the bootstrapping before the EOS modules are loaded, then load the modules, then
+some cleanup at the end. It's worth noticing that even though this would tangle
+to =eos.el= by default, it gets symlinked to =~/.emacs.d/init.el=.
+
+Since an error may occur in loading any EOS files, I set some debugging things
+so a debugger is entered if there's a problem. These get unset after everything
+loads successfully.
+
+#+BEGIN_SRC emacs-lisp
+(setq debug-on-error t)
+(setq debug-on-quit t)
+#+END_SRC
+
+I load a couple of custom versions of libraries that are included in Emacs. This
+is so I can run a newer version than what's bundled, in particular this checks
+for the existence and loads them if there are there, otherwise it uses the
+bundled version.
+
+A custom version of [[http://cedet.sourceforge.net/][CEDET]]:
+
 #+BEGIN_SRC emacs-lisp
 ;; Load a custom version of cedet, if available
 (when (file-exists-p "~/src/elisp/cedet/cedet-devel-load.el")
   (load "~/src/elisp/cedet/cedet-devel-load.el"))
 #+END_SRC
 
+And a custom version of [[http://orgmode.org/][Org-mode]]:
+
 #+BEGIN_SRC emacs-lisp
 ;; Load a custom version of org-mode, if available
 (when (file-exists-p "~/src/elisp/org-mode/lisp")
   (add-to-list 'load-path "~/src/elisp/org-mode/lisp")
   (require 'org))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-(setq debug-on-error t)
-(setq debug-on-quit t)
 #+END_SRC
 
 Also, let's make =cl= things available right from the start
@@ -130,7 +172,9 @@ keyboard. I don't transpose things nearly as often as I =C-x= things
 #+END_SRC
 
 ** =package.el= Setup
-My strategy with regard to packaging is simple, I make heavy use of use-package.
+My strategy with regard to packaging is simple, I make heavy use of [[https://github.com/jwiegley/use-package][use-package]]
+which does most of the installing with the =:ensure= keyword, but I need to set
+up the sources at least
 
 #+BEGIN_SRC emacs-lisp
 (require 'package)
@@ -195,7 +239,8 @@ Pin some of the packages that go wonky if I use the bleeding edge.
 #+END_SRC
 
 Now, install the things we need in the future for all other package
-installation/configuration
+installation/configuration, in particular, use-package needs to be installed
+because we require it everywhere else.
 
 #+BEGIN_SRC emacs-lisp
 (install-pkgs '(use-package))
@@ -206,6 +251,9 @@ installation/configuration
 #+END_SRC
 
 ** =el-get= setup
+I install [[https://github.com/dimitri/el-get/][el-get]], but so far I haven't really used it for much, because
+everything I want is on MELPA, and I don't really mind bleeding edge,
+regardless, it's there if I want it.
 
 #+BEGIN_SRC emacs-lisp
 (add-to-list 'load-path "~/.emacs.d/el-get/el-get")
@@ -223,7 +271,9 @@ installation/configuration
 
 ** Module setup
 
-And now, let's start things up.
+And now, let's start things up by loading all of the modules. I'd eventually
+like to keep the module list in an org table and reference it here, but I'm not
+quite sure how that would work for tangling, so for now it's hard-coded
 
 #+BEGIN_SRC emacs-lisp
 (defvar after-eos-hook nil
