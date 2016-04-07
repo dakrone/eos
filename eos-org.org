@@ -564,7 +564,7 @@ Publishing org-mode files to my hosting provider:
 
           ;; Org-mode files for EOS itself
           ("EOS"
-           :base-directory ,(file-truename "~/eos")
+           :base-directory ,(file-truename "~/eos/")
            :base-extension "org"
            :publishing-directory
            "/ssh:writequit.org:~/www/eos/"
