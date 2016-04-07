@@ -562,6 +562,16 @@ Publishing org-mode files to my hosting provider:
            :with-toc t
            :html-preamble t)
 
+          ;; Org-mode files for EOS itself
+          ("EOS"
+           :base-directory ,(file-truename "~/eos")
+           :base-extension "org"
+           :publishing-directory
+           "/ssh:writequit.org:~/www/eos/"
+           :publishing-function org-html-publish-to-html
+           :with-toc t
+           :html-preamble t)
+
           ;; Org-mode files for ~/org files
           ("org-org"
            :base-directory ,(file-truename "~/org/")
