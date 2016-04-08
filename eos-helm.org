@@ -112,7 +112,9 @@ Now we can do our Helm things
         helm-idle-delay 0.01
         helm-input-idle-delay 0.01
         ;; wider buffer name in helm-buffers-list
-        helm-buffer-max-length 25 ;; default is 20
+        helm-buffer-max-length 28 ;; default is 20
+        ;; instead of "..." use a smaller unicode ellipsis
+        helm-buffers-end-truncated-string "…"
         ;; open helm buffer in another window
         helm-split-window-default-side 'other
         ;; open helm buffer inside current window, don't occupy whole other window
