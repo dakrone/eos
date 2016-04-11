@@ -53,6 +53,7 @@
           ("http://jvns.ca/atom.xml" blog)
           ("http://newartisans.com/rss.xml" blog emacs)
           ("http://bling.github.io/index.xml" blog emacs)
+          ("https://rachelbythebay.com/w/atom.xml" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
