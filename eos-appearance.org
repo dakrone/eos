@@ -14,6 +14,20 @@
 (provide 'eos-appearance)
 #+END_SRC
 
+* Determining whether this will be a "light" or "dark" session
+:PROPERTIES:
+:VISIBILITY: all
+:END:
+First, let's determine whether I'm going to be using a dark background, or a
+light background. I set a var to either '=light= or '=dark= depending on
+whatever I'm in the mood for. This is used later on for the modeline theme, as
+well as the general theme for look-and-feel things.
+
+#+BEGIN_SRC emacs-lisp
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
+#+END_SRC
+
 * Emacs Appearance
 
 Beacon flashes the cursor whenever you adjust position, really helpful when
@@ -29,6 +43,15 @@ really need.
   :init (beacon-mode 1)
   :config
   (add-to-list 'beacon-dont-blink-major-modes 'eshell-mode))
+#+END_SRC
+
+Paren-face adds a face for parentheses, which is used by themes to darken the
+parens.
+
+#+BEGIN_SRC emacs-lisp
+(use-package paren-face
+  :ensure t
+  :init (global-paren-face-mode))
 #+END_SRC
 
 * Color Theme

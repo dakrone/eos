@@ -44,20 +44,6 @@ function rpm-install () {
 }
 #+END_SRC
 
-* Determining whether this will be a "light" or "dark" session
-:PROPERTIES:
-:VISIBILITY: all
-:END:
-First, let's determine whether I'm going to be using a dark background, or a
-light background. I set a var to either '=light= or '=dark= depending on
-whatever I'm in the mood for. This is used later on for the modeline theme, as
-well as the general theme for look-and-feel things.
-
-#+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
-;;(defvar eos/background 'dark)
-#+END_SRC
-
 * EOS Core Configuration Setup
 Let's start with some personal information about me:
 
@@ -314,14 +300,6 @@ Bury the =*scratch*= buffer, never kill it:
 #+END_SRC
 
 These are some settings for version control stuff.
-
-Automatically revert file if it's changed on disk:
-
-#+BEGIN_SRC emacs-lisp
-;;(global-auto-revert-mode 1)
-;; be quiet about reverting files
-;;(setq auto-revert-verbose nil)
-#+END_SRC
 
 Start a server if not running, but a only for gui-only:
 
@@ -656,15 +634,6 @@ when they are popped up. I do this with Popwin
     (push '("*Async Shell Command*" :stick t) popwin:special-display-config)
 
     (global-set-key (kbd "C-h e") 'popwin:messages)))
-#+END_SRC
-
-Paren-face adds a face for parentheses, which is used by themes to darken the
-parens.
-
-#+BEGIN_SRC emacs-lisp
-(use-package paren-face
-  :ensure t
-  :init (global-paren-face-mode))
 #+END_SRC
 
 Undo-tree allows me to have sane undo defaults, as well as being able to
@@ -1142,12 +1111,7 @@ In most non-programming modes, =M-.= can be used to spellcheck the word
   :diminish ""
   :init (add-hook 'prog-mode-hook #'flyspell-prog-mode)
   :config
-  (define-key flyspell-mode-map (kbd "C-.") 'company-complete)
-;;  (use-package helm-flyspell
-;;    :ensure t
-;;    :init
-;;    (define-key flyspell-mode-map (kbd "M-S") #'helm-flyspell-correct))
-)
+  (define-key flyspell-mode-map (kbd "C-.") 'company-complete))
 #+END_SRC
 
 * Binding the EOS mega-map with Hydra
