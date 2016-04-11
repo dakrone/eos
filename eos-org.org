@@ -674,7 +674,13 @@ modes required:
 
 * Presentations with =epresent=
 
+I'm taking over ownership of this after the last maintainer didn't touch it for
+a year, so I load it from a custom path
+
 #+BEGIN_SRC emacs-lisp
-(use-package epresent
-  :ensure t)
+(if (file-exists-p "~/src/elisp/epresent/")
+    (progn
+      (add-to-list 'load-path "~/src/elisp/epresent/")
+      (require 'epresent))
+  (use-package epresent :ensure t))
 #+END_SRC
