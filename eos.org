@@ -285,28 +285,35 @@ quite sure how that would work for tangling, so for now it's hard-coded
 ;; Installed by `make install`
 (add-to-list 'load-path "~/.emacs.d/eos/")
 
+(defmacro try-load (module)
+  "Try to load the given module, logging an error if unable to load"
+  `(condition-case ex
+       (require ,module)
+     ('error
+      (message "EOS: Unable to load [%s] module: %s" ,module ex))))
+
 ;; The EOS modules
-(require 'eos-core)
-(require 'eos-helm)
-(require 'eos-appearance)
-(require 'eos-navigation)
-(require 'eos-notify)
-(require 'eos-develop)
-(require 'eos-es)
-(require 'eos-org)
-(require 'eos-writing)
-(require 'eos-dired)
-(require 'eos-remote)
-(require 'eos-java)
-(require 'eos-clojure)
-(require 'eos-web)
-(require 'eos-shell)
-(require 'eos-mail)
-(require 'eos-irc)
-(require 'eos-rss)
-(require 'eos-twitter)
-(require 'eos-leisure)
-(require 'eos-music)
+(try-load 'eos-core)
+(try-load 'eos-helm)
+(try-load 'eos-appearance)
+(try-load 'eos-navigation)
+(try-load 'eos-notify)
+(try-load 'eos-develop)
+(try-load 'eos-es)
+(try-load 'eos-org)
+(try-load 'eos-writing)
+(try-load 'eos-dired)
+(try-load 'eos-remote)
+(try-load 'eos-java)
+(try-load 'eos-clojure)
+(try-load 'eos-web)
+(try-load 'eos-shell)
+(try-load 'eos-mail)
+(try-load 'eos-irc)
+(try-load 'eos-rss)
+(try-load 'eos-twitter)
+(try-load 'eos-leisure)
+(try-load 'eos-music)
 
 ;; Hooks
 (add-hook 'after-eos-hook
