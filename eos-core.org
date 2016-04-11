@@ -950,6 +950,7 @@ ln -sfv $PWD/out/gpg.conf ~/.gnupg/gpg.conf
 
 #+BEGIN_SRC sh :tangle out/gpg.conf
 default-key 3ACECAE0
+use-agent
 default-recipient-self
 
 ask-cert-level
