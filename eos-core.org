@@ -17,7 +17,7 @@
 * Bootstrapping the Emacs environment
 To start with emacs, we need a =~/.emacs.d/init.el= file that can be loaded.
 This file will be tangled to a file called =eos-core.el= which will be installed
-as the init.el file for loading Emacs.
+as the starting module in =init.el= loaded by Emacs.
 
 ** Helper Methods
 These are shell script helpers, a cache warming function that'll automatically
@@ -88,8 +88,8 @@ Raise the maximum number of logs in the =*Messages*= buffer:
 (setq message-log-max 16384)
 #+END_SRC
 
-We don't really need to garbage collect as frequently as Emacs
-would like to by default, so set the threshold up higher:
+We don't really need to garbage collect as frequently as Emacs would like to by
+default, so set the threshold up higher:
 
 #+BEGIN_SRC emacs-lisp
 (setq gc-cons-threshold (* 100 1024 1024)) ;; 100 mb
@@ -110,13 +110,14 @@ substantially higher value.
 (setq line-number-display-limit-width 10000)
 #+END_SRC
 
-Make gnutls a bit safer
+Make gnutls a bit safer, the default is an absurdly low 256
 
 #+BEGIN_SRC emacs-lisp
 (setq gnutls-min-prime-bits 4096)
 #+END_SRC
 
-When I select a region and start typing, just delete the region automatically
+When I select a region and start typing, just delete the region automatically.
+This ends up working great with =expand-region=
 
 #+BEGIN_SRC emacs-lisp
 (delete-selection-mode 1)
@@ -532,7 +533,9 @@ Emacs' text.
 (setq save-interprogram-paste-before-kill t)
 #+END_SRC
 
-Settings for what to do with temporary files.
+Settings for what to do with temporary files. I like to put them all in
+=~/.emacs_backups= if it exists, which puts them in a single place instead of
+littering everywhere.
 
 #+BEGIN_SRC emacs-lisp
 ;; delete-auto-save-files
@@ -550,7 +553,8 @@ Settings for what to do with temporary files.
 (setq delete-old-versions t)
 #+END_SRC
 
-Need to make sure the directory exists in the initializing shell script
+Need to make sure the directory exists in the initializing shell script, so this
+goes into =core-eos.sh=
 
 #+BEGIN_SRC sh :tangle sh/core-eos.sh
 mkdir -p ~/.emacs_backups
@@ -691,7 +695,9 @@ the link to this package.
   :bind ("M-SPC" . shrink-whitespace))
 #+END_SRC
 
-Extended bookmarks, which I've started used for dired buffers and so on
+Extended bookmarks, which I've started used for dired buffers and so on. I
+always have a bookmark for my Downloads folder as well as some TRAMP bookmarks
+for my webserver, in case I want to manually copy things around.
 
 #+BEGIN_SRC emacs-lisp
 (use-package bookmark+
@@ -1099,8 +1105,8 @@ issues, so this is special handling of it...
 I use Hunspell and Aspell checking spelling, ignoring words under 3 characters
 and running very quickly. My personal word dictionary is at =~/.flydict=.
 
-First, set up some Hunspell things if applicable, falling back to Aspell if
-Hunspell isn't available:
+While I used to use Hunspell, I've gone back to aspell because it's a bit easier
+to get up and running with.
 
 #+BEGIN_SRC emacs-lisp
 ;; Standard location of personal dictionary
