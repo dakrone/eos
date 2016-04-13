@@ -15,6 +15,9 @@
 #+END_SRC
 
 * IRC With ZNC and ERC
+:PROPERTIES:
+:CUSTOM_ID: irc
+:END:
 IRC in Emacs
 
 #+BEGIN_SRC emacs-lisp

@@ -11,6 +11,9 @@
 #+STARTUP: fold nodlcheck lognotestate content
 
 * Emacs Operating System
+:PROPERTIES:
+:CUSTOM_ID: eos
+:END:
 This is my attempt at a complete workflow inside of Emacs.
 
 There are many like it, but this one is mine. So let's start with a story.
@@ -32,6 +35,9 @@ System. This is my tribute to the [[http://doc.rix.si/cce/cce.html][Complete Com
 inspires this and from which I continue to find interesting tidbits to copy.
 
 * How to use these files
+:PROPERTIES:
+:CUSTOM_ID: how-to-use
+:END:
 
 So usually you would check out [[https://github.com/dakrone/eos/][this repository]] and then run =make= in the
 directory. That will tangle a bunch of =.el= files. If you want to install this,
@@ -46,6 +52,9 @@ If you get lost at any point, checking the org source is probably the best way
 to go, or send me an email (lee at writequit dot org) or a message on [[https://twitter.com/thnetos][twitter]].
 
 * Initial Preparation
+:PROPERTIES:
+:CUSTOM_ID: initial-prep
+:END:
 There is some initial prep that needs to happen before someone could run this,
 basically creating a bunch of directories so the tangled files and symlinks can
 go in the right place.
@@ -73,6 +82,9 @@ mkdir -p ~/.emacs.d/eshell
 #+END_SRC
 
 ** Installation script
+:PROPERTIES:
+:CUSTOM_ID: installation-script
+:END:
 In addition to the prep script, there needs to be a script used for installation
 that actually links up the appropriate parts. It ends up in =install.sh=
 
@@ -85,6 +97,9 @@ cp -vf bin/* ~/bin
 #+END_SRC
 
 * The EOS Module Set
+:PROPERTIES:
+:CUSTOM_ID: modules
+:END:
 There is of course the prerequisite, which is this file, and then EOS contains a
 number of different configurations and modules. This is a basic overview of the
 modules, which you should visit should you desire more information about a
@@ -116,6 +131,9 @@ if not desired.
 - [[./eos-music.org][Music]]
 
 * =init.el=
+:PROPERTIES:
+:CUSTOM_ID: init.el
+:END:
 
 =init.el= is the file that Emacs reads when it starts up, so here we do most of
 the bootstrapping before the EOS modules are loaded, then load the modules, then
@@ -172,6 +190,9 @@ keyboard. I don't transpose things nearly as often as I =C-x= things
 #+END_SRC
 
 ** =package.el= Setup
+:PROPERTIES:
+:CUSTOM_ID: package.el
+:END:
 My strategy with regard to packaging is simple, I make heavy use of [[https://github.com/jwiegley/use-package][use-package]]
 which does most of the installing with the =:ensure= keyword, but I need to set
 up the sources at least
@@ -251,6 +272,9 @@ because we require it everywhere else.
 #+END_SRC
 
 ** =el-get= setup
+:PROPERTIES:
+:CUSTOM_ID: el-get
+:END:
 I install [[https://github.com/dimitri/el-get/][el-get]], but so far I haven't really used it for much, because
 everything I want is on MELPA, and I don't really mind bleeding edge,
 regardless, it's there if I want it.
@@ -270,6 +294,9 @@ regardless, it's there if I want it.
 #+END_SRC
 
 ** Module setup
+:PROPERTIES:
+:CUSTOM_ID: module-setup
+:END:
 
 And now, let's start things up by loading all of the modules. I'd eventually
 like to keep the module list in an org table and reference it here, but I'm not

@@ -15,10 +15,13 @@
 #+END_SRC
 
 * Clojure
+:PROPERTIES:
+:CUSTOM_ID: clojure
+:END:
 Things for Clojure development, which I do a lot of.
 
 #+BEGIN_SRC emacs-lisp
-(defun my/clojure-things-hook ()
+(defun eos/clojure-things-hook ()
   "Set up clojure-y things"
   (eldoc-mode 1)
   (subword-mode t)
@@ -28,14 +31,13 @@ Things for Clojure development, which I do a lot of.
 (use-package clojure-mode
   :ensure t
   :init
-  (add-hook #'clojure-mode-hook #'my/clojure-things-hook))
+  (add-hook #'clojure-mode-hook #'eos/clojure-things-hook))
 #+END_SRC
 
-Let's define a couple of helper functions for setting up the cider and
-ac-nrepl packages:
+Let's define a couple of helper functions for setting up the cider:
 
 #+BEGIN_SRC emacs-lisp
-(defun my/setup-cider ()
+(defun eos/setup-cider ()
   (interactive)
   (setq cider-history-file "~/.nrepl-history"
         cider-hide-special-buffers t
@@ -53,16 +55,10 @@ And then finally use them if cider and ac-nrepl packages are available:
   :ensure t
   :defer 30
   :init
-  (add-hook #'cider-mode-hook #'my/setup-cider)
-  (add-hook #'cider-repl-mode-hook #'my/setup-cider)
-  (add-hook #'cider-mode-hook #'my/clojure-things-hook)
-  (add-hook #'cider-repl-mode-hook #'my/clojure-things-hook)
-  (use-package ac-cider
-    :ensure t
-    :init
-    (add-hook #'cider-mode-hook #'ac-flyspell-workaround)
-    (add-hook #'cider-mode-hook #'ac-cider-setup)
-    (add-hook #'cider-repl-mode-hook #'ac-cider-setup)))
+  (add-hook #'cider-mode-hook #'eos/setup-cider)
+  (add-hook #'cider-repl-mode-hook #'eos/setup-cider)
+  (add-hook #'cider-mode-hook #'eos/clojure-things-hook)
+  (add-hook #'cider-repl-mode-hook #'eos/clojure-things-hook))
 #+END_SRC
 
 For looking up documentation, =helm-clojuredocs= is neat and handy

@@ -15,6 +15,9 @@
 #+END_SRC
 
 * Setup up Shell and Eshell Environment
+:PROPERTIES:
+:CUSTOM_ID: shell-setup
+:END:
 Things for running shells inside of emacs
 
 This allows a GUI emacs to inherit =$PATH= and other things from the shell when
@@ -99,6 +102,9 @@ comint-replace-by-expanded-history-before-point."
 #+END_SRC
 
 * Eshell
+:PROPERTIES:
+:CUSTOM_ID: eshell
+:END:
 Eshell is great for most shell things. It's a great ZSH replacement. Regardless,
 it needs some tweaks in order to be fully useful.
 
@@ -288,6 +294,9 @@ d=, if the buffer doesn't exist it is created.
 #+END_SRC
 
 ** Fixing newlines in eshell like zsh
+:PROPERTIES:
+:CUSTOM_ID: eshell-newlines
+:END:
 So ZSH has this great functionality where if the previous line didn't end in a
 newline, it automatically added one before printing the prompt. Because ES
 routinely doesn't print a newline, it'd be great if eshell did this
@@ -306,6 +315,9 @@ automatically:
 #+END_SRC
 
 ** Eshell aliases
+:PROPERTIES:
+:CUSTOM_ID: eshell-aliases
+:END:
 Like zsh, I use a lot of aliases in eshell, so I need to set those up here:
 
 #+BEGIN_SRC emacs-lisp :tangle out/eshell-alias
@@ -335,6 +347,9 @@ ln -sfv $PWD/out/eshell-alias ~/.emacs.d/eshell/alias
 #+END_SRC
 
 * Nested Tmux for SSH sessions
+:PROPERTIES:
+:CUSTOM_ID: nested-tmux
+:END:
 
 I couldn't live without [[https://tmux.github.io/][tmux]], so much of my work is done on remote machines
 where I need to be able to disconnect running work and re-attach later.
@@ -354,8 +369,7 @@ So, starting with the most specific
 
 ** .tmux.osx.conf
 :PROPERTIES:
-:CUSTOM_ID: 090fb087-4356-4605-8e0a-f3a97f100e74
-:ID:       5cd2cdf8-57c3-435a-97ae-615347ec5e4a
+:CUSTOM_ID: tmux-osx
 :END:
 
 #+BEGIN_SRC conf :tangle out/tmux.osx.conf
@@ -377,8 +391,7 @@ ln -sfv $PWD/out/tmux.osx.conf ~/.tmux.osx.conf
 
 ** .tmux.conf
 :PROPERTIES:
-:CUSTOM_ID: e0f382e6-c54a-41b9-bbb2-729d20ab3072
-:ID:       a8538cd5-a960-4e08-a689-c1f5101cbf80
+:CUSTOM_ID: tmux-conf
 :END:
 I set the =bind-key= to =C-z= (control-z) here and not in =~/.tmux.shared.conf=
 because I use a different bind-key for the master tmux, so I only want it in
@@ -409,8 +422,7 @@ set -g base-index 0
 
 ** .tmux.master.conf
 :PROPERTIES:
-:CUSTOM_ID: 3114f9a9-f258-4174-b356-cd3a852ca57d
-:ID:       fe8e9776-5914-49b9-8eeb-44ac7bd0d275
+:CUSTOM_ID: tmux-master
 :END:
 The master-specific configuration. This config only gets run if tmux is invoked
 using the =tmaster= alias.
@@ -497,8 +509,7 @@ set-option -g default-terminal "screen-256color"
 
 ** .tmux.shared.conf
 :PROPERTIES:
-:CUSTOM_ID: 67e23454-a3a0-4f49-ac63-e15f5d22056e
-:ID:       6e1a66c6-16ac-4eef-a1eb-4c07c0d37ae9
+:CUSTOM_ID: tmux-shared
 :END:
 Finally, all the tmux configuration that gets shared between all tmux instances,
 regardless or where or how they're invoked.
@@ -670,6 +681,9 @@ set-option -g default-terminal "screen-256color"
 #+END_SRC
 
 ** Installing generated TMUX configurations
+:PROPERTIES:
+:CUSTOM_ID: tmux-install
+:END:
 
 And make sure the generated tmux files are installed
 

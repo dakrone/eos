@@ -11,6 +11,9 @@
 #+STARTUP: fold nodlcheck lognotestate content
 
 * Introduction
+:PROPERTIES:
+:CUSTOM_ID: introduction
+:END:
 
 We need a way of installing these, so let's generate one:
 
@@ -22,8 +25,7 @@ ln -sfv $PWD/out/zsh.d ~/.zsh.d
 
 ** ~/.zshenv
 :PROPERTIES:
-:ID:       9d6ddeea-1fea-443f-8c6e-bcb1309aed86
-:CUSTOM_ID: 1a4af27a-34c9-4b31-9370-e312fd2b2ec9
+:CUSTOM_ID: zshenv
 :END:
 The =~/.zshenv= file is read for all shells, regardless of login state or not,
 and it's a pretty good place to put PATH stuff and other env variables that
@@ -120,14 +122,13 @@ and make it really dumb.
 
 ** ~/.zprofile
 :PROPERTIES:
-:CUSTOM_ID: d9eab449-a655-4864-bd37-570a9fcc85d6
+:CUSTOM_ID: zprofile
 :END:
 I don't currently use =~/.zprofile=, but I should...
 
 ** ~/.zshrc
 :PROPERTIES:
-:ID:       8b6bcd43-d9ab-42b2-942c-a3feeb5eec6f
-:CUSTOM_ID: 13612b8d-4a0f-40da-b6ee-4fb89b3dcae3
+:CUSTOM_ID: zshrc
 :END:
 
 #+BEGIN_SRC sh :tangle out/zshrc
@@ -247,8 +248,7 @@ printf "+++Loaded files in %0.4f seconds\n" $(($end-$start))
 
 ** Other ZSH configuration
 :PROPERTIES:
-:ID:       9e5907a2-1003-43f3-a186-04c560da6671
-:CUSTOM_ID: 21158852-28e5-4b97-997a-36d0803e3316
+:CUSTOM_ID: other-zsh
 :END:
 I try to segment out different things I need into separate zsh files, all inside
 of =.zsh.d= and loaded by order. This includes
@@ -262,8 +262,7 @@ First, aliases, for which I have many!
 
 *** Aliases
 :PROPERTIES:
-:ID:       2c906b8d-cb4b-44bc-94ab-7ef4c43fe17e
-:CUSTOM_ID: 34939e9e-7b4d-47f1-ab59-b196849cd834
+:CUSTOM_ID: zsh-alias
 :END:
 
 #+BEGIN_SRC sh :tangle out/zsh.d/00-aliases.zsh
@@ -320,8 +319,7 @@ alias tmux='tmux -2'
 
 *** Functions
 :PROPERTIES:
-:ID:       19d19b57-9b31-4f01-8dea-0dece600f59a
-:CUSTOM_ID: 549ce8e2-22ed-45c1-830a-6d07e8640b39
+:CUSTOM_ID: zsh-functions
 :END:
 
 Next, some functions, when shell aliases just won't do!
@@ -385,8 +383,7 @@ function ekill() { emacsclient -e '(kill-emacs)' }
 
 *** Keybindings
 :PROPERTIES:
-:ID:       373dc813-91c4-4f7e-9309-258b37633f81
-:CUSTOM_ID: 37a26bb7-88d0-4fa8-b9bb-101d64d1bd2e
+:CUSTOM_ID: zsh-bindings
 :END:
 Keybindings for the shell, in this case, mostly Emacs-compatible, but with some
 disabled to prevent dumb things. (Mostly me being dumb)
@@ -414,8 +411,7 @@ bindkey -r '^[x' # remove M-x for emacs-things
 
 *** SSH
 :PROPERTIES:
-:ID:       ed5d98f3-c28e-4333-9cec-3fd9114e74b6
-:CUSTOM_ID: 5dd48b83-8508-4f4a-88f4-988dd862721b
+:CUSTOM_ID: ssh-keychain
 :END:
 I'm using [[http://www.funtoo.org/Keychain][Keychain]] to manage SSH agent inheritance, so it just needs to be
 eval-ed when nodes start up. It loads the key in =~/.ssh/id_rsa=.
@@ -426,8 +422,7 @@ eval $(keychain --eval --agents ssh,gpg)
 
 *** Git
 :PROPERTIES:
-:ID:       409d8ed0-3cc7-4b59-b316-6e8d0130fb3b
-:CUSTOM_ID: 91460da2-8c8c-4d1b-b3c5-269670c19e45
+:CUSTOM_ID: zsh-git
 :END:
 Next, I need to set up some colors and formatting that ZSH will use for VCS info
 
@@ -475,8 +470,7 @@ fi
 
 *** HTTP helpers
 :PROPERTIES:
-:ID:       09fe5584-d326-461b-99d3-c190d138e373
-:CUSTOM_ID: 1106de79-c828-41d2-b027-16efc456887e
+:CUSTOM_ID: zsh-http
 :END:
 Very small, but since I do so much HTTP testing for Elasticsearch on the command
 line, they end up saving a lot of time.
@@ -491,8 +485,7 @@ alias delete='curl -s -XDELETE'
 
 *** Gtags
 :PROPERTIES:
-:ID:       65075d89-510e-41a7-9cdf-cb2a54c509ab
-:CUSTOM_ID: 5651e50e-2ae3-4bd2-ab88-41d75d83745f
+:CUSTOM_ID: zsh-gtags
 :END:
 For Java development in Emacs, I rely heavily on [[http://www.gnu.org/software/global/][GNU Global]], which I usually
 install by hand since most package managers have outdated versions. So I set
@@ -509,6 +502,9 @@ export GTAGSLABEL=ctags
 #+END_SRC
 
 *** Ruby (rbenv)
+:PROPERTIES:
+:CUSTOM_ID: zsh-rbenv
+:END:
 I need to set up the [[https://github.com/sstephenson/rbenv#installation][rbenv]] wrapper so I can have sane ruby building. If it
 exists, anyway.
 
@@ -519,6 +515,9 @@ fi
 #+END_SRC
 
 *** Nix
+:PROPERTIES:
+:CUSTOM_ID: zsh-nix
+:END:
 Nix is a new package manager I am trying out
 
 #+BEGIN_SRC sh :tangle out/zsh.d/18-nix.sh
@@ -528,6 +527,9 @@ fi
 #+END_SRC
 
 *** Python (virtualenvwrapper)
+:PROPERTIES:
+:CUSTOM_ID: zsh-python
+:END:
 So [[http://virtualenvwrapper.readthedocs.org/en/latest/][virtualenvwrapper]] is a handy thing for managing virtualenv sessions, but it
 needs to be sourced if available.
 
@@ -540,6 +542,9 @@ fi
 #+END_SRC
 
 *** Opam (ocaml)
+:PROPERTIES:
+:CUSTOM_ID: zsh-opam
+:END:
 I'm checking this out...
 
 #+BEGIN_SRC sh :tangle out/zsh.d/18-opam.zsh
@@ -550,8 +555,7 @@ fi
 
 *** Prompt
 :PROPERTIES:
-:ID:       072a7074-27aa-4f32-b6c3-1952716675a6
-:CUSTOM_ID: 6be62d59-045b-461e-8e2c-256e12c2c3ef
+:CUSTOM_ID: zsh-prompt
 :END:
 I would I have a medium-level prompt in terms of ridiculousness. It's two lines,
 displays git information, and has decent colors, so it's not too bad. I've never
@@ -686,8 +690,7 @@ keep around, just in case.
 
 *** Dumb terminal setup
 :PROPERTIES:
-:ID:       89826739-6442-4490-be44-13af5d372226
-:CUSTOM_ID: 1796add0-7e52-4e85-8def-955079704f25
+:CUSTOM_ID: zsh-dumb
 :END:
 Just a couple of left overs for very dumb terminals (running shells inside of
 things, mostly). It tangles to =99-dumb.zsh= to ensure it's loaded last.
@@ -706,7 +709,7 @@ fi
 
 *** Machine/OS-specific shell configuration
 :PROPERTIES:
-:CUSTOM_ID: 156e4e15-8aad-4dd2-9102-069ff18ec8e8
+:CUSTOM_ID: zsh-machine-specific
 :END:
 Finally, I have some either OS-specific or host-specific configurations, which
 are loaded by =~/.zshenv= by looking for
@@ -733,8 +736,7 @@ which essentially calls =hostname=, takes only the first part and lowercases it.
 
 **** Darwin (OSX)
 :PROPERTIES:
-:ID:       bec8e175-a04e-4b54-8d89-edd5f3ad228c
-:CUSTOM_ID: 3d1eab53-e973-4d70-80bd-f5a0e8c2b4d9
+:CUSTOM_ID: zsh-osx
 :END:
 On OSX, I mostly just have to do a lot of nonsense to get Emacs stuff to work
 correctly.
@@ -773,8 +775,7 @@ function strace {
 
 **** Linux
 :PROPERTIES:
-:ID:       42c65a61-7db1-47dd-aaf7-51fe87a4882d
-:CUSTOM_ID: 917b95e1-5f9e-485d-8e91-cc4e9217fc2e
+:CUSTOM_ID: zsh-linux
 :END:
 Linux has less customization, mostly differing aliases.
 

@@ -16,8 +16,7 @@
 
 * Org-mode, The Ultimate Organization Tool
 :PROPERTIES:
-:ID:       07EAD909-1415-41FB-8079-8E59DB55D0E3
-:CUSTOM_ID: b07ea95e-d7cb-4714-ae83-9bd624e1c19d
+:CUSTOM_ID: org-mode
 :END:
 I use [[http://orgmode.org/][org-mode]] a ton, so it get's its own page here.
 
@@ -426,6 +425,9 @@ A simple presentation mode for org-mode
 #+END_SRC
 
 ** exporting to Github-flavored markdown
+:PROPERTIES:
+:CUSTOM_ID: ox-gfm
+:END:
 
 By and large, 90% of the exports I do are to Github's markdown. Usually to share
 for an issue. So there's a nice exporter that does this for me: =ox-gfm=
@@ -440,8 +442,7 @@ for an issue. So there's a nice exporter that does this for me: =ox-gfm=
 
 ** org-clock
 :PROPERTIES:
-:ID:       DA59822F-1D94-4E05-B28C-9B984C3E8431
-:CUSTOM_ID: cd0460b6-1af9-4033-a923-1a7b7b5ac50b
+:CUSTOM_ID: org-clock
 :END:
 Now, my org-mode clocking configuration:
 
@@ -495,8 +496,7 @@ First, a function to use for clocking in
 
 ** org-publishing
 :PROPERTIES:
-:ID:       C5C2E0C3-5E0B-4913-BB9E-955E8051243E
-:CUSTOM_ID: 40ef52c5-c17e-4e72-a006-460cdee2a479
+:CUSTOM_ID: org-publishing
 :END:
 Publishing org-mode files to my hosting provider:
 
@@ -644,6 +644,9 @@ Then, when I'm editing ~/org/es/feature-foo.org, I can hit =C-c C-e P f= and
 export the file to show up in http://p.writequit.org/org
 
 ** org-alert
+:PROPERTIES:
+:CUSTOM_ID: org-alert
+:END:
 Notifications for upcoming org statuses!
 
 #+BEGIN_SRC emacs-lisp
@@ -654,6 +657,9 @@ Notifications for upcoming org statuses!
 #+END_SRC
 
 * Tools used from within org-mode
+:PROPERTIES:
+:CUSTOM_ID: org-tools
+:END:
 
 I tend to use quite a few different tools from org buffers, so let's install the
 modes required:
@@ -667,12 +673,18 @@ modes required:
 #+END_SRC
 
 * Diary, keeping track of appointments in Emacs
+:PROPERTIES:
+:CUSTOM_ID: diary
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (setq diary-file "~/diary")
 #+END_SRC
 
 * Presentations with =epresent=
+:PROPERTIES:
+:CUSTOM_ID: epresent
+:END:
 
 I'm taking over ownership of this after the last maintainer didn't touch it for
 a year, so I load it from a custom path

@@ -15,6 +15,9 @@
 #+END_SRC
 
 * Java
+:PROPERTIES:
+:CUSTOM_ID: java
+:END:
 Java uses eclim and/or malabar to make life at least a little bit livable.
 
 =intellij-java-style= is a copy of our Intellij indentation rules for
@@ -137,6 +140,9 @@ work with the ES codebase.
 #+END_SRC
 
 * Managing Java Imports with the =java-imports= Package
+:PROPERTIES:
+:CUSTOM_ID: java-imports
+:END:
 
 I also have a custom package, [[https://github.com/dakrone/emacs-java-imports][java-imports]], which I use to quickly add imports
 for things.
@@ -151,6 +157,9 @@ for things.
 #+END_SRC
 
 * Connecting Emacs and Eclipse with Eclim
+:PROPERTIES:
+:CUSTOM_ID: eclim
+:END:
 Eclim is decent for emacs-java integration, but isn't quite there for showing
 errors or things like that. Unfortunately I still have to jump back into
 Intellij all the time for things.
@@ -173,6 +182,9 @@ about it, I just need to find the time.
 #+END_SRC
 
 * Configuring SDKMan for Groovy/Gradle
+:PROPERTIES:
+:CUSTOM_ID: sdkman
+:END:
 
 This will have to be downloaded from http://sdkman.io, there is no package for it
 
@@ -184,6 +196,9 @@ Let's also add it to the tramp remote path
 #+END_SRC
 
 * Configure GNU Global and Gtags
+:PROPERTIES:
+:CUSTOM_ID: gnu-global
+:END:
 
 See: https://github.com/leoliu/ggtags
 

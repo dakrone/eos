@@ -17,6 +17,7 @@
 * Determining whether this will be a "light" or "dark" session
 :PROPERTIES:
 :VISIBILITY: all
+:CUSTOM_ID: light-or-dark
 :END:
 First, let's determine whether I'm going to be using a dark background, or a
 light background. I set a var to either '=light= or '=dark= depending on
@@ -29,6 +30,9 @@ well as the general theme for look-and-feel things.
 #+END_SRC
 
 * Emacs Appearance
+:PROPERTIES:
+:CUSTOM_ID: appearance
+:END:
 
 Beacon flashes the cursor whenever you adjust position, really helpful when
 jumping between a billion windows and having no idea where the cursor actually
@@ -56,8 +60,7 @@ parens.
 
 * Color Theme
 :PROPERTIES:
-:ID:       EADAA476-50E8-416E-AC6F-13F278735435
-:CUSTOM_ID: eba05de0-2322-4a52-b762-2d54b9e8eb56
+:CUSTOM_ID: color-theme
 :END:
 If using OSX, the colors and fonts look a bit wonky, so let's fix that
 
@@ -100,14 +103,16 @@ balanced of color and pleasing to my eyes.
 
 * Fonts
 :PROPERTIES:
-:ID:       92694D10-4647-46AD-A9A7-35B59DF46512
-:CUSTOM_ID: ab893513-3d80-47b9-b666-7cee1fab621f
+:CUSTOM_ID: fonts
 :END:
 I've been using [[https://github.com/belluzj/fantasque-sans][Fantasque Sans Mono]] lately, it looks pretty nice to me. On Linux
 I've been using Bitstream Vera Sans Mono. I also use [[http://www.marksimonson.com/fonts/view/anonymous-pro][Anonymous Pro]] and
 Inconsolata a lot.
 
 ** Config for OSX:
+:PROPERTIES:
+:CUSTOM_ID: osx
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/setup-osx-fonts ()
@@ -121,6 +126,9 @@ Inconsolata a lot.
 #+END_SRC
 
 ** Config for Linux/X11 systems:
+:PROPERTIES:
+:CUSTOM_ID: linux
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/setup-x11-fonts ()
@@ -137,6 +145,9 @@ Inconsolata a lot.
 #+END_SRC
 
 ** Experimental test of Greg's extended-faces package
+:PROPERTIES:
+:CUSTOM_ID: h:4ec2fb0e-19b0-4751-9422-3df7da548a62
+:END:
 
 #+BEGIN_SRC emacs-lisp
 ;; (when (file-exists-p "~/src/elisp/emacs-extended-faces/")
@@ -146,6 +157,9 @@ Inconsolata a lot.
 #+END_SRC
 
 * Emacs' Mode-line
+:PROPERTIES:
+:CUSTOM_ID: modeline
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
@@ -163,6 +177,9 @@ Inconsolata a lot.
 #+END_SRC
 
 * The Editor Fringe
+:PROPERTIES:
+:CUSTOM_ID: fringe
+:END:
 
 So, fringe is nice actually, I set it to the same color as the background so it
 blends into the foreground
@@ -186,7 +203,7 @@ Show where the buffer ends on the right-hand fringe
 
 * Shift the color of text with Redshift
 :PROPERTIES:
-:ID:       daa62f71-28bc-4c5a-b792-c4748606f81a
+:CUSTOM_ID: redshift
 :END:
 
 Redshift is like Flux, but nicer.
@@ -216,6 +233,9 @@ systemctl --user start redshift
 #+END_SRC
 
 * Variable width font hacks
+:PROPERTIES:
+:CUSTOM_ID: variable-width-fonts
+:END:
 
 So, variable font width is really nice in GUI emacs, with org-mode however,
 almost all of my source blocks don't look that great without a fixed-width font

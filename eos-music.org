@@ -25,6 +25,9 @@ Ensure that Emacs knows where MPD is listening
 #+END_SRC
 
 * MPD configuration
+:PROPERTIES:
+:CUSTOM_ID: mpd
+:END:
 
 Configure MPD to be pointing to our local machine
 
@@ -79,6 +82,9 @@ systemctl --user start mpd
 #+END_SRC
 
 * Mingus MPD frontend
+:PROPERTIES:
+:CUSTOM_ID: mingus
+:END:
 
 I haven't actually used this, but we can install it to try it out...
 
@@ -88,6 +94,9 @@ I haven't actually used this, but we can install it to try it out...
 #+END_SRC
 
 * Hydra Music Controller
+:PROPERTIES:
+:CUSTOM_ID: music-hydra
+:END:
 
 Mingus is a nifty little minimalist MPD frontend, but it doesn't ship with any
 keybindings out of the box. I'd like global MPD bindings, and this goes a long

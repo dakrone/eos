@@ -15,11 +15,17 @@
 #+END_SRC
 
 * Bootstrapping the Emacs environment
+:PROPERTIES:
+:CUSTOM_ID: bootstrapping
+:END:
 To start with emacs, we need a =~/.emacs.d/init.el= file that can be loaded.
 This file will be tangled to a file called =eos-core.el= which will be installed
 as the starting module in =init.el= loaded by Emacs.
 
 ** Helper Methods
+:PROPERTIES:
+:CUSTOM_ID: helper-methods
+:END:
 These are shell script helpers, a cache warming function that'll automatically
 get added to =eos-core.sh=, and some functions that'll need to be sourced in
 from other scripts.
@@ -45,6 +51,9 @@ function rpm-install () {
 #+END_SRC
 
 * EOS Core Configuration Setup
+:PROPERTIES:
+:CUSTOM_ID: core-config
+:END:
 Let's start with some personal information about me:
 
 #+BEGIN_SRC emacs-lisp
@@ -907,6 +916,9 @@ I don't really need bi-directional display, so let's speed up long lines
 #+END_SRC
 
 * GPG and gpg-agent (as well as SSH agent)
+:PROPERTIES:
+:CUSTOM_ID: gpg-agent
+:END:
 
 I use =gpg-agent= [fn:30:
 https://www.debian-administration.org/article/452/Using_gnupg-agent_to_securely_retain_keys]
@@ -989,8 +1001,14 @@ I use =gpg2= everywhere, including in Emacs.
 #+END_SRC
 
 * OS-specific settings
+:PROPERTIES:
+:CUSTOM_ID: os-specific-settings
+:END:
 
 ** Linux
+:PROPERTIES:
+:CUSTOM_ID: linux
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (when (eq system-type 'gnu/linux)
@@ -1014,6 +1032,9 @@ I use =gpg2= everywhere, including in Emacs.
 #+END_SRC
 
 ** Mac OSX
+:PROPERTIES:
+:CUSTOM_ID: mac-osx
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (when (eq system-type 'darwin)
@@ -1067,10 +1088,10 @@ issues, so this is special handling of it...
   ;; use command as meta
   (setq mac-command-modifier 'hyper))
 #+END_SRC
+
 * Spell check and flyspell settings
 :PROPERTIES:
-:ID:       0B80EB46-83A6-484B-90E5-32F71985DC20
-:CUSTOM_ID: 1cb51ce4-c282-41b1-9457-524533f5d14e
+:CUSTOM_ID: spellcheck
 :END:
 I use Hunspell and Aspell checking spelling, ignoring words under 3 characters
 and running very quickly. My personal word dictionary is at =~/.flydict=.
@@ -1116,6 +1137,9 @@ In most non-programming modes, =M-.= can be used to spellcheck the word
 #+END_SRC
 
 * Binding the EOS mega-map with Hydra
+:PROPERTIES:
+:CUSTOM_ID: eos-hydra-map
+:END:
 
 I'm used to not be a fan of hydra, mostly because I don't need popups for every
 little thing under the sun. However, I lately decided I wanted a unified
@@ -1271,6 +1295,9 @@ And finally, the main EOS Hydra for entry:
 #+END_SRC
 
 * Multiple Emacs Perspectives with Eyebrowse
+:PROPERTIES:
+:CUSTOM_ID: eyebrowse
+:END:
 Eyebrowse is a great package for workspaces in Emacs.
 
 #+BEGIN_SRC emacs-lisp

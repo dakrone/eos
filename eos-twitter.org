@@ -15,6 +15,9 @@
 #+END_SRC
 
 * Twitter with twittering-mode
+:PROPERTIES:
+:CUSTOM_ID: twitter
+:END:
 
 Load up twittering mode, but defer it since I'm probably not loading emacs to
 immediately use Twitter :P

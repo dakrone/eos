@@ -14,7 +14,10 @@
 (provide 'eos-leisure)
 #+END_SRC
 
-* Leisurely Things
+* Download buffer
+:PROPERTIES:
+:CUSTOM_ID: downloads
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/popup-downloads ()
@@ -29,6 +32,11 @@
 (global-set-key (kbd "C-x M-d") #'eos/popup-downloads)
 #+END_SRC
 
+* Getting the weather
+:PROPERTIES:
+:CUSTOM_ID: weather
+:END:
+
 Let's manage the forecast and weather too, will be managed from the main Hydra
 
 #+BEGIN_SRC emacs-lisp
@@ -42,6 +50,9 @@ Let's manage the forecast and weather too, will be managed from the main Hydra
 #+END_SRC
 
 * Browsing stack overflow
+:PROPERTIES:
+:CUSTOM_ID: stack-overflow
+:END:
 
 Emacs has a really nice stack overflow client, called "sx"
 

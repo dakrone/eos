@@ -15,6 +15,9 @@
 #+END_SRC
 
 * A Word about Notifications and Alerting
+:PROPERTIES:
+:CUSTOM_ID: notifications
+:END:
 
 Yep. I need to actually make this work for OSX, for Linux it's no problem
 though.

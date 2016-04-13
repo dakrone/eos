@@ -15,6 +15,9 @@
 #+END_SRC
 
 * Helm, an Incremental Completion Framework
+:PROPERTIES:
+:CUSTOM_ID: helm
+:END:
 There are many helm things. I use it a lot.
 
 A lot of things are taken from taken from
@@ -341,6 +344,9 @@ Best way to search in a buffer ever
 #+END_SRC
 
 * Projects with Helm and Helm-projectile
+:PROPERTIES:
+:CUSTOM_ID: helm-projectile
+:END:
 Per-project navigation
 
 #+BEGIN_SRC emacs-lisp
@@ -387,6 +393,9 @@ Per-project navigation
 #+END_SRC
 
 * Multi-compile for different compilations I run
+:PROPERTIES:
+:CUSTOM_ID: multi-compile
+:END:
 
 So, there are a bunch of ways to compile things in the ES codebase, so I'm
 checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to see if it works well for this sort of thing.

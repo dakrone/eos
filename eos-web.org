@@ -15,6 +15,9 @@
 #+END_SRC
 
 * Web browsers, EWW and Firefox
+:PROPERTIES:
+:CUSTOM_ID: eww
+:END:
 Ewwwwww...
 
 Wait, no, I mean the Emacs web browser built in to 24.4+

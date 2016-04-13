@@ -15,6 +15,9 @@
 #+END_SRC
 
 * TRAMP
+:PROPERTIES:
+:CUSTOM_ID: tramp
+:END:
 I have really been getting into TRAMP lately, I use it with eshell all the time,
 and dired tramp buffers are great for file management.
 

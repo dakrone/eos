@@ -26,6 +26,9 @@ Used more often than you'd think...
 #+END_SRC
 
 * Installing Markup Languages
+:PROPERTIES:
+:CUSTOM_ID: markup
+:END:
 
 Let's install markdown mode, since all of Github seems enamored with it.
 
@@ -48,6 +51,9 @@ YAML is used all over the place
 #+END_SRC
 
 * Functions for Skeleton Code
+:PROPERTIES:
+:CUSTOM_ID: skeletons
+:END:
 Skeletons are kind of like yasnippet, but they don't mess with my keybindings
 all over the place and take forever to load ಠ_ಠ
 
@@ -132,6 +138,9 @@ And now let's add a hydra for the skeletons
 #+END_SRC
 
 * Inserting Abbreviations with Abbrev-mode
+:PROPERTIES:
+:CUSTOM_ID: abbrev
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (use-package abbrev
@@ -147,8 +156,7 @@ And now let's add a hydra for the skeletons
 
 * Numbering rectangles
 :PROPERTIES:
-:ID:       7E1A9E29-8EA0-4AB9-9599-29D0A5DD945B
-:CUSTOM_ID: 5fd147b8-6ce9-400d-8f44-3e7529b1f1d7
+:CUSTOM_ID: rectangle-numbering
 :END:
 Let's say you have a list like:
 
@@ -198,6 +206,9 @@ and starting offset to number lines in rectangular-selection mode:
 #+END_SRC
 
 * Nice Writing/Viewing helpers
+:PROPERTIES:
+:CUSTOM_ID: narrow
+:END:
 
 There's a nice helper from [[http://endlessparentheses.com/emacs-narrow-or-widen-dwim.html][Endless Parentheses]] that defines a do-what-I-mean
 version of the narrow-or-widen so I don't have to keep remembering which is
@@ -233,6 +244,9 @@ already narrowed."
 #+END_SRC
 
 * Pasting help
+:PROPERTIES:
+:CUSTOM_ID: scpaste
+:END:
 
 Export an HTML version of the buffer and scp it somewhere
 

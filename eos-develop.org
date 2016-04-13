@@ -15,6 +15,9 @@
 #+END_SRC
 
 * EOS Development Module Configuration
+:PROPERTIES:
+:CUSTOM_ID: dev-module
+:END:
 Let's make .zsh also be a shell script
 
 #+BEGIN_SRC emacs-lisp
@@ -176,6 +179,9 @@ Finally, let's highlight escape sequences in a better way also
 #+END_SRC
 
 ** Semantic Editing
+:PROPERTIES:
+:CUSTOM_ID: semantic
+:END:
 First, use a development version of cedet if applicable, I download the latest
 snapshot from http://www.randomsample.de/cedet-snapshots/ and extract it in
 ~/src/elisp. Don't forget to run =make= in it!
@@ -208,6 +214,9 @@ Exit the save between databases if there is user input."
 #+END_SRC
 
 ** Emacs' Built In Electric Modes (pair/indent/layout)
+:PROPERTIES:
+:CUSTOM_ID: electric-modes
+:END:
 Emacs finally has better support for automatically doing things like indentation
 and pairing parentheses. So, let's enable (some) of that
 
@@ -244,6 +253,9 @@ Finally, perhaps we want some automatic layout:
 
 
 ** Programming Mode Hooks
+:PROPERTIES:
+:CUSTOM_ID: prog-mode
+:END:
 
 In programming modes, make sure things like FIXME and TODO are
 highlighted so they stand out:
@@ -264,6 +276,9 @@ Also highlight the line in prog-mode:
 (add-hook 'prog-mode-hook #'hl-line-mode)
 #+END_SRC
 * Autocomplete with Company
+:PROPERTIES:
+:CUSTOM_ID: autocomplete
+:END:
 
 I use =company= for more than just programming completions (see 💕=company-emoji=💕, f.e.), so let's
 just enable it everywhere.
@@ -317,7 +332,10 @@ Used smart-tab to complete everywhere except for ERC, shell and mu4e.
 #+END_SRC
 
 * Git Magit with Magit and friends
-I use =M-g M-g= everywhere to go directly to Magit.
+:PROPERTIES:
+:CUSTOM_ID: magit
+:END:
+I use =C-x g= everywhere to go directly to Magit.
 
 #+BEGIN_SRC emacs-lisp
 (use-package magit
@@ -403,6 +421,9 @@ Finally, a nice helper to browse code whenever it remotely may be,
 #+END_SRC
 
 * Flycheck - Syntax Checking On The Fly
+:PROPERTIES:
+:CUSTOM_ID: flycheck
+:END:
 
 Pretty minimally configured, but awesome tool for most dynamic languages.
 
@@ -431,8 +452,7 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
 
 * Elisp
 :PROPERTIES:
-:ID:       5AA7C6BC-6DAD-45D9-ABD5-36BF0BD344F1
-:CUSTOM_ID: 8711a5dd-fbbd-452c-bc18-85318d9c9c9b
+:CUSTOM_ID: elisp
 :END:
 This contains the configuration for elisp programming
 
@@ -505,10 +525,17 @@ Borrowed from Steve Purcell's config. This pretty-prints the results.
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 #+end_src
 
+There are some nice things we can install for development on Emacs itself,
+things such as =debbugs=, which allows us to look at the bug database for Emacs.
+
+#+BEGIN_SRC emacs-lisp
+(use-package debbugs
+  :ensure t)
+#+END_SRC
+
 * Python
 :PROPERTIES:
-:ID:       772D69FD-48DB-4A5C-B107-06CD508CAE05
-:CUSTOM_ID: 651c592a-1ac5-4282-8bcb-ca696c4013bd
+:CUSTOM_ID: python
 :END:
 Some various python settings, including loading jedi if needed to set up
 keys, the custom hook only loads jedi when editing python files:
@@ -536,6 +563,9 @@ I'm using the [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenv
 
 
 * Ruby
+:PROPERTIES:
+:CUSTOM_ID: ruby
+:END:
 Using rbenv, set it up correctly when idle
 
 #+BEGIN_SRC emacs-lisp
@@ -549,6 +579,9 @@ Using rbenv, set it up correctly when idle
 #+END_SRC
 
 * Haskell
+:PROPERTIES:
+:CUSTOM_ID: haskell
+:END:
 Use GHC for haskell mode, and turn on auto-complete and some doc/indent
 modes:
 
@@ -582,6 +615,9 @@ modes:
 #+END_SRC
 
 * Javascript
+:PROPERTIES:
+:CUSTOM_ID: javascript
+:END:
 I want indentation of 2 for json/js.
 
 #+BEGIN_SRC emacs-lisp
@@ -601,15 +637,5 @@ There's =tern= also, but I leave it turned off by default, just installed
 
 #+BEGIN_SRC emacs-lisp
 (use-package tern
-  :ensure t)
-#+END_SRC
-
-* Emacs Development itself
-
-There are some nice things we can install for development on Emacs itself,
-things such as =debbugs=, which allows us to look at the bug database for Emacs.
-
-#+BEGIN_SRC emacs-lisp
-(use-package debbugs
   :ensure t)
 #+END_SRC

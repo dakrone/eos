@@ -15,6 +15,9 @@
 #+END_SRC
 
 * General Emacs Navigation
+:PROPERTIES:
+:CUSTOM_ID: general-nav
+:END:
 
 These are miscellaneous bindings used all over the place that don't
 really fit in anywhere else.
@@ -98,6 +101,9 @@ Deletes whitespace at join."
 #+END_SRC
 
 ** Isearch bindings
+:PROPERTIES:
+:CUSTOM_ID: isearch
+:END:
 
 #+BEGIN_SRC emacs-lisp
 ;; Use regex searches by default.
@@ -127,6 +133,9 @@ permanently."
 #+END_SRC
 
 * Mouse-based navigation
+:PROPERTIES:
+:CUSTOM_ID: mouse
+:END:
 
 Need to enable this to get trackpad scrolling to work on my Lenovo T450s
 
@@ -145,6 +154,9 @@ Need to enable this to get trackpad scrolling to work on my Lenovo T450s
 #+END_SRC
 
 * God-mode
+:PROPERTIES:
+:CUSTOM_ID: god-mode
+:END:
 God-mode was always something a little strange to me, halfway to =evil-mode=,
 but not quite Emacs.
 

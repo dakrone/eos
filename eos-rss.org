@@ -15,6 +15,9 @@
 #+END_SRC
 
 * RSS feed reading with Elfeed
+:PROPERTIES:
+:CUSTOM_ID: elfeed
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (use-package elfeed

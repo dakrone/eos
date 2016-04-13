@@ -15,6 +15,9 @@
 #+END_SRC
 
 * Directory Editing and Navigation with Dired
+:PROPERTIES:
+:CUSTOM_ID: dired
+:END:
 
 Dired is sweet, I require =dired-x= also so I can hit =C-x C-j=
 and go directly to a dired buffer.
@@ -83,4 +86,14 @@ Let's also use async everything in dired
 (use-package async :ensure t)
 (autoload 'dired-async-mode "dired-async.el" nil t)
 (dired-async-mode 1)
+#+END_SRC
+
+Dired narrowing allows filtering dired results dynamically with a filter. Very
+cool.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired-narrow
+  :ensure t
+  :bind (:map dired-mode-map
+              ("/" . dired-narrow)))
 #+END_SRC
