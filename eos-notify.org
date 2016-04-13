@@ -42,6 +42,7 @@ The all-seeing eye of Sauron
   :init
   (when (eq system-type 'darwin)
     ;; Remove dbus if on OSX
+    (require 'sauron)
     (setq sauron-modules (remove 'sauron-dbus sauron-modules)))
 
   (setq sauron-max-line-length 120
