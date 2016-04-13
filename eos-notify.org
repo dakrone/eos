@@ -40,6 +40,10 @@ The all-seeing eye of Sauron
 (use-package sauron
   :ensure t
   :init
+  (when (eq system-type 'darwin)
+    ;; Remove dbus if on OSX
+    (setq sauron-modules (remove 'sauron-dbus sauron-modules)))
+
   (setq sauron-max-line-length 120
         sauron-watch-patterns '("dakrone" "thnetos" "okenezak")
         sauron-watch-nicks '("dakrone" "thnetos")
