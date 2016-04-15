@@ -107,8 +107,10 @@ Deletes whitespace at join."
 
 #+BEGIN_SRC emacs-lisp
 ;; Use regex searches by default.
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+;;(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+;;(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+;; Case-fold regex by default
+(setq search-default-mode 'character-fold-to-regexp)
 ;; Non regex search gets the meta also
 (global-set-key (kbd "C-M-s") 'isearch-forward)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
