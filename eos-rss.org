@@ -121,6 +121,7 @@
           "http://git-annex.branchable.com/devblog/index.atom"
           "https://github.com/blog.atom"
           "http://blog.chromium.org/feeds/posts/default"
+          "http://classicprogrammerpaintings.tumblr.com/rss"
           ))
   :config
   (define-key elfeed-show-mode-map (kbd "j") 'next-line)
