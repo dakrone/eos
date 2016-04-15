@@ -235,7 +235,7 @@ I actually choose to do this because the fedora/debian/ubuntu version of
     :init (helm-gtags-mode t)
     :diminish "")
   ;; key bindings
-  (define-key helm-gtags-mode-map (kbd "M-s") 'helm-gtags-select)
+  (define-key helm-gtags-mode-map (kbd "M-S") 'helm-gtags-select)
   (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
   (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
   (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
