@@ -6,3 +6,6 @@ System**.
 This is not ready for consumption yet.
 
 See [eos.org](eos.org) for the intro.
+
+You can see a preliminary version of this at
+[http://writequit.org/eos/eos.html](http://writequit.org/eos/eos.html)
