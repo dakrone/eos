@@ -32,6 +32,7 @@ run. I use it for the path on OSX and JAVA_HOME everywhere else.
     (setq exec-path-from-shell-variables '("JAVA_HOME"
                                            "PATH"
                                            "WORKON_HOME"
+                                           "GPG_AGENT_INFO"
                                            "MANPATH"))
     (exec-path-from-shell-initialize)))
 #+END_SRC
