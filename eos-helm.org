@@ -24,7 +24,8 @@ A lot of things are taken from taken from
 https://tuhdo.github.io/helm-intro.html
 
 Before we load any helm things, need to load [[https://github.com/PythonNut/helm-flx][helm-flx]] so it uses flx instead of
-helm's fuzzy matching.
+helm's fuzzy matching. This has to happen before helm is loaded, so it goes
+here.
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-flx
@@ -32,7 +33,23 @@ helm's fuzzy matching.
  :init (helm-flx-mode +1))
 #+END_SRC
 
-Now we can do our Helm things
+Now we can load the big Helm configuration. Here is a breakdown of the helm
+bindings I use more frequently:
+
+| Key     | Action                                          |
+|---------+-------------------------------------------------|
+| M-x     | helm meta-x                                     |
+| C-x C-f | helm find files                                 |
+| C-x f   | helm projectile                                 |
+| C-x C-r | helm mini (includes recentf)                    |
+| C-x C-o | helm occur (search in buffer)                   |
+| M-y     | helm kill ring                                  |
+| C-h a   | helm appropos (search functions/vars/commands)  |
+| C-h m   | helm man (man pages)                            |
+| C-h SPC | helm registers                                  |
+| C-x b   | helm mini                                       |
+| C-h t   | helm world time (show time in different places) |
+| C-x C-i | helm semantic or imenu (depending on the mode)  |
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-config
@@ -43,8 +60,6 @@ Now we can do our Helm things
   (("C-M-z" . helm-resume)
    ("C-x C-f" . helm-find-files)
    ("C-x C-r" . helm-mini)
-   ("C-c C-o" . helm-occur)
-   ("C-x M-o" . helm-occur)
    ("C-x o" . helm-occur)
    ("M-y" . helm-show-kill-ring)
    ("C-h a" . helm-apropos)
@@ -306,6 +321,8 @@ Now we can do our Helm things
     (interactive)
     (helm-other-buffer '(helm-clj-http-source) "*helm clj-http flags*")))
 #+END_SRC
+
+#+RESULTS:
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-ls-git
