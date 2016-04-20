@@ -915,6 +915,12 @@ I don't really need bi-directional display, so let's speed up long lines
 (setq-default bidi-display-reordering nil)
 #+END_SRC
 
+Don't bother saving things to the kill-ring twice, remove duplicates
+
+#+BEGIN_SRC emacs-lisp
+(setq kill-do-not-save-duplicates t)
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
 :CUSTOM_ID: gpg-agent
