@@ -46,7 +46,7 @@ I need to hide the lighter for subword mode:
   :init
   (add-hook #'log4j-mode-hook #'view-mode)
   (add-hook #'log4j-mode-hook #'read-only-mode)
-  (add-hook #'log4j-mode-hook #'hl-line-mode))
+  (add-hook #'log4j-mode-hook 'eos/turn-on-hl-line))
 #+END_SRC
 
 I have to hack something around this to make it fixed for org->html exports
@@ -259,12 +259,6 @@ highlighted so they stand out:
 (add-hook 'prog-mode-hook #'eos/add-watchwords)
 #+END_SRC
 
-Also highlight the line in prog-mode:
-
-#+BEGIN_SRC emacs-lisp
-(add-hook 'prog-mode-hook #'hl-line-mode)
-#+END_SRC
-
 * Paren matching with electric-pair-mode and Smartparens
 So, I vacillate between using =electric-pair-mode= and =smartparens=, ELP
 because it's built-in to Emacs and much faster, and Smartparens because it
@@ -418,7 +412,7 @@ I use =C-x g= everywhere to go directly to Magit.
 (use-package magit
   :ensure t
   :bind (("C-x g" . magit-status))
-  :init (add-hook 'magit-mode-hook 'hl-line-mode)
+  :init (add-hook 'magit-mode-hook 'eos/turn-on-hl-line)
   :config
   (setq git-commit-summary-max-length 70)
   (setenv "GIT_PAGER" "")

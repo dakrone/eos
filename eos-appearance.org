@@ -176,6 +176,38 @@ Inconsolata a lot.
   (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch/" ":ES:") t))
 #+END_SRC
 
+* Highlighting the current line with hl-line-mode
+
+I turn this on and off all over the place, so it's nice to have a global place
+where I can have it defined/handled.
+
+First, a flag for whether it's enabled, if set to =nil=, then even if
+hl-line-mode is "turned on" it won't be turned on. This allows me to manage
+enabling it in a single place.
+
+#+BEGIN_SRC emacs-lisp
+(setq eos/hl-line-enabled nil)
+#+END_SRC
+
+Then two functions to do the turning on/off
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/turn-on-hl-line ()
+  (interactive)
+  (when eos/hl-line-enabled
+    (hl-line-mode 1)))
+
+(defun eos/turn-off-hl-line ()
+  (interactive)
+  (hl-line-mode -1))
+#+END_SRC
+
+Turn it on by default (if enabled!) in prog-mode
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'prog-mode-hook #'eos/turn-on-hl-line)
+#+END_SRC
+
 * The Editor Fringe
 :PROPERTIES:
 :CUSTOM_ID: fringe

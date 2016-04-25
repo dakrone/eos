@@ -427,7 +427,7 @@ ln -sfv $PWD/out/gnus.el ~/.gnus.el
 (setq gnus-summary-thread-gathering-function 'gnus-gather-threads-by-subject)
 
 ;; Enable hl-line-mode in gnus summary
-(add-hook 'gnus-summary-mode-hook 'hl-line-mode)
+(add-hook 'gnus-summary-mode-hook 'eos/turn-on-hl-line)
 
 ;; Also, I prefer to see only the top level message.  If a message has
 ;; several replies or is part of a thread, only show the first

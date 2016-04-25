@@ -117,7 +117,8 @@ First, a function to be called when eshell-mode is entered
   ;; turn off semantic-mode in eshell buffers
   (semantic-mode -1)
   ;; turn off hl-line-mode
-  (hl-line-mode -1))
+  (when (fboundp 'eos/turn-off-hl-line)
+    (eos/turn-off-hl-line)))
 #+END_SRC
 
 Add a nice helper to sudo-edit a file

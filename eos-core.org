@@ -830,7 +830,8 @@ rpm-install mupdf
   "Turn on the viewing mode, to make looking through logs easier"
   (interactive)
   (view-mode 1)
-  (hl-line-mode 1))
+  (when (fboundp 'eos/turn-on-hl-line)
+    (eos/turn-on-hl-line)))
 #+END_SRC
 
 I also use the 'pdf-tools' package, which is *really* nice for viewing PDF
@@ -906,7 +907,7 @@ kill them and all that, when I do, I want it to auto-update
 #+BEGIN_SRC emacs-lisp
 (setq-default proced-auto-update-flag t)
 (setq-default proced-auto-update-interval 5)
-(add-hook 'proced-mode-hook 'hl-line-mode)
+(add-hook 'proced-mode-hook 'eos/turn-on-hl-line)
 #+END_SRC
 
 I don't really need bi-directional display, so let's speed up long lines
@@ -1175,6 +1176,7 @@ _q_: quit
   ("f" auto-fill-mode :exit t)
   ("l" toggle-truncate-lines :exit t)
   ("r" read-only-mode :exit t)
+  ;; This gets turned on/off unconditionally (not the eos/turn-on-hl-line-mode)
   ("h" hl-line-mode :exit t)
   ("v" eos/turn-on-viewing-mode :exit t)
   ("n" eos/narrow-or-widen-dwim :exit t)
