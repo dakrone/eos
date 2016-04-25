@@ -57,6 +57,25 @@
           ("http://newartisans.com/rss.xml" blog emacs)
           ("http://bling.github.io/index.xml" blog emacs)
           ("https://rachelbythebay.com/w/atom.xml" blog)
+          ("http://blog.nullspace.io/feed.xml" blog)
+          ("http://www.mcfunley.com/feed/atom" blog)
+          ("https://codewords.recurse.com/feed.xml" blog)
+          ("http://akaptur.com/atom.xml" blog)
+          ("http://davidad.github.io/atom.xml" blog)
+          ("http://www.evanjones.ca/index.rss" blog)
+          ("http://neverworkintheory.org/feed.xml" blog)
+          ("http://blog.jessitron.com/feeds/posts/default" blog)
+          ("http://feeds.feedburner.com/GustavoDuarte?format=xml" blog)
+          ("http://blog.regehr.org/feed" blog)
+          ("https://www.snellman.net/blog/rss-index.xml" blog)
+          ("http://eli.thegreenplace.net/feeds/all.atom.xml" blog)
+          ("https://idea.popcount.org/rss.xml" blog)
+          ("https://aphyr.com/posts.atom" blog)
+          ("http://kamalmarhubi.com/blog/feed.xml" blog)
+          ("http://maryrosecook.com/blog/feed" blog)
+          ("http://www.tedunangst.com/flak/rss" blog)
+          ("http://yosefk.com/blog/feed" blog)
+          ("http://www.benkuhn.net/rss/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
@@ -79,7 +98,7 @@
           ("http://feeds.feedburner.com/mylinuxrig" linux)
 
           ;; Java
-          ("http://psy-lob-saw.blogspot.com/feeds/posts/default" java)
+          ("http://psy-lob-saw.blogspot.com/feeds/posts/default" blog java)
           ("http://vanillajava.blogspot.de/feeds/posts/default" blog java)
 
           ;; Clojure
