@@ -80,9 +80,14 @@ balanced of color and pleasing to my eyes.
 ;;   (set-terminal-parameter nil 'background-mode eos/background))
 
 (if (eq eos/background 'dark)
-    (use-package color-theme-sanityinc-tomorrow
-      :ensure t
-      :init (load-theme 'sanityinc-tomorrow-bright t))
+    (progn
+      (use-package color-theme-sanityinc-tomorrow
+        :disabled t
+        :ensure t
+        :init (load-theme 'sanityinc-tomorrow-bright t))
+      (use-package planet-theme
+        :ensure t
+        :init (load-theme 'planet t)))
   (progn
     (load-theme 'tsdh-light t)
     (use-package leuven-theme
