@@ -1273,7 +1273,7 @@ And finally, the main EOS Hydra for entry:
   [_s_] Skeletons   [_P_] Prodigy   [_g_] Gnus
   [_p_] Proced      [_W_] Weather   [(] Macros
   [_e_] EWW         [_R_] RSS       [`] Errors
-  [_d_] Downloads   [_D_] Debbugs
+  [_d_] Downloads   [_D_] Debbugs   [_C_] ES-CC
 
   [_q_] quit
 "
@@ -1287,6 +1287,7 @@ And finally, the main EOS Hydra for entry:
   ("g" gnus :exit t)
   ("d" eos/popup-downloads :exit t)
   ("D" debbugs-gnu :exit t)
+  ("C" es-command-center :exit t)
   ("m" eos/switch-to-mail :exit t)
   ("M" eos/hydra-mpd/body :exit t)
   ("e" eww :exit t)
