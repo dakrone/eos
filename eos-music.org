@@ -113,8 +113,12 @@ way to get there.
                 (shell-command-to-string "mpc status")) "Currently Playing")
   ("s" mingus "Show Mingus" :exit t)
   ("m" mingus "Mingus" :exit t)
-  ("<" (progn (require 'mpc) (mpc-prev)) "Previous")
-  (">" (progn (require 'mpc) (mpc-next)) "Next")
+  ("<" (progn (require 'mpc) (mpc-prev)
+              (message "Currently Playing: %s"
+                (shell-command-to-string "mpc status"))) "Previous")
+  (">" (progn (require 'mpc) (mpc-next)
+              (message "Currently Playing: %s"
+                (shell-command-to-string "mpc status"))) "Next")
   ("+" (dotimes (i 5) (mingus-vol-up)) "Louder")
   ("-" (dotimes (i 5) (mingus-vol-down)) "Quieter")
   ("n" (ansi-term (executable-find "ncmpcpp"))
