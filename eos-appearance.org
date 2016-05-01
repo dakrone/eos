@@ -87,7 +87,14 @@ balanced of color and pleasing to my eyes.
         :init (load-theme 'sanityinc-tomorrow-bright t))
       (use-package planet-theme
         :ensure t
-        :init (load-theme 'planet t)))
+        :init
+        (load-theme 'planet t)
+        (require 'hl-line)
+        ;; The hl-line for planet is a bit too bright
+        ;; See: https://github.com/cmack/emacs-planet-theme/issues/4
+        (set-face-attribute
+         'hl-line nil
+         :foreground nil :background "#000000")))
   (progn
     (load-theme 'tsdh-light t)
     (use-package leuven-theme
