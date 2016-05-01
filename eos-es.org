@@ -2,7 +2,8 @@
 #+AUTHOR: Lee Hinman
 #+EMAIL: lee@writequit.org
 #+LANGUAGE: en
-#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:emacs-lisp :tangle yes :noweb yes
+#+PROPERTY: header-args:js :tangle yes :noweb yes
 #+PROPERTY: header-args:sh :eval no
 #+HTML_HEAD: <link rel="stylesheet" href="https://dakrone.github.io/org2.css" type="text/css" />
 #+EXPORT_EXCLUDE_TAGS: noexport
@@ -155,7 +156,7 @@ and installs into =~/.esvmrc=
 Here is the branch with the latest release I use:
 
 #+NAME: es-branch
-#+BEGIN_SRC json :tangle no
+#+BEGIN_SRC js :tangle no
 2.x
 #+END_SRC
 
@@ -196,5 +197,5 @@ Here is the branch with the latest release I use:
 And to install it:
 
 #+BEGIN_SRC sh :tangle sh/install-esvmrc.sh
-ln -sfv out/esvmrc ~/.esvmrc
+ln -sfv $PWD/out/esvmrc ~/.esvmrc
 #+END_SRC
