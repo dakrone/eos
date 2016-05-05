@@ -145,12 +145,11 @@ Inconsolata a lot.
 #+BEGIN_SRC emacs-lisp
 (defun eos/setup-x11-fonts ()
   (when (eq window-system 'x)
-    ;; default font
-    (set-face-attribute 'default (font-spec :name "DejaVu Sans Mono"))
+    ;; default font and variable-pitch fonts
+    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 115)
+    (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 115)
     ;; font for all unicode characters
-    (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)
-    ;; Default height for fonts
-    (set-face-attribute 'default nil :height 115)))
+    (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)))
 
 (when (eq window-system 'x)
   (add-hook 'after-init-hook #'eos/setup-x11-fonts))
@@ -198,7 +197,7 @@ hl-line-mode is "turned on" it won't be turned on. This allows me to manage
 enabling it in a single place.
 
 #+BEGIN_SRC emacs-lisp
-(setq eos/hl-line-enabled nil)
+(setq eos/hl-line-enabled t)
 #+END_SRC
 
 Then two functions to do the turning on/off
