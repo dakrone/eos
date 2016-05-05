@@ -346,6 +346,25 @@ Now, the smartparens configuration:
   (show-smartparens-global-mode 1))
 #+END_SRC
 
+* Paredit everywhere
+Paredit is fantastic for lisp-like languages, and it would be great if it were
+available everywhere (a subset of it, anyway), thankfully there is
+[[https://github.com/purcell/paredit-everywhere][paredit-everywhere]].
+
+Note that I need to unbind =M-s= because it's the new isearch prefix in 25.1, so
+I set it to =nil= in the map.
+
+#+BEGIN_SRC emacs-lisp
+(eval-after-load 'paredit-everywhere
+  '(define-key paredit-everywhere-mode-map (kbd "M-s") nil))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package paredit-everywhere
+  :ensure t
+  :init (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
+#+END_SRC
+
 * Autocomplete with Company
 :PROPERTIES:
 :CUSTOM_ID: autocomplete
