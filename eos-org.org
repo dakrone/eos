@@ -696,3 +696,13 @@ a year, so I load it from a custom path
       (require 'epresent))
   (use-package epresent :ensure t))
 #+END_SRC
+
+* Presentations with =org-reveal=
+
+#+BEGIN_SRC emacs-lisp
+(if (file-exists-p "~/src/elisp/org-reveal/")
+    (progn
+      (add-to-list 'load-path "~/src/elisp/org-reveal/")
+      (require 'ox-reveal))
+  (use-package ox-reveal :ensure t))
+#+END_SRC
