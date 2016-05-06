@@ -333,7 +333,8 @@ Then, you can do something like this:
 (when (and window-system
            ;; Only if I have a custom patched org-mode
            (file-exists-p "~/src/elisp/org-mode"))
-  (add-hook 'text-mode-hook 'variable-pitch-mode)
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+  (add-hook 'markdown-mode-hook 'variable-pitch-mode)
 
   (defun eos/adjoin-to-list-or-symbol (element list-or-symbol)
     (let ((list (if (not (listp list-or-symbol))
