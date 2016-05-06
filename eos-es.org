@@ -55,7 +55,7 @@ so I install that
   :ensure t)
 #+END_SRC
 
-* ES Services started and Run from Emacs
+* ES Services started and Run from Emacs (prodigy)
 :PROPERTIES:
 :CUSTOM_ID: prodigy
 :END:
@@ -74,7 +74,7 @@ So I configure prodigy like so:
   :config
   (setq prodigy-services '())
   (prodigy-define-service
-    :name "ES 2.2 release"
+    :name "ES latest release"
     :cwd "~/ies/"
     :command "esvm"
     :tags '(work test es)
@@ -105,9 +105,9 @@ So I configure prodigy like so:
     :port 9200)
 
   (prodigy-define-service
-    :name "Kibana 4.4.0"
-    :cwd "~/ies/kibana-4.4.0-linux-x64"
-    :command "~/ies/kibana-4.4.0-linux-x64/bin/kibana"
+    :name "Kibana 4.5.0"
+    :cwd "~/ies/kibana-4.5.0-linux-x64"
+    :command "~/ies/kibana-4.5.0-linux-x64/bin/kibana"
     :tags '(work kibana)
     :port 5601)
 
@@ -118,21 +118,15 @@ So I configure prodigy like so:
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
-    :name "Elasticsearch 2.1.2"
-    :cwd "~/ies/elasticsearch-2.1.2"
-    :command "~/ies/elasticsearch-2.1.2/bin/elasticsearch"
+    :name "Elasticsearch 2.3.2"
+    :cwd "~/ies/elasticsearch-2.3.2"
+    :command "~/ies/elasticsearch-2.3.2/bin/elasticsearch"
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
-    :name "Elasticsearch 2.2.2"
-    :cwd "~/ies/elasticsearch-2.2.2"
-    :command "~/ies/elasticsearch-2.2.2/bin/elasticsearch"
-    :tags '(work test es)
-    :port 9200)
-  (prodigy-define-service
-    :name "Elasticsearch 2.3.1"
-    :cwd "~/ies/elasticsearch-2.3.1"
-    :command "~/ies/elasticsearch-2.3.1/bin/elasticsearch"
+    :name "Elasticsearch 5.0.0-alpha2"
+    :cwd "~/ies/elasticsearch-5.0.0-alpha2"
+    :command "~/ies/elasticsearch-5.0.0-alpha2/bin/elasticsearch"
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
