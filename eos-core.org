@@ -1276,7 +1276,7 @@ And finally, the main EOS Hydra for entry:
   [_p_] Proced      [_W_] Weather   [(] Macros
   [_e_] EWW         [_R_] RSS       [`] Errors
   [_d_] Downloads   [_D_] Debbugs   [_C_] ES-CC
-
+                  [_B_] Bookmarks
   [_q_] quit
 "
 
@@ -1289,6 +1289,7 @@ And finally, the main EOS Hydra for entry:
   ("g" gnus :exit t)
   ("d" eos/popup-downloads :exit t)
   ("D" debbugs-gnu :exit t)
+  ("B" helm-bookmarks :exit t)
   ("C" es-command-center :exit t)
   ("m" eos/switch-to-mail :exit t)
   ("M" eos/hydra-mpd/body :exit t)
