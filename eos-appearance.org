@@ -25,8 +25,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
-;;(defvar eos/background 'dark)
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
 #+END_SRC
 
 * Emacs Appearance
@@ -82,11 +82,11 @@ balanced of color and pleasing to my eyes.
 (if (eq eos/background 'dark)
     (progn
       (use-package color-theme-sanityinc-tomorrow
-        :disabled t
         :ensure t
-        :init (load-theme 'sanityinc-tomorrow-bright t))
+        :init (load-theme 'sanityinc-tomorrow-night t))
       (use-package planet-theme
         :ensure t
+        :disabled t
         :init
         (load-theme 'planet t)
         (require 'hl-line)
@@ -146,8 +146,13 @@ Inconsolata a lot.
 (defun eos/setup-x11-fonts ()
   (when (eq window-system 'x)
     ;; default font and variable-pitch fonts
-    (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 115)
-    (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 115)
+    (if (equal (system-name) "ivalice")
+        (progn
+          ;; Ivalice has a big monitor, the text needs to be bigger
+          (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 145)
+          (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 145))
+      (set-face-attribute 'default nil :family "DejaVu Sans Mono" :height 115)
+      (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 115))
     ;; font for all unicode characters
     (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)))
 
