@@ -514,6 +514,14 @@ if [ -f ~/.rbenv/bin/rbenv ]; then
 fi
 #+END_SRC
 
+*** Node (nvm)
+Ugggh javascript.
+
+#+BEGIN_SRC sh :tangle out/zsh.d/18-nvm.zsh
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+#+END_SRC
+
 *** Nix
 :PROPERTIES:
 :CUSTOM_ID: zsh-nix
