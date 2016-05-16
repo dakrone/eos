@@ -193,3 +193,13 @@ And to install it:
 #+BEGIN_SRC sh :tangle sh/install-esvmrc.sh
 ln -sfv $PWD/out/esvmrc ~/.esvmrc
 #+END_SRC
+
+And, unfortunately, esvm needs node, so I have been using nvm for that
+
+#+BEGIN_SRC emacs-lisp
+(when (file-exists-p "~/.nvm")
+  (use-package nvm
+    :ensure t
+    :commands (nvm-use nvm-use-for)
+    :init (nvm-use "v6.1.0")))
+#+END_SRC
