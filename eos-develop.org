@@ -18,11 +18,6 @@
 :PROPERTIES:
 :CUSTOM_ID: dev-module
 :END:
-Let's make .zsh also be a shell script
-
-#+BEGIN_SRC emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
-#+END_SRC
 
 This contains the configuration for elisp programming
 
@@ -728,4 +723,18 @@ There's =tern= also, but I leave it turned off by default, just installed
 #+BEGIN_SRC emacs-lisp
 (use-package tern
   :ensure t)
+#+END_SRC
+
+* Shell scripting
+Not really much here, other than telling shell-script-mode that =.bats= files
+are shell-scripts
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.bats$" . shell-script-mode))
+#+END_SRC
+
+Let's make .zsh also be a shell script
+
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.zsh$" . shell-script-mode))
 #+END_SRC
