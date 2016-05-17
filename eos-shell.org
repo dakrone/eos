@@ -119,7 +119,11 @@ First, a function to be called when eshell-mode is entered
   (semantic-mode -1)
   ;; turn off hl-line-mode
   (when (fboundp 'eos/turn-off-hl-line)
-    (eos/turn-off-hl-line)))
+    (eos/turn-off-hl-line))
+  (local-set-key (kbd "M-P") 'eshell-previous-prompt)
+  (local-set-key (kbd "M-N") 'eshell-next-prompt)
+  (local-set-key (kbd "M-R") 'eshell-list-history)
+  (local-set-key (kbd "M-r") 'helm-eshell-history))
 #+END_SRC
 
 Add a nice helper to sudo-edit a file
@@ -163,7 +167,7 @@ completion, prompt and term settings:
     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
                                    "ncftp" "pine" "tin" "trn" "elm" "vim"
                                    "nmtui" "alsamixer" "htop" "el" "elinks"
-                                   ))
+                                   "ssh"))
     (setq eshell-visual-subcommands '(("git" "log" "diff" "show")))
 
     (defun eos/truncate-eshell-buffers ()
@@ -201,6 +205,11 @@ completion, prompt and term settings:
       (if (stringp pattern)
           (find-file pattern)
         (mapc #'find-file (mapcar #'expand-file-name pattern))))
+    (defalias 'e 'eshell/ec)
+    (defalias 'ee 'find-file-other-window)
+
+    (defun eshell/d (&rest args)
+      (dired (pop args) "."))
 
     (defun eshell/clear ()
       "Clear the eshell buffer"
@@ -296,6 +305,17 @@ d=, if the buffer doesn't exist it is created.
 (global-set-key (kbd "M-4") 'eos/create-or-switch-to-eshell-4)
 #+END_SRC
 
+Also, add the buffer stack option to eshell
+
+#+BEGIN_SRC emacs-lisp
+(use-package esh-buf-stack
+  :ensure t
+  :commands eshell-push-command
+  :config
+  (setup-eshell-buf-stack)
+  (define-key eshell-mode-map (kbd "M-q") 'eshell-push-command))
+#+END_SRC
+
 ** Fixing newlines in eshell like zsh
 :PROPERTIES:
 :CUSTOM_ID: eshell-newlines
@@ -347,6 +367,50 @@ And we need something to install them
 #+BEGIN_SRC sh :tangle sh/eos-shell.sh
 mkdir -p ~/.emacs.d/eshell
 ln -sfv $PWD/out/eshell-alias ~/.emacs.d/eshell/alias
+#+END_SRC
+
+** Open an eshell window here
+
+#+BEGIN_SRC emacs-lisp
+(defun eshell-here ()
+  "Opens up a new shell in the directory associated with the
+current buffer's file. The eshell is renamed to match that
+directory to make multiple eshell windows easier."
+  (interactive)
+  (let* ((parent (if (buffer-file-name)
+                     (file-name-directory (buffer-file-name))
+                   default-directory))
+         (height (/ (window-total-height) 3))
+         (name   (car (last (split-string parent "/" t)))))
+    (split-window-vertically (- height))
+    (other-window 1)
+    (eshell "new")
+    (rename-buffer (concat "*eshell: " name "*"))
+
+    (insert (concat "ls"))
+    (eshell-send-input)))
+
+(global-set-key (kbd "C-!") #'eshell-here)
+#+END_SRC
+
+And some nice glue for quickly closing eshell windows
+
+#+BEGIN_SRC emacs-lisp
+(defun eshell/x ()
+  "Closes the EShell session and gets rid of the EShell window."
+  (kill-buffer)
+  (delete-window))
+#+END_SRC
+
+** Open an eshell window there
+
+Like opening one here, but for remote hosts
+
+#+BEGIN_SRC emacs-lisp
+(defun eshell-there (host)
+  (interactive "sHost: ")
+  (let ((default-directory (format "/%s:" host)))
+    (eshell host)))
 #+END_SRC
 
 * Nested Tmux for SSH sessions
