@@ -134,6 +134,8 @@ Uses =M-n= and =M-p= to jump between the same variable in multiple places
   (setq smartscan-symbol-selector "symbol"))
 #+END_SRC
 
+** Additional highlighting
+
 There is also some additional configuration that we may want to enable, let's do
 that with additional highlighting modes.
 
@@ -162,6 +164,15 @@ Also highlight pre-defined symbols in elisp
   :ensure t
   :init
   (add-hook 'emacs-lisp-hook #'highlight-defined-mode))
+#+END_SRC
+
+Highlight operators (like =&= and =;= in C-like modes)
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-operators
+  :ensure t
+  :init
+  (add-hook 'c-mode-common-hook #'highlight-operators-mode))
 #+END_SRC
 
 Finally, let's highlight escape sequences in a better way also
