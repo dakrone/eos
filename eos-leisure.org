@@ -45,8 +45,7 @@ Let's manage the forecast and weather too, will be managed from the main Hydra
   :init
   (when (file-exists-p "~/.openweathermap.el")
     (load-file "~/.openweathermap.el"))
-  (setq sunshine-show-icons t
-        sunshine-location "80202,USA"))
+  (setq sunshine-show-icons t))
 #+END_SRC
 
 * Browsing stack overflow
