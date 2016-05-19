@@ -75,9 +75,8 @@ when using dired.
 (use-package quick-preview
   :ensure t
   :init
-  (progn
-    (global-set-key (kbd "C-c q") 'quick-preview-at-point)
-    (define-key dired-mode-map (kbd "Q") 'quick-preview-at-point)))
+  (global-set-key (kbd "C-c q") 'quick-preview-at-point)
+  (define-key dired-mode-map (kbd "Q") 'quick-preview-at-point))
 #+END_SRC
 
 Let's also use async everything in dired
