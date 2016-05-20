@@ -143,6 +143,7 @@ completion, prompt and term settings:
   :bind ("C-c m" . eshell)
   :config
   (defalias 'emacs 'find-file)
+  (defalias 'hff 'hexl-find-file)
   (defalias 'sec 'sudoec)
   (setenv "PAGER" "cat")
   (use-package esh-opt
