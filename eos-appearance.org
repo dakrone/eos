@@ -381,3 +381,19 @@ Then, you can do something like this:
 #+END_SRC
 
 Great credit for this goes to [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][this blog post.]]
+
+* Rainbow delimiters (but not the way you think)
+This is instead used to highlight unmatching parens and the like, lovingly taken
+from
+http://timothypratley.blogspot.ru/2015/07/seven-specialty-emacs-settings-with-big.html
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+  :config
+  (set-face-attribute 'rainbow-delimiters-unmatched-face nil
+                    :foreground 'unspecified
+                    :inherit 'error))
+#+END_SRC
