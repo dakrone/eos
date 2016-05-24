@@ -87,6 +87,7 @@
           ("http://babylonbee.com/feed/" christianity)
           ("https://chesed297.wordpress.com/feed/" blog christianity)
           ("https://faithandselfdefense.com/feed/" blog christianity)
+          ("http://www.challies.com/feed" blog christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
