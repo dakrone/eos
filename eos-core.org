@@ -928,6 +928,13 @@ Preserve the window location when opening things
 (setq switch-to-buffer-preserve-window-point t)
 #+END_SRC
 
+Use a sane re-builder syntax so I don't have to have crazy escapes, see:
+https://masteringemacs.org/article/re-builder-interactive-regexp-builder
+
+#+BEGIN_SRC emacs-lisp
+(setq reb-re-syntax 'string)
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
 :CUSTOM_ID: gpg-agent
