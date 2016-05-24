@@ -154,8 +154,9 @@ Inconsolata a lot.
     (if (equal (system-name) "ivalice")
         (progn
           ;; Ivalice has a big monitor, the text needs to be bigger
-          (set-face-attribute 'default nil :family "Hack" :height 145)
-          (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 145))
+          (set-face-attribute 'default nil :family "Hack" :height 90)
+          (set-face-attribute 'variable-pitch nil
+                              :family "DejaVu Sans" :height 90))
       (set-face-attribute 'default nil :family "Hack" :height 115)
       (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 115))
     ;; font for all unicode characters
