@@ -56,6 +56,9 @@ export PATH=$PATH:~/.cask/bin
 # Stack/cabal/haskell
 export PATH=$PATH:~/.local/bin:~/.cabal/bin
 
+# Cargo/rustup
+export PATH=$PATH:~/.cargo/bin
+
 # rbenv
 export PATH=~/.rbenv/bin:$PATH
 
