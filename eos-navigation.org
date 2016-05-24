@@ -235,3 +235,84 @@ if appropriate). Append to keysequence."
             (concat key-string-so-far " " next-interpreted-key-string)
           next-interpreted-key-string)))))
 #+END_SRC
+
+* Navigating to recent buffers
+
+This was actually stolen from
+https://www.reddit.com/r/emacs/comments/4kv163/i_wanna_see_your_init_files_share_em/
+and it sounded like a good idea, so I took it :)
+
+#+BEGIN_SRC emacs-lisp
+;; This is home-row for Dvorak - "aoeu htns"
+;; On Qwerty it would be "asdf jkl;"
+(defvar bswitch-map (list 1 "a" 2 "o" 3 "e" 4 "i" 5 "h" 6 "t" 7 "n" 8 "s"))
+
+(setq bswitch-offset 10)
+(setq bswitch-key-buffer-spacing 2)
+
+(defun bswitch-repeat (number &optional str)
+  (if (< number 1)
+      str
+    (bswitch-repeat (1- number) (concat " " str))))
+
+(defun bswitch-get-beginning ()
+  (bswitch-repeat (- (/ (window-body-width) 2) bswitch-offset)))
+
+(defun bswitch-get-end (beg mid)
+  (bswitch-repeat (- (window-body-width)
+                     (+ (length mid)
+                        (length beg)))))
+
+(defun bswitch-get-header-display-line ()
+  (let* ((beg (bswitch-get-beginning))
+         (mid (concat "Key"
+                      (bswitch-repeat
+                       (+ -2 bswitch-key-buffer-spacing))
+                      "Buffer"))
+         (end (bswitch-get-end beg mid)))
+    (concat beg mid end)))
+
+
+(defun bswitch-get-buffer-display-line (index)
+  (let* ((blist (buffer-list)))
+    (if (< index (length blist))
+        (let* ((beg (bswitch-get-beginning))
+               (mid (concat (plist-get bswitch-map index)
+                            (bswitch-repeat bswitch-key-buffer-spacing)
+                            (buffer-name (nth index (buffer-list)))))
+               (end (bswitch-get-end beg mid)))
+
+          (concat beg mid end))
+      (let* ((beg (bswitch-get-beginning))
+             (mid (format "No buffer at index %s yet" index))
+             (end (bswitch-get-end beg mid)))
+        (concat beg mid end)))))
+
+(defun bswitch-switch (index)
+  (if (< index (length (buffer-list)))
+      (switch-to-buffer (nth index (buffer-list)))
+    (message "Cannot switch since there is no buffer at index %s yet" index)))
+
+(defhydra hydra-bswitch (:hint nil :exit t)
+  "
+%(bswitch-get-header-display-line)
+%(bswitch-get-buffer-display-line 1)
+%(bswitch-get-buffer-display-line 2)
+%(bswitch-get-buffer-display-line 3)
+%(bswitch-get-buffer-display-line 4)
+%(bswitch-get-buffer-display-line 5)
+%(bswitch-get-buffer-display-line 6)
+%(bswitch-get-buffer-display-line 7)
+%(bswitch-get-buffer-display-line 8)
+"
+  ("a" (bswitch-switch 1))
+  ("o" (bswitch-switch 2))
+  ("e" (bswitch-switch 3))
+  ("u" (bswitch-switch 4))
+  ("h" (bswitch-switch 5))
+  ("t" (bswitch-switch 6))
+  ("n" (bswitch-switch 7))
+  ("s" (bswitch-switch 8)))
+
+(global-set-key (kbd "M-B") #'hydra-bswitch/body)
+#+END_SRC
