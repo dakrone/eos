@@ -922,6 +922,12 @@ Don't bother saving things to the kill-ring twice, remove duplicates
 (setq kill-do-not-save-duplicates t)
 #+END_SRC
 
+Preserve the window location when opening things
+
+#+BEGIN_SRC emacs-lisp
+(setq switch-to-buffer-preserve-window-point t)
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
 :CUSTOM_ID: gpg-agent
