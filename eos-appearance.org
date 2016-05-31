@@ -183,9 +183,18 @@ Inconsolata a lot.
 :CUSTOM_ID: modeline
 :END:
 
+Hmm... there are two real "useful" additions here, either smart mode line, or
+spaceline
+
+** smart-mode-line
+
+sml is great, but I did some profiling and it was eating a lot of
+responsiveness, so I go back and forth with it.
+
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
+  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
@@ -196,6 +205,27 @@ Inconsolata a lot.
         sml/shorten-modes t)
   (add-to-list 'sml/replacer-regexp-list '("^~/es/x-plugins/" ":X:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch/" ":ES:") t))
+#+END_SRC
+
+** spaceline
+
+This is the modeline built into spacemacs, but a separate package. Worth a try, anyway...
+
+#+BEGIN_SRC emacs-lisp
+(use-package spaceline
+  :ensure t
+  :init
+  (require 'spaceline-config)
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode)
+  (use-package info+
+    :ensure t
+    :init
+    (spaceline-info-mode))
+  (use-package fancy-battery
+    :ensure t
+    :init
+    (add-hook 'after-init-hook #'fancy-battery-mode)))
 #+END_SRC
 
 * Highlighting the current line with hl-line-mode
