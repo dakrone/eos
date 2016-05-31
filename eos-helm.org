@@ -29,8 +29,28 @@ here.
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-flx
- :ensure t
- :init (helm-flx-mode +1))
+  :ensure t
+  :init
+  (helm-flx-mode 1)
+  ;; garbage collection
+  (defun eos/minibuffer-setup-hook ()
+    (setq gc-cons-threshold most-positive-fixnum))
+
+  (defun eos/minibuffer-exit-hook ()
+    ;; 20mb
+    (setq gc-cons-threshold (* 20 1024 1024)))
+
+  (add-hook 'minibuffer-setup-hook #'eos/minibuffer-setup-hook)
+  (add-hook 'minibuffer-exit-hook #'eos/minibuffer-exit-hook))
+#+END_SRC
+
+Also, use helm-fuzzier in addition to helm-flx
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-fuzzier
+  :ensure t
+  :init
+  (helm-fuzzier-mode))
 #+END_SRC
 
 Now we can load the big Helm configuration. Here is a breakdown of the helm
@@ -94,6 +114,8 @@ bindings I use more frequently:
   (use-package helm-imenu)
   (use-package helm-semantic)
   (use-package helm-ring)
+  (use-package smex :ensure t)
+  (use-package helm-smex :ensure t)
   (use-package helm-bookmark
     :bind ("C-x M-b" . helm-bookmarks)
     :init (use-package bookmark+ :ensure t))
