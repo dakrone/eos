@@ -317,6 +317,16 @@ Also, add the buffer stack option to eshell
   (define-key eshell-mode-map (kbd "M-q") 'eshell-push-command))
 #+END_SRC
 
+Indicate the exit status of the previous command using the eshell-fringe-status
+package
+
+#+BEGIN_SRC emacs-lisp
+(use-package eshell-fringe-status
+  :ensure t
+  :init
+  (add-hook 'eshell-mode-hook 'eshell-fringe-status-mode))
+#+END_SRC
+
 ** Fixing newlines in eshell like zsh
 :PROPERTIES:
 :CUSTOM_ID: eshell-newlines
