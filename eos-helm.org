@@ -144,12 +144,9 @@ bindings I use more frequently:
         ;; may be overridden if 'ggrep' is in path (see below)
         helm-grep-default-recurse-command
         "grep -a -d recurse %e -n%cH -e %p %f"
-        ;; do or don't display invisible candidates
-        helm-quick-update nil
         ;; use CURL, not url-retrieve-synchronously
         helm-net-prefer-curl t
         ;; be idle for this many seconds, before updating in delayed sources.
-        helm-idle-delay 0.01
         helm-input-idle-delay 0.01
         ;; wider buffer name in helm-buffers-list
         helm-buffer-max-length 28 ;; default is 20
