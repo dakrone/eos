@@ -139,6 +139,14 @@ work with the ES codebase.
              '("^:[^/.\n]+\\(/.+\\):\\([[:digit:]]+\\):" 1 2))
 #+END_SRC
 
+I also like to use color-identifiers-mode for java, it's pretty nice
+
+#+BEGIN_SRC emacs-lisp
+(use-package color-identifiers-mode
+  :ensure t
+  :init (add-hook 'java-mode-hook #'color-identifiers-mode))
+#+END_SRC
+
 * Managing Java Imports with the =java-imports= Package
 :PROPERTIES:
 :CUSTOM_ID: java-imports
