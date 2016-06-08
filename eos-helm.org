@@ -126,7 +126,9 @@ bindings I use more frequently:
                 ("f" . helm-projectile-find-file)
                 ("p" . helm-projectile-switch-project)
                 ("s s" . helm-projectile-ag))
-    :init (helm-projectile-on))
+    :init
+    (helm-projectile-on)
+    (global-set-key (kbd "C-x f") #'helm-projectile-find-file))
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))

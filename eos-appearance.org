@@ -89,9 +89,11 @@ balanced of color and pleasing to my eyes.
         :disabled t
         :init (load-theme 'sanityinc-tomorrow-night t)))
   (progn
-    ;; (load-theme 'tsdh-light t)
+    (install-pkgs '(tao-theme))
+    (load-theme 'tao-yang t)
     (use-package punpun-theme
       :ensure t
+      :disabled t
       :init (load-theme 'punpun-light t))
     (use-package leuven-theme
       :ensure t
