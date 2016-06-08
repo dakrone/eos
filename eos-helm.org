@@ -120,10 +120,13 @@ bindings I use more frequently:
     :bind ("C-x M-b" . helm-bookmarks)
     :init (use-package bookmark+ :ensure t))
   (use-package helm-projectile
-    :ensure t
-    :bind (("C-x f" . helm-projectile)
-           ("C-c p f" . helm-projectile-find-file)
-           ("C-c p s" . helm-projectile-switch-project)))
+    :bind (:map projectile-command-map
+                ("b" . helm-projectile-switch-to-buffer)
+                ("d" . helm-projectile-find-dir)
+                ("f" . helm-projectile-find-file)
+                ("p" . helm-projectile-switch-project)
+                ("s s" . helm-projectile-ag))
+    :init (helm-projectile-on))
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))
