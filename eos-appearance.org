@@ -82,8 +82,11 @@ balanced of color and pleasing to my eyes.
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
     (progn
+      (install-pkgs '(tao-theme))
+      (load-theme 'tao-yin t)
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
+        :disabled t
         :init (load-theme 'sanityinc-tomorrow-night t)))
   (progn
     ;; (load-theme 'tsdh-light t)
@@ -192,6 +195,7 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 #+BEGIN_SRC emacs-lisp
 (use-package spaceline
   :ensure t
+  :disabled t
   :init
   (require 'spaceline-config)
   (spaceline-spacemacs-theme)
