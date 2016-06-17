@@ -25,6 +25,7 @@
   :bind ("C-x w" . elfeed)
   :init
   ;; URLs in no particular order
+  (setq elfeed-use-curl t)
   (setq elfeed-feeds
         '(;; Blogs
           ("http://harryrschwartz.com/atom.xml" blog)
