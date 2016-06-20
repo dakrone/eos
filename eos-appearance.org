@@ -82,11 +82,10 @@ balanced of color and pleasing to my eyes.
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
     (progn
-      (install-pkgs '(tao-theme))
-      (load-theme 'tao-yin t)
+      ;; (install-pkgs '(tao-theme))
+      ;; (load-theme 'tao-yin t)
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
-        :disabled t
         :init (load-theme 'sanityinc-tomorrow-night t)))
   (progn
     (install-pkgs '(tao-theme))
@@ -408,6 +407,58 @@ http://timothypratley.blogspot.ru/2015/07/seven-specialty-emacs-settings-with-bi
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   :config
   (set-face-attribute 'rainbow-delimiters-unmatched-face nil
-                    :foreground 'unspecified
-                    :inherit 'error))
+                      :foreground 'unspecified
+                      :inherit 'error))
+#+END_SRC
+
+* Custom colors in buffer-local faces
+
+So, I really like using a theme that uses something like [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers-mode]],
+but it's just too many colors when using a regular theme (which is why I was
+originally using tao-theme for it since it's monochromatic).
+
+The thing is, I'd like to have things monochrome where color-identifiers works
+and have regular highlighting on modes where it doesn't. This unfortunately
+requires that the face be buffer-local, so I need a tool to do that.
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/make-local-face (face-name &rest args)
+  "Make a buffer face local"
+  (interactive)
+  (let ((local-face (intern (concat (symbol-name face-name) "-local"))))
+    ;; First create new face which is a copy of the old face
+    (copy-face face-name local-face)
+    (apply 'set-face-attribute local-face nil args)
+    (set (make-local-variable face-name) local-face)))
+#+END_SRC
+
+Now, we can use that setting to modify a bunch of things before
+color-identifiers-mode is activated. In this case, however, only before
+java-mode applies the color-identifiers configuration.
+
+#+BEGIN_SRC emacs-lisp
+(use-package color-identifiers-mode
+  :ensure t
+  :init
+  (defun eos/turn-on-color-identifiers ()
+    (interactive)
+    (let ((faces '(;; font-lock-comment-face
+                   ;; font-lock-comment-delimiter-face
+                   font-lock-constant-face
+                   font-lock-type-face
+                   font-lock-function-name-face
+                   font-lock-variable-name-face
+                   ;; font-lock-keyword-face
+                   ;; font-lock-string-face
+                   ;; font-lock-builtin-face
+                   font-lock-preprocessor-face
+                   font-lock-warning-face
+                   font-lock-doc-face)))
+      (dolist (face faces)
+        (eos/make-local-face face :foreground nil))
+      (eos/make-local-face 'font-lock-keyword-face :foreground nil :weight 'bold)
+      (eos/make-local-face 'font-lock-builtin-face :foreground nil :weight 'bold)
+      (color-identifiers-mode 1)))
+  (add-hook 'java-mode-hook #'eos/turn-on-color-identifiers)
+  (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode))
 #+END_SRC

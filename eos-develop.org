@@ -621,14 +621,6 @@ Borrowed from Steve Purcell's config. This pretty-prints the results.
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 #+end_src
 
-When using punpun theme, let's try out [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers-mode]]
-
-#+BEGIN_SRC emacs-lisp
-(use-package color-identifiers-mode
-  :ensure t
-  :init (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode))
-#+END_SRC
-
 * Python
 :PROPERTIES:
 :CUSTOM_ID: python
