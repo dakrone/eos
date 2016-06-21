@@ -400,9 +400,13 @@ This is instead used to highlight unmatching parens and the like, lovingly taken
 from
 http://timothypratley.blogspot.ru/2015/07/seven-specialty-emacs-settings-with-big.html
 
+This is currently disabled because rainbow-delimiters is too much fruit salad
+with the tomorrow-night theme.
+
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
   :ensure t
+  :disabled t
   :init
   (add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
   :config
