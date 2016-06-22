@@ -31,7 +31,7 @@ well as the general theme for look-and-feel things.
 ;; On thulcandra (my laptop), I need a light background for being outside and in
 ;; very bright locations while having a lower brightness setting
 (when (equal (system-name) "thulcandra")
-  (setq eos/background 'light))
+  (setq eos/background 'dark))
 #+END_SRC
 
 * Emacs Appearance
