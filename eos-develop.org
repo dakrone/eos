@@ -773,5 +773,7 @@ And support for flycheck and rust
 
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck-rust
-  :ensure t)
+  :ensure t
+  :init
+  (add-hook 'rust-mode-hook #'flycheck-rust-setup))
 #+END_SRC
