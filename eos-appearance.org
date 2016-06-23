@@ -176,7 +176,6 @@ responsiveness, so I go back and forth with it.
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
-  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
@@ -185,6 +184,7 @@ responsiveness, so I go back and forth with it.
   :config
   (setq sml/shorten-directory t
         sml/shorten-modes t)
+  (add-to-list 'sml/replacer-regexp-list '("^~/Dropbox/org/" ":org:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/es/x-plugins/" ":X:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch/" ":ES:") t))
 #+END_SRC
