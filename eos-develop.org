@@ -766,7 +766,9 @@ And racer, for rust completion
     :init
     (push 'company-racer company-backends))
   (add-hook 'rust-mode-hook #'racer-mode)
-  (add-hook 'rust-mode-hook #'eldoc-mode))
+  (add-hook 'rust-mode-hook #'eldoc-mode)
+  :config
+  (setq racer-cmd (executable-find "racer")))
 #+END_SRC
 
 And support for flycheck and rust
