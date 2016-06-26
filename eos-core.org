@@ -1343,3 +1343,21 @@ Eyebrowse is a great package for workspaces in Emacs.
     (global-set-key (kbd "C-'") 'eyebrowse-next-window-config)
     (add-hook 'after-init-hook #'eos/create-eyebrowse-setup)))
 #+END_SRC
+
+* Automatically saving files
+
+I've experimented a bit with the different auto-save features that Emacs has,
+=super-save=, =auto-save-mode=, and =auto-save-mode-enhanced=. They can be nice,
+but they also have a bit of downsides...
+
+#+BEGIN_SRC emacs-lisp
+(use-package auto-save-buffers-enhanced
+  :ensure t
+  :init (auto-save-buffers-enhanced t)
+  :config
+  (setq auto-save-buffers-enhanced-interval 3.0
+        ;; Don't auto-save org source popups
+        auto-save-buffers-enhanced-exclude-regexps '("Org Src")
+        ;; Save things quietly
+        auto-save-buffers-enhanced-quiet-save-p t))
+#+END_SRC
