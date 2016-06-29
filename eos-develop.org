@@ -621,6 +621,13 @@ Borrowed from Steve Purcell's config. This pretty-prints the results.
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 #+end_src
 
+Finally, a couple of helpers for the minibuffer:
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
+(add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
+#+END_SRC
+
 * Python
 :PROPERTIES:
 :CUSTOM_ID: python
