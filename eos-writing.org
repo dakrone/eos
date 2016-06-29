@@ -68,7 +68,7 @@ all over the place and take forever to load ಠ_ಠ
   "#+EMAIL: " user-mail-address \n
   "#+LANGUAGE: en
 ,#+PROPERTY: header-args :results code replace :exports both :noweb yes :tangle no
-,#+HTML_HEAD: <link rel=\"stylesheet\" href=\"http://dakrone.github.io/org2.css\" type=\"text/css\" />
+,#+HTML_HEAD: <link rel=\"stylesheet\" href=\"https://dakrone.github.io/org2.css\" type=\"text/css\" />
 ,#+EXPORT_EXCLUDE_TAGS: noexport
 ,#+OPTIONS: H:4 num:nil toc:t \\n:nil @:t ::t |:t ^:{} -:t f:t *:t
 ,#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
