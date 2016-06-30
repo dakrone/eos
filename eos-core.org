@@ -935,6 +935,14 @@ https://masteringemacs.org/article/re-builder-interactive-regexp-builder
 (setq reb-re-syntax 'string)
 #+END_SRC
 
+Set up the =site-lisp= directory so that things can be loaded from there if
+applicable
+
+#+BEGIN_SRC emacs-lisp
+(when (file-exists-p "~/.emacs.d/site-lisp")
+  (add-to-list 'load-path "~/.emacs.d/site-lisp"))
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
 :CUSTOM_ID: gpg-agent
@@ -1360,4 +1368,24 @@ but they also have a bit of downsides...
         auto-save-buffers-enhanced-exclude-regexps '("Org Src")
         ;; Save things quietly
         auto-save-buffers-enhanced-quiet-save-p t))
+#+END_SRC
+
+* Handling excessively long lines
+
+#+BEGIN_SRC emacs-lisp
+(when (require 'so-long nil :noerror)
+  ;; 750 columns means it's too long! (default is 250)
+  (setq so-long-threshold 750)
+  (add-to-list 'so-long-minor-modes 'rainbow-delimiters-mode)
+  (add-to-list 'so-long-minor-modes 'paren-face-mode)
+  (add-to-list 'so-long-minor-modes 'electric-indent-mode)
+  (add-to-list 'so-long-minor-modes 'electric-pair-mode)
+  (add-to-list 'so-long-minor-modes 'idle-highlight-mode)
+  (add-to-list 'so-long-minor-modes 'show-paren-mode)
+  (add-to-list 'so-long-minor-modes 'git-gutter-mode)
+  (so-long-enable)
+
+  (defun eos/so-long-hook () "Used in `so-long-hook'.")
+
+  (add-hook 'so-long-hook #'eos/so-long-hook))
 #+END_SRC

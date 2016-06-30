@@ -93,6 +93,7 @@ that actually links up the appropriate parts. It ends up in =install.sh=
 #+BEGIN_SRC sh :tangle install.sh :eval no
 ln -sfv $PWD/eos.el ~/.emacs.d/init.el
 ln -sfv $PWD ~/.emacs.d/eos
+ln -sfv $PWD/site-lisp ~/.emacs.d/site-lisp
 cp -vf bin/* ~/bin
 #+END_SRC
 
