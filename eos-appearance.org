@@ -31,7 +31,7 @@ well as the general theme for look-and-feel things.
 ;; On thulcandra (my laptop), I need a light background for being outside and in
 ;; very bright locations while having a lower brightness setting
 (when (equal (system-name) "thulcandra")
-  (setq eos/background 'dark))
+  (setq eos/background 'light))
 #+END_SRC
 
 * Emacs Appearance
@@ -82,18 +82,11 @@ balanced of color and pleasing to my eyes.
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
     (progn
-      ;; (install-pkgs '(tao-theme))
-      ;; (load-theme 'tao-yin t)
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
         :init (load-theme 'sanityinc-tomorrow-night t)))
   (progn
-    (install-pkgs '(tao-theme))
-    (load-theme 'tao-yang t)
-    (use-package punpun-theme
-      :ensure t
-      :disabled t
-      :init (load-theme 'punpun-light t))
+    (load-theme 'tsdh-light t)
     (use-package leuven-theme
       :ensure t
       :disabled t
