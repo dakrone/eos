@@ -170,6 +170,7 @@ instead suffering from "Emacs-thumb".
 #+BEGIN_SRC emacs-lisp
 (use-package god-mode
   :ensure t
+  :disabled t
   :bind ("<escape>" . god-mode-all)
   :config
   (global-set-key (kbd "<escape>") 'god-mode-all)
@@ -315,4 +316,68 @@ and it sounded like a good idea, so I took it :)
   ("s" (bswitch-switch 8)))
 
 (global-set-key (kbd "M-B") #'hydra-bswitch/body)
+#+END_SRC
+* Evil?
+
+#+BEGIN_SRC emacs-lisp
+(use-package evil
+  :ensure t
+  :disabled t
+  :demand
+  :init (evil-mode t)
+  :config
+  (setq evil-find-skip-newlines t)
+  ;; I stole this from Mike
+  ;; Redefine evil bindings to make more sense on Dvorak. I want to define my
+  ;; own, as evil-dvorak didn't use the same keys I wanted to setup.
+  ;; (define-key evil-normal-state-map "d" 'evil-backward-char) ;
+  ;; (define-key evil-normal-state-map "h" 'evil-next-line)
+  ;; (define-key evil-normal-state-map "t" 'evil-previous-line)
+  ;; (define-key evil-visual-state-map "n" 'evil-forward-char)
+  ;; (define-key evil-visual-state-map "d" 'evil-backward-char)
+  ;; (define-key evil-visual-state-map "h" 'evil-next-line)
+  ;; (define-key evil-visual-state-map "t" 'evil-previous-line)
+  ;; (define-key evil-normal-state-map "n" 'evil-forward-char)
+  ;; (define-key evil-normal-state-map "k" 'evil-delete)
+  ;; (define-key evil-visual-state-map "k" 'evil-delete)
+  ;; (define-key evil-normal-state-map "K" 'evil-delete-line)
+  ;; (define-key evil-normal-state-map "j" 'evil-find-char-to)
+  ;; (define-key evil-normal-state-map "J" 'evil-find-char-to-backward)
+  ;; (define-key evil-motion-state-map "l" 'evil-search-next)
+  ;; (define-key evil-motion-state-map "L" 'evil-search-previous)
+  ;; (define-key evil-normal-state-map "gj" 'evil-join)
+  (use-package evil-leader
+    :ensure t
+    :init (global-evil-leader-mode)
+    :config
+    (evil-leader/set-leader ",")
+    (evil-leader/set-key
+      ;; NOTE evil-leader/set-key-for-mode only works for major modes
+      ;; Flycheck
+      "e"  'flycheck-next-error
+      "E"  'flycheck-previous-error
+      ;; Org, while a major mode, I want these available all the time
+      "oa" 'org-agenda
+      "oc" 'org-capture
+      ;; Dired
+      "d"  'dired-jump
+      ;; Commenting
+      "ci" 'evilnc-comment-or-uncomment-lines
+      "cp" 'evilnc-comment-or-uncomment-paragraphs
+      "cr" 'comment-or-uncomment-region
+      "cl" 'comment-indent
+      ;; Helm
+      "a"  'helm-apropos
+      "k"  'helm-descbinds
+      "m"  'helm-man-woman
+      "x"  'helm-M-x
+      "f"  'helm-find-files
+      "y"  'helm-show-kill-ring
+      "b"  'helm-buffers-list)
+    ;; org-mode specific keybindings
+    (evil-leader/set-key-for-mode 'org-mode
+      "cp" 'org-set-property)
+    ;; dired-mode specific keybindings
+    (evil-leader/set-key-for-mode 'dired-mode
+      "ch"  'wdired-change-to-wdired-mode)))
 #+END_SRC
