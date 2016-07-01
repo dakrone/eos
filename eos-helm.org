@@ -30,6 +30,7 @@ here.
 #+BEGIN_SRC emacs-lisp
 (use-package helm-flx
   :ensure t
+  :disabled t
   :init
   (helm-flx-mode 1)
   ;; garbage collection
@@ -49,6 +50,7 @@ Also, use helm-fuzzier in addition to helm-flx
 #+BEGIN_SRC emacs-lisp
 (use-package helm-fuzzier
   :ensure t
+  :disabled t
   :init
   (helm-fuzzier-mode))
 #+END_SRC
