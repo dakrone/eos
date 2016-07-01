@@ -86,10 +86,9 @@ balanced of color and pleasing to my eyes.
         :ensure t
         :init (load-theme 'sanityinc-tomorrow-night t)))
   (progn
-    (load-theme 'tsdh-light t)
+    ;; (load-theme 'tsdh-light t)
     (use-package leuven-theme
       :ensure t
-      :disabled t
       :init (load-theme 'leuven t))))
 #+END_SRC
 
