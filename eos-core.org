@@ -1361,6 +1361,7 @@ but they also have a bit of downsides...
 #+BEGIN_SRC emacs-lisp
 (use-package auto-save-buffers-enhanced
   :ensure t
+  :disabled t
   :init (auto-save-buffers-enhanced t)
   :config
   (setq auto-save-buffers-enhanced-interval 3.0
