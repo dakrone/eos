@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+set -eou pipefail
+
+URL=$1
+
+if [[ $URL == *"gametrailers.com"* ]]; then
+    echo "Downloading from Gametrailers..."
+    youtube-dl "$1" -o "gt_$2_%(title)s-%(id)s.%(ext)s" --restrict-filenames
+else
+    echo "Downloading generic..."
+    youtube-dl "$1" --restrict-filenames
+fi

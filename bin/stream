@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Stream a video to VLC
+
+set -eou pipefail
+
+echo "Streaming..."
+youtube-dl "$1" -o - | vlc -
