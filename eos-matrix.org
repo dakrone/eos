@@ -1,0 +1,48 @@
+#+TITLE: EOS: Matrix Module
+#+AUTHOR: Lee Hinman
+#+EMAIL: lee@writequit.org
+#+LANGUAGE: en
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+#+HTML_HEAD: <link rel="stylesheet" href="https://dakrone.github.io/org2.css" type="text/css" />
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
+#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
+#+STARTUP: fold nodlcheck lognotestate content
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-matrix)
+#+END_SRC
+
+* EOS Matrix communication and synchronization module
+
+[[http://matrix.org][Matrix]] is a decentralized way to "join" different communication platforms. Kind
+of like XMPP, but sane.
+
+I recently set up a [[https://github.com/matrix-org/synapse][Synapse]] (Matrix's homeserver) server on writequit so that I
+could join my own things. Thankfully, [[https://twitter.com/rrrrrrrix][@real_rrix]] wrote an elisp client for
+matrix, so I can join from my Emacs instance.
+
+#+BEGIN_SRC emacs-lisp
+(use-package matrix-client
+  :ensure t
+  :init
+  (setq matrix-homeserver-base-url "https://writequit.org")
+  (setq matrix-client-render-html t)
+  (defun eos/matrix-jack-in ()
+    (interactive)
+    (matrix-client "dakrone")))
+#+END_SRC
+
+Add Matrix sauron support (for notifications)
+
+#+BEGIN_SRC emacs-lisp
+(use-package matrix-client
+  :ensure t
+  :config
+  (require 'matrix-sauron)
+  (add-to-list 'sauron-modules 'matrix-sauron)
+  (when (and sr-running-p (and (boundp 'sauron-matrix-running)
+                               (not sauron-matrix-running)))
+    (matrix-sauron-start)))
+#+END_SRC
