@@ -40,12 +40,10 @@
 Let's manage the forecast and weather too, will be managed from the main Hydra
 
 #+BEGIN_SRC emacs-lisp
-(use-package sunshine
+(use-package wttrin
   :ensure t
   :init
-  (when (file-exists-p "~/.openweathermap.el")
-    (load-file "~/.openweathermap.el"))
-  (setq sunshine-show-icons t))
+  (setq wttrin-default-cities '("Denver")))
 #+END_SRC
 
 * Browsing stack overflow
