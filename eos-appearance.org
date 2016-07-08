@@ -176,7 +176,7 @@ responsiveness, so I go back and forth with it.
   :config
   (setq sml/shorten-directory t
         sml/shorten-modes t)
-  (add-to-list 'sml/replacer-regexp-list '("^~/Dropbox/org/" ":org:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/Sync/org/" ":org:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/es/x-plugins/" ":X:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch/" ":ES:") t))
 #+END_SRC
