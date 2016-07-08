@@ -96,25 +96,9 @@ balanced of color and pleasing to my eyes.
 :PROPERTIES:
 :CUSTOM_ID: fonts
 :END:
-I've been using [[https://github.com/belluzj/fantasque-sans][Fantasque Sans Mono]] lately, it looks pretty nice to me. On Linux
-I've been using Bitstream Vera Sans Mono. I also use [[http://www.marksimonson.com/fonts/view/anonymous-pro][Anonymous Pro]] and
-Inconsolata a lot.
-
-** Config for OSX:
-:PROPERTIES:
-:CUSTOM_ID: osx
-:END:
-
-#+BEGIN_SRC emacs-lisp
-(defun eos/setup-osx-fonts ()
-  (when (eq system-type 'darwin)
-    (set-default-font "Bitstream Vera Sans Mono")
-    (set-face-attribute 'default nil :height 120)
-    (set-face-attribute 'fixed-pitch nil :height 120)))
-
-(when (eq system-type 'darwin)
-  (add-hook 'after-init-hook #'eos/setup-osx-fonts))
-#+END_SRC
+I've been using [[http://sourcefoundry.org/hack/][Hack]] or DejaVu Sans almost exclusively lately, it looks pretty
+nice to me on both Linux and any other computer. Even though it's called
+"Bitstream Vera Sans Mono" on OSX, it's really the same.
 
 ** Config for Linux/X11 systems:
 :PROPERTIES:
@@ -140,7 +124,27 @@ Inconsolata a lot.
   (add-hook 'after-init-hook #'eos/setup-x11-fonts))
 #+END_SRC
 
+
+** Config for OSX:
+:PROPERTIES:
+:CUSTOM_ID: osx
+:END:
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/setup-osx-fonts ()
+  (when (eq system-type 'darwin)
+    (set-default-font "Bitstream Vera Sans Mono")
+    (set-face-attribute 'default nil :height 120)
+    (set-face-attribute 'fixed-pitch nil :height 120)))
+
+(when (eq system-type 'darwin)
+  (add-hook 'after-init-hook #'eos/setup-osx-fonts))
+#+END_SRC
+
 ** Configuration for Emoji
+:PROPERTIES:
+:CUSTOM_ID: h:c5e5640d-376b-469a-ac67-5e7c5e1a2686
+:END:
 Since I'm using Emacs for email, IRC, matrix, twitter, etc, it should definitely
 support Emoji
 
@@ -159,6 +163,9 @@ Hmm... there are two real "useful" additions here, either smart mode line, or
 spaceline
 
 ** smart-mode-line
+:PROPERTIES:
+:CUSTOM_ID: h:ea243083-222e-4bd5-9f07-e477ae1f7233
+:END:
 
 sml is great, but I did some profiling and it was eating a lot of
 responsiveness, so I go back and forth with it.
@@ -180,6 +187,9 @@ responsiveness, so I go back and forth with it.
 #+END_SRC
 
 ** spaceline
+:PROPERTIES:
+:CUSTOM_ID: h:ce37df26-84aa-4dd4-8c1e-c380a05f89c2
+:END:
 
 This is the modeline built into spacemacs, but a separate package. Worth a try, anyway...
 
@@ -202,6 +212,9 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 #+END_SRC
 
 * Highlighting the current line with hl-line-mode
+:PROPERTIES:
+:CUSTOM_ID: h:effd858a-d5e9-4afc-9e36-3488f7c75189
+:END:
 
 I turn this on and off all over the place, so it's nice to have a global place
 where I can have it defined/handled.
@@ -386,6 +399,9 @@ Then, you can do something like this:
 Great credit for this goes to [[https://yoo2080.wordpress.com/2013/05/30/monospace-font-in-tables-and-source-code-blocks-in-org-mode-proportional-font-in-other-parts/][this blog post.]]
 
 * Rainbow delimiters (but not the way you think)
+:PROPERTIES:
+:CUSTOM_ID: h:30cd960c-61cd-4851-8484-355f813bcc01
+:END:
 This is instead used to highlight unmatching parens and the like, lovingly taken
 from
 http://timothypratley.blogspot.ru/2015/07/seven-specialty-emacs-settings-with-big.html
@@ -406,6 +422,9 @@ with the tomorrow-night theme.
 #+END_SRC
 
 * Custom colors in buffer-local faces
+:PROPERTIES:
+:CUSTOM_ID: h:54fba870-b04f-4870-94f3-458de748e67f
+:END:
 
 So, I really like using a theme that uses something like [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers-mode]],
 but it's just too many colors when using a regular theme (which is why I was

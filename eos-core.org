@@ -1353,6 +1353,9 @@ Eyebrowse is a great package for workspaces in Emacs.
 #+END_SRC
 
 * Automatically saving files
+:PROPERTIES:
+:CUSTOM_ID: h:1feb51db-6ea9-49bb-86b3-295f03c0d3fe
+:END:
 
 I've experimented a bit with the different auto-save features that Emacs has,
 =super-save=, =auto-save-mode=, and =auto-save-mode-enhanced=. They can be nice,
@@ -1372,6 +1375,9 @@ but they also have a bit of downsides...
 #+END_SRC
 
 * Handling excessively long lines
+:PROPERTIES:
+:CUSTOM_ID: h:d610191c-44ba-40b4-9d07-9e26d1c50395
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (when (require 'so-long nil :noerror)
