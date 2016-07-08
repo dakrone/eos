@@ -140,16 +140,14 @@ Inconsolata a lot.
   (add-hook 'after-init-hook #'eos/setup-x11-fonts))
 #+END_SRC
 
-** Experimental test of Greg's extended-faces package
-:PROPERTIES:
-:CUSTOM_ID: h:4ec2fb0e-19b0-4751-9422-3df7da548a62
-:END:
+** Configuration for Emoji
+Since I'm using Emacs for email, IRC, matrix, twitter, etc, it should definitely
+support Emoji
 
 #+BEGIN_SRC emacs-lisp
-;; (when (file-exists-p "~/src/elisp/emacs-extended-faces/")
-;;   (add-to-list 'load-path "~/src/elisp/emacs-extended-faces/")
-;;   (require 'extended-faces)
-;;   (diminish 'buffer-face-mode))
+(use-package emoji-fontset
+  :ensure t
+  :init (emoji-fontset-enable "Symbola"))
 #+END_SRC
 
 * Emacs' Mode-line
