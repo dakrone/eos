@@ -58,7 +58,7 @@ And now the huge org-mode configuration
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-;;  :ensure org-plus-contrib
+  ;;  :ensure org-plus-contrib
   :bind (("C-c l" . org-store-link)
          ("C-c a" . org-agenda)
          ("C-c b" . org-iswitchb)
@@ -366,7 +366,7 @@ And now the huge org-mode configuration
 
     (use-package org-id
       :init
-     (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+      (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
       (defun eos/org-custom-id-get (&optional pom create prefix)
         "Get the CUSTOM_ID property of the entry at point-or-marker POM.
@@ -395,7 +395,16 @@ And now the huge org-mode configuration
 
       ;; automatically add ids to captured headlines
       (add-hook 'org-capture-prepare-finalize-hook
-                (lambda () (eos/org-custom-id-get (point) 'create))))))
+                (lambda () (eos/org-custom-id-get (point) 'create)))
+
+      ;; automatically add ids to saved org-mode headlines
+      (add-hook 'org-mode-hook
+                (lambda ()
+                  (add-hook 'before-save-hook
+                            (lambda ()
+                              (when (and (eq major-mode 'org-mode)
+                                         (eq buffer-read-only nil))
+                                (eos/org-add-ids-to-headlines-in-file)))))))))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -701,6 +710,9 @@ a year, so I load it from a custom path
 #+END_SRC
 
 * Presentations with =org-reveal=
+:PROPERTIES:
+:CUSTOM_ID: h:3c34dc2c-3334-4f44-8cce-facef8541c5a
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (if (file-exists-p "~/src/elisp/org-reveal/")
