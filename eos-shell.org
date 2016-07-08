@@ -621,7 +621,7 @@ bind-key '"' choose-window
 set -s escape-time 0
 
 # UTF-8 everywhere
-set-option -g status-utf8 on
+# set-option -g status-utf8 on
 
 # monitor activity
 setw -g monitor-activity on
