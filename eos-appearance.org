@@ -276,7 +276,9 @@ Show where the buffer ends on the right-hand fringe
 :CUSTOM_ID: redshift
 :END:
 
-Redshift is like Flux, but nicer.
+Redshift is like Flux, but nicer. It changes the color balance of the screen as
+the sun sets to make it a bit easier on your eyes. I manually change the max so
+it's not insane, otherwise it ends up so red you can't see anything.
 
 #+BEGIN_SRC conf :tangle out/redshift.service
 [Unit]
