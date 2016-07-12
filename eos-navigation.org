@@ -238,6 +238,9 @@ if appropriate). Append to keysequence."
 #+END_SRC
 
 * Navigating to recent buffers
+:PROPERTIES:
+:CUSTOM_ID: h:ae6960f6-7e48-49e1-ab6f-3bc0515c1cc7
+:END:
 
 This was actually stolen from
 https://www.reddit.com/r/emacs/comments/4kv163/i_wanna_see_your_init_files_share_em/
@@ -318,6 +321,11 @@ and it sounded like a good idea, so I took it :)
 (global-set-key (kbd "M-B") #'hydra-bswitch/body)
 #+END_SRC
 * Evil?
+:PROPERTIES:
+:CUSTOM_ID: h:1b908c93-31ea-4e8f-83c1-d6547557b214
+:END:
+I'm mostly just trying this out, I haven't had a lot of luck with it though,
+which is why it's currently disabled
 
 #+BEGIN_SRC emacs-lisp
 (use-package evil
@@ -380,4 +388,17 @@ and it sounded like a good idea, so I took it :)
     ;; dired-mode specific keybindings
     (evil-leader/set-key-for-mode 'dired-mode
       "ch"  'wdired-change-to-wdired-mode)))
+#+END_SRC
+* Dumb-jump
+:PROPERTIES:
+:CUSTOM_ID: h:45e9b2dd-2e84-4acd-b27e-6e31e9ee628f
+:END:
+
+Jumping to things, in a dumb way, with ag. It's usually bound to =C-M-g= (for
+"goto" I guess), =C-M-p= to jump back, and =C-M-q= to "show" things.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+  :ensure t
+  :init (dumb-jump-mode))
 #+END_SRC

@@ -792,9 +792,6 @@ rpm-install mupdf
 #+BEGIN_SRC emacs-lisp
 (use-package view
   :defer 15
-  :bind
-  (("C-M-n" . View-scroll-half-page-forward)
-   ("C-M-p" . View-scroll-half-page-backward))
   :config
   (progn
     (defun View-goto-line-last (&optional line)
