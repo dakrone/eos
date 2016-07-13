@@ -122,6 +122,7 @@ bindings I use more frequently:
     :bind ("C-x M-b" . helm-bookmarks)
     :init (use-package bookmark+ :ensure t))
   (use-package helm-projectile
+    :ensure t
     :bind (:map projectile-command-map
                 ("b" . helm-projectile-switch-to-buffer)
                 ("d" . helm-projectile-find-dir)
