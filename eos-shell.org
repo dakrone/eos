@@ -121,6 +121,8 @@ First, a function to be called when eshell-mode is entered
   ;; turn off hl-line-mode
   (when (fboundp 'eos/turn-off-hl-line)
     (eos/turn-off-hl-line))
+  ;; Disable undo in eshell buffers, it slows them down tremendously
+  (buffer-disable-undo)
   (local-set-key (kbd "M-P") 'eshell-previous-prompt)
   (local-set-key (kbd "M-N") 'eshell-next-prompt)
   (local-set-key (kbd "M-R") 'eshell-list-history)
@@ -382,6 +384,9 @@ ln -sfv $PWD/out/eshell-alias ~/.emacs.d/eshell/alias
 #+END_SRC
 
 ** Open an eshell window here
+:PROPERTIES:
+:CUSTOM_ID: h:27886c4c-b283-496d-ac41-1fe2bdcaf977
+:END:
 
 #+BEGIN_SRC emacs-lisp
 (defun eshell-here ()
@@ -415,6 +420,9 @@ And some nice glue for quickly closing eshell windows
 #+END_SRC
 
 ** Open an eshell window there
+:PROPERTIES:
+:CUSTOM_ID: h:321c7f37-a36f-4482-9727-88b651a452d1
+:END:
 
 Like opening one here, but for remote hosts
 
