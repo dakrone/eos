@@ -15,6 +15,9 @@
 #+END_SRC
 
 * EOS Matrix communication and synchronization module
+:PROPERTIES:
+:CUSTOM_ID: h:52bae8b6-47c4-4a8c-b4c3-7096436dd9fa
+:END:
 
 [[http://matrix.org][Matrix]] is a decentralized way to "join" different communication platforms. Kind
 of like XMPP, but sane.
@@ -27,8 +30,8 @@ matrix, so I can join from my Emacs instance.
 (use-package matrix-client
   :ensure t
   :init
-  (setq matrix-homeserver-base-url "https://writequit.org")
-  (setq matrix-client-render-html t)
+  (setq matrix-homeserver-base-url "https://writequit.org"
+        matrix-client-render-html nil)
   (defun eos/matrix-jack-in ()
     (interactive)
     (matrix-client "dakrone")))
