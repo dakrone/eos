@@ -426,8 +426,8 @@ on Emacs startup.
         (delete-region (point-min) (point-max))
         (insert-file-contents "~/.emacs.d/persistent-scratch"))))
 
-(add-hook 'after-init-hook 'load-persistent-scratch)
-(add-hook 'kill-emacs-hook 'save-persistent-scratch)
+;; (add-hook 'after-init-hook 'load-persistent-scratch)
+;; (add-hook 'kill-emacs-hook 'save-persistent-scratch)
 #+END_SRC
 
 I restart emacs a lot, and it is nice to have the history of things like =M-x=
