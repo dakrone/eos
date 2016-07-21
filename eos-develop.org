@@ -134,7 +134,25 @@ Uses =M-n= and =M-p= to jump between the same variable in multiple places
   (setq smartscan-symbol-selector "symbol"))
 #+END_SRC
 
+** Indentation
+:PROPERTIES:
+:CUSTOM_ID: h:f91026bf-ebbc-4dfb-b8e4-728f87835c6a
+:END:
+
+Everyone has a different indentation they like, so let's use dtrt-indent (dtrt =
+do the right thing) to try and figure out the best indentation.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dtrt-indent
+  :ensure t
+  :diminish t
+  :init (dtrt-indent-mode t))
+#+END_SRC
+
 ** Additional highlighting
+:PROPERTIES:
+:CUSTOM_ID: h:780e139e-4a42-4a93-bb3f-87fae494e4f7
+:END:
 
 There is also some additional configuration that we may want to enable, let's do
 that with additional highlighting modes.
@@ -266,6 +284,9 @@ highlighted so they stand out:
 #+END_SRC
 
 * Paren matching with electric-pair-mode and Smartparens
+:PROPERTIES:
+:CUSTOM_ID: h:3a834588-e39d-467f-bf01-7afad9d09063
+:END:
 So, I vacillate between using =electric-pair-mode= and =smartparens=, ELP
 because it's built-in to Emacs and much faster, and Smartparens because it
 supports a lot of the paredit-like things that I love in lisp, but everywhere.
@@ -353,6 +374,9 @@ Now, the smartparens configuration:
 #+END_SRC
 
 * Paredit everywhere
+:PROPERTIES:
+:CUSTOM_ID: h:3866d5c9-7e88-4f83-89b6-e7292962fb70
+:END:
 Paredit is fantastic for lisp-like languages, and it would be great if it were
 available everywhere (a subset of it, anyway), thankfully there is
 [[https://github.com/purcell/paredit-everywhere][paredit-everywhere]].
@@ -736,6 +760,9 @@ There's =tern= also, but I leave it turned off by default, just installed
 #+END_SRC
 
 * Shell scripting
+:PROPERTIES:
+:CUSTOM_ID: h:5fe30558-190d-476d-9174-cca2e986bb97
+:END:
 Not really much here, other than telling shell-script-mode that =.bats= files
 are shell-scripts
 
@@ -750,6 +777,9 @@ Let's make .zsh also be a shell script
 #+END_SRC
 
 * Rust
+:PROPERTIES:
+:CUSTOM_ID: h:8c865a27-afa4-4e85-a88c-3b798b9ce627
+:END:
 
 I've been following Rust for a while now, and I'd like to contribute to it. So
 need to have all the development bits installed and set up.
