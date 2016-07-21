@@ -48,3 +48,16 @@ and dired tramp buffers are great for file management.
     (add-to-list 'tramp-remote-path "/opt/java/current/bin")
     (add-to-list 'tramp-remote-path "~/bin")))
 #+END_SRC
+
+* Passwords for remote services
+:PROPERTIES:
+:CUSTOM_ID: h:5beffcde-27b8-40c8-89dc-bbf29e0bde88
+:END:
+
+I've been trying out [[https://www.passwordstore.org/][pass]] for passwords lately, which has an Emacs mode, so
+let's install it and get it running
+
+#+BEGIN_SRC emacs-lisp
+(use-package pass
+  :ensure t)
+#+END_SRC
