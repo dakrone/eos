@@ -160,10 +160,7 @@ know Emacs is starting.
 
 #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function (lambda ()))
-(setq inhibit-startup-screen t
-      initial-major-mode 'es-mode
-      initial-scratch-message
-      "// This buffer is for ES notes you don't want to save.\n\n")
+(setq inhibit-startup-screen t)
 #+END_SRC
 
 Why would you not want to know lines/columns in your mode-line?
@@ -385,22 +382,22 @@ I've recently disabled this, because I enjoy starting clean when I restart
 Emacs, so it's nice to have the option if desired..
 
 #+BEGIN_src emacs-lisp
-;;(desktop-save-mode 1)
+(desktop-save-mode 1)
 (setq desktop-restore-eager 10)
 (setq desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\|KILL\\)")
 (setq desktop-restore-frames nil)
 #+END_SRC
 
-Emacs should automatically save my state, and does so every five minutes.
+Emacs should automatically save my state, and does so every two minutes.
 
 #+begin_src emacs-lisp
 (defun eos/desktop-save ()
   "Write the desktop save file to ~/.emacs.d"
   (desktop-save user-emacs-directory))
 
-;; (if (not (boundp 'eos/desktop-save-timer))
-;;     (setq eos/desktop-save-timer
-;;           (run-with-idle-timer 300 t #'eos/desktop-save)))
+(if (not (boundp 'eos/desktop-save-timer))
+    (setq eos/desktop-save-timer
+          (run-with-idle-timer 180 t #'eos/desktop-save)))
 #+end_src
 
 By default, my machine drops me in to a =*scratch*= buffer. Originally designed
@@ -939,6 +936,28 @@ applicable
 (when (file-exists-p "~/.emacs.d/site-lisp")
   (add-to-list 'load-path "~/.emacs.d/site-lisp"))
 #+END_SRC
+
+I'm starting to turn off transient-mark mode[fn:33:
+http://www.gnu.org/software/emacs/manual/html_node/emacs/Disabled-Transient-Mark.html#index-transient_002dmark_002dmode]
+and move towards a model of actually treating the Mark as more than just a selection tool, and
+towards treating it as a navigation tool. In light of that, I'm going to start disabling
+=transient-mark-mode= and only relying on =visible-mark-mode= for showing the mark, which alleviates
+most of the issues you see with disabling =transient-mark-mode=
+
+#+begin_src emacs-lisp :tangle yes
+(use-package visible-mark
+  :ensure t
+  :init
+  (add-hook 'prog-mode-hook #'visible-mark-mode)
+  :config
+  (setq visible-mark-max 1)
+  (setq visible-mark-faces '(visible-mark-active))
+
+  (set-face-attribute 'visible-mark-active nil :background nil)
+  (set-face-attribute 'visible-mark-active nil :foreground nil)
+  (set-face-attribute 'visible-mark-active nil :inherit 'cursor))
+#+end_src
+
 
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
