@@ -1,0 +1,42 @@
+#+TITLE: EOS: IDO Module
+#+AUTHOR: Lee Hinman
+#+EMAIL: lee@writequit.org
+#+LANGUAGE: en
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+#+PROPERTY: header-args:sh :eval no
+#+HTML_HEAD: <link rel="stylesheet" href="https://dakrone.github.io/org2.css" type="text/css" />
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
+#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
+#+STARTUP: fold nodlcheck lognotestate content
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-org)
+#+END_SRC
+
+* IDO-mode configuration
+:PROPERTIES:
+:CUSTOM_ID: h:a6e9ee11-5915-4a6b-b89f-a8ebcfe16040
+:END:
+
+#+BEGIN_SRC emacs-lisp
+(use-package ido
+  :init
+  (ido-mode 1)
+  (use-package ido-ubiquitous
+    :ensure t
+    :init (ido-ubiquitous 1))
+  (use-package ido-vertical-mode
+    :ensure t
+    :init (ido-vertical-mode 1))
+  (use-package flx-ido
+    :ensure t
+    :init (flx-ido-mode 1))
+  (use-package smex
+    :ensure t
+    :init
+    (smex-initialize)
+    (global-set-key (kbd "M-x") 'smex)
+    (global-set-key (kbd "M-X") 'smex-major-mode-commands)
+    (global-set-key (kbd "C-c C-c M-x") 'execute-extended-command)))
+#+END_SRC

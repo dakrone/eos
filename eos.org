@@ -113,7 +113,7 @@ if not desired.
 - [[./eos-appearance.org][Appearance]]
 - [[./eos-navigation.org][Navigation]]
 - [[./eos-notify.org][Notification System]]
-- [[./eos-helm.org][Helm]]
+- [[./eos-helm.org][Helm]] or IDO
 - [[./eos-develop.org][Development (programming) System]]
   - [[./eos-java.org][Java]]
   - [[./eos-clojure.org][Clojure]]
@@ -324,6 +324,7 @@ quite sure how that would work for tangling, so for now it's hard-coded
 ;; The EOS modules
 (try-load 'eos-core)
 (try-load 'eos-helm)
+;;(try-load 'eos-ido)
 (try-load 'eos-appearance)
 (try-load 'eos-navigation)
 (try-load 'eos-notify)
