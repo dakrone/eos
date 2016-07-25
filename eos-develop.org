@@ -146,7 +146,9 @@ do the right thing) to try and figure out the best indentation.
 (use-package dtrt-indent
   :ensure t
   :diminish t
-  :init (dtrt-indent-mode t))
+  :init (dtrt-indent-mode t)
+  :config
+  (setq dtrt-indent-active-mode-line-info ""))
 #+END_SRC
 
 ** Additional highlighting
