@@ -140,13 +140,13 @@ Uses =M-n= and =M-p= to jump between the same variable in multiple places
 :END:
 
 Everyone has a different indentation they like, so let's use dtrt-indent (dtrt =
-do the right thing) to try and figure out the best indentation.
+do the right thing) to try and figure out the best indentation. I don't enable
+it automatically though, I invoke it manually.
 
 #+BEGIN_SRC emacs-lisp
 (use-package dtrt-indent
   :ensure t
   :diminish t
-  :init (dtrt-indent-mode t)
   :config
   (setq dtrt-indent-active-mode-line-info ""))
 #+END_SRC
