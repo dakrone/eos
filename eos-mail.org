@@ -85,8 +85,10 @@ to return the correct path depending on the account the email is from.
           user-full-name "Lee Hinman"
           user-mail-address "leehinman@fastmail.com"
           mail-host-address "fastmail.com"
-          ;; no signature
+          ;; small signature
           mu4e-compose-signature ";; Lee"
+          ;; compose in a new frame by default
+          mu4e-compose-in-new-frame t
           ;; mu4e defaults
           mu4e-maildir       "~/.mail"
           ;; don't use unicode
