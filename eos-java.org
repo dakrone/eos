@@ -129,7 +129,7 @@ work with the ES codebase.
   (setq-local fill-column 140)
   ;; remove the stupid company-eclim backend
   (when (boundp 'company-backends)
-    (delete 'company-eclim company-backends)))
+    (setq company-backends (delete 'company-eclim company-backends))))
 
 (add-hook 'java-mode-hook #'eos/setup-java)
 
@@ -170,6 +170,7 @@ about it, I just need to find the time.
 
 #+BEGIN_SRC emacs-lisp
 (use-package emacs-eclim
+  :disabled t
   :ensure t
   :init
   ;; only show errors
