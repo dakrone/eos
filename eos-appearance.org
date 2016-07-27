@@ -82,9 +82,9 @@ balanced of color and pleasing to my eyes.
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
     (progn
-      (use-package spacemacs-theme
+      (use-package color-theme-sanityinc-tomorrow
         :ensure t
-        :init (load-theme 'spacemacs-dark t)))
+        :init (load-theme 'sanityinc-tomorrow-bright t)))
   (progn
     ;; (load-theme 'tsdh-light t)
     (use-package leuven-theme
