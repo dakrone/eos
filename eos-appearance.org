@@ -23,7 +23,7 @@ well as the general theme for look-and-feel things.
 
 ;; On thulcandra (my laptop), I need a light background for being outside and in
 ;; very bright locations while having a lower brightness setting
-3(when (equal (system-name) "thulcandra")
+(when (equal (system-name) "thulcandra")
   (setq eos/background 'light))
 #+END_SRC
 
@@ -82,8 +82,7 @@ balanced of color and pleasing to my eyes.
     (use-package leuven-theme
       :ensure t
       :init
-      (load-theme 'leuven t)
-      (set-face-background 'default "#e8e8e8"))))
+      (load-theme 'leuven t))))
 #+END_SRC
 
 * Fonts
