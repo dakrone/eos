@@ -1,14 +1,7 @@
 #+TITLE: EOS: Emacs Appearance
 #+AUTHOR: Lee Hinman
 #+EMAIL: lee@writequit.org
-#+LANGUAGE: en
-#+PROPERTY: header-args:emacs-lisp :tangle yes
-#+PROPERTY: header-args:sh :eval no
-#+HTML_HEAD: <link rel="stylesheet" href="https://dakrone.github.io/org2.css" type="text/css" />
-#+EXPORT_EXCLUDE_TAGS: noexport
-#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
-#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
-#+STARTUP: fold nodlcheck lognotestate content
+#+SETUPFILE: ~/eos/setupfiles/eos.setup
 
 #+BEGIN_SRC emacs-lisp
 (provide 'eos-appearance)
@@ -25,13 +18,13 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-;;(defvar eos/background 'light)
-(defvar eos/background 'dark)
+(defvar eos/background 'light)
+;;(defvar eos/background 'dark)
 
 ;; On thulcandra (my laptop), I need a light background for being outside and in
 ;; very bright locations while having a lower brightness setting
-(when (equal (system-name) "thulcandra")
-  (setq eos/background 'dark))
+3(when (equal (system-name) "thulcandra")
+  (setq eos/background 'light))
 #+END_SRC
 
 * Emacs Appearance
@@ -86,10 +79,11 @@ balanced of color and pleasing to my eyes.
         :ensure t
         :init (load-theme 'sanityinc-tomorrow-bright t)))
   (progn
-    ;; (load-theme 'tsdh-light t)
     (use-package leuven-theme
       :ensure t
-      :init (load-theme 'leuven t))))
+      :init
+      (load-theme 'leuven t)
+      (set-face-background 'default "#e8e8e8"))))
 #+END_SRC
 
 * Fonts
