@@ -51,6 +51,7 @@ middle.
           ("elasticsearch-ci\.elastic.co" . browse-url-generic)
           ("internal-ci\.elastic\.co" . browse-url-generic)
           ("zendesk\.com" . browse-url-generic)
+          ("salesforce\.com" . browse-url-generic)
           ("stackoverflow\.com" . browse-url-generic)
           ("." . eww-browse-url)))
   (setq shr-external-browser 'browse-url-generic)
