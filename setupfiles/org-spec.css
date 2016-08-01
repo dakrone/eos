@@ -352,7 +352,7 @@ div.figure {
 @media screen {
     h1.title {
         text-align: left;
-        margin: 1em 0 0 320px;
+        margin: 0.5em 0 1em 0;
     }
 
     h2 {
@@ -372,10 +372,6 @@ div.figure {
         overlow-y: auto;
     }
 
-    /* #table-of-contents ul>li>ul>li>ul>li { */
-    /*     display: none; */
-    /* } */
-
     #table-of-contents h2 {
         margin-top: 0;
     }
@@ -384,7 +380,7 @@ div.figure {
         font-size: 12px;
     }
 
-    div.outline-2, #footnotes {
+    div#content, #footnotes {
         margin-left: 320px;
         max-width: 1100px;
     }
@@ -400,10 +396,10 @@ div.figure {
     }
 
     h1.title {
-        margin-left: 5%;
+        margin-left: 0%;
     }
 
-    div.outline-2, #footnotes {
+    div#content, #footnotes {
         margin-left: 5%;
         max-width: 90%;
     }
