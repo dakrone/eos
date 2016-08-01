@@ -61,7 +61,11 @@ all over the place and take forever to load ಠ_ಠ
   "#+EMAIL: " user-mail-address \n
   "#+SETUPFILE: ~/eos/setupfiles/default.setup
 
-,* ")
+| *Author* | Lee Hinman                    |
+| *Date*   | {{{time(%Y-%m-%d %H:%M:%S)}}} |
+
+,* Introduction
+" \n)
 
 (define-skeleton eos/org-wrap-elisp
   "Wrap text with #+BEGIN_SRC / #+END_SRC for the emacs-lisp code"
