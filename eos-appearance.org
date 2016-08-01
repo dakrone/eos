@@ -141,19 +141,6 @@ nice to me on both Linux and any other computer. Even though it's called
   (add-hook 'after-init-hook #'eos/setup-osx-fonts))
 #+END_SRC
 
-** Configuration for Emoji
-:PROPERTIES:
-:CUSTOM_ID: h:c5e5640d-376b-469a-ac67-5e7c5e1a2686
-:END:
-Since I'm using Emacs for email, IRC, matrix, twitter, etc, it should definitely
-support Emoji
-
-#+BEGIN_SRC emacs-lisp
-(use-package emoji-fontset
-  :ensure t
-  :init (emoji-fontset-enable "Symbola"))
-#+END_SRC
-
 * Emacs' Mode-line
 :PROPERTIES:
 :CUSTOM_ID: modeline
