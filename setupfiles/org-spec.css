@@ -218,6 +218,7 @@ div.notice-info:before {
 
 pre {
     font-family: "Inconsolata", monospace;
+    font-size: 100%;
     border: 0;
     box-shadow: none;
     overflow: auto;
@@ -385,7 +386,7 @@ div.figure {
 
     div.outline-2, #footnotes {
         margin-left: 320px;
-        max-width: 1500px;
+        max-width: 1100px;
     }
 }
 
