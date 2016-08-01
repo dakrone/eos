@@ -242,7 +242,7 @@ And now the huge org-mode configuration
           '(("t" "Todo" entry (file "~/org/refile.org")
              "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n")
             ("m" "Email" entry (file "~/org/refile.org")
-             "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n%a\n")
+             "* TODO [#B] %?\n:PROPERTIES:\n:CREATED: %U\n:END:\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
             ("n" "Notes" entry (file+headline "~/org/notes.org" "Notes")
              "* %? :NOTE:\n:PROPERTIES:\n:CREATED: %U\n:END:\n")
             ("e" "Emacs note" entry
