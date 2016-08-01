@@ -362,7 +362,8 @@ And now the huge org-mode configuration
              "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
              my-pre-bg my-pre-fg))))))
 
-    (add-hook 'org-export-before-processing-hook #'eos/org-inline-css-hook)
+    ;; Uncomment to automatically set background color to theme background
+    ;; (add-hook 'org-export-before-processing-hook #'eos/org-inline-css-hook)
 
     (use-package org-id
       :init
