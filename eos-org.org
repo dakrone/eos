@@ -1,14 +1,7 @@
 #+TITLE: EOS: Org Module
 #+AUTHOR: Lee Hinman
 #+EMAIL: lee@writequit.org
-#+LANGUAGE: en
-#+PROPERTY: header-args:emacs-lisp :tangle yes
-#+PROPERTY: header-args:sh :eval no
-#+HTML_HEAD: <link rel="stylesheet" href="https://dakrone.github.io/org2.css" type="text/css" />
-#+EXPORT_EXCLUDE_TAGS: noexport
-#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
-#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
-#+STARTUP: fold nodlcheck lognotestate content
+#+SETUPFILE: ~/eos/setupfiles/eos.setup
 
 #+BEGIN_SRC emacs-lisp
 (provide 'eos-org)
