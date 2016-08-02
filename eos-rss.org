@@ -132,6 +132,7 @@
           ;; Other
           ("http://gtofficial.tumblr.com/rss" gaming)
           ("http://speeddemosarchive.com/sda100.atom" gaming)
+          ("https://retropie.org.uk/feed/" gaming)
           ("http://www.elastic.co/blog/feed/" elasticsearch)
           "http://git-annex.branchable.com/tips/index.atom"
           "http://git-annex.branchable.com/devblog/index.atom"
