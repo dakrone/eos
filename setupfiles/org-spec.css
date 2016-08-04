@@ -47,10 +47,6 @@ td code {
     font-weight: bold;
 }
 
-ol>li {
-    margin-top: 1em;
-}
-
 a:link, a:hover, a:visited {
                      text-decoration: none;
                      color: black;
@@ -126,6 +122,10 @@ a[href^="http"]:after {
     font-size: 80%;
 }
 
+#table-of-contents ol>li {
+    margin-top: 1em;
+}
+
 table {
     width: 100%;
 }
@@ -154,6 +154,10 @@ div.notice {
     border-left: 4px solid;
 }
 
+table + div.notice {
+    margin-top: 2em;
+}
+
 div.notice a {
     background: transparent !important;
     border-bottom: 1px dotted;
@@ -167,8 +171,8 @@ div.notice:before {
     position: absolute;
     top: 0;
     right: 0;
-    padding: 0.25em 0.5em;
-    font-size: 80%;
+    padding: 0.25em 0.5em 0;
+    font-size: 60%;
     border-bottom-left-radius: 0.5em;
 }
 
@@ -215,6 +219,43 @@ div.notice-info:before {
     content: "INFO";
     background: #9c9;
     color: #efe;
+}
+
+/* things inside the #+BEGIN_NOTE...#+END_NOTE block */
+div.NOTE a {
+    background: transparent !important;
+    border-bottom: 1px dotted;
+}
+
+div.NOTE {
+    position: relative;
+    margin: 0 1.2em;
+    padding: 0.25em 1em;
+    border-left: 4px solid;
+    margin-top: 2em;
+    background: #efe;
+    color: #060;
+}
+
+div.NOTE:before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.25em 0.5em 0;
+    font-size: 60%;
+    border-bottom-left-radius: 0.5em;
+    content: "NOTE";
+    background: #9c9;
+    color: #efe;
+}
+
+blockquote {
+    padding: 0px 10px 0px 10px;
+    border: 1px solid #ddd;
+    background: #eee;
+    box-shadow: 5px 5px 5px #eee;
+    border-radius: 2px;
+    line-height: 1.2em;
 }
 
 pre {
@@ -364,7 +405,7 @@ div.figure {
         position: fixed;
         top: 0;
         left: 0;
-        padding: 2em 0 0 2em;
+        padding: 2em 0 2em 2em;
         width: 290px;
         height: 100vh;
         font-size: 11px;
