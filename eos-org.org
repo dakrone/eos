@@ -129,8 +129,6 @@ And now the huge org-mode configuration
           org-refile-allow-creating-parent-nodes 'confirm
           ;; never leave empty lines in collapsed view
           org-cycle-separator-lines 0
-          ;; Use cider as the clojure backend
-          org-babel-clojure-backend 'cider
           ;; don't run stuff automatically on export
           org-export-babel-evaluate nil
           ;; export tables as CSV instead of tab-delineated
