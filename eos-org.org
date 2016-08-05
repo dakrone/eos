@@ -641,7 +641,33 @@ Publishing org-mode files to my hosting provider:
           ("org-es-design"
            :components ("org-es-design-org"
                         "org-es-design-files"
-                        "org-es-design-images")))))
+                        "org-es-design-images"))
+
+          ;; Org-mode for the ~/org/es/presentations files
+          ("org-es-presentations-org"
+           :base-directory ,(file-truename "~/org/es/presentations")
+           :base-extension "org\\|html"
+           :publishing-directory
+           "/ssh:writequit.org:~/www/org/es/presentations"
+           :publishing-function org-html-publish-to-html
+           :with-toc t
+           :html-preamble t)
+          ("org-es-presentations-files"
+           :base-directory ,(file-truename "~/org/es/presentations")
+           :base-extension "css\\|pdf\\|sh\\|es\\|zsh\\|py\\|org"
+           :publishing-directory
+           "/ssh:writequit.org:~/www/org/es/presentations"
+           :publishing-function org-publish-attachment)
+          ("org-es-presentations-images"
+           :base-directory ,(file-truename "~/org/es/presentations/images")
+           :base-extension "png\\|jpg"
+           :publishing-directory
+           "/ssh:writequit.org:~/www/org/es/presentations/images"
+           :publishing-function org-publish-attachment)
+          ("org-es-presentations"
+           :components ("org-es-presentations-org"
+                        "org-es-presentations-files"
+                        "org-es-presentations-images")))))
 #+END_SRC
 
 Then, when I'm editing ~/org/es/feature-foo.org, I can hit =C-c C-e P f= and
