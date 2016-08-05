@@ -422,7 +422,7 @@ div.figure {
         font-size: 12px;
     }
 
-    div#content, #footnotes {
+    div#content {
         margin-left: 320px;
         max-width: 1100px;
     }
@@ -441,7 +441,7 @@ div.figure {
         margin-left: 0%;
     }
 
-    div#content, #footnotes {
+    div#content {
         margin-left: 5%;
         max-width: 90%;
     }
