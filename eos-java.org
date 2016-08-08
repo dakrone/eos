@@ -263,3 +263,21 @@ I actually choose to do this because the fedora/debian/ubuntu version of
                   )))))
 #+END_SRC
 
+* Connecting to a Java debugger
+:PROPERTIES:
+:CUSTOM_ID: h:7daa814f-0c94-45e4-9864-b5d3c8227251
+:END:
+
+Strangely enough (I didn't think it would actually exist), there does exist a
+command-line debugger for Java, called =jdb=. Even better, there's a packaged
+called "Realgud" that combines a bunch of different debuggers and the plumbing
+to hook them up to Emacs. So I'll install that.
+
+For [[https://github.com/elastic/elasticsearch][Elasticsearch]] in particular, this means running =gradle run --debug-jvm=
+which starts up ES listening for events, and then =M-x realgud:jdb= and using
+=jdb -attach 8000= to attach to the JVM.
+
+#+BEGIN_SRC emacs-lisp
+(use-package realgud
+  :ensure t)
+#+END_SRC
