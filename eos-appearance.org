@@ -82,7 +82,8 @@ balanced of color and pleasing to my eyes.
     (use-package leuven-theme
       :ensure t
       :init
-      (load-theme 'leuven t))))
+      (load-theme 'leuven t)
+      (set-face-background 'default "#F7F7F7"))))
 #+END_SRC
 
 * Fonts
