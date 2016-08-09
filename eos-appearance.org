@@ -189,7 +189,8 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
   (use-package fancy-battery
     :ensure t
     :init
-    (add-hook 'after-init-hook #'fancy-battery-mode)))
+    (add-hook 'after-init-hook #'fancy-battery-mode)
+    (display-battery-mode -1)))
 #+END_SRC
 
 * Highlighting the current line with hl-line-mode
