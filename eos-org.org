@@ -70,6 +70,7 @@ And now the huge org-mode configuration
     ;; Enable archiving things
     (use-package org-archive)
     (add-hook 'org-mode-hook #'hl-line-mode)
+    (add-hook 'org-agenda-mode-hook #'hl-line-mode)
     (add-hook 'org-mode-hook #'eos/org-mode-hook)
     ;; enabled export backends
     ;; (use-package ox-rss)
