@@ -267,7 +267,7 @@ pre {
 }
 
 pre.example:before {
-    content: "Properties";
+    content: "EXAMPLE";
     display: block;
     border-bottom: 1px dotted;
     margin-bottom: 1em;
@@ -316,6 +316,14 @@ pre.src-clojure:before {
 
 pre.src-c:before {
     content: "C";
+}
+
+pre.src-sh:before {
+    content: "Shell";
+}
+
+pre.src-es:before {
+    content: "ES";
 }
 
 span.org-string {
