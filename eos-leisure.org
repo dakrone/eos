@@ -50,3 +50,15 @@ Emacs has a really nice stack overflow client, called "sx"
 (use-package sx
   :ensure t)
 #+END_SRC
+
+* Pretty colors in buffers
+:PROPERTIES:
+:CUSTOM_ID: h:df0e7f66-8fe2-41c7-b604-9a680cda850e
+:END:
+
+Especially when looking at emacs themes, rainbow-mode is nice.
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-mode
+  :ensure t)
+#+END_SRC
