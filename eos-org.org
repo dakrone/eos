@@ -400,8 +400,12 @@ And now the huge org-mode configuration
                                 (eos/org-add-ids-to-headlines-in-file)))))))))
 #+END_SRC
 
+This makes the bullets into fancy Unicode bullets, rather than ASCII '*' values.
+Depending on the theme, it may look better or worse
+
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
+  :disabled t
 ;;  :ensure t
   :init
   (add-hook 'org-mode-hook #'org-bullets-mode))
