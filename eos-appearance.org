@@ -56,6 +56,18 @@ parens.
   :init (global-paren-face-mode))
 #+END_SRC
 
+Make the cursor draw to be as wide as it needs to be
+
+#+BEGIN_SRC emacs-lisp
+(setq x-stretch-cursor t)
+#+END_SRC
+
+Don't use dialog boxes, just ask inside Emacs
+
+#+BEGIN_SRC emacs-lisp
+(setq use-dialog-box nil)
+#+END_SRC
+
 * Color Theme
 :PROPERTIES:
 :CUSTOM_ID: color-theme
