@@ -137,6 +137,10 @@ completion, prompt and term settings:
 (use-package eshell
   :commands (eshell eshell-command)
   :bind ("C-c m" . eshell)
+  :init
+  (setq eshell-glob-case-insensitive t
+        eshell-error-if-no-glob t
+        eshell-scroll-to-bottom-on-input 'all)
   :config
   (defalias 'emacs 'find-file)
   (defalias 'hff 'hexl-find-file)
@@ -165,7 +169,8 @@ completion, prompt and term settings:
                                    "ncftp" "pine" "tin" "trn" "elm" "vim"
                                    "nmtui" "alsamixer" "htop" "el" "elinks"
                                    "ssh"))
-    (setq eshell-visual-subcommands '(("git" "log" "diff" "show")))
+    (setq eshell-visual-subcommands '(("git" "log" "diff" "show")
+                                      ("vagrant" "ssh")))
 
     (defun eos/truncate-eshell-buffers ()
       "Truncates all eshell buffers"
