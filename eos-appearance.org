@@ -301,7 +301,7 @@ Show where the buffer ends on the right-hand fringe
               ;; Keep cursors and highlights in current window only
               cursor-in-non-selected-windows nil)
 
-(fringe-mode 3)
+(fringe-mode 8)
 #+END_SRC
 
 * Shift the color of text with Redshift
