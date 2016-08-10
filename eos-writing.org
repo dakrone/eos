@@ -33,6 +33,10 @@ Let's install markdown mode, since all of Github seems enamored with it.
          ("\\.md\\'"          . markdown-mode)
          ("\\.markdown\\'"    . markdown-mode))
   :init
+  (setq markdown-enable-wiki-links t
+        markdown-italic-underscore t
+        markdown-make-gfm-checkboxes-buttons t
+        markdown-gfm-additional-languages '("sh"))
   (add-hook 'markdown-mode-hook #'flyspell-mode))
 #+END_SRC
 
