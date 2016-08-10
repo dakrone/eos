@@ -21,19 +21,6 @@
   (setq es-warn-on-delete-query nil))
 #+END_SRC
 
-** Documentation for Elasticsearch
-:PROPERTIES:
-:CUSTOM_ID: es-docs
-:END:
-
-I occasionally use =helm-dash= to access the documentation for Elasticsearch
-(and Java)
-
-#+BEGIN_SRC emacs-lisp
-(use-package helm-dash
-  :ensure t)
-#+END_SRC
-
 * Logstash
 :PROPERTIES:
 :CUSTOM_ID: logstash

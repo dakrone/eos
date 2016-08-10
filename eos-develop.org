@@ -103,7 +103,28 @@ much slower than hideshow for large buffers.
          ("C-\\" . hs-toggle-hiding)
          ("M-\\" . hs-hide-all)
          ("M-+" . hs-show-all))
-  :init (add-hook #'prog-mode-hook #'hs-minor-mode)
+  :init
+  (add-hook #'prog-mode-hook #'hs-minor-mode)
+  (define-fringe-bitmap 'hs-marker [16 48 112 240 112 48 16] nil nil 'center)
+  (defface hs-face '((t (:background "#ff8")))
+    "Face to hightlight the ... area of hidden regions"
+    :group 'hideshow)
+  (defface hs-fringe-face '((t (:foreground "#888")))
+    "Face used to highlight the fringe on folded regions"
+    :group 'hideshow)
+  (setq hs-set-up-overlay
+        (lambda (ov)
+          (when (eq 'code (overlay-get ov 'hs))
+            (let ((marker-string "*")
+                  (display-string (format " ... " (count-lines (overlay-start ov)
+                                                               (overlay-end ov)))))
+              (put-text-property 0 1 'display
+                                 (list 'right-fringe 'hs-marker 'hs-fringe-face)
+                                 marker-string)
+              (put-text-property 0 (length display-string)
+                                 'face 'hs-face display-string)
+              (overlay-put ov 'before-string marker-string)
+              (overlay-put ov 'display display-string)))))
   :diminish hs-minor-mode
   :config
   (defvar hs-special-modes-alist
@@ -272,8 +293,9 @@ highlighted so they stand out:
 (defun eos/add-watchwords ()
   "Highlight FIXME, TODO, and NOCOMMIT in code TODO"
   (font-lock-add-keywords
-   nil '(("\\<\\(FIXME:?\\|TODO:?\\|NOCOMMIT:?\\)\\>"
-          1 '((:foreground "#d7a3ad") (:weight bold)) t))))
+   nil '(("\\<\\(TODO\\(?:(.*)\\)?:?\\)\\>"  1 'warning prepend)
+         ("\\<\\(FIXME\\(?:(.*)\\)?:?\\)\\>" 1 'error prepend)
+         ("\\<\\(NOCOMMIT\\(?:(.*)\\)?:?\\)\\>"  1 'error prepend))))
 
 (add-hook 'prog-mode-hook #'eos/add-watchwords)
 #+END_SRC
@@ -416,7 +438,7 @@ just enable it everywhere.
         ;; do or don't automatically start completion
         ;;company-idle-delay nil
         company-idle-delay 0.7
-        company-minimum-prefix-length 4
+        company-minimum-prefix-length 3
         ;; don't downcase dabbrev suggestions
         company-dabbrev-downcase nil
         company-dabbrev-ignore-case nil
@@ -446,7 +468,37 @@ Used smart-tab to complete everywhere except for ERC, shell and mu4e.
   (add-to-list 'smart-tab-disabled-major-modes 'shell-mode))
 #+END_SRC
 
-* Git Magit with Magit and friends
+* Documentation with helm-dash
+:PROPERTIES:
+:CUSTOM_ID: h:85b19bd9-c3e0-4475-a0b6-9e5eb1f8a884
+:END:
+
+Dash is a documentation tool that has nice offline documentation. This is great
+for plane trips or just when the internet goes out.
+
+Make sure that you do =M-x helm-dash-install-docset= to install the correct
+docset(s).
+
+I usually install =Java_SE8=, =Emacs Lisp=, and =ElasticSearch=. Then I use =C-c
+D= ('D' for Documentation) to activate it.
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-dash
+  :ensure t
+  :bind (("C-c D" . helm-dash))
+  :init
+  (setq helm-dash-common-docsets '("ElasticSearch")
+        helm-dash-min-length 2)
+  :config
+  (defun eos/use-java-docset ()
+    (setq-local helm-dash-docsets '("Java")))
+  (defun eos/use-elisp-docset ()
+    (setq-local helm-dash-docsets '("Emacs Lisp")))
+  (add-hook 'java-mode-hook #'eos/use-java-docset)
+  (add-hook 'emacs-lisp-mode-hook #'eos/use-elisp-docset))
+#+END_SRC
+
+* Git magic with Magit and friends
 :PROPERTIES:
 :CUSTOM_ID: magit
 :END:
@@ -512,7 +564,36 @@ Quite useful, as well as the =C-x n= and =C-x p= bindings.
   :diminish ""
   :init
   (add-hook 'prog-mode-hook #'git-gutter-mode)
-  (add-hook 'org-mode-hook #'git-gutter-mode))
+  (add-hook 'text-mode-hook #'git-gutter-mode)
+  :config
+  (use-package git-gutter-fringe
+    :ensure t
+    :init
+    (require 'git-gutter-fringe)
+    (define-fringe-bitmap 'git-gutter-fr:added
+      [224 224 224 224 224 224 224 224 224 224 224 224 224
+           224 224 224 224 224 224 224 224 224 224 224 224]
+      nil nil 'center)
+    (define-fringe-bitmap 'git-gutter-fr:modified
+      [224 224 224 224 224 224 224 224 224 224 224 224 224
+           224 224 224 224 224 224 224 224 224 224 224 224]
+      nil nil 'center)
+    (define-fringe-bitmap 'git-gutter-fr:deleted
+      [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+      nil nil 'center)
+    ))
+#+END_SRC
+
+Git-messenger allows you to look up the commit message for the last commit that
+touched the line wherever your current cursor is.
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-messenger
+  :ensure t
+  :commands git-messenger:popup-message
+  :bind (("C-c M" . git-messenger:popup-message))
+  :config
+  (setq git-messenger:show-detail t))
 #+END_SRC
 
 Ediff is fantastic for looking through diffs
@@ -532,7 +613,8 @@ Finally, a nice helper to browse code whenever it remotely may be,
 #+BEGIN_SRC emacs-lisp
 (use-package browse-at-remote
   :ensure t
-  :bind ("C-c g g" . browse-at-remote/browse))
+  :commands browse-at-remote
+  :bind ("C-c g g" . browse-at-remote))
 #+END_SRC
 
 * Flycheck - Syntax Checking On The Fly
@@ -549,14 +631,20 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
   :bind (("M-g M-n" . flycheck-next-error)
          ("M-g M-p" . flycheck-previous-error)
          ("M-g M-=" . flycheck-list-errors))
-  :init (global-flycheck-mode)
+  :init
+  (global-flycheck-mode)
+  (setq flycheck-indication-mode 'right-fringe
+        flycheck-check-syntax-automatically '(save mode-enabled))
   :diminish flycheck-mode
   :config
   (progn
     (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc json-jsonlint json-python-json))
     (use-package flycheck-pos-tip
       :ensure t
-      :init (flycheck-pos-tip-mode))
+      :init
+      (flycheck-pos-tip-mode)
+      (setq flycheck-pos-tip-timeout 10
+            flycheck-display-errors-delay 0.5))
     (use-package helm-flycheck
       :ensure t
       :init (define-key flycheck-mode-map (kbd "C-c ! h") 'helm-flycheck))
@@ -565,7 +653,7 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
       :init (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))))
 #+END_SRC
 
-* Elisp
+* Emacs Lisp (Elisp)
 :PROPERTIES:
 :CUSTOM_ID: elisp
 :END:
