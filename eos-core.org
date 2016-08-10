@@ -91,6 +91,12 @@ default, so set the threshold up higher:
       jit-lock-stealth-verbose nil)
 #+END_SRC
 
+Wait a bit longer than the default (0.5 seconds) before assuming Emacs is idle
+
+#+BEGIN_SRC emacs-lisp
+(setq idle-update-delay 2)
+#+END_SRC
+
 =line-number-mode= displays the current line number in the mode line, however it
 stops doing that in buffers when encountering at least one overly long line and
 displays two question marks instead. This is pretty unhelpful, the only
