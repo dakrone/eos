@@ -57,11 +57,14 @@ Let's start with some personal information about me:
 Always, *always*, prefer UTF-8, anything else is insanity
 
 #+BEGIN_SRC emacs-lisp
-(prefer-coding-system 'utf-8)
+(set-charset-priority 'unicode)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
-(setq default-buffer-file-coding-system 'utf-8)
+(set-selection-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq default-process-coding-system '(utf-8-unix . utf-8-unix))
+
 #+END_SRC
 
 Turn on syntax highlighting for all buffers:
