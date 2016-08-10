@@ -74,10 +74,7 @@ And now the huge org-mode configuration
     (add-hook 'org-mode-hook #'eos/org-mode-hook)
     ;; enabled export backends
     ;; (use-package ox-rss)
-    (use-package ox-twbs
-      ;; :ensure t
-      )
-    (custom-set-variables '(org-export-backends '(ascii html latex md twbs)))
+    (custom-set-variables '(org-export-backends '(ascii html latex md)))
     (setq org-directory (file-truename "~/org")
           ;; follow links by pressing ENTER on them
           org-return-follows-link t
@@ -102,6 +99,8 @@ And now the huge org-mode configuration
           org-adapt-indentation nil
           ;; preserve the indentation inside of source blocks
           org-src-preserve-indentation t
+          ;; use the mode-specific TAB inside of source blocks
+          org-src-tab-acts-natively t
           ;; Imenu should use 3 depth instead of 2
           org-imenu-depth 3
           ;; put state change log messages into a drawer
@@ -128,14 +127,18 @@ And now the huge org-mode configuration
           org-outline-path-complete-in-steps nil
           ;; Allow refile to create parent tasks with confirmation
           org-refile-allow-creating-parent-nodes 'confirm
-          ;; never leave empty lines in collapsed view
-          org-cycle-separator-lines 0
+          ;; leave this many empty lines in collapsed view
+          org-cycle-separator-lines 1
           ;; don't run stuff automatically on export
           org-export-babel-evaluate nil
           ;; export tables as CSV instead of tab-delineated
           org-table-export-default-format "orgtbl-to-csv"
+          ;; when to insert a newline when inserting a new heading
+          org-blank-before-new-entry '((heading . nil) (plain-list-item . auto))
           ;; start up showing images
           org-startup-with-inline-images t
+          ;; use #+ATTR: if defined, or real width otherwise
+          org-image-actual-width nil
           ;; always enable noweb, results as code and exporting both
           org-babel-default-header-args
           (cons '(:noweb . "yes")
@@ -405,31 +408,9 @@ Depending on the theme, it may look better or worse
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
-  :disabled t
-;;  :ensure t
+  :ensure t
   :init
   (add-hook 'org-mode-hook #'org-bullets-mode))
-#+END_SRC
-
-A simple presentation mode for org-mode
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-present
-;;  :ensure t
-  :defer 20
-  :init
-  (add-hook 'org-present-mode-hook
-            (lambda ()
-              (org-present-big)
-              (org-display-inline-images)
-              (org-present-hide-cursor)
-              (org-present-read-only)))
-  (add-hook 'org-present-mode-quit-hook
-            (lambda ()
-              (org-present-small)
-              (org-remove-inline-images)
-              (org-present-show-cursor)
-              (org-present-read-write))))
 #+END_SRC
 
 ** exporting to Github-flavored markdown
@@ -678,19 +659,6 @@ Publishing org-mode files to my hosting provider:
 Then, when I'm editing ~/org/es/feature-foo.org, I can hit =C-c C-e P f= and
 export the file to show up in http://p.writequit.org/org
 
-** org-alert
-:PROPERTIES:
-:CUSTOM_ID: org-alert
-:END:
-Notifications for upcoming org statuses!
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-alert
-;;  :ensure t
-  :disabled t
-  :init (org-alert-enable))
-#+END_SRC
-
 * Tools used from within org-mode
 :PROPERTIES:
 :CUSTOM_ID: org-tools
@@ -716,7 +684,40 @@ modes required:
 (setq diary-file "~/diary")
 #+END_SRC
 
-* Presentations with =epresent=
+* Presentations in Org-mode
+:PROPERTIES:
+:CUSTOM_ID: h:b456458e-3a2c-4a4e-9913-3e3f6d2eed7c
+:END:
+
+There are a bunch of different ways to present things
+
+** Presentations with org-present
+:PROPERTIES:
+:CUSTOM_ID: h:8a107aa5-26dc-4db0-b868-dd937a57cb6c
+:END:
+
+A simple presentation mode for org-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-present
+;;  :ensure t
+  :defer 20
+  :init
+  (add-hook 'org-present-mode-hook
+            (lambda ()
+              (org-present-big)
+              (org-display-inline-images)
+              (org-present-hide-cursor)
+              (org-present-read-only)))
+  (add-hook 'org-present-mode-quit-hook
+            (lambda ()
+              (org-present-small)
+              (org-remove-inline-images)
+              (org-present-show-cursor)
+              (org-present-read-write))))
+#+END_SRC
+
+** Presentations with =epresent=
 :PROPERTIES:
 :CUSTOM_ID: epresent
 :END:
@@ -732,7 +733,7 @@ a year, so I load it from a custom path
   (use-package epresent :ensure t))
 #+END_SRC
 
-* Presentations with =org-reveal=
+** Presentations with =org-reveal=
 :PROPERTIES:
 :CUSTOM_ID: h:3c34dc2c-3334-4f44-8cce-facef8541c5a
 :END:
