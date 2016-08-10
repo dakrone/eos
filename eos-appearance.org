@@ -187,7 +187,6 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 
 #+BEGIN_SRC emacs-lisp
 (use-package spaceline
-  :disabled t
   :ensure t
   :init
   (require 'spaceline-config)
