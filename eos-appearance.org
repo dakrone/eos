@@ -18,13 +18,13 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
+(defvar eos/background 'dark)
 ;;(defvar eos/background 'dark)
 
 ;; On thulcandra (my laptop), I need a light background for being outside and in
 ;; very bright locations while having a lower brightness setting
 (when (equal (system-name) "thulcandra")
-  (setq eos/background 'light))
+  (setq eos/background 'dark))
 #+END_SRC
 
 * Emacs Appearance
@@ -75,9 +75,19 @@ balanced of color and pleasing to my eyes.
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
     (progn
-      (use-package color-theme-sanityinc-tomorrow
-        :ensure t
-        :init (load-theme 'sanityinc-tomorrow-bright t)))
+      (if (file-exists-p "~/.emacs.d/site-lisp/emacs-doom-theme")
+          (progn
+            (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-doom-theme")
+            (setq doom-enable-bright-buffers nil)
+            (require 'doom)
+            (require 'doom-one-theme))
+        (use-package zerodark-theme
+          :ensure t
+          :init
+          (load-theme 'zerodark t)
+          ;; Zerodark's function name face misses a bit making it look different
+          ;; than other faces, so underline function names
+          (set-face-attribute 'font-lock-function-name-face nil :underline t))))
   (progn
     (use-package leuven-theme
       :ensure t
@@ -177,6 +187,7 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 
 #+BEGIN_SRC emacs-lisp
 (use-package spaceline
+  :disabled t
   :ensure t
   :init
   (require 'spaceline-config)
@@ -193,6 +204,39 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
     (display-battery-mode -1)))
 #+END_SRC
 
+** custom modeline
+:PROPERTIES:
+:CUSTOM_ID: h:66031376-742b-4668-ade7-8a1fe02ec0b6
+:END:
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/shrink-paths (path)
+  (let ((p-lst (split-string path "/")))
+    (if (> (length p-lst) 3) ;; shrink paths deeper than 3 dirs
+        (concat
+         (mapconcat (lambda (elm)
+                      (if (zerop (length elm)) ""
+                        (substring elm 0 1)))
+                    (butlast p-lst 3)
+                    "/")
+         "/"
+         (mapconcat (lambda (elm) elm)
+                    (last p-lst 3)
+                    "/"))
+      (mapconcat (lambda (elm) elm)
+                 p-lst
+                 "/"))))
+
+;; (spaceline-compile
+;;  ;; left segments
+;;  '(aznu
+;;    major-mode)
+;;  ;; right segments
+;;  '(buffer-position
+;;    hud))
+;;(setq mode-line-format '("%e" (:eval (spaceline-ml-main))))
+
+#+END_SRC
 * Highlighting the current line with hl-line-mode
 :PROPERTIES:
 :CUSTOM_ID: h:effd858a-d5e9-4afc-9e36-3488f7c75189
@@ -250,7 +294,15 @@ blends into the foreground
 Show where the buffer ends on the right-hand fringe
 
 #+BEGIN_SRC emacs-lisp
-(setq-default indicate-buffer-boundaries 'right)
+(setq-default indicate-buffer-boundaries nil ;; 'right
+              fringe-indicator-alist
+              (delq (assq 'continuation fringe-indicator-alist)
+                    fringe-indicator-alist)
+              fringes-outside-margins t
+              ;; Keep cursors and highlights in current window only
+              cursor-in-non-selected-windows nil)
+
+(fringe-mode 3)
 #+END_SRC
 
 * Shift the color of text with Redshift

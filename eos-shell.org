@@ -314,10 +314,11 @@ Also, add the buffer stack option to eshell
 #+END_SRC
 
 Indicate the exit status of the previous command using the eshell-fringe-status
-package
+package. Eh, disabled this for now, not sure I actually like it.
 
 #+BEGIN_SRC emacs-lisp
 (use-package eshell-fringe-status
+  :disabled t
   :ensure t
   :init
   (add-hook 'eshell-mode-hook 'eshell-fringe-status-mode))

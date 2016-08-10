@@ -82,10 +82,10 @@ default, so set the threshold up higher:
 #+BEGIN_SRC emacs-lisp
 (setq gc-cons-threshold (* 100 1024 1024)) ;; 100 mb
 ;; Allow font-lock-mode to do background parsing
-(setq jit-lock-stealth-time 1
-      ;; jit-lock-stealth-load 200
-      jit-lock-chunk-size 1000
-      jit-lock-defer-time 0.05)
+(setq jit-lock-defer-time nil
+      jit-lock-stealth-nice 0.1
+      jit-lock-stealth-time 0.2
+      jit-lock-stealth-verbose nil)
 #+END_SRC
 
 =line-number-mode= displays the current line number in the mode line, however it
