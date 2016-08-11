@@ -21,8 +21,9 @@ well as the general theme for look-and-feel things.
 (defvar eos/background 'dark)
 ;;(defvar eos/background 'dark)
 
-;; On thulcandra (my laptop), I need a light background for being outside and in
-;; very bright locations while having a lower brightness setting
+;; On thulcandra (my laptop), I might want a light background for being outside
+;; and in very bright locations while having a lower brightness setting, so this
+;; can changed to be specific to my laptop
 (when (equal (system-name) "thulcandra")
   (setq eos/background 'dark))
 #+END_SRC
@@ -54,12 +55,6 @@ parens.
 (use-package paren-face
   :ensure t
   :init (global-paren-face-mode))
-#+END_SRC
-
-Make the cursor draw to be as wide as it needs to be
-
-#+BEGIN_SRC emacs-lisp
-(setq x-stretch-cursor t)
 #+END_SRC
 
 Don't use dialog boxes, just ask inside Emacs
@@ -201,9 +196,11 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 (use-package spaceline
   :ensure t
   :init
+  (setq powerline-default-separator 'zigzag)
   (require 'spaceline-config)
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode)
+  (spaceline-toggle-minor-modes-off)
   (use-package info+
     :ensure t
     :init
@@ -215,39 +212,6 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
     (display-battery-mode -1)))
 #+END_SRC
 
-** custom modeline
-:PROPERTIES:
-:CUSTOM_ID: h:66031376-742b-4668-ade7-8a1fe02ec0b6
-:END:
-
-#+BEGIN_SRC emacs-lisp
-(defun eos/shrink-paths (path)
-  (let ((p-lst (split-string path "/")))
-    (if (> (length p-lst) 3) ;; shrink paths deeper than 3 dirs
-        (concat
-         (mapconcat (lambda (elm)
-                      (if (zerop (length elm)) ""
-                        (substring elm 0 1)))
-                    (butlast p-lst 3)
-                    "/")
-         "/"
-         (mapconcat (lambda (elm) elm)
-                    (last p-lst 3)
-                    "/"))
-      (mapconcat (lambda (elm) elm)
-                 p-lst
-                 "/"))))
-
-;; (spaceline-compile
-;;  ;; left segments
-;;  '(aznu
-;;    major-mode)
-;;  ;; right segments
-;;  '(buffer-position
-;;    hud))
-;;(setq mode-line-format '("%e" (:eval (spaceline-ml-main))))
-
-#+END_SRC
 * Highlighting the current line with hl-line-mode
 :PROPERTIES:
 :CUSTOM_ID: h:effd858a-d5e9-4afc-9e36-3488f7c75189

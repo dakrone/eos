@@ -410,6 +410,7 @@ Depending on the theme, it may look better or worse
 (use-package org-bullets
   :ensure t
   :init
+  (setq org-bullets-bullet-list '("✸" "•" "◦" "•" "◦" "•" "◦"))
   (add-hook 'org-mode-hook #'org-bullets-mode))
 #+END_SRC
 
