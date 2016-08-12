@@ -196,11 +196,11 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 (use-package spaceline
   :ensure t
   :init
-  (setq powerline-default-separator 'zigzag)
+  (setq powerline-default-separator 'zigzag
+         spaceline-minor-modes-separator " ")
   (require 'spaceline-config)
   (spaceline-spacemacs-theme)
   (spaceline-helm-mode)
-  (spaceline-toggle-minor-modes-off)
   (use-package info+
     :ensure t
     :init

@@ -385,7 +385,7 @@ Emacs, so it's nice to have the option if desired..
 
 #+BEGIN_src emacs-lisp
 (desktop-save-mode 1)
-(setq desktop-restore-eager 10)
+(setq desktop-restore-eager 1)
 (setq desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\|KILL\\)")
 (setq desktop-restore-frames nil)
 #+END_SRC
@@ -699,7 +699,9 @@ It can also be used for a "refactor-like" thing similar to query-replace.
   :config
   (progn
     (use-package thingatpt)
-    (setq anzu-mode-lighter "")
+    (setq anzu-mode-lighter ""
+          ;; spaceline already takes care of this
+          anzu-cons-mode-line-p nil)
     (set-face-attribute 'anzu-mode-line nil :foreground "yellow")))
 
 (add-hook 'prog-mode-hook #'anzu-mode)
