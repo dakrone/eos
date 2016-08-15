@@ -138,8 +138,8 @@ completion, prompt and term settings:
   :commands (eshell eshell-command)
   :bind ("C-c m" . eshell)
   :init
-  (setq eshell-glob-case-insensitive t
-        eshell-error-if-no-glob t
+  (setq eshell-glob-case-insensitive nil
+        eshell-error-if-no-glob nil
         eshell-scroll-to-bottom-on-input 'all)
   :config
   (defalias 'emacs 'find-file)
