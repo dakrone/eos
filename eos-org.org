@@ -57,9 +57,7 @@ And now the huge org-mode configuration
          ("C-c b" . org-iswitchb)
          ("C-c c" . org-capture)
          ("C-c M-p" . org-babel-previous-src-block)
-         ("C-c M-n" . org-babel-next-src-block)
-         ("C-c S" . org-babel-previous-src-block)
-         ("C-c s" . org-babel-next-src-block))
+         ("C-c M-n" . org-babel-next-src-block))
   :defer 30
   :config
   (progn
