@@ -146,6 +146,22 @@ And now let's add a hydra for the skeletons
     '(("<el" "" 'eos/org-wrap-elisp 0))))
 #+END_SRC
 
+* Thesaurus
+:PROPERTIES:
+:CUSTOM_ID: thesaurus
+:END:
+
+I'm playing around with [[https://github.com/hpdeifel/synosaurus][Synosaurus]] for thesaurus lookup in Emacs, it's bound to
+=C-c s=
+
+#+BEGIN_SRC emacs-lisp
+(use-package synosaurus
+  :ensure t
+  :init
+  (setq-default synosaurus-backend 'synosaurus-backend-wordnet)
+  (add-hook 'after-init-hook #'synosaurus-mode))
+#+END_SRC
+
 * Numbering rectangles
 :PROPERTIES:
 :CUSTOM_ID: rectangle-numbering
