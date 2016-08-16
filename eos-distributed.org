@@ -1,11 +1,13 @@
-#+TITLE: EOS: Matrix Module
+#+TITLE: EOS: Distributed Networking Module
 #+AUTHOR: Lee Hinman
 #+EMAIL: lee@writequit.org
 #+SETUPFILE: ~/eos/setupfiles/eos.setup
 
 #+BEGIN_SRC emacs-lisp
-(provide 'eos-matrix)
+(provide 'eos-distributed)
 #+END_SRC
+
+This module provides hooks for various distributed services.
 
 * EOS Matrix communication and synchronization module
 :PROPERTIES:
@@ -41,4 +43,38 @@ Add Matrix sauron support (for notifications)
   (when (and sr-running-p (and (boundp 'sauron-matrix-running)
                                (not sauron-matrix-running)))
     (matrix-sauron-start)))
+#+END_SRC
+
+* IPFS - Distributed file-system
+:PROPERTIES:
+:CUSTOM_ID: h:f14e0e8e-cd20-49b8-bd70-d0be9c5c2a0a
+:END:
+** Running the IPFS daemon
+:PROPERTIES:
+:CUSTOM_ID: h:05f91eba-02fa-47bf-8ca8-8dd129384517
+:END:
+
+I'd like the run the IPFS daemon as my local user, after installing and
+initializing it. Notice that this requires installing IPFS, and then already
+running =ipfs init= as your user, before running this service
+
+#+BEGIN_SRC conf :tangle out/ipfs.service
+[Unit]
+Description=IPFS Daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ipfs daemon
+ExecStop=/usr/bin/pkill ipfs
+Restart=always
+
+[Install]
+WantedBy=default.target
+#+END_SRC
+
+#+BEGIN_SRC sh :tangle sh/install-ipfs-service.sh
+ln -sfv $PWD/out/ipfs.service ~/.config/systemd/user/ipfs.service
+systemctl --user daemon-reload
+systemctl --user enable ipfs
+systemctl --user start ipfs
 #+END_SRC

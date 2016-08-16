@@ -19,7 +19,7 @@ el-modules = eos-core.el \
              eos-shell.el \
              eos-mail.el \
              eos-irc.el \
-             eos-matrix.el \
+             eos-distributed.el \
              eos-rss.el \
              eos-twitter.el \
              eos-leisure.el \
