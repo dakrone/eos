@@ -124,7 +124,8 @@ much slower than hideshow for large buffers.
               (put-text-property 0 (length display-string)
                                  'face 'hs-face display-string)
               (overlay-put ov 'before-string marker-string)
-              (overlay-put ov 'display display-string)))))
+              (overlay-put ov 'display display-string))))
+        hs-isearch-open t)
   :diminish hs-minor-mode
   :config
   (defvar hs-special-modes-alist

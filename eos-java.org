@@ -122,7 +122,11 @@ work with the ES codebase.
   (setq-local fill-column 140)
   ;; remove the stupid company-eclim backend
   (when (boundp 'company-backends)
-    (setq company-backends (delete 'company-eclim company-backends))))
+    (setq company-backends (delete 'company-eclim company-backends)))
+  ;; hide the initial comment in the file (usually a license) if hs-minor-mode
+  ;; is enabled
+  (when (boundp' hs-minor-mode)
+    (hs-hide-initial-comment-block)))
 
 (add-hook 'java-mode-hook #'eos/setup-java)
 
