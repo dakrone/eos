@@ -288,3 +288,78 @@ Export an HTML version of the buffer and scp it somewhere
 ;; Disable fill-column-indicator while scpasting
 (advice-add 'scpaste :around #'eos/surround-scpaste)
 #+END_SRC
+
+* Respecting whitespace with fill-column and whitespace-mode
+:PROPERTIES:
+:CUSTOM_ID: respect-the-width
+:END:
+
+Emacs needs to respect whitespace. This means no trailing spaces, keep things
+within 80-columns (or whatever the fill-column is) and all that.
+
+I have to hack something around this to make it fixed for org->html exports
+
+#+BEGIN_SRC emacs-lisp
+(use-package fill-column-indicator
+  :ensure t
+  :config
+  ;; fix for org -> html export
+  (defun fci-mode-override-advice (&rest args))
+  (use-package org)
+  (advice-add 'org-html-fontify-code :around
+              (lambda (fun &rest args)
+                (advice-add 'fci-mode :override #'fci-mode-override-advice)
+                (let ((result  (apply fun args)))
+                  (advice-remove 'fci-mode #'fci-mode-override-advice)
+                  result)))
+
+  (defvar eos/fci-disabled nil)
+  (make-variable-buffer-local 'eos/fci-disabled)
+  ;; Add a hook that disables fci if enabled when the window changes and it
+  ;; isn't wide enough to display it.
+  (defun eos/maybe-disable-fci ()
+    (interactive)
+    ;; Disable FCI if necessary
+    (when (and fci-mode
+               (< (window-width) (or fci-rule-column fill-column)))
+      (fci-mode -1)
+      (setq-local eos/fci-disabled t))
+    ;; Enable FCI if necessary
+    (when (and eos/fci-disabled
+               (eq fci-mode nil)
+               (> (window-width) (or fci-rule-column fill-column)))
+      (fci-mode 1)
+      (setq-local eos/fci-disabled nil)))
+
+  (defun eos/add-fci-disabling-hook ()
+    (interactive)
+    (add-hook 'window-configuration-change-hook
+              #'eos/maybe-disable-fci))
+  (add-hook 'prog-mode-hook #'eos/add-fci-disabling-hook))
+#+END_SRC
+
+There's also the built-in whitespace mode, which I use to highlight things over
+the fill-column (80 in most programming modes, 140 in Java :P)
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/turn-on-whitespace-mode ()
+  (setq-local whitespace-line-column fill-column)
+  (setq-local whitespace-style '(face empty tabs lines-tail trailing))
+  (whitespace-mode +1)
+  (diminish 'whitespace-mode))
+
+(add-hook 'prog-mode-hook #'eos/turn-on-whitespace-mode)
+#+END_SRC
+
+And a helper to turn off whitespace mode when exporting org documents
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :config
+  (advice-add 'org-html-fontify-code :around
+              (lambda (fun &rest args)
+                (whitespace-mode -1)
+                (let ((result  (apply fun args)))
+                  (whitespace-mode +1)
+                  result))))
+#+END_SRC

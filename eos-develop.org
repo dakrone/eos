@@ -37,49 +37,6 @@ I need to hide the lighter for subword mode:
   (add-hook #'log4j-mode-hook 'eos/turn-on-hl-line))
 #+END_SRC
 
-I have to hack something around this to make it fixed for org->html exports
-
-#+BEGIN_SRC emacs-lisp
-(use-package fill-column-indicator
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'fci-mode)
-  :config
-  ;; fix for org -> html export
-  (defun fci-mode-override-advice (&rest args))
-  (use-package org)
-  (advice-add 'org-html-fontify-code :around
-              (lambda (fun &rest args)
-                (advice-add 'fci-mode :override #'fci-mode-override-advice)
-                (let ((result  (apply fun args)))
-                  (advice-remove 'fci-mode #'fci-mode-override-advice)
-                  result)))
-
-  (defvar eos/fci-disabled nil)
-  (make-variable-buffer-local 'eos/fci-disabled)
-  ;; Add a hook that disables fci if enabled when the window changes and it
-  ;; isn't wide enough to display it.
-  (defun eos/maybe-disable-fci ()
-    (interactive)
-    ;; Disable FCI if necessary
-    (when (and fci-mode
-               (< (window-width) (or fci-rule-column fill-column)))
-      (fci-mode -1)
-      (setq-local eos/fci-disabled t))
-    ;; Enable FCI if necessary
-    (when (and eos/fci-disabled
-               (eq fci-mode nil)
-               (> (window-width) (or fci-rule-column fill-column)))
-      (fci-mode 1)
-      (setq-local eos/fci-disabled nil)))
-
-  (defun eos/add-fci-disabling-hook ()
-    (interactive)
-    (add-hook 'window-configuration-change-hook
-              #'eos/maybe-disable-fci))
-  (add-hook 'prog-mode-hook #'eos/add-fci-disabling-hook))
-#+END_SRC
-
 Highlight idle things, but only in certain modes
 
 #+BEGIN_SRC emacs-lisp
