@@ -68,7 +68,7 @@ rpm-install mpc
 mkdir -p ~/Music
 mkdir -p ~/.mpd/playlists
 ln -svf $PWD/out/mpd.conf ~/.mpd.conf
-ln -sfv $PWD/out/mpd.service ~/.config/systemd/user/mpd.service
+cp -fv $PWD/out/mpd.service ~/.config/systemd/user/mpd.service
 systemctl --user daemon-reload
 systemctl --user enable mpd
 systemctl --user start mpd

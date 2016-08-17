@@ -307,7 +307,7 @@ WantedBy=default.target
 #+BEGIN_SRC sh :tangle sh/install-redshift.sh
 deb-install redshift
 rpm-install redshift
-ln -sfv $PWD/out/redshift.service ~/.config/systemd/user/redshift.service
+cp -fv $PWD/out/redshift.service ~/.config/systemd/user/redshift.service
 systemctl --user daemon-reload
 systemctl --user enable redshift
 systemctl --user start redshift

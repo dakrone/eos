@@ -73,7 +73,7 @@ WantedBy=default.target
 #+END_SRC
 
 #+BEGIN_SRC sh :tangle sh/install-ipfs-service.sh
-ln -sfv $PWD/out/ipfs.service ~/.config/systemd/user/ipfs.service
+cp -fv $PWD/out/ipfs.service ~/.config/systemd/user/ipfs.service
 systemctl --user daemon-reload
 systemctl --user enable ipfs
 systemctl --user start ipfs
