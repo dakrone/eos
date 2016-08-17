@@ -713,11 +713,9 @@ definitions:
   :init (add-hook 'emacs-lisp-mode-hook #'elisp-slime-nav-mode))
 #+END_SRC
 
-Borrowed from Steve Purcell's config. This pretty-prints the results.
+Some minor Elisp things borrowed from Steve Purcell's config.
 
 #+begin_src emacs-lisp
-(bind-key "M-:" #'pp-eval-expression)
-
 (defun eos/eval-last-sexp-or-region (prefix)
  "Eval region from BEG to END if active, otherwise the last sexp."
  (interactive "P")
@@ -729,6 +727,16 @@ Borrowed from Steve Purcell's config. This pretty-prints the results.
 
 (define-key lisp-mode-shared-map (kbd "RET") 'reindent-then-newline-and-indent)
 #+end_src
+
+Here's something that makes minibuffer evaluation a lot better, by pretti-fying
+the contents, and other such things. It's a package called "eval-expr".
+
+#+BEGIN_SRC emacs-lisp
+(use-package eval-expr
+  :ensure t
+  :init
+  (add-hook 'after-init-hook #'eval-expr-install))
+#+END_SRC
 
 Finally, a couple of helpers for the minibuffer:
 
