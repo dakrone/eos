@@ -674,6 +674,8 @@ definitions:
 Some minor Elisp things borrowed from Steve Purcell's config.
 
 #+begin_src emacs-lisp
+(bind-key "M-:" #'pp-eval-expression)
+
 (defun eos/eval-last-sexp-or-region (prefix)
  "Eval region from BEG to END if active, otherwise the last sexp."
  (interactive "P")
