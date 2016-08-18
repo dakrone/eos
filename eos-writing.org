@@ -343,6 +343,7 @@ the fill-column (80 in most programming modes, 140 in Java :P)
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/turn-on-whitespace-mode ()
+  (interactive)
   (setq-local whitespace-line-column fill-column)
   (setq-local whitespace-style '(face empty tabs lines-tail trailing))
   (whitespace-mode +1)

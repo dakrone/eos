@@ -120,6 +120,9 @@ work with the ES codebase.
   ;; Generic java stuff things
   (setq-local fci-rule-column 99)
   (setq-local fill-column 140)
+  (when (fboundp 'eos/turn-on-whitespace-mode)
+    (whitespace-mode -1)
+    (eos/turn-on-whitespace-mode))
   ;; remove the stupid company-eclim backend
   (when (boundp 'company-backends)
     (setq company-backends (delete 'company-eclim company-backends)))
