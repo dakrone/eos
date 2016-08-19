@@ -470,6 +470,9 @@ checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to
                "mvn compile test-compile")
               ("gradle compile" .
                "gradle compileJava compileTestJava --console=plain")))))
+  (defun eshell/comp ()
+    "Run multi-compile from the directory you are currently located in"
+    (multi-compile-run))
   ;; Make M-x compile invoke multi-compile
   (defalias 'compile 'multi-compile-run))
 #+END_SRC
