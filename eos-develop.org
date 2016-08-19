@@ -108,11 +108,11 @@ showing them."
       (if eos/hs-fold-show-only-methods-active-p
           (progn
             (hs-show-all)
-            (setq eos/hs-fold-show-only-methods-active-p nil))
+            (setq-local eos/hs-fold-show-only-methods-active-p nil))
         (progn
           (goto-char (point-min))
           (hs-hide-level eos/hs-level)
-          (setq eos/hs-fold-show-only-methods-active-p t))))))
+          (setq-local eos/hs-fold-show-only-methods-active-p t))))))
 #+END_SRC
 
 Uses =M-n= and =M-p= to jump between the same variable in multiple places
