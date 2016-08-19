@@ -574,15 +574,27 @@ touched the line wherever your current cursor is.
   (setq git-messenger:show-detail t))
 #+END_SRC
 
-Ediff is fantastic for looking through diffs
+Ediff is fantastic for looking through diffs, and it's what magit can invoke on
+merge conflicts.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ediff
-  :config
-  (progn
-    (setq
-     ;; Always split nicely for wide screens
-     ediff-split-window-function 'split-window-horizontally)))
+  :init
+  (setq
+   ;; Always split nicely for wide screens
+   ediff-split-window-function 'split-window-horizontally)
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff
+     ediff-current-difference nil 'C nil
+     (concat
+      (ediff-get-region-contents
+       ediff-current-difference 'A ediff-control-buffer)
+      (ediff-get-region-contents
+       ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-d-to-ediff-mode-map ()
+    (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map))
 #+END_SRC
 
 Finally, a nice helper to browse code whenever it remotely may be,
