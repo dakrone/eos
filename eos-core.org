@@ -577,6 +577,10 @@ when they are popped up. I do this with Popwin
     (defvar popwin:special-display-config-backup popwin:special-display-config)
     (setq display-buffer-function 'popwin:display-buffer)
 
+    ;; remove compilation-mode from popwin, I want a full window
+    (setq popwin:special-display-config
+          (remove '(compilation-mode :noselect t) popwin:special-display-config))
+
     ;; basic
     (push '("*Help*" :stick t) popwin:special-display-config)
     (push '("*Pp Eval Output*" :stick t) popwin:special-display-config)
