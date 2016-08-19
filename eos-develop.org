@@ -58,7 +58,7 @@ much slower than hideshow for large buffers.
 (use-package hideshow
   :bind (("C-c TAB" . hs-toggle-hiding)
          ("C-\\" . hs-toggle-hiding)
-         ("M-\\" . hs-hide-all)
+         ("M-\\" . eos/hs-fold-show-only-methods)
          ("M-+" . hs-show-all))
   :init
   (add-hook #'prog-mode-hook #'hs-minor-mode)
@@ -92,7 +92,27 @@ much slower than hideshow for large buffers.
               (bibtex-mode ("@\\S(*\\(\\s(\\)" 1))
               (java-mode "{" "}" "/[*/]" nil nil)
               (js-mode "{" "}" "/[*/]" nil)
-              (javascript-mode  "{" "}" "/[*/]" nil)))))
+              (javascript-mode  "{" "}" "/[*/]" nil))))
+
+  (defvar eos/hs-level 2
+    "Default level to hide at when calling
+    `eos/fold-show-only-methods'. This is buffers may set this to
+    be buffer-local.")
+
+  (setq eos/hs-fold-show-only-methods-active-p nil)
+  (defun eos/hs-fold-show-only-methods ()
+    "Toggle between hiding all methods using `eos/hs-level' or
+showing them."
+    (interactive)
+    (save-excursion
+      (if eos/hs-fold-show-only-methods-active-p
+          (progn
+            (hs-show-all)
+            (setq eos/hs-fold-show-only-methods-active-p nil))
+        (progn
+          (goto-char (point-min))
+          (hs-hide-level eos/hs-level)
+          (setq eos/hs-fold-show-only-methods-active-p t))))))
 #+END_SRC
 
 Uses =M-n= and =M-p= to jump between the same variable in multiple places
