@@ -289,6 +289,21 @@ Export an HTML version of the buffer and scp it somewhere
 (advice-add 'scpaste :around #'eos/surround-scpaste)
 #+END_SRC
 
+* Escaping strings
+:PROPERTIES:
+:CUSTOM_ID: h:d631d353-3dfb-4daa-9b87-04e0343cc09a
+:END:
+
+String-edit is a nice mode for editing strings without dealing with all the
+escaping. I bind this to =C-c "= to make it similar to Org-mode's =C-c '=
+binding.
+
+#+BEGIN_SRC emacs-lisp
+(use-package string-edit
+  :ensure t
+  :bind (("C-c \"" . string-edit-at-point)))
+#+END_SRC
+
 * Respecting whitespace with fill-column and whitespace-mode
 :PROPERTIES:
 :CUSTOM_ID: respect-the-width
