@@ -96,7 +96,10 @@ bindings I use more frequently:
     (add-hook 'after-init-hook #'helm-mode)
     (add-hook 'after-init-hook #'helm-autoresize-mode)
     (add-hook 'after-init-hook #'helm-adaptive-mode)
-    (add-hook 'after-init-hook #'helm-push-mark-mode))
+    (add-hook 'after-init-hook #'helm-push-mark-mode)
+    (add-hook 'after-init-hook #'helm-popup-tip-mode))
+  (use-package helm-sys
+    :init (add-hook 'after-init-hook #'helm-top-poll-mode))
   (use-package helm-grep
     :config
     (setq helm-grep-truncate-lines nil)
@@ -148,21 +151,21 @@ bindings I use more frequently:
         ;; use CURL, not url-retrieve-synchronously
         helm-net-prefer-curl t
         ;; be idle for this many seconds, before updating in delayed sources.
-        helm-input-idle-delay 0.01
+        helm-input-idle-delay 0.05
         ;; wider buffer name in helm-buffers-list
         helm-buffer-max-length 28 ;; default is 20
         ;; instead of "..." use a smaller unicode ellipsis
         helm-buffers-end-truncated-string "…"
         ;; open helm buffer in another window
-        helm-split-window-default-side 'other
-        ;; open helm buffer inside current window, don't occupy whole other window
-        helm-split-window-in-side-p t
+        ;;helm-split-window-default-side 'other
         ;; set to nil and use <C-backspace> to toggle it in helm-find-files
         helm-ff-auto-update-initial-value nil
         ;; if I change the resplit state, re-use my settings
         helm-reuse-last-window-split-state t
         ;; don't delete windows to always have 2
-        helm-always-two-windows nil
+        helm-always-two-windows t
+        ;; open helm buffer inside current window, don't occupy whole other window
+        helm-split-window-in-side-p t
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
@@ -216,9 +219,12 @@ bindings I use more frequently:
                                   ("Asia/Tokyo" "Tokyo")
                                   ("Australia/Sydney" "Sydney")))
 
-  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to do persistent action
-  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB works in terminal
-  (define-key helm-map (kbd "C-z")  'helm-select-action) ; list actions using C-z
+  ;; rebind tab to do persistent action
+  (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action)
+  ;; make TAB works in terminal
+  (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action)
+  ;; list actions using C-z
+  (define-key helm-map (kbd "C-z")  'helm-select-action)
 
   (define-key helm-map (kbd "C-p")   'helm-previous-line)
   (define-key helm-map (kbd "C-n")   'helm-next-line)
@@ -442,6 +448,10 @@ checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to
   :ensure t
   :commands multi-compile-run
   :bind ("<f5>" . multi-compile-run)
+  :init
+  (defun eshell/comp ()
+    "Run multi-compile from the directory you are currently located in"
+    (multi-compile-run))
   :config
   (require 's)
   (setq multi-compile-completion-system 'helm
@@ -470,9 +480,6 @@ checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to
                "mvn compile test-compile")
               ("gradle compile" .
                "gradle compileJava compileTestJava --console=plain")))))
-  (defun eshell/comp ()
-    "Run multi-compile from the directory you are currently located in"
-    (multi-compile-run))
   ;; Make M-x compile invoke multi-compile
   (defalias 'compile 'multi-compile-run))
 #+END_SRC
