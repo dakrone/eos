@@ -101,6 +101,8 @@ And now the huge org-mode configuration
           org-src-tab-acts-natively t
           ;; Imenu should use 3 depth instead of 2
           org-imenu-depth 3
+          ;; Use inline footnotes by default
+          org-footnote-define-inline t
           ;; put state change log messages into a drawer
           org-log-into-drawer t
           ;; special begin/end of line to skip tags and stars

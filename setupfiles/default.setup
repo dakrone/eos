@@ -11,4 +11,4 @@
 #+TODO: TODO(t) SOMEDAY(s) INPROGRESS(i) HOLD(h) WAITING(w@/!) NEEDSREVIEW(n@/!) | DONE(d)
 #+TODO: TODO(t) INPROGRESS(i) | CANCELLED(c@/!)
 #+TAGS: export(e) noexport(n)
-#+STARTUP: fold nodlcheck lognotestate content
+#+STARTUP: fninline fold nodlcheck lognotestate content
