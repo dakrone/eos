@@ -229,6 +229,7 @@ Exit the save between databases if there is user input."
 
 (add-hook 'c-mode-hook #'eos/setup-semantic-mode)
 (add-hook 'java-mode-hook #'eos/setup-semantic-mode)
+(add-hook 'emacs-lisp-mode-hook #'semantic-mode)
 #+END_SRC
 
 ** Emacs' Built In Electric Modes (pair/indent/layout)
