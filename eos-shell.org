@@ -162,7 +162,9 @@ completion, prompt and term settings:
           ;; my prompt is easy enough to see
           eshell-highlight-prompt nil
           ;; treat 'echo' like shell echo
-          eshell-plain-echo-behavior t)
+          eshell-plain-echo-behavior t
+          ;; add -lh to the `ls' flags
+          eshell-ls-initial-args "-lh")
 
     ;; Visual commands
     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
@@ -196,12 +198,8 @@ completion, prompt and term settings:
       "Change directory to the project's root."
       (eshell/cd (locate-dominating-file default-directory ".git")))
 
-    (defun eshell/l (&rest args) "Same as `ls -lh'"
-           (apply #'eshell/ls "-lh" args))
-    (defun eshell/ll (&rest args) "Same as `ls -lh'"
-           (apply #'eshell/ls "-lh" args))
-    (defun eshell/la (&rest args) "Same as `ls -alh'"
-           (apply #'eshell/ls "-alh" args))
+    (defalias 'eshell/l 'eshell/ls)
+    (defalias 'eshell/ll 'eshell/ls)
 
     (defun eshell/ec (pattern)
       (if (stringp pattern)
