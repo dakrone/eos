@@ -170,7 +170,7 @@ completion, prompt and term settings:
     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
                                    "ncftp" "pine" "tin" "trn" "elm" "vim"
                                    "nmtui" "alsamixer" "htop" "el" "elinks"
-                                   "ssh"))
+                                   "ssh" "nethack"))
     (setq eshell-visual-subcommands '(("git" "log" "diff" "show")
                                       ("vagrant" "ssh")))
 
