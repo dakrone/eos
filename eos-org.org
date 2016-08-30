@@ -389,10 +389,16 @@ And now the huge org-mode configuration
               id)))))
 
       (defun eos/org-add-ids-to-headlines-in-file ()
-        "Add CUSTOM_ID properties to all headlines in the
-   current file which do not already have one."
+        "Add CUSTOM_ID properties to all headlines in the current
+   file which do not already have one. Only adds ids if the
+   `auto-id' option is set to `t' in the file somewhere. ie,
+   ,#+OPTIONS: auto-id:t"
         (interactive)
-        (org-map-entries (lambda () (eos/org-custom-id-get (point) 'create))))
+        (save-excursion
+          (widen)
+          (goto-char (point-min))
+          (when (re-search-forward "^#\\+OPTIONS:.*auto-id:t" (point-max) t)
+            (org-map-entries (lambda () (eos/org-custom-id-get (point) 'create))))))
 
       ;; automatically add ids to captured headlines
       (add-hook 'org-capture-prepare-finalize-hook
