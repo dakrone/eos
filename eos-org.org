@@ -73,6 +73,11 @@ And now the huge org-mode configuration
     ;; enabled export backends
     ;; (use-package ox-rss)
     (custom-set-variables '(org-export-backends '(ascii html latex md)))
+
+    ;; Allow's electric-pair-mode to surround things with = and ~ in org-mode
+    (modify-syntax-entry ?~ "(~" org-mode-syntax-table)
+    (modify-syntax-entry ?= "(=" org-mode-syntax-table)
+
     (setq org-directory (file-truename "~/org")
           ;; follow links by pressing ENTER on them
           org-return-follows-link t
