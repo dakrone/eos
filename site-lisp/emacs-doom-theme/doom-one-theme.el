@@ -33,7 +33,7 @@
 
   (let* ((bg             "#262c34")
          (bg-d           (if window-system "#1f252b" "#1f1f1f"))
-         (fg             "#C5CACF")
+         (fg             "#B5BABF")
 
          (highlight      blue)
          (vertical-bar   black)
@@ -143,6 +143,11 @@
      `(powerline-inactive1         ((,c (:foreground ,modeline-fg-inactive :background ,modeline-bg-inactive))))
      `(powerline-inactive2         ((,c (:foreground ,modeline-fg-inactive :background ,modeline-bg-inactive))))
 
+     ;; Dired/dired-k
+     `(dired-directory             ((,c (:foreground ,orange))))
+     `(dired-ignored               ((,c (:foreground ,comments))))
+     `(dired-k-directory           ((,c (:foreground ,blue))))
+
      ;; Search
      `(isearch                     ((,c (:foreground ,search-bg :inverse-video t))))
      `(isearch-lazy-highlight-face ((,c (:background ,search-rest-bg))))
@@ -225,6 +230,8 @@
      ;; pos-tip
      `(popup                       ((,c (:inherit tooltip))))
      `(popup-tip-face              ((,c (:inherit tooltip))))
+     ;; stripe-buffer
+     `(stripe-highlight            ((,c (:background ,bg))))
      ;; Volatile highlights
      `(vhl/default-face            ((,c (:background ,grey-d))))
      ;; Rainbow delimiters
@@ -279,10 +286,12 @@
      `(web-mode-block-control-face     ((,c (:foreground ,orange))))
      ;;`(web-mode-html-tag-bracket-face  ((,c (:foreground ,operators))))
      ;; markdown-mode
-     `(markdown-header-face           ((,c (:foreground ,red :bold ,bold))))
+     `(markdown-header-face           ((,c (:foreground ,red :bold nil))))
      `(markdown-header-delimiter-face ((,c (:inherit markdown-header-face))))
-     `(markdown-blockquote-face ((,c (:foreground ,violet))))
-     `(markdown-markup-face     ((,c (:foreground ,operators))))
+     `(markdown-metadata-key-face     ((,c (:foreground ,red))))
+     ;; `(markdown-blockquote-face ((,c (:foreground ,violet))))
+     `(markdown-markup-face     ((,c (:foreground ,grey))))
+     ;; `(markdown-markup-face     ((,c (:foreground ,operators))))
      `(markdown-pre-face        ((,c (:foreground ,green))))
      `(markdown-inline-face     ((,c (:foreground ,cyan))))
      `(markdown-list-face       ((,c (:foreground ,magenta))))
@@ -295,8 +304,8 @@
      `(markdown-header-face-5   ((,c (:inherit markdown-header-face))))
      `(markdown-header-face-6   ((,c (:inherit markdown-header-face))))
      ;;`(markdown-header-rule-face       ((,c (:inherit shadow))))
-     ;;`(markdown-italic-face            ((,c (:inherit italic))))
-     ;;`(markdown-bold-face              ((,c (:inherit bold))))
+     `(markdown-italic-face            ((,c (:inherit italic :foreground ,violet))))
+     `(markdown-bold-face              ((,c (:inherit bold :foreground ,orange))))
      ;;`(markdown-link-face              ((,c (:inherit shadow))))
      ;;`(markdown-link-title-face        ((,c (:inherit link))))
      ;;`(markdown-url-face               ((,c (:inherit link))))
