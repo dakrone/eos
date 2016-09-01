@@ -2,6 +2,7 @@
 #+AUTHOR: Lee Hinman
 #+EMAIL: lee@writequit.org
 #+SETUPFILE: ~/eos/setupfiles/eos.setup
+#+OPTIONS: auto-id:t
 
 #+BEGIN_SRC emacs-lisp
 (provide 'eos-org)
@@ -72,7 +73,7 @@ And now the huge org-mode configuration
     (add-hook 'org-mode-hook #'eos/org-mode-hook)
     ;; enabled export backends
     ;; (use-package ox-rss)
-    (custom-set-variables '(org-export-backends '(ascii html latex md)))
+    (custom-set-variables '(org-export-backends '(ascii beamer html latex md)))
 
     ;; Allow's electric-pair-mode to surround things with = and ~ in org-mode
     (modify-syntax-entry ?~ "(~" org-mode-syntax-table)
@@ -702,6 +703,33 @@ modes required:
 :END:
 
 There are a bunch of different ways to present things
+
+** Presentations with beamer
+:PROPERTIES:
+:CUSTOM_ID: h:a40400bb-3995-4963-9e45-183f1822e172
+:END:
+
+Beamer is actually built-into org-mode, but requires a few extra libraries I
+wanted to document here:
+
+- texlive
+- texlive-latex
+- texlive-wrapfig
+- texlive-ulem
+- texlive-capt-of
+- texlive-minted
+
+#+BEGIN_SRC emacs-lisp
+(use-package ox-latex
+  :config
+  (add-to-list 'org-latex-packages-alist '("" "minted" nil))
+  (setq org-latex-listings 'minted)
+  (setq
+   org-latex-pdf-process
+   '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+     "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+#+END_SRC
 
 ** Presentations with org-present
 :PROPERTIES:
