@@ -28,6 +28,7 @@ run. I use it for the path on OSX and JAVA_HOME everywhere else.
                                            "WORKON_HOME"
                                            "RUST_SRC_PATH"
                                            "GPG_AGENT_INFO"
+                                           "MEGHANADA_GRADLE_VERSION"
                                            "MANPATH"))
     (exec-path-from-shell-initialize)))
 #+END_SRC

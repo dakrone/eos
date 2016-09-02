@@ -82,6 +82,9 @@ SAVEHIST=5000
 # Default JAVA_HOME
 export JAVA_HOME=/opt/java/current
 export PATH=$JAVA_HOME/bin:$PATH
+
+# Use gradle 2.13 for meghanada
+export MEGHANADA_GRADLE_VERSION=2.13
 #+END_SRC
 
 I read OS and machine-specific things in .zshenv, usually because they're pretty

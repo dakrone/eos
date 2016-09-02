@@ -299,7 +299,6 @@ active development, so I'm trying it out.
 
 #+BEGIN_SRC emacs-lisp
 (when (file-exists-p "~/src/elisp/meghanada-emacs/")
-  (setenv "MEGHANADA_GRADLE_VERSION" "2.13")
   (add-to-list 'load-path "~/src/elisp/meghanada-emacs/")
   (add-to-list 'load-path "~/src/elisp/meghanada-emacs/company-meghanada/")
   (add-to-list 'load-path "~/src/elisp/meghanada-emacs/flycheck-meghanada")
