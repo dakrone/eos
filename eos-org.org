@@ -442,6 +442,19 @@ for an issue. So there's a nice exporter that does this for me: =ox-gfm=
                           (cons 'gfm org-export-backends)))
 #+END_SRC
 
+** exporting to tufte html
+:PROPERTIES:
+:CUSTOM_ID: h:456bf59e-a548-4e53-b7dc-2c8c868029fe
+:END:
+
+I wrote [[https://github.com/dakrone/ox-tufte][a project]] to do this, but it is not yet available on MELPA.
+
+#+BEGIN_SRC emacs-lisp
+(when (file-exists-p "~/src/elisp/ox-tufte")
+  (add-to-list 'load-path "~/src/elisp/ox-tufte")
+  (require 'ox-tufte))
+#+END_SRC
+
 ** org-clock
 :PROPERTIES:
 :CUSTOM_ID: org-clock
