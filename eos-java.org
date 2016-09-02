@@ -288,3 +288,26 @@ which starts up ES listening for events, and then =M-x realgud:jdb= and using
 (use-package realgud
   :ensure t)
 #+END_SRC
+
+* Java development with meghanada
+:PROPERTIES:
+:CUSTOM_ID: h:cfc790e0-9777-4cf1-a60d-25b0e9449462
+:END:
+
+[[https://github.com/mopemope/meghanada-emacs][Meghanada-mode]] is a new Java development mode that is supposed to be under
+active development, so I'm trying it out.
+
+#+BEGIN_SRC emacs-lisp
+(when (file-exists-p "~/src/elisp/meghanada-emacs/")
+  (setenv "MEGHANADA_GRADLE_VERSION" "2.13")
+  (add-to-list 'load-path "~/src/elisp/meghanada-emacs/")
+  (add-to-list 'load-path "~/src/elisp/meghanada-emacs/company-meghanada/")
+  (add-to-list 'load-path "~/src/elisp/meghanada-emacs/flycheck-meghanada")
+  (require 'meghanada-mode)
+  (require 'company-meghanada)
+  (require 'flycheck-meghanada)
+  (defun eos/set-up-meghanada ()
+    (add-to-list 'company-backends '(company-meghanada :with company-dabbrev-code))
+    (setq company-transformers '(company-sort-by-backend-importance)))
+  (add-hook 'meghanada-mode-hook #'eos/set-up-meghanada))
+#+END_SRC
