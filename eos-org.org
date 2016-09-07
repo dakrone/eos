@@ -450,9 +450,13 @@ for an issue. So there's a nice exporter that does this for me: =ox-gfm=
 I wrote [[https://github.com/dakrone/ox-tufte][a project]] to do this, but it is not yet available on MELPA.
 
 #+BEGIN_SRC emacs-lisp
-(when (file-exists-p "~/src/elisp/ox-tufte")
-  (add-to-list 'load-path "~/src/elisp/ox-tufte")
-  (require 'ox-tufte))
+(if (file-exists-p "~/src/elisp/ox-tufte")
+    (progn
+      (add-to-list 'load-path "~/src/elisp/ox-tufte")
+      (require 'ox-tufte))
+  (use-package ox-tufte
+    :ensure t
+    :init (require 'ox-tufte)))
 #+END_SRC
 
 ** org-clock
@@ -527,7 +531,7 @@ Publishing org-mode files to my hosting provider:
            :base-directory ,(file-truename "~/org/writequit/")
            :base-extension "org"
            :publishing-directory "/ssh:writequit.org:~/www/"
-           :publishing-function org-html-publish-to-html
+           :publishing-function org-html-publish-to-tufte-html
            :with-toc nil
            :html-preamble t
            :html-head-extra
@@ -594,7 +598,7 @@ Publishing org-mode files to my hosting provider:
            :base-extension "org\\|html"
            :publishing-directory
            "/ssh:writequit.org:~/www/org/"
-           :publishing-function org-html-publish-to-html
+           :publishing-function org-html-publish-to-tufte-html
            :with-toc t
            :html-preamble t)
           ("org-images"

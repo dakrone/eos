@@ -63,7 +63,7 @@ all over the place and take forever to load ಠ_ಠ
   "#+TITLE: " str \n
   "#+AUTHOR: " (user-full-name) \n
   "#+EMAIL: " user-mail-address \n
-  "#+SETUPFILE: ~/eos/setupfiles/default.setup
+  "#+SETUPFILE: ~/eos/setupfiles/tufte.setup
 
 | *Author* | {{{author}}} ({{{email}}})    |
 | *Date*   | {{{time(%Y-%m-%d %H:%M:%S)}}} |
