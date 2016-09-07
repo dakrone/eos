@@ -52,7 +52,8 @@ The all-seeing eye of Sauron
   (add-hook 'sauron-event-block-functions #'tsp/hide-tweet-counts)
 
   (sauron-start-hidden)
-  ;; Need to stop tracking notifications, because sauron will be sending notifications!
+  ;; Need to stop tracking notifications, because sauron will be sending
+  ;; notifications!
   (sauron-notifications-stop)
   (add-hook 'sauron-event-added-functions 'sauron-alert-el-adapter)
   :commands (sauron-toggle-hide-show)
@@ -78,5 +79,32 @@ The all-seeing eye of Sauron
                       3
                       (concat "Finished command in " (buffer-name))
                       (lambda () (switch-to-buffer-other-window (buffer-name)))
-                      nil)))
+                      nil))
+
+  ;; This is used to mimic zsh's REPORTTIME feature, but with sauron alerting!
+  (use-package eshell
+    :config
+    ;; Seconds a command must take before showing an alert
+    (setq eos/eshell-time-before-alert 5.0)
+
+    (defun eos/eshell-precommand ()
+      (interactive)
+      (setq-local eos/eshell-command-start-time (current-time)))
+
+    (defun eos/eshell-command-finished ()
+      (interactive)
+      (when (> (float-time (time-subtract (current-time)
+                                          eos/eshell-command-start-time))
+               eos/eshell-time-before-alert)
+        (sauron-add-event major-mode
+                          (if (zerop eshell-last-command-status)
+                              3
+                            4)
+                          (format "EShell: command [%s] finished, status: %s"
+                                  eshell-last-command-name
+                                  eshell-last-command-status)
+                          (lambda () (switch-to-buffer-other-window (buffer-name)))
+                          nil)))
+    (add-hook 'eshell-pre-command-hook #'eos/eshell-precommand)
+    (add-hook 'eshell-post-command-hook #'eos/eshell-command-finished)))
 #+END_SRC
