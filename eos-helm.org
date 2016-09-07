@@ -479,7 +479,5 @@ checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to
               ("mvn compile" .
                "mvn compile test-compile")
               ("gradle compile" .
-               "gradle compileJava compileTestJava --console=plain")))))
-  ;; Make M-x compile invoke multi-compile
-  (defalias 'compile 'multi-compile-run))
+               "gradle compileJava compileTestJava --console=plain"))))))
 #+END_SRC
