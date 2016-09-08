@@ -103,8 +103,6 @@ And now the huge org-mode configuration
           org-adapt-indentation nil
           ;; preserve the indentation inside of source blocks
           org-src-preserve-indentation t
-          ;; use the mode-specific TAB inside of source blocks
-          org-src-tab-acts-natively t
           ;; Imenu should use 3 depth instead of 2
           org-imenu-depth 3
           ;; Use inline footnotes by default
