@@ -147,7 +147,7 @@ completion, prompt and term settings:
         eshell-review-quick-commands nil
         eshell-smart-space-goes-to-end t)
   ;; Initialize "smart" mode
-  (add-hook 'eshell-mode-hook #'eshell-smart-initialize)
+  ;;(add-hook 'eshell-mode-hook #'eshell-smart-initialize)
   :config
   (defalias 'emacs 'find-file)
   (defalias 'hff 'hexl-find-file)
@@ -222,7 +222,20 @@ completion, prompt and term settings:
       "Clear the eshell buffer"
       (interactive)
       (let ((eshell-buffer-maximum-lines 0))
-        (eshell-truncate-buffer))))
+        (eshell-truncate-buffer)
+        (let ((inhibit-read-only t))
+          (erase-buffer)
+          (eshell-send-input)))))
+
+  (defun eshell/icat (&rest args)
+    "Display image(s)."
+    (let ((elems (eshell-flatten-list args)))
+      (while elems
+        (eshell-printn
+         (propertize " "
+                     'display (create-image (expand-file-name (car elems)))))
+        (setq elems (cdr elems))))
+    nil)
 
   (add-hook 'eshell-mode-hook #'eos/setup-eshell)
 
