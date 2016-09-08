@@ -119,7 +119,7 @@ First, a function to be called when eshell-mode is entered
   (buffer-disable-undo)
   (local-set-key (kbd "M-P") 'eshell-previous-prompt)
   (local-set-key (kbd "M-N") 'eshell-next-prompt)
-  (local-set-key (kbd "M-R") 'eshell-list-history)
+  (local-set-key (kbd "M-R") 'eshell-previous-matching-input)
   (local-set-key (kbd "M-r") 'helm-eshell-history))
 #+END_SRC
 
@@ -139,9 +139,15 @@ completion, prompt and term settings:
   :commands (eshell eshell-command)
   :bind ("C-c m" . eshell)
   :init
+  (require 'em-smart)
   (setq eshell-glob-case-insensitive nil
         eshell-error-if-no-glob nil
-        eshell-scroll-to-bottom-on-input 'all)
+        eshell-scroll-to-bottom-on-input nil
+        eshell-where-to-jump 'begin
+        eshell-review-quick-commands nil
+        eshell-smart-space-goes-to-end t)
+  ;; Initialize "smart" mode
+  (add-hook 'eshell-mode-hook #'eshell-smart-initialize)
   :config
   (defalias 'emacs 'find-file)
   (defalias 'hff 'hexl-find-file)
