@@ -89,7 +89,10 @@ bindings I use more frequently:
   :config
   (use-package helm-files
     :config (setq helm-ff-file-compressed-list '("gz" "bz2" "zip" "tgz" "xz" "txz")))
-  (use-package helm-buffers)
+  (use-package helm-buffers
+    :config
+    (add-to-list 'helm-boring-buffer-regexp-list "^TAGS$")
+    (add-to-list 'helm-boring-buffer-regexp-list "git-gutter:diff"))
   (use-package helm-mode
     :diminish helm-mode
     :init
@@ -127,6 +130,16 @@ bindings I use more frequently:
                 ("s s" . helm-projectile-ag))
     :init
     (helm-projectile-on)
+    (helm-delete-action-from-source
+     "Grep in projects `C-s'"
+     helm-source-projectile-projects)
+    (helm-add-action-to-source
+     "Ag in project C-s'"
+     'helm-do-ag helm-source-projectile-projects)
+    (bind-key "C-s" (defun helm-projectile-do-ag ()
+                      (interactive)
+                      (helm-exit-and-execute-action #'helm-do-ag))
+              helm-projectile-projects-map)
     (global-set-key (kbd "C-x f") #'helm-projectile-find-file))
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
@@ -169,7 +182,7 @@ bindings I use more frequently:
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
-        ;; helm-candidate-number-limit 200
+        helm-candidate-number-limit 50
         ;; don't use recentf stuff in helm-ff, I use C-x C-r for this
         helm-ff-file-name-history-use-recentf nil
         ;; move to end or beginning of source when reaching top or bottom
@@ -182,13 +195,14 @@ bindings I use more frequently:
         ;; fuzzy matching
         helm-recentf-fuzzy-match t
         helm-locate-fuzzy-match nil ;; locate fuzzy is worthless
-        helm-M-x-fuzzy-match t
+        helm-M-x-fuzzy-match nil
         helm-buffers-fuzzy-matching t
         helm-semantic-fuzzy-match t
-        helm-apropos-fuzzy-match t
+        helm-gtags-fuzzy-match t
         helm-imenu-fuzzy-match t
-        helm-lisp-fuzzy-completion t
-        helm-completion-in-region-fuzzy-match t
+        helm-apropos-fuzzy-match nil
+        helm-lisp-fuzzy-completion nil
+        helm-completion-in-region-fuzzy-match nil
         helm-autoresize-min-height 20
         helm-autoresize-max-height 40
         ;; Testing
@@ -199,6 +213,12 @@ bindings I use more frequently:
                                     helm-source-recentf
                                     helm-source-bookmarks
                                     helm-source-buffer-not-found))
+
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*helm.*\\*\\'"
+                 (display-buffer-in-side-window)
+                 (window-height . 0.4)))
+  (setq helm-display-function #'display-buffer)
 
   ;; Files that helm should know how to open
   (setq helm-external-programs-associations
