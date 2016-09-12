@@ -312,8 +312,6 @@ alias magit='emacs -f magit-status'
 # simple-extract
 alias se="tar zxvf"
 alias ga="git annex"
-# download manager
-alias aria2c='aria2c -c -x5 -s10 -m0'
 # sync org files
 alias org2ivalice='rsync -azP --delete ~/org/ ivalice-local:~/org'
 alias ivalice2org='rsync -azP --delete ivalice-local:~/org/ ~/org'
