@@ -182,7 +182,7 @@ bindings I use more frequently:
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
-        helm-candidate-number-limit 50
+        helm-candidate-number-limit 150
         ;; don't use recentf stuff in helm-ff, I use C-x C-r for this
         helm-ff-file-name-history-use-recentf nil
         ;; move to end or beginning of source when reaching top or bottom
@@ -195,7 +195,7 @@ bindings I use more frequently:
         ;; fuzzy matching
         helm-recentf-fuzzy-match t
         helm-locate-fuzzy-match nil ;; locate fuzzy is worthless
-        helm-M-x-fuzzy-match nil
+        helm-M-x-fuzzy-match t
         helm-buffers-fuzzy-matching t
         helm-semantic-fuzzy-match t
         helm-gtags-fuzzy-match t
