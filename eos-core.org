@@ -937,6 +937,12 @@ most of the issues you see with disabling =transient-mark-mode=
   (set-face-attribute 'visible-mark-active nil :foreground nil))
 #+end_src
 
+Ignore case when performing completion
+
+#+BEGIN_SRC emacs-lisp
+(setq completion-ignore-case t
+      read-file-name-completion-ignore-case t)
+#+END_SRC
 
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
@@ -1138,7 +1144,8 @@ to get up and running with.
 ;; hunspell
 (when (executable-find "hunspell")
   (setq ispell-program-name (executable-find "hunspell"))
-  (setq ispell-extra-args '("-d en_US")))
+  (setq ispell-extra-args '("-d en_US"
+                            "-p ~/.flydict")))
 
 (add-to-list 'ispell-skip-region-alist '("[^\000-\377]+"))
 (add-to-list 'ispell-skip-region-alist '(":\\(PROPERTIES\\|LOGBOOK\\):" . ":END:"))
