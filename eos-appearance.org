@@ -81,25 +81,15 @@ balanced of color and pleasing to my eyes.
 
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
-    (progn
-      (use-package doom-themes
-        :ensure t
-        :init
-        (load-theme 'doom-one t))
-      (use-package zerodark-theme
-        :ensure t
-        :disabled t
-        :init
-        (load-theme 'zerodark t)
-        ;; Zerodark's function name face misses a bit making it look different
-        ;; than other faces, so underline function names
-        (set-face-attribute 'font-lock-function-name-face nil :underline t)))
-  (progn
-    (use-package leuven-theme
+    (use-package doom-themes
       :ensure t
       :init
-      (load-theme 'leuven t)
-      (set-face-background 'default "#F7F7F7"))))
+      (load-theme 'doom-one t))
+  (use-package leuven-theme
+    :ensure t
+    :init
+    (load-theme 'leuven t)
+    (set-face-background 'default "#F7F7F7")))
 #+END_SRC
 
 * Fonts
