@@ -51,6 +51,7 @@ middle.
   (setq shr-external-browser 'browse-url-generic)
   (setq browse-url-generic-program (executable-find "firefox"))
   (add-hook 'eww-mode-hook #'toggle-word-wrap)
+  (add-hook 'eww-mode-hook #'visual-line-mode)
   :config
   (use-package s :ensure t)
   (define-key eww-mode-map "o" 'eww)
