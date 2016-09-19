@@ -299,11 +299,8 @@ active development, so I'm trying it out.
 
 #+BEGIN_SRC emacs-lisp
 (use-package meghanada
-  :ensure t)
-;; (require 'company-meghanada)
-;; (require 'flycheck-meghanada)
-;; (defun eos/set-up-meghanada ()
-;;   (add-to-list 'company-backends '(company-meghanada :with company-dabbrev-code))
-;;   (setq company-transformers '(company-sort-by-backend-importance)))
-;; (add-hook 'meghanada-mode-hook #'eos/set-up-meghanada)
+  :ensure t
+  :init
+  ;; Don't auto-start
+  (setq meghanada-auto-start nil))
 #+END_SRC
