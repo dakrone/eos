@@ -178,7 +178,9 @@ bindings I use more frequently:
         ;; don't delete windows to always have 2
         helm-always-two-windows t
         ;; open helm buffer inside current window, don't occupy whole other window
-        helm-split-window-in-side-p t
+        helm-split-window-in-side-p nil
+        ;; fit buffer to width automatically
+        fit-window-to-buffer-horizontally 1
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
@@ -205,20 +207,12 @@ bindings I use more frequently:
         helm-completion-in-region-fuzzy-match nil
         helm-autoresize-min-height 20
         helm-autoresize-max-height 40
-        ;; Testing
-        fit-window-to-buffer-horizontally 1
         ;; Here are the things helm-mini shows, I add `helm-source-bookmarks'
         ;; here to the regular default list
         helm-mini-default-sources '(helm-source-buffers-list
                                     helm-source-recentf
                                     helm-source-bookmarks
                                     helm-source-buffer-not-found))
-
-  (add-to-list 'display-buffer-alist
-               '("\\`\\*helm.*\\*\\'"
-                 (display-buffer-in-side-window)
-                 (window-height . 0.4)))
-  (setq helm-display-function #'display-buffer)
 
   ;; Files that helm should know how to open
   (setq helm-external-programs-associations
