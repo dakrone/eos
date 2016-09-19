@@ -298,15 +298,12 @@ which starts up ES listening for events, and then =M-x realgud:jdb= and using
 active development, so I'm trying it out.
 
 #+BEGIN_SRC emacs-lisp
-(when (file-exists-p "~/src/elisp/meghanada-emacs/")
-  (add-to-list 'load-path "~/src/elisp/meghanada-emacs/")
-  (add-to-list 'load-path "~/src/elisp/meghanada-emacs/company-meghanada/")
-  (add-to-list 'load-path "~/src/elisp/meghanada-emacs/flycheck-meghanada")
-  (require 'meghanada-mode)
-  (require 'company-meghanada)
-  (require 'flycheck-meghanada)
-  (defun eos/set-up-meghanada ()
-    (add-to-list 'company-backends '(company-meghanada :with company-dabbrev-code))
-    (setq company-transformers '(company-sort-by-backend-importance)))
-  (add-hook 'meghanada-mode-hook #'eos/set-up-meghanada))
+(use-package meghanada
+  :ensure t)
+;; (require 'company-meghanada)
+;; (require 'flycheck-meghanada)
+;; (defun eos/set-up-meghanada ()
+;;   (add-to-list 'company-backends '(company-meghanada :with company-dabbrev-code))
+;;   (setq company-transformers '(company-sort-by-backend-importance)))
+;; (add-hook 'meghanada-mode-hook #'eos/set-up-meghanada)
 #+END_SRC
