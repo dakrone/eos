@@ -3,37 +3,29 @@
 
 @charset "UTF-8";
 
-@font-face {
-  font-family: "et-book";
-  src: url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot");
-  src: url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"), url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype"), url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.svg#etbookromanosf") format("svg");
-  font-weight: normal;
-  font-style: normal
-}
+@font-face { font-family: "et-book";
+             src: url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot");
+             src: url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.woff") format("woff"), url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.ttf") format("truetype"), url("et-book/et-book-roman-line-figures/et-book-roman-line-figures.svg#etbookromanosf") format("svg");
+             font-weight: normal;
+             font-style: normal; }
 
-@font-face {
-  font-family: "et-book";
-  src: url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot");
-  src: url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"), url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype"), url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.svg#etbookromanosf") format("svg");
-  font-weight: normal;
-  font-style: italic
-}
+@font-face { font-family: "et-book";
+             src: url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot");
+             src: url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.woff") format("woff"), url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.ttf") format("truetype"), url("et-book/et-book-display-italic-old-style-figures/et-book-display-italic-old-style-figures.svg#etbookromanosf") format("svg");
+             font-weight: normal;
+             font-style: italic; }
 
-@font-face {
-  font-family: "et-book";
-  src: url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot");
-  src: url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"), url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype"), url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.svg#etbookromanosf") format("svg");
-  font-weight: bold;
-  font-style: normal
-}
+@font-face { font-family: "et-book";
+             src: url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot");
+             src: url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.woff") format("woff"), url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.ttf") format("truetype"), url("et-book/et-book-bold-line-figures/et-book-bold-line-figures.svg#etbookromanosf") format("svg");
+             font-weight: bold;
+             font-style: normal; }
 
-@font-face {
-  font-family: "et-book-roman-old-style";
-  src: url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot");
-  src: url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff") format("woff"), url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.ttf") format("truetype"), url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.svg#etbookromanosf") format("svg");
-  font-weight: normal;
-  font-style: normal;
-}
+@font-face { font-family: "et-book-roman-old-style";
+             src: url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot");
+             src: url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.eot?#iefix") format("embedded-opentype"), url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.woff") format("woff"), url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.ttf") format("truetype"), url("et-book/et-book-roman-old-style-figures/et-book-roman-old-style-figures.svg#etbookromanosf") format("svg");
+             font-weight: normal;
+             font-style: normal; }
 
 /* Tufte CSS styles */
 html { font-size: 15px; }
@@ -104,20 +96,20 @@ div.epigraph > blockquote, div.epigraph > blockquote > p { font-style: italic; }
 div.epigraph > blockquote > footer { font-style: normal; }
 
 div.epigraph > blockquote > footer > cite { font-style: italic; }
-
 /* end chapter epigraphs styles */
 
 blockquote { font-size: 1.4rem; }
 
-blockquote p { width: 50%; }
+blockquote p { width: 55%;
+               margin-right: 40px; }
 
-blockquote footer { width: 50%;
+blockquote footer { width: 55%;
                     font-size: 1.1rem;
                     text-align: right; }
 
-ol, ul { width: 45%;
-         -webkit-padding-start: 5%;
-         -webkit-padding-end: 5%; }
+section>ol, section>ul { width: 45%;
+                         -webkit-padding-start: 5%;
+                         -webkit-padding-end: 5%; }
 
 li { padding: 0.5rem 0; }
 
@@ -203,6 +195,10 @@ img { max-width: 100%; }
 .sidenote:before { content: counter(sidenote-counter) " ";
                    top: -0.5rem; }
 
+blockquote .sidenote, blockquote .marginnote { margin-right: -82%;
+                                               min-width: 59%;
+                                               text-align: left; }    
+
 p, footer, table, div.table-wrapper-small, div.supertable-wrapper > p, div.booktabs-wrapper { width: 55%; }
 
 div.fullwidth, table.fullwidth { width: 100%; }
@@ -210,28 +206,23 @@ div.fullwidth, table.fullwidth { width: 100%; }
 div.table-wrapper { overflow-x: auto;
                     font-family: "Trebuchet MS", "Gill Sans", "Gill Sans MT", sans-serif; }
 
-@media screen and (max-width: 760px) { p, footer { width: 90%; }
-                                       pre.code { width: 87.5%; }
-                                       ul { width: 85%; }
-                                       figure { max-width: 90%; }
-                                       figcaption, figure.fullwidth figcaption { margin-right: 0%;
-                                                                                 max-width: none; }
-                                       blockquote p, blockquote footer { width: 90%; }}
-
 .sans { font-family: "Gill Sans", "Gill Sans MT", Calibri, sans-serif;
         letter-spacing: .03em; }
 
 .code { font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
-        font-size: 1.125rem;
-        line-height: 1.6; }
+        font-size: 1.0rem;
+        line-height: 1.42; }
 
 h1 .code, h2 .code, h3 .code { font-size: 0.80em; }
 
 .marginnote .code, .sidenote .code { font-size: 1rem; }
 
-pre.code { width: 52.5%;
-           padding-left: 2.5%;
+pre.code { font-size: 0.9rem;
+           width: 52.5%;
+           margin-left: 2.5%;
            overflow-x: auto; }
+
+pre.code.fullwidth { width: 90%; }
 
 .fullwidth { max-width: 90%;
              clear:both; }
@@ -245,7 +236,19 @@ label.sidenote-number { display: inline; }
 
 label.margin-toggle:not(.sidenote-number) { display: none; }
 
-@media (max-width: 760px) { label.margin-toggle:not(.sidenote-number) { display: inline; }
+@media (max-width: 760px) { body { width: 84%;
+                                   padding-left: 8%;
+                                   padding-right: 8%; }
+                            p, footer { width: 100%; }
+                            pre.code { width: 97%; }
+                            ul { width: 85%; }
+                            figure { max-width: 90%; }
+                            figcaption, figure.fullwidth figcaption { margin-right: 0%;
+                                                                      max-width: none; }
+                            blockquote { margin-left: 1.5em;
+                                         margin-right: 0em; }
+                            blockquote p, blockquote footer { width: 100%; }
+                            label.margin-toggle:not(.sidenote-number) { display: inline; }
                             .sidenote, .marginnote { display: none; }
                             .margin-toggle:checked + .sidenote,
                             .margin-toggle:checked + .marginnote { display: block;
@@ -257,8 +260,6 @@ label.margin-toggle:not(.sidenote-number) { display: none; }
                                                                    vertical-align: baseline;
                                                                    position: relative; }
                             label { cursor: pointer; }
-                            pre.code { width: 90%;
-                                       padding: 0; }
                             .table-caption { display: block;
                                              float: right;
                                              clear: both;
