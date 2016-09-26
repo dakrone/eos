@@ -309,6 +309,29 @@ d=, if the buffer doesn't exist it is created.
     (let ((eshell-buffer-name "*eshell*<4>"))
       (eshell))))
 
+(defun eos/create-all-eshell-buffers ()
+  "Create all my normal eshell buffers"
+  (interactive)
+  (let ((eshell-buffer-name "*eshell*")
+        (default-directory "~/"))
+    (eshell))
+  (let ((eshell-buffer-name "*eshell*<2>")
+        (default-directory "~/")) (eshell))
+  (let ((eshell-buffer-name "*eshell*<3>")
+        (default-directory "~/es/elasticsearch"))
+    (eshell))
+  (let ((eshell-buffer-name "*eshell*<4>")
+        (default-directory "~/es/x-plugins"))
+    (eshell))
+  (let ((eshell-buffer-name "*eshell-delta*")
+        (default-directory "~/eos"))
+    (eshell))
+  (let ((eshell-buffer-name "*eshell downloads*")
+        (default-directory "~/Downloads"))
+    (eshell)))
+
+(global-set-key (kbd "M-@") #'eos/create-all-eshell-buffers)
+
 (global-set-key (kbd "H-1") 'eos/create-or-switch-to-eshell-1)
 (global-set-key (kbd "H-2") 'eos/create-or-switch-to-eshell-2)
 (global-set-key (kbd "H-3") 'eos/create-or-switch-to-eshell-3)
@@ -343,27 +366,6 @@ package. Eh, disabled this for now, not sure I actually like it.
   :ensure t
   :init
   (add-hook 'eshell-mode-hook 'eshell-fringe-status-mode))
-#+END_SRC
-
-** Fixing newlines in eshell like zsh
-:PROPERTIES:
-:CUSTOM_ID: eshell-newlines
-:END:
-So ZSH has this great functionality where if the previous line didn't end in a
-newline, it automatically added one before printing the prompt. Because ES
-routinely doesn't print a newline, it'd be great if eshell did this
-automatically:
-
-#+BEGIN_SRC emacs-lisp
-(use-package eshell
-  :config
-  (defun eos/maybe-add-newline ()
-    "Add a newline, but only if not at the beginning of the line already."
-    (interactive)
-    (when (not (eq (current-column) 0))
-      (insert-string "\n")))
-  ;; (add-hook 'eshell-before-prompt-hook #'eos/maybe-add-newline)
-  )
 #+END_SRC
 
 ** Eshell aliases
