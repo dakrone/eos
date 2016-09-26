@@ -129,8 +129,13 @@
           ("http://api.flickr.com/services/feeds/photos_public.gne?id=40347643@N00&format=atom" flickr)
           ("http://api.flickr.com/services/feeds/photos_public.gne?id=43319799@N00&format=atom" flickr)
 
+          ;; Reddit
+          ("https://www.reddit.com/r/emacs/.rss" emacs reddit)
+          ("https://www.reddit.com/r/orgmode/.rss" emacs reddit)
+          ("https://www.reddit.com/r/elasticsearch/.rss" elasticsearch reddit)
+          ("https://www.reddit.com/r/elastic/.rss" elasticsearch reddit)
+
           ;; Other
-          ("http://gtofficial.tumblr.com/rss" gaming)
           ("http://speeddemosarchive.com/sda100.atom" gaming)
           ("https://retropie.org.uk/feed/" gaming)
           ("http://www.elastic.co/blog/feed/" elasticsearch)
