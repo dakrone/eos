@@ -246,14 +246,14 @@ And now the huge org-mode configuration
     ;; capture templates
     (setq org-capture-templates
           '(("t" "Todo" entry (file "~/org/refile.org")
-             "* TODO %?\n:PROPERTIES:\n:CREATED: %U\n:END:\n")
+             "* TODO %?\n")
             ("m" "Email" entry (file "~/org/refile.org")
-             "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n\n:PROPERTIES:\n:CREATED: %U\n:END:\n%a\n")
+             "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
             ("n" "Notes" entry (file+headline "~/org/notes.org" "Notes")
-             "* %? :NOTE:\n:PROPERTIES:\n:CREATED: %U\n:END:\n")
+             "* %? :NOTE:\n")
             ("e" "Emacs note" entry
              (file+headline "~/org/notes.org" "Emacs Links")
-             "* %? :NOTE:\n:PROPERTIES:\n:CREATED: %U\n:END:\n")
+             "* %? :NOTE:\n")
             ("j" "Journal" entry (file+datetree "~/org/journal.org")
              "* %?\n%U\n")
             ("b" "Book/Bibliography" entry
