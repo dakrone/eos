@@ -740,7 +740,9 @@ buffer.
       scroll-up-aggressively 0.01
       scroll-down-aggressively 0.01
       scroll-preserve-screen-position t
-      auto-window-vscroll nil)
+      auto-window-vscroll nil
+      hscroll-margin 5
+      hscroll-step 5)
 #+END_SRC
 
 Automagically resizes the windows to be the golden ratio (1.618), nice when
@@ -850,7 +852,8 @@ tool that it uses.
 
 #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools
-  :ensure t)
+  :ensure t
+  :init (pdf-tools-install))
 #+END_SRC
 
 Expand region is useful it's insane.
