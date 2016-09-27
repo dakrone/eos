@@ -729,22 +729,6 @@ Also, add a thing for yanking the entire symbol into the query while searching:
 (define-key isearch-mode-map (kbd "C-M-w") #'isearch-yank-symbol)
 #+END_SRC
 
-Smooth scrolling means when you hit =C-n= to go to the next line at the bottom
-of the page, instead of doing a page-down, it shifts down by a single line. The
-margin means that much space is kept between the cursor and the bottom of the
-buffer.
-
-#+BEGIN_SRC emacs-lisp
-(setq scroll-margin 3
-      scroll-conservatively 101
-      scroll-up-aggressively 0.01
-      scroll-down-aggressively 0.01
-      scroll-preserve-screen-position t
-      auto-window-vscroll nil
-      hscroll-margin 5
-      hscroll-step 5)
-#+END_SRC
-
 Automagically resizes the windows to be the golden ratio (1.618), nice when
 using a big font size and I need more eshell space
 

@@ -201,6 +201,38 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
     (display-battery-mode -1)))
 #+END_SRC
 
+* Scrolling
+
+Smooth scrolling means when you hit =C-n= to go to the next line at the bottom
+of the page, instead of doing a page-down, it shifts down by a single line. The
+margin means that much space is kept between the cursor and the bottom of the
+buffer.
+
+#+BEGIN_SRC emacs-lisp
+(setq scroll-margin 3
+      scroll-conservatively 101
+      scroll-up-aggressively 0.01
+      scroll-down-aggressively 0.01
+      scroll-preserve-screen-position t
+      auto-window-vscroll nil
+      hscroll-margin 5
+      hscroll-step 5)
+#+END_SRC
+
+I also have tested the sublimity package, with mixed results.
+
+#+BEGIN_SRC emacs-lisp
+(use-package sublimity
+  :ensure t
+  :disabled t
+  :init
+  (require 'sublimity)
+  (require 'sublimity-scroll)
+  (sublimity-mode)
+  :config
+  (setq scroll-margin 0))
+#+END_SRC
+
 * Highlighting the current line with hl-line-mode
 :PROPERTIES:
 :CUSTOM_ID: h:effd858a-d5e9-4afc-9e36-3488f7c75189
