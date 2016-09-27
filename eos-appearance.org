@@ -25,7 +25,7 @@ well as the general theme for look-and-feel things.
 ;; and in very bright locations while having a lower brightness setting, so this
 ;; can changed to be specific to my laptop
 (when (equal (system-name) "thulcandra")
-  (setq eos/background 'dark))
+  (setq eos/background 'light))
 #+END_SRC
 
 * Emacs Appearance
