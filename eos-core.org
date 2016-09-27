@@ -606,9 +606,6 @@ when they are popped up. I do this with Popwin
     (push '("*ielm*" :stick t) popwin:special-display-config)
     (push '("*eshell pop*" :stick t) popwin:special-display-config)
 
-    ;; pry
-    (push '(inf-ruby-mode :stick t :height 20) popwin:special-display-config)
-
     ;; python
     (push '("*Python*"   :stick t) popwin:special-display-config)
     (push '("*Python Help*" :stick t :height 20) popwin:special-display-config)
@@ -618,26 +615,14 @@ when they are popped up. I do this with Popwin
     (push '("*haskell*" :stick t) popwin:special-display-config)
     (push '("*GHC Info*") popwin:special-display-config)
 
-    ;; sgit
-    (push '("*sgit*" :position right :width 0.5 :stick t)
-          popwin:special-display-config)
-
     ;; git-gutter
     (push '("*git-gutter:diff*" :width 0.5 :stick t)
-          popwin:special-display-config)
-
-    ;; es-results-mode
-    (push '(es-result-mode :stick t :width 0.5)
           popwin:special-display-config)
 
     (push '("*Occur*" :stick t) popwin:special-display-config)
 
     ;; prodigy
     (push '("*prodigy*" :stick t) popwin:special-display-config)
-
-    ;; malabar-mode
-    (push '("*Malabar Compilation*" :stick t :height 30)
-          popwin:special-display-config)
 
     ;; org-mode
     (push '("*Org tags*" :stick t :height 30)
