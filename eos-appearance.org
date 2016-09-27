@@ -115,8 +115,8 @@ nice to me on both Linux and any other computer. Even though it's called
           (set-face-attribute 'default nil :family "Hack" :height 145)
           (set-face-attribute 'variable-pitch nil
                               :family "DejaVu Sans" :height 145))
-      (set-face-attribute 'default nil :family "Hack" :height 115)
-      (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 115))
+      (set-face-attribute 'default nil :family "Hack" :height 105)
+      (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 105))
     ;; font for all unicode characters
     (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)))
 
