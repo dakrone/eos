@@ -137,8 +137,6 @@ And now the huge org-mode configuration
           org-export-babel-evaluate nil
           ;; export tables as CSV instead of tab-delineated
           org-table-export-default-format "orgtbl-to-csv"
-          ;; when to insert a newline when inserting a new heading
-          org-blank-before-new-entry '((heading . nil) (plain-list-item . auto))
           ;; start up showing images
           org-startup-with-inline-images t
           ;; use #+ATTR: if defined, or real width otherwise
@@ -637,7 +635,7 @@ Publishing org-mode files to my hosting provider:
            :base-extension "org\\|html"
            :publishing-directory
            "/ssh:writequit.org:~/www/org/es/design"
-           :publishing-function org-html-publish-to-html
+           :publishing-function org-html-publish-to-tufte-html
            :with-toc t
            :html-preamble t)
           ("org-es-design-files"
