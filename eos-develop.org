@@ -290,11 +290,11 @@ supports a lot of the paredit-like things that I love in lisp, but everywhere.
 First, stuff for automatically inserting pairs of characters with electric-pair-mode:
 
 #+BEGIN_SRC emacs-lisp
-(electric-pair-mode 1)
+(electric-pair-mode -1)
 (setq electric-pair-preserve-balance t
       electric-pair-delete-adjacent-pairs t
       electric-pair-open-newline-between-pairs nil)
-(show-paren-mode 1)
+;;(show-paren-mode 1)
 #+END_SRC
 
 Now, the smartparens configuration:
@@ -302,8 +302,8 @@ Now, the smartparens configuration:
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
-  :disabled t
   :init
+  (electric-pair-mode -1)
   (require 'smartparens-config)
   ;; Turn on smartparens in the minibuffer
   (add-hook 'minibuffer-setup-hook 'turn-on-smartparens-strict-mode)
@@ -326,7 +326,8 @@ Now, the smartparens configuration:
   (define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
   (define-key smartparens-mode-map (kbd "M-r") 'sp-unwrap-sexp)
-  (define-key smartparens-mode-map (kbd "M-<backspace>") 'sp-backward-unwrap-sexp)
+  (define-key smartparens-mode-map (kbd "M-<backspace>")
+    'sp-backward-unwrap-sexp)
 
   (define-key smartparens-mode-map (kbd "C-(") 'sp-forward-barf-sexp)
   (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
@@ -335,7 +336,7 @@ Now, the smartparens configuration:
 
   (define-key smartparens-mode-map (kbd "M-D") 'sp-splice-sexp)
 
-  ;; Bind ";" to sp-comment in elisp
+  ;; ;; Bind ";" to sp-comment in elisp
   (bind-key ";" 'sp-comment emacs-lisp-mode-map)
 
   (defun sp--org-skip-asterisk (ms mb me)
@@ -345,25 +346,27 @@ Now, the smartparens configuration:
              (eq 32 (char-after me)))))
 
   ;; Org-mode
-  (sp-with-modes 'org-mode
-    (sp-local-pair "*" "*"
-                   :actions '(insert wrap)
-                   :unless '(sp-point-after-word-p sp-point-at-bol-p)
-                   :wrap "C-*" :skip-match 'sp--org-skip-asterisk)
-    (sp-local-pair "_" "_" :unless '(sp-point-after-word-p) :wrap "C-_")
-    (sp-local-pair "/" "/" :unless '(sp-point-after-word-p)
-                   :post-handlers '(("[d1]" "SPC")))
-    (sp-local-pair "~" "~" :unless '(sp-point-after-word-p)
-                   :post-handlers '(("[d1]" "SPC")))
-    (sp-local-pair "=" "=" :unless '(sp-point-after-word-p)
-                   :post-handlers '(("[d1]" "SPC")))
-    (sp-local-pair "«" "»"))
+  (sp-with-modes
+   'org-mode
+   (sp-local-pair "*" "*"
+                  :actions '(insert wrap)
+                  :unless '(sp-point-after-word-p sp-point-at-bol-p)
+                  :wrap "C-*" :skip-match 'sp--org-skip-asterisk)
+   (sp-local-pair "_" "_" :unless '(sp-point-after-word-p) :wrap "C-_")
+   (sp-local-pair "/" "/" :unless '(sp-point-after-word-p)
+                  :post-handlers '(("[d1]" "SPC")))
+   (sp-local-pair "~" "~" :unless '(sp-point-after-word-p)
+                  :post-handlers '(("[d1]" "SPC")))
+   (sp-local-pair "=" "=" :unless '(sp-point-after-word-p)
+                  :post-handlers '(("[d1]" "SPC")))
+   (sp-local-pair "«" "»"))
 
   ;;; Java
-  (sp-with-modes '(java-mode c++-mode)
-    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
-    (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-                                              ("* ||\n[i]" "RET"))))
+  (sp-with-modes
+   '(java-mode c++-mode)
+   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
+   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
+                                             ("* ||\n[i]" "RET"))))
 
   (smartparens-global-strict-mode 1)
   (show-smartparens-global-mode 1))
