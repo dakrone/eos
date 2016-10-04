@@ -912,7 +912,7 @@ most of the issues you see with disabling =transient-mark-mode=
   (setq visible-mark-max 1)
   (setq visible-mark-faces '(visible-mark-active))
 
-  (set-face-attribute 'visible-mark-active nil :background "#888888")
+  (set-face-attribute 'visible-mark-active nil :background "#DDDDDD")
   (set-face-attribute 'visible-mark-active nil :foreground nil))
 #+end_src
 
