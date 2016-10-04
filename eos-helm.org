@@ -145,16 +145,18 @@ bindings I use more frequently:
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))
 
-  ;; Via: https://www.reddit.com/r/emacs/comments/3asbyn/new_and_very_useful_helm_feature_enter_search/
-  ;; (setq helm-echo-input-in-header-line t)
-  ;; (defun helm-hide-minibuffer-maybe ()
-  ;;   (when (with-helm-buffer helm-echo-input-in-header-line)
-  ;;     (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-  ;;       (overlay-put ov 'window (selected-window))
-  ;;       (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-  ;;                               `(:background ,bg-color :foreground ,bg-color)))
-  ;;       (setq-local cursor-type nil))))
-  ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+  ;; Shows helm input in the header instead of the footer
+  (setq helm-echo-input-in-header-line t)
+  (defun helm-hide-minibuffer-maybe ()
+  "Hide minibuffer in Helm session if we use the header line as input field."
+  (when (with-helm-buffer helm-echo-input-in-header-line)
+    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+      (overlay-put ov 'window (selected-window))
+      (overlay-put ov 'face
+                   (let ((bg-color (face-background 'default nil)))
+                     `(:background ,bg-color :foreground ,bg-color)))
+      (setq-local cursor-type nil))))
+  (add-hook 'helm-minibuffer-set-up-hook #'helm-hide-minibuffer-maybe)
 
   (setq helm-grep-default-command
         "grep -a -d skip %e -n%cH -e %p %f"
@@ -174,13 +176,13 @@ bindings I use more frequently:
         ;; set to nil and use <C-backspace> to toggle it in helm-find-files
         helm-ff-auto-update-initial-value nil
         ;; if I change the resplit state, re-use my settings
-        helm-reuse-last-window-split-state t
+        ;; helm-reuse-last-window-split-state t
         ;; don't delete windows to always have 2
-        helm-always-two-windows t
+        helm-always-two-windows nil
         ;; open helm buffer inside current window, don't occupy whole other window
-        helm-split-window-in-side-p nil
+        helm-split-window-in-side-p t
         ;; fit buffer to width automatically
-        fit-window-to-buffer-horizontally 1
+        ;; fit-window-to-buffer-horizontally 1
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
@@ -205,7 +207,7 @@ bindings I use more frequently:
         helm-apropos-fuzzy-match nil
         helm-lisp-fuzzy-completion nil
         helm-completion-in-region-fuzzy-match nil
-        helm-autoresize-min-height 20
+        helm-autoresize-min-height 10
         helm-autoresize-max-height 40
         ;; Here are the things helm-mini shows, I add `helm-source-bookmarks'
         ;; here to the regular default list
