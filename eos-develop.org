@@ -326,8 +326,6 @@ Now, the smartparens configuration:
   (define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
   (define-key smartparens-mode-map (kbd "M-r") 'sp-unwrap-sexp)
-  (define-key smartparens-mode-map (kbd "M-<backspace>")
-    'sp-backward-unwrap-sexp)
 
   (define-key smartparens-mode-map (kbd "C-(") 'sp-forward-barf-sexp)
   (define-key smartparens-mode-map (kbd "C-)") 'sp-forward-slurp-sexp)
@@ -674,6 +672,19 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
     (use-package flycheck-haskell
       :ensure t
       :init (add-hook 'flycheck-mode-hook #'flycheck-haskell-setup))))
+#+END_SRC
+
+* Development snippets with yasnippet
+
+I have recently be using skeletons, but yasnippet is useful also, so I'll try it
+again now after a while.
+
+#+BEGIN_SRC emacs-lisp
+(use-package yasnippet
+  :ensure t
+  :bind (("M-=" . yas-insert-snippet))
+  :init
+  (yas-global-mode 1))
 #+END_SRC
 
 * Emacs Lisp (Elisp)
