@@ -484,6 +484,7 @@ java-mode applies the color-identifiers configuration.
 #+BEGIN_SRC emacs-lisp
 (use-package color-identifiers-mode
   :ensure t
+  :diminish color-identifiers-mode
   :init
   (defun eos/turn-on-color-identifiers ()
     (interactive)
