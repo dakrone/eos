@@ -896,26 +896,6 @@ applicable
   (add-to-list 'load-path "~/.emacs.d/site-lisp"))
 #+END_SRC
 
-I'm starting to turn off transient-mark mode[fn:33:
-http://www.gnu.org/software/emacs/manual/html_node/emacs/Disabled-Transient-Mark.html#index-transient_002dmark_002dmode]
-and move towards a model of actually treating the Mark as more than just a selection tool, and
-towards treating it as a navigation tool. In light of that, I'm going to start disabling
-=transient-mark-mode= and only relying on =visible-mark-mode= for showing the mark, which alleviates
-most of the issues you see with disabling =transient-mark-mode=
-
-#+begin_src emacs-lisp :tangle yes
-(use-package visible-mark
-  :ensure t
-  :init
-  (add-hook 'prog-mode-hook #'visible-mark-mode)
-  :config
-  (setq visible-mark-max 1)
-  (setq visible-mark-faces '(visible-mark-active))
-
-  (set-face-attribute 'visible-mark-active nil :background "#DDDDDD")
-  (set-face-attribute 'visible-mark-active nil :foreground nil))
-#+end_src
-
 Ignore case when performing completion
 
 #+BEGIN_SRC emacs-lisp
