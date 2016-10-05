@@ -644,6 +644,9 @@ Finally, a nice helper to browse code whenever it remotely may be,
 Pretty minimally configured, but awesome tool for most dynamic languages.
 
 #+BEGIN_SRC emacs-lisp
+(define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+  [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
+
 (use-package flycheck
   :ensure t
   :defer 5
@@ -651,15 +654,14 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
          ("M-g M-p" . flycheck-previous-error)
          ("M-g M-=" . flycheck-list-errors))
   :init
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0])
   (global-flycheck-mode)
   (setq flycheck-indication-mode 'right-fringe
         flycheck-check-syntax-automatically '(save mode-enabled))
   :diminish flycheck-mode
   :config
   (progn
-    (setq-default flycheck-disabled-checkers '(emacs-lisp-checkdoc json-jsonlint json-python-json))
+    (setq-default flycheck-disabled-checkers
+                  '(emacs-lisp-checkdoc json-jsonlint json-python-json))
     (use-package flycheck-pos-tip
       :ensure t
       :init
