@@ -691,6 +691,7 @@ again now after a while.
 (use-package yasnippet
   :ensure t
   :bind (("M-=" . yas-insert-snippet))
+  :diminish yas-minor-mode
   :init
   (yas-global-mode 1)
   :config
