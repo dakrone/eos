@@ -686,8 +686,10 @@ again now after a while.
   :ensure t
   :bind (("M-=" . yas-insert-snippet))
   :init
+  (yas-global-mode 1)
+  :config
   (add-to-list 'yas-snippet-dirs "~/.emacs.d/site-lisp/snippets")
-  (yas-global-mode 1))
+  (yas-reload-all))
 #+END_SRC
 
 * Emacs Lisp (Elisp)
