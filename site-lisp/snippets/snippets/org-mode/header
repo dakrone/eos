@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+#name : header
+# --
+#+TITLE:   ${1:<title>}
+#+AUTHOR:  `(user-full-name)`
+#+EMAIL:   `user-mail-address`
+#+LANGUAGE: en
+#+PROPERTY: header-args :results code replace :exports both :noweb yes :tangle no
+#+HTML_HEAD: <link rel="stylesheet" href="http://dakrone.github.io/org.css" type="text/css" />
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
+#+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
+#+TODO: TODO(t) | DONE(d)
+#+TODO: TODO(t) SOMEDAY(s) INPROGRESS(i) HOLD(h) WAITING(w@/!) NEEDSREVIEW(n@/!) | DONE(d)
+#+TODO: TODO(t) INPROGRESS(i) | CANCELLED(c@/!)
+#+TAGS: export(e) noexport(n)
+#+STARTUP: fold nodlcheck lognotestate content
+
+* $0

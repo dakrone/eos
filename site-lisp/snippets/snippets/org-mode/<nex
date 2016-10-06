@@ -1,0 +1,49 @@
+# -*- mode: snippet -*-
+#name : <nex
+#description : create a new sub-org example
+# --
+** ${1:title}
+$0
+
+*** Create an index
+
+#+BEGIN_SRC es
+DELETE /${2:test}
+{}
+
+POST /$2
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "body": {"type": "string"}
+      }
+    }
+  }
+}
+#+END_SRC
+
+*** Index docs
+
+#+BEGIN_SRC es
+POST /$2/doc/1
+{"body": "foo"}
+
+POST /$2/_refresh
+{}
+#+END_SRC
+
+*** Query
+
+#+BEGIN_SRC es
+POST /$2/_search?pretty
+{
+  "query": {
+    "match_all": {}
+  }
+}
+#+END_SRC

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : ses
+# --
+#+BEGIN_SRC es :tangle yes
+$0
+#+END_SRC

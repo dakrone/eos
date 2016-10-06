@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+#name : ns
+# --
+(ns `(let* ((nsname '())
+        (dirs (split-string (buffer-file-name) "/"))
+        (aftersrc nil))
+     (dolist (dir dirs)
+        (if aftersrc
+            (progn
+                (setq nsname (cons dir nsname))
+                (setq nsname (cons "." nsname)))
+             (when (or (string= dir "src") (string= dir "test"))
+                (setq aftersrc t))))
+     (when nsname
+       (replace-regexp-in-string "_" "-" (substring (apply 'concat
+        (reverse nsname))  0 -5))))`
+     (:use $1)
+     (:require ))

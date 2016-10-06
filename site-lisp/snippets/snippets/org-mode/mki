@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+#name : mki
+# --
+#+BEGIN_SRC sh :results code :exports both :noweb yes :tangle `(file-name-base (buffer-name))`.zsh
+curl -XDELETE "localhost:9200/${1:test}"
+echo
+curl -XPOST 'localhost:9200/$1' -d'{
+  "mappings": {
+    "doc": {
+      "properties": {
+        "body": {
+          "type": "string"
+        }$0
+      }
+    }
+  }
+}'
+echo
+#+END_SRC

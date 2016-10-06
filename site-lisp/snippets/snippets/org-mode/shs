@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+#name : shs
+# --
+#+BEGIN_SRC sh :tangle `(file-name-base (buffer-name))`.sh
+$0
+#+END_SRC

@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+#name : new-index
+# --
+POST /${2:test}
+{
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "doc": {
+      "properties": {
+        "body": {"type": "string"}
+      }
+    }
+  }
+}$0

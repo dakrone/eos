@@ -1,0 +1,9 @@
+# -*- mode: snippet -*-
+#name : gnup
+# --
+#+BEGIN_SRC gnuplot :results raw :var data=${1:mydata} :file $1.png
+set title "$2"
+set xlabel "$3"
+set ylabel "$4"
+plot data with lines
+#+END_SRC
