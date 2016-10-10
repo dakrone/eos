@@ -4,4 +4,4 @@ set -eou pipefail
 
 URL=$1
 
-livestreamer $1 source
+streamlink $1 source
