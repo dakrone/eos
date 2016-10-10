@@ -302,5 +302,7 @@ active development, so I'm trying it out.
   :ensure t
   :init
   ;; Don't auto-start
-  (setq meghanada-auto-start nil))
+  (setq meghanada-auto-start nil)
+  (add-hook 'java-mode-hook #'meghanada-mode)
+  (add-hook 'java-mode-hook 'flycheck-mode))
 #+END_SRC
