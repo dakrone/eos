@@ -341,29 +341,6 @@ Prettify all the symbols, if available (an Emacs 24.4 feature):
   (global-prettify-symbols-mode +1))
 #+END_SRC
 
-Display the time and load on the modeline
-
-#+BEGIN_SRC emacs-lisp
-(setq
- ;; don't display info about mail
- display-time-mail-function (lambda () nil)
- ;; update every 15 seconds instead of 60 seconds
- display-time-interval 15)
-(display-time-mode 1)
-#+END_SRC
-
-Buuuutttt... I don't really care about the time, so ignore it
-
-#+BEGIN_SRC emacs-lisp
-(setq display-time-format "")
-#+END_SRC
-
-Let's also display the battery status in the mode-line
-
-#+BEGIN_SRC emacs-lisp
-(display-battery-mode 1)
-#+END_SRC
-
 Emacs (foolishly) defaults to adding the =--insecure= flag. It also supports the
 (incredibly broken) SSL version 3. What are you thinking Emacs!?!
 
