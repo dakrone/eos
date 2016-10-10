@@ -300,7 +300,7 @@ First, stuff for automatically inserting pairs of characters with electric-pair-
 (setq electric-pair-preserve-balance t
       electric-pair-delete-adjacent-pairs t
       electric-pair-open-newline-between-pairs nil)
-;;(show-paren-mode 1)
+(show-paren-mode 1)
 #+END_SRC
 
 Now, the smartparens configuration:
@@ -373,7 +373,9 @@ Now, the smartparens configuration:
                                              ("* ||\n[i]" "RET"))))
 
   (smartparens-global-strict-mode 1)
-  (show-smartparens-global-mode 1))
+  ;; Disabled because I use the built-in show-paren mode
+  ;;(show-smartparens-global-mode 1)
+  )
 #+END_SRC
 
 * Paredit everywhere
