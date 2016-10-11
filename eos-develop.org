@@ -316,6 +316,9 @@ Now, the smartparens configuration:
   (define-key smartparens-mode-map (kbd "C-M-f") 'sp-forward-sexp)
   (define-key smartparens-mode-map (kbd "C-M-b") 'sp-backward-sexp)
 
+  (define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-forward-sexp)
+  (define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-sexp)
+
   (define-key smartparens-mode-map (kbd "C-M-d") 'sp-down-sexp)
   (define-key smartparens-mode-map (kbd "C-M-a") 'sp-backward-down-sexp)
   (define-key smartparens-mode-map (kbd "C-S-d") 'sp-beginning-of-sexp)
@@ -351,26 +354,26 @@ Now, the smartparens configuration:
 
   ;; Org-mode
   (sp-with-modes
-   'org-mode
-   (sp-local-pair "*" "*"
-                  :actions '(insert wrap)
-                  :unless '(sp-point-after-word-p sp-point-at-bol-p)
-                  :wrap "C-*" :skip-match 'sp--org-skip-asterisk)
-   (sp-local-pair "_" "_" :unless '(sp-point-after-word-p) :wrap "C-_")
-   (sp-local-pair "/" "/" :unless '(sp-point-after-word-p)
-                  :post-handlers '(("[d1]" "SPC")))
-   (sp-local-pair "~" "~" :unless '(sp-point-after-word-p)
-                  :post-handlers '(("[d1]" "SPC")))
-   (sp-local-pair "=" "=" :unless '(sp-point-after-word-p)
-                  :post-handlers '(("[d1]" "SPC")))
-   (sp-local-pair "«" "»"))
+      'org-mode
+    (sp-local-pair "*" "*"
+                   :actions '(insert wrap)
+                   :unless '(sp-point-after-word-p sp-point-at-bol-p)
+                   :wrap "C-*" :skip-match 'sp--org-skip-asterisk)
+    (sp-local-pair "_" "_" :unless '(sp-point-after-word-p) :wrap "C-_")
+    (sp-local-pair "/" "/" :unless '(sp-point-after-word-p)
+                   :post-handlers '(("[d1]" "SPC")))
+    (sp-local-pair "~" "~" :unless '(sp-point-after-word-p)
+                   :post-handlers '(("[d1]" "SPC")))
+    (sp-local-pair "=" "=" :unless '(sp-point-after-word-p)
+                   :post-handlers '(("[d1]" "SPC")))
+    (sp-local-pair "«" "»"))
 
-  ;;; Java
+    ;;; Java
   (sp-with-modes
-   '(java-mode c++-mode)
-   (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
-   (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
-                                             ("* ||\n[i]" "RET"))))
+      '(java-mode c++-mode)
+    (sp-local-pair "{" nil :post-handlers '(("||\n[i]" "RET")))
+    (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
+                                              ("* ||\n[i]" "RET"))))
 
   (smartparens-global-strict-mode 1)
   ;; Disabled because I use the built-in show-paren mode
