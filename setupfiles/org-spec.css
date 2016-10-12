@@ -6,7 +6,7 @@ body {
 }
 
 code {
-    font-family: "Inconsolata", monospace;
+    font-family: "Inconsolata", "monospace";
     font-size: 16px;
 }
 
@@ -259,7 +259,7 @@ blockquote {
 }
 
 pre {
-    font-family: "Inconsolata", monospace;
+    font-family: "Inconsolata", "monospace";
     font-size: 100%;
     border: 0;
     box-shadow: none;
