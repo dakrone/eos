@@ -343,6 +343,10 @@ Now, the smartparens configuration:
 
   (define-key smartparens-mode-map (kbd "M-D") 'sp-splice-sexp)
 
+  ;; Handle backspace in c-like modes better for smartparens
+  (bind-key [remap c-electric-backspace]
+            'sp-backward-delete-char smartparens-strict-mode-map)
+
   ;; ;; Bind ";" to sp-comment in elisp
   (bind-key ";" 'sp-comment emacs-lisp-mode-map)
 
