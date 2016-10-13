@@ -475,9 +475,9 @@ checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to
         '(;; Elasticsearch-specific compilation commands
           ((s-contains? "es/elasticsearch" default-directory)
            . (("ES core compile" .
-               "gradle :core:precommit :core:compileJava :core:compileTestJava --console=plain")
+               "gradle :core:compileJava :core:compileTestJava :core:precommit --console=plain")
               ("ES everything compile" .
-               "gradle precommit compileJava compileTestJava --console=plain")
+               "gradle compileJava compileTestJava precommit --console=plain")
               ("ES precommit" .
                "gradle precommit --console=plain")))
           ;; X-pack specific compilation commands
