@@ -35,7 +35,8 @@ IRC in Emacs
           erc-server-reconnect-timeout 5
           erc-server-reconnect-attempts 3
           erc-autojoin-channels-alist
-          '(("irc.genevairc.net" "#prosapologian")))
+          '(("irc.genevairc.net" "#prosapologian")
+            ("writequit.org" "#elasticsearch" "#84115")))
     (defun eos/disable-font-lock ()
       (font-lock-mode -1))
     ;; ERC is crazy, for some reason it doesn't like font-lock...
@@ -111,13 +112,13 @@ IRC in Emacs
   (let ((tls-program
          '("gnutls-cli --priority secure256 --x509certfile ~/host.pem -p %p %h"
            "openssl s_client -connect %h:%p -no_ssl2 -ign_eof -cert ~/host.pem")))
-    (erc-tls :server "irc.writequit.org"
+    (erc-tls :server "writequit.org"
              :port 31425
              :nick "dakrone"
              :password freenode-znc-pass)
-    (erc :server "irc.genevairc.net"
-         :port 6667
-         :nick "dakrone")
+    ;; (erc :server "irc.genevairc.net"
+    ;;      :port 6667
+    ;;      :nick "dakrone")
     ;; (erc-tls :server "elastic.irc.slack.com"
     ;;          :port 6697
     ;;          :nick "dakrone"
