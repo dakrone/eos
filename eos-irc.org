@@ -116,9 +116,9 @@ IRC in Emacs
              :port 31425
              :nick "dakrone"
              :password freenode-znc-pass)
-    ;; (erc :server "irc.genevairc.net"
-    ;;      :port 6667
-    ;;      :nick "dakrone")
+    (erc :server "irc.genevairc.net"
+         :port 6667
+         :nick "dakrone")
     ;; (erc-tls :server "elastic.irc.slack.com"
     ;;          :port 6697
     ;;          :nick "dakrone"
