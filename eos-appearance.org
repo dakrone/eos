@@ -25,7 +25,7 @@ well as the general theme for look-and-feel things.
 ;; and in very bright locations while having a lower brightness setting, so this
 ;; can changed to be specific to my laptop
 (when (equal (system-name) "thulcandra")
-  (setq eos/background 'dark))
+  (setq eos/background 'light))
 #+END_SRC
 
 * Emacs Appearance
@@ -182,7 +182,6 @@ responsiveness, so I go back and forth with it.
 
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
-  :disabled t
   :ensure t
   :init
   (if (eq eos/background 'dark)
@@ -207,6 +206,7 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 #+BEGIN_SRC emacs-lisp
 (use-package spaceline
   :ensure t
+  :disabled t
   :init
   (setq powerline-default-separator 'zigzag
         spaceline-minor-modes-separator " ")
