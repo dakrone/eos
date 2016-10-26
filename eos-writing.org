@@ -137,6 +137,7 @@ And now let's add a hydra for the skeletons
 #+BEGIN_SRC emacs-lisp
 (use-package abbrev
   :init (add-hook 'after-init-hook 'abbrev-mode)
+  :diminish abbrev-mode
   :config
   (define-abbrev-table
     'global-abbrev-table

@@ -39,6 +39,8 @@ modes
   (when (fboundp 'my/enable-abbrev-mode)
     (my/enable-abbrev-mode))
 
+  (diminish 'org-indent-mode)
+  (diminish 'buffer-face-mode)
   ;; fix some bindings that org-mode overwrites
   (when (fboundp 'eyebrowse-next-window-config)
     (define-key org-mode-map (kbd "C-'") #'eyebrowse-next-window-config))
