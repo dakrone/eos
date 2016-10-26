@@ -404,6 +404,7 @@ I set it to =nil= in the map.
 #+BEGIN_SRC emacs-lisp
 (use-package paredit-everywhere
   :ensure t
+  :disabled t
   :init (add-hook 'prog-mode-hook 'paredit-everywhere-mode))
 #+END_SRC
 
