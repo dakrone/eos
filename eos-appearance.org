@@ -183,6 +183,7 @@ responsiveness, so I go back and forth with it.
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
+  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
