@@ -84,9 +84,9 @@ So I configure prodigy like so:
     :port 9200)
 
   (prodigy-define-service
-    :name "Kibana 4.5.0"
-    :cwd "~/ies/kibana-4.5.0-linux-x64"
-    :command "~/ies/kibana-4.5.0-linux-x64/bin/kibana"
+    :name "Kibana 5.0.0"
+    :cwd "~/ies/kibana-5.0.0-linux-x64_86"
+    :command "~/ies/kibana-5.0.0-linux-x64_64/bin/kibana"
     :tags '(work kibana)
     :port 5601)
 
@@ -97,9 +97,15 @@ So I configure prodigy like so:
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
-    :name "Elasticsearch 2.3.5"
-    :cwd "~/ies/elasticsearch-2.3.5"
-    :command "~/ies/elasticsearch-2.3.5/bin/elasticsearch"
+    :name "Elasticsearch 2.4.1"
+    :cwd "~/ies/elasticsearch-2.4.1"
+    :command "~/ies/elasticsearch-2.4.1/bin/elasticsearch"
+    :tags '(work test es)
+    :port 9200)
+  (prodigy-define-service
+    :name "Elasticsearch 5.0.0"
+    :cwd "~/ies/elasticsearch-5.0.0"
+    :command "~/ies/elasticsearch-5.0.0/bin/elasticsearch"
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
@@ -124,7 +130,7 @@ Here is the branch with the latest release I use:
 
 #+NAME: es-branch
 #+BEGIN_SRC js :tangle no
-2.x
+5.x
 #+END_SRC
 
 #+BEGIN_SRC js :tangle out/esvmrc
