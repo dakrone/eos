@@ -313,3 +313,13 @@ Jumping to things, in a dumb way, with ag. It's usually bound to =C-M-g= (for
   :ensure t
   :init (dumb-jump-mode))
 #+END_SRC
+
+* Move-text
+
+This is a nice package used to move text around
+
+#+BEGIN_SRC emacs-lisp
+(use-package move-text
+  :ensure t
+  :init (move-text-default-bindings))
+#+END_SRC
