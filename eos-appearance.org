@@ -25,7 +25,7 @@ well as the general theme for look-and-feel things.
 ;; and in very bright locations while having a lower brightness setting, so this
 ;; can changed to be specific to my laptop
 (when (equal (system-name) "thulcandra")
-  (setq eos/background 'light))
+  (setq eos/background 'dark))
 #+END_SRC
 
 * Emacs Appearance
@@ -84,7 +84,17 @@ balanced of color and pleasing to my eyes.
     (use-package doom-themes
       :ensure t
       :init
-      (load-theme 'doom-one t))
+      (load-theme 'doom-one t)
+      :config
+      (eval-after-load "smartparens"
+        '(set-face-attribute 'sp-pair-overlay-face nil
+                             :background "#333333"
+                             :foreground "#bbc2cf"))
+      (add-hook 'after-init-hook
+                (lambda ()
+                  (set-face-attribute 'show-paren-match nil
+                                      :foreground "#1f5582"
+                                      :background "#ffffff"))))
   (use-package leuven-theme
     :ensure t
     :init
