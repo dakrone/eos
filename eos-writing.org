@@ -375,15 +375,15 @@ the fill-column (80 in most programming modes, 140 in Java :P)
                 (tab-mark 9 [187 9] [92 9])))
   ;; Only really good for doom-one theme
   ;; TODO: make theme agnostic
-  (set-face-attribute 'whitespace-space nil
-                      :background "#22252c"
-                      :foreground "#30303b")
-  (set-face-attribute 'whitespace-tab nil
-                      :background "#22252c"
-                      :foreground "#30303b")
-  (set-face-attribute 'whitespace-newline nil
-                      :background "#22252c"
-                      :foreground "#30303b")
+  ;; (set-face-attribute 'whitespace-space nil
+  ;;                     :background "#22252c"
+  ;;                     :foreground "#30303b")
+  ;; (set-face-attribute 'whitespace-tab nil
+  ;;                     :background "#22252c"
+  ;;                     :foreground "#30303b")
+  ;; (set-face-attribute 'whitespace-newline nil
+  ;;                     :background "#22252c"
+  ;;                     :foreground "#30303b")
   (whitespace-mode +1)
   (diminish 'whitespace-mode))
 

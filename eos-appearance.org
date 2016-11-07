@@ -81,20 +81,29 @@ balanced of color and pleasing to my eyes.
 
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
-    (use-package doom-themes
-      :ensure t
-      :init
-      (load-theme 'doom-one t)
-      :config
-      (eval-after-load "smartparens"
-        '(set-face-attribute 'sp-pair-overlay-face nil
-                             :background "#333333"
-                             :foreground "#bbc2cf"))
-      (add-hook 'after-init-hook
-                (lambda ()
-                  (set-face-attribute 'show-paren-match nil
-                                      :foreground "#1f5582"
-                                      :background "#ffffff"))))
+    (progn
+      (use-package doom-themes
+        :ensure t
+        :disabled t
+        :init
+        (load-theme 'doom-one t)
+        :config
+        (eval-after-load "smartparens"
+          '(set-face-attribute 'sp-pair-overlay-face nil
+                               :background "#333333"
+                               :foreground "#bbc2cf"))
+        (add-hook 'after-init-hook
+                  (lambda ()
+                    (set-face-attribute 'show-paren-match nil
+                                        :foreground "#1f5582"
+                                        :background "#ffffff"))))
+      (use-package color-theme-sanityinc-tomorrow
+        :ensure t
+        :init
+        (load-theme 'sanityinc-tomorrow-night t)
+        ;; Just ever so slightly more bright foreground text, default is
+        ;; "#c5c8c6". Makes it easier to see on a sunny day
+        (set-face-foreground 'default "#ffffff")))
   (use-package leuven-theme
     :ensure t
     :init
@@ -217,7 +226,6 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 #+BEGIN_SRC emacs-lisp
 (use-package spaceline
   :ensure t
-  :disabled t
   :init
   (setq powerline-default-separator 'zigzag
         spaceline-minor-modes-separator " ")
