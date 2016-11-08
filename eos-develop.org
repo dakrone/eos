@@ -583,6 +583,7 @@ Quite useful, as well as the =C-x n= and =C-x p= bindings.
 #+BEGIN_SRC emacs-lisp
 (use-package git-gutter
   :ensure t
+  :when window-system
   :defer t
   :bind (("C-x P" . git-gutter:popup-hunk)
          ("C-x p" . git-gutter:previous-hunk)
