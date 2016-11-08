@@ -675,6 +675,7 @@ Pretty minimally configured, but awesome tool for most dynamic languages.
          ("M-g M-p" . flycheck-previous-error)
          ("M-g M-=" . flycheck-list-errors))
   :init
+  (require 'flycheck)
   (global-flycheck-mode)
   (setq flycheck-indication-mode 'right-fringe
         flycheck-check-syntax-automatically '(save mode-enabled))
