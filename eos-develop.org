@@ -62,7 +62,7 @@ much slower than hideshow for large buffers.
          ("M-+" . hs-show-all))
   :init
   (add-hook #'prog-mode-hook #'hs-minor-mode)
-  (when window-system
+  (when (fboundp 'define-fringe-bitmap)
     (define-fringe-bitmap 'hs-marker [16 48 112 240 112 48 16] nil nil 'center))
   (defface hs-face '((t (:background "#ff8")))
     "Face to hightlight the ... area of hidden regions"
@@ -597,7 +597,7 @@ Quite useful, as well as the =C-x n= and =C-x p= bindings.
     :ensure t
     :init
     (require 'git-gutter-fringe)
-    (when window-system
+    (when (fboundp 'define-fringe-bitmap)
       (define-fringe-bitmap 'git-gutter-fr:added
         [224 224 224 224 224 224 224 224 224 224 224 224 224
              224 224 224 224 224 224 224 224 224 224 224 224]
@@ -664,7 +664,7 @@ Finally, a nice helper to browse code whenever it remotely may be,
 Pretty minimally configured, but awesome tool for most dynamic languages.
 
 #+BEGIN_SRC emacs-lisp
-(when window-system
+(when (fboundp 'define-fringe-bitmap)
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
     [0 0 0 0 0 4 12 28 60 124 252 124 60 28 12 4 0 0 0 0]))
 
