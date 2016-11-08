@@ -436,8 +436,9 @@ for an issue. So there's a nice exporter that does this for me: =ox-gfm=
 (use-package ox-gfm
   :ensure t
   :init
-  (customize-set-variable 'org-export-backends
-                          (cons 'gfm org-export-backends)))
+  (when (boundp 'org-export-backends)
+    (customize-set-variable 'org-export-backends
+                            (cons 'gfm org-export-backends))))
 #+END_SRC
 
 ** exporting to tufte html
