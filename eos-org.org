@@ -75,8 +75,8 @@ And now the huge org-mode configuration
     (add-hook 'org-mode-hook #'eos/org-mode-hook)
     ;; enabled export backends
     ;; (use-package ox-rss)
-    (custom-set-variables '(org-export-backends '(ascii beamer html latex md)))
-
+    (when (boundp 'org-export-backends)
+      (custom-set-variables '(org-export-backends '(ascii beamer html latex md))))
     ;; Allow's electric-pair-mode to surround things with = and ~ in org-mode
     (modify-syntax-entry ?~ "(~" org-mode-syntax-table)
     (modify-syntax-entry ?= "(=" org-mode-syntax-table)
