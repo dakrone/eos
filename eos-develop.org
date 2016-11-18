@@ -127,6 +127,15 @@ Uses =M-n= and =M-p= to jump between the same variable in multiple places
   (setq smartscan-symbol-selector "symbol"))
 #+END_SRC
 
+You'd be surprised how often you need to toggle boolean states in programming. I
+was surprised by how often I use this.
+
+#+BEGIN_SRC emacs-lisp
+(use-package bool-flip
+  :ensure t
+  :bind ("C-c C-b" . bool-flip-do-flip))
+#+END_SRC
+
 ** Indentation
 :PROPERTIES:
 :CUSTOM_ID: h:f91026bf-ebbc-4dfb-b8e4-728f87835c6a
