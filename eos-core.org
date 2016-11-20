@@ -551,6 +551,13 @@ I use [[https://github.com/lewang/ws-butler/][ws-butler]].
   (add-hook 'text-mode-hook #'ws-butler-mode))
 #+END_SRC
 
+On the other hand, auto-indenting can be really handy.
+
+#+BEGIN_SRC emacs-lisp
+(use-package auto-indent-mode
+  :ensure t)
+#+END_SRC
+
 Let's configure some popup rules, so buffers don't take over the whole workspace
 when they are popped up. I do this with Popwin
 
@@ -703,11 +710,15 @@ using a big font size and I need more eshell space
   :diminish golden-ratio-mode
   :defer t
   :config
+  ;; Default is 1.0, but I find this adjust just slightly less, which is nice
+  (setq golden-ratio-adjust-factor .9)
   (defun eos/helm-alive-p ()
     (if (boundp 'helm-alive-p)
         (symbol-value 'helm-alive-p)))
   (add-to-list 'golden-ratio-exclude-modes #'messages-buffer-mode)
   (add-to-list 'golden-ratio-exclude-modes #'fundamental-mode)
+  (add-to-list 'golden-ratio-exclude-modes 'mu4e-view-mode)
+  (add-to-list 'golden-ratio-exclude-modes 'mu4e-headers-mode)
   ;; Inhibit helm
   (add-to-list 'golden-ratio-inhibit-functions #'eos/helm-alive-p))
 #+END_SRC

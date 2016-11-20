@@ -17,6 +17,7 @@
   :ensure t
   :init
   (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
+  (add-hook 'es-mode-hook 'auto-indent-mode)
   :config
   (setq es-warn-on-delete-query nil))
 #+END_SRC
