@@ -910,6 +910,16 @@ Ignore case when performing completion
       read-file-name-completion-ignore-case t)
 #+END_SRC
 
+I occasionally use =rgrep= to search through code, and it can be pretty handy to
+be able to refactor the name of a method or something by making the ~*grep*~
+buffer writable, that's what wgrep does.
+
+#+BEGIN_SRC emacs-lisp
+(use-package wgrep
+  :ensure t
+  :init (require 'wgrep))
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
 :CUSTOM_ID: gpg-agent
