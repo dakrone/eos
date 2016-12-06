@@ -709,18 +709,34 @@ using a big font size and I need more eshell space
   :ensure t
   :diminish golden-ratio-mode
   :defer t
+  :init
+  (add-hook 'ediff-before-setup-windows-hook (lambda () (golden-ratio-mode -1)))
+  (add-hook 'ediff-quit-hook (lambda () (golden-ratio-mode 1)))
   :config
   ;; Default is 1.0, but I find this adjust just slightly less, which is nice
   (setq golden-ratio-adjust-factor .9)
+
   (defun eos/helm-alive-p ()
     (if (boundp 'helm-alive-p)
         (symbol-value 'helm-alive-p)))
-  (add-to-list 'golden-ratio-exclude-modes #'messages-buffer-mode)
-  (add-to-list 'golden-ratio-exclude-modes #'fundamental-mode)
-  (add-to-list 'golden-ratio-exclude-modes 'mu4e-view-mode)
-  (add-to-list 'golden-ratio-exclude-modes 'mu4e-headers-mode)
-  ;; Inhibit helm
-  (add-to-list 'golden-ratio-inhibit-functions #'eos/helm-alive-p))
+  (defun eos/ispell-running-p ()
+    (and (boundp 'ispell-choices-buffer)
+         (get-buffer ispell-choices-buffer)))
+
+  ;; Inhibit helm and ispell buffers
+  (setq golden-ratio-inhibit-functions '(eos/helm-alive-p eos/ispell-running-p))
+
+  (setq golden-ratio-exclude-buffer-regexp '("\\`\\*[Hh]elm.*\\*\\'")
+        golden-ratio-exclude-buffer-names '("*Org Select*")
+        golden-ratio-exclude-modes '(messages-buffer-mode
+                                     fundamental-mode
+                                     ediff-mode
+                                     calendar-mode
+                                     wget-mode
+                                     mu4e-view-mode
+                                     mu4e-headers-mode
+                                     magit-popup-mode)
+        golden-ratio-recenter t))
 #+END_SRC
 
 Add a generic cleanup method that can be called everywhere, bound to =C-c n=:
