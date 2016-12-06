@@ -194,11 +194,6 @@ completion, prompt and term settings:
     (setq eos/eshell-truncate-timer
           (run-with-idle-timer 5 t #'eos/truncate-eshell-buffers))
 
-    (when (not (functionp 'eshell/rgrep))
-      (defun eshell/rgrep (&rest args)
-        "Use Emacs grep facility instead of calling external grep."
-        (eshell-grep "rgrep" args t)))
-
     (defun eshell/cds ()
       "Change directory to the project's root."
       (eshell/cd (locate-dominating-file default-directory ".git")))
