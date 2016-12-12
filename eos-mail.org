@@ -11,7 +11,7 @@
 :PROPERTIES:
 :CUSTOM_ID: mu4e
 :END:
-I usually install [[http://www.djcbsoftware.nl/code/mu/][mu]] from source. I unpack it to ~/src/mu-0.9.13 (or whatever
+I usually install [[http://www.djcbsoftware.nl/code/mu/][mu]] from source. I unpack it to ~/src/mu-0.9.18 (or whatever
 version) so I can reference the mu4e elisp files. Then run the following to
 install mu:
 
@@ -30,7 +30,7 @@ to return the correct path depending on the account the email is from.
 (defun eos/load-mail ()
   "Load all the EOS mu4e mail configuration"
   (interactive)
-  (add-to-list 'load-path "~/src/mu-0.9.16/mu4e")
+  (add-to-list 'load-path "~/src/mu-0.9.18/mu4e")
   (use-package mu4e
     :if window-system
     :config
