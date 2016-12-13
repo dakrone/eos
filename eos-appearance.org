@@ -18,14 +18,14 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'dark)
+(defvar eos/background 'light)
 ;;(defvar eos/background 'dark)
 
 ;; On thulcandra (my laptop), I might want a light background for being outside
 ;; and in very bright locations while having a lower brightness setting, so this
 ;; can changed to be specific to my laptop
 (when (equal (system-name) "thulcandra")
-  (setq eos/background 'dark))
+  (setq eos/background 'light))
 #+END_SRC
 
 * Emacs Appearance
