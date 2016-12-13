@@ -108,7 +108,14 @@ balanced of color and pleasing to my eyes.
     :ensure t
     :init
     (load-theme 'leuven t)
-    (set-face-background 'default "#F7F7F7")))
+    (set-face-background 'default "#F7F7F7")
+    (eval-after-load 'eyebrowse
+      '(progn
+         (set-face-attribute 'eyebrowse-mode-line-active nil
+                             :foreground "#000000"
+                             :underline t)
+         (set-face-attribute 'eyebrowse-mode-line-inactive nil
+                             :foreground "#888888")))))
 #+END_SRC
 
 * Fonts
