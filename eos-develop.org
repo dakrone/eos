@@ -328,6 +328,8 @@ Now, the smartparens configuration:
 
   (define-key smartparens-mode-map (kbd "C-M-<right>") 'sp-forward-sexp)
   (define-key smartparens-mode-map (kbd "C-M-<left>") 'sp-backward-sexp)
+  (define-key smartparens-mode-map (kbd "M-F") 'sp-forward-sexp)
+  (define-key smartparens-mode-map (kbd "M-B") 'sp-backward-sexp)
 
   (define-key smartparens-mode-map (kbd "C-M-d") 'sp-down-sexp)
   (define-key smartparens-mode-map (kbd "C-M-a") 'sp-backward-down-sexp)
