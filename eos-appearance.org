@@ -268,20 +268,6 @@ buffer.
       hscroll-step 5)
 #+END_SRC
 
-I also have tested the sublimity package, with mixed results.
-
-#+BEGIN_SRC emacs-lisp
-(use-package sublimity
-  :ensure t
-  :disabled t
-  :init
-  (require 'sublimity)
-  (require 'sublimity-scroll)
-  (sublimity-mode)
-  :config
-  (setq scroll-margin 0))
-#+END_SRC
-
 * Highlighting the current line with hl-line-mode
 :PROPERTIES:
 :CUSTOM_ID: h:effd858a-d5e9-4afc-9e36-3488f7c75189
