@@ -389,13 +389,7 @@ Now, the smartparens configuration:
     (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
                                               ("* ||\n[i]" "RET"))))
 
-  (smartparens-global-strict-mode 1)
-  ;; Disabled because I use the built-in show-paren mode
-  ;;(show-smartparens-global-mode 1)
-  :config
-  (set-face-attribute 'sp-pair-overlay-face nil
-                      :background "#333333" :foreground "#bbc2cf")
-  )
+  (smartparens-global-strict-mode 1))
 #+END_SRC
 
 * Paredit everywhere
