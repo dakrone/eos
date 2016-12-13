@@ -663,11 +663,11 @@ for my webserver, in case I want to manually copy things around.
 (use-package bookmark+
   :ensure t
   :defer 10
+  :init (setq bmkp-replace-EWW-keys-flag t)
   :config
-  (progn
-    (setq bookmark-version-control t
-          ;; auto-save bookmarks
-          bookmark-save-flag 1)))
+  (setq bookmark-version-control t
+        ;; auto-save bookmarks
+        bookmark-save-flag 1))
 #+END_SRC
 
 Anzu shows the number of search hits in the modeline, which is handy.
