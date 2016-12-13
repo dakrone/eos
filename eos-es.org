@@ -54,40 +54,9 @@ So I configure prodigy like so:
   :config
   (setq prodigy-services '())
   (prodigy-define-service
-    :name "ES latest release"
-    :cwd "~/ies/"
-    :command "esvm"
-    :tags '(work test es)
-    :port 9200)
-
-  (prodigy-define-service
-    :name "ES 2.x, 3 nodes"
-    :cwd "~/ies/"
-    :command "esvm"
-    :args '("3node")
-    :tags '(work test es)
-    :port 9200)
-
-  (prodigy-define-service
-    :name "ES 2.x, 2 nodes"
-    :cwd "~/ies/"
-    :command "esvm"
-    :args '("2node")
-    :tags '(work test es)
-    :port 9200)
-
-  (prodigy-define-service
-    :name "ES master branch"
-    :cwd "~/ies/"
-    :command "esvm"
-    :args '("master")
-    :tags '(work test es)
-    :port 9200)
-
-  (prodigy-define-service
-    :name "Kibana 5.0.0"
-    :cwd "~/ies/kibana-5.0.0-linux-x64_86"
-    :command "~/ies/kibana-5.0.0-linux-x64_64/bin/kibana"
+    :name "Kibana 5.0.1"
+    :cwd "~/ies/kibana-5.0.1-linux-x64_86"
+    :command "~/ies/kibana-5.0.1-linux-x64_64/bin/kibana"
     :tags '(work kibana)
     :port 5601)
 
@@ -98,15 +67,21 @@ So I configure prodigy like so:
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
-    :name "Elasticsearch 2.4.1"
-    :cwd "~/ies/elasticsearch-2.4.1"
-    :command "~/ies/elasticsearch-2.4.1/bin/elasticsearch"
+    :name "Elasticsearch 2.4.3"
+    :cwd "~/ies/elasticsearch-2.4.3"
+    :command "~/ies/elasticsearch-2.4.3/bin/elasticsearch"
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
-    :name "Elasticsearch 5.0.0"
-    :cwd "~/ies/elasticsearch-5.0.0"
-    :command "~/ies/elasticsearch-5.0.0/bin/elasticsearch"
+    :name "Elasticsearch 5.0.1"
+    :cwd "~/ies/elasticsearch-5.0.1"
+    :command "~/ies/elasticsearch-5.0.1/bin/elasticsearch"
+    :tags '(work test es)
+    :port 9200)
+  (prodigy-define-service
+    :name "Elasticsearch 5.1.1"
+    :cwd "~/ies/elasticsearch-5.1.1"
+    :command "~/ies/elasticsearch-5.1.1/bin/elasticsearch"
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
