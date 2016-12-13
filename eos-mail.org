@@ -86,6 +86,8 @@ to return the correct path depending on the account the email is from.
           mu4e-maildir       "~/.mail"
           ;; don't use unicode
           mu4e-use-fancy-chars nil
+          ;; show slightly more lines
+          mu4e-headers-visible-lines 12
           ;; check for new messages every 180 seconds (3 min)
           mu4e-update-interval 180)
 

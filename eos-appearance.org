@@ -109,6 +109,13 @@ balanced of color and pleasing to my eyes.
     :init
     (load-theme 'leuven t)
     (set-face-background 'default "#F7F7F7")
+    (eval-after-load 'mu4e
+      (progn
+        (set-face-attribute
+         'mu4e-header-highlight-face nil
+         :foreground (face-attribute 'gnus-summary-selected :foreground)
+         :background (face-attribute 'gnus-summary-selected :background)
+         :underline nil)))
     (eval-after-load 'eyebrowse
       '(progn
          (set-face-attribute 'eyebrowse-mode-line-active nil
@@ -301,6 +308,7 @@ Turn it on by default (if enabled!) in prog-mode
 
 #+BEGIN_SRC emacs-lisp
 (add-hook 'prog-mode-hook #'eos/turn-on-hl-line)
+(add-hook 'mu4e-view-mode-hook #'eos/turn-on-hl-line)
 #+END_SRC
 
 * The Editor Fringe
