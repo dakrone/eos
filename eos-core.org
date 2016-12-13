@@ -1275,13 +1275,14 @@ And finally, the main EOS Hydra for entry:
   [_p_] Proced      [_W_] Weather   [(] Macros
   [_e_] EWW         [_R_] RSS       [`] Errors
   [_d_] Downloads   [_D_] Debbugs   [_C_] ES-CC
-                  [_B_] Bookmarks
+  [_b_] Project's Eshell          [_B_] Bookmarks
   [_q_] quit
 "
 
   ("`" eos/hydra-next-error/body :exit t)
   ("(" eos/hydra-macro/body :exit t)
   ("a" (org-agenda nil " ") :exit t)
+  ("b" eos/popup-project-eshell :exit t)
   ("A" eos/hydra-about-emacs/body :exit t)
   ("t" eos/hydra-toggle-map/body :exit t)
   ("T" eos/start-or-jump-to-twitter :exit t)

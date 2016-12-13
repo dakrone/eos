@@ -497,3 +497,35 @@ checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to
               ("gradle compile" .
                "gradle compileJava compileTestJava --console=plain"))))))
 #+END_SRC
+
+* Automatically popping up the project's Eshell buffer
+
+This is a neat function I wrote that looks to see if the current buffer is part
+of a projectile project. If it is, then it tries to find an eshell buffer that
+belongs to the same project. If it does, then it uses =popwin= to pop that
+buffer up near the bottom of the screen.
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/popup-project-eshell ()
+  (interactive)
+  (when (projectile-project-p)
+    (save-excursion
+      (let ((project (projectile-project-name))
+            (candidate nil)
+            (i 0)
+            (buffers (buffer-list))
+            (found-p nil))
+        (while (and (not candidate)
+                    (<= i (length buffers)))
+          (let ((buffer (elt buffers i)))
+            (with-current-buffer buffer
+              (when (and (eq major-mode 'eshell-mode)
+                         (equal (projectile-project-name) project))
+                (setq candidate buffer))))
+          (setq i (+ i 1)))
+        (if candidate
+            (popwin:popup-buffer-tail candidate)
+          (message "No projectile eshell buffer found"))))))
+
+(global-set-key (kbd "C-x B") #'eos/popup-project-eshell)
+#+END_SRC
