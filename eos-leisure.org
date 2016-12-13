@@ -19,7 +19,7 @@
   (when (not (get-buffer "*eshell downloads*"))
     (let ((eshell-buffer-name "*eshell downloads*"))
       (eshell)))
-  (popwin:popup-buffer "*eshell downloads*"))
+  (popwin:popup-buffer-tail "*eshell downloads*"))
 
 ;; eshell 4 is always my "download stuff" buffer
 (global-set-key (kbd "C-x M-d") #'eos/popup-downloads)
