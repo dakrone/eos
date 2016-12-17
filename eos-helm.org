@@ -481,9 +481,9 @@ checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to
               ("ES precommit" .
                "gradle precommit --console=plain")))
           ;; X-pack specific compilation commands
-          ((s-contains? "es/x-plugins" default-directory)
+          ((s-contains? "elasticsearch-extra/x-pack" default-directory)
            . (("x-pack compile" .
-               "gradle :x-plugins:elasticsearch:x-pack:compileJava :x-plugins:elasticsearch:x-pack:compileTestJava --console=plain")
+               "gradle :x-pack:elasticsearch:x-pack:compileJava :x-pack:elasticsearch:x-pack:compileTestJava --console=plain")
               ("x-pack everything compile" .
                "gradle compileJava compileTestJava precommit --console=plain")
               ("x-pack precommit" .

@@ -316,7 +316,7 @@ d=, if the buffer doesn't exist it is created.
         (default-directory "~/es/elasticsearch"))
     (eshell))
   (let ((eshell-buffer-name "*eshell*<4>")
-        (default-directory "~/es/x-plugins"))
+        (default-directory "~/es/elasticsearch-extra/x-pack"))
     (eshell))
   (let ((eshell-buffer-name "*eshell-delta*")
         (default-directory "~/eos"))
@@ -384,7 +384,7 @@ alias post curl -s -XPOST $*
 alias put curl -s -XPUT $*
 alias se tar zxvf $*
 alias xanadu2org rsync -azP --delete xanadu:~/org/ ~/org
-alias xp cd ~/es/x-plugins
+alias xp cd ~/es/elasticsearch-extra/x-pack
 alias es cd ~/es/elasticsearch
 #+END_SRC
 
