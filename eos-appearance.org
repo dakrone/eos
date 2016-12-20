@@ -225,7 +225,7 @@ responsiveness, so I go back and forth with it.
   (setq sml/shorten-directory t
         sml/shorten-modes t)
   (add-to-list 'sml/replacer-regexp-list '("^~/Sync/org/" ":org:"))
-  (add-to-list 'sml/replacer-regexp-list '("^~/es/x-plugins/" ":X:"))
+  (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch-extra/x-pack/" ":X-PACK:"))
   (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch/" ":ES:") t))
 #+END_SRC
 
@@ -309,6 +309,7 @@ Turn it on by default (if enabled!) in prog-mode
 #+BEGIN_SRC emacs-lisp
 (add-hook 'prog-mode-hook #'eos/turn-on-hl-line)
 (add-hook 'mu4e-view-mode-hook #'eos/turn-on-hl-line)
+(add-hook 'erc-mode-hook #'eos/turn-on-hl-line)
 #+END_SRC
 
 * The Editor Fringe
