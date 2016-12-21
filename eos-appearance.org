@@ -109,20 +109,11 @@ balanced of color and pleasing to my eyes.
     :init
     (load-theme 'leuven t)
     (set-face-background 'default "#F7F7F7")
-    (eval-after-load 'mu4e
-      (progn
-        (set-face-attribute
-         'mu4e-header-highlight-face nil
-         :foreground (face-attribute 'gnus-summary-selected :foreground)
-         :background (face-attribute 'gnus-summary-selected :background)
-         :underline nil)))
-    (eval-after-load 'eyebrowse
-      '(progn
-         (set-face-attribute 'eyebrowse-mode-line-active nil
-                             :foreground "#000000"
-                             :underline t)
-         (set-face-attribute 'eyebrowse-mode-line-inactive nil
-                             :foreground "#888888")))))
+    (set-face-attribute 'eyebrowse-mode-line-active nil
+                        :foreground "#000000"
+                        :underline t)
+    (set-face-attribute 'eyebrowse-mode-line-inactive nil
+                        :foreground "#888888")))
 #+END_SRC
 
 * Fonts
