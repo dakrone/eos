@@ -106,6 +106,7 @@ balanced of color and pleasing to my eyes.
         (set-face-foreground 'default "#ffffff")))
   (use-package leuven-theme
     :ensure t
+    :disabled t
     :init
     (load-theme 'leuven t)
     (set-face-background 'default "#F7F7F7")
@@ -113,7 +114,11 @@ balanced of color and pleasing to my eyes.
                         :foreground "#000000"
                         :underline t)
     (set-face-attribute 'eyebrowse-mode-line-inactive nil
-                        :foreground "#888888")))
+                        :foreground "#888888"))
+  (use-package github-theme
+    :ensure t
+    :init
+    (load-theme 'github t)))
 #+END_SRC
 
 * Fonts
