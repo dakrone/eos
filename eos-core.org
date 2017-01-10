@@ -1158,8 +1158,8 @@ interface to the parts of EOS.
   "
 ^Toggle^
 ^^^^^^^^----------------------
-_d_: debug-on-error
-_D_: debug-on-quit
+_d_: debug-on-error             _+_: monitor jack in
+_D_: debug-on-quit              _-_: monitor jack out
 _f_: fixed/variable width mode
 _F_: auto-fill-mode
 _l_: toggle-truncate-lines
@@ -1181,6 +1181,8 @@ _q_: quit
   ("h" hl-line-mode :exit t)
   ("v" eos/turn-on-viewing-mode :exit t)
   ("n" eos/narrow-or-widen-dwim :exit t)
+  ("+" eos/monitor-jack-in :exit t)
+  ("-" eos/monitor-jack-out :exit t)
   ("q" nil :exit t))
 
 (defhydra eos/hydra-next-error nil

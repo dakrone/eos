@@ -170,6 +170,30 @@ nice to me on both Linux and any other computer. Even though it's called
   (add-hook 'after-init-hook #'eos/setup-osx-fonts))
 #+END_SRC
 
+** Configuration for monitor switching
+
+Sometimes I want to plug my laptop into a larger monitor, so I'd like to have a
+single function I can call to adjust any sizes that are necessary.
+
+#+BEGIN_SRC emacs-lisp
+(setq eos/original-height (face-attribute 'default :height))
+(setq eos/height-increase 40)
+
+(defun eos/monitor-jack-in ()
+  (interactive)
+  (set-face-attribute 'default nil :height (+ (face-attribute 'default :height)
+                                              eos/height-increase))
+  (set-face-attribute 'variable-pitch
+                      nil
+                      :height (+ (face-attribute 'variable-pitch :height)
+                                 eos/height-increase)))
+
+(defun eos/monitor-jack-out ()
+  (interactive)
+  (set-face-attribute 'default nil :height eos/original-height)
+  (set-face-attribute 'variable-pitch nil :height eos/original-height))
+#+END_SRC
+
 * Emacs' Mode-line
 :PROPERTIES:
 :CUSTOM_ID: modeline
