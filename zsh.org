@@ -321,6 +321,7 @@ alias musicsync='rsync -azP --delete ~/Music/ ivalice:/opt/music --exclude="lost
 # start a master tmux
 alias tmaster='tmux -2 -u -S /tmp/mastermux -f .tmux.master.conf'
 alias tmux='tmux -2'
+alias dtop='dstat -cdnpmgs --top-bio --top-cpu --top-mem'
 #+END_SRC
 
 *** Functions

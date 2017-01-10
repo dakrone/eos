@@ -175,7 +175,7 @@ completion, prompt and term settings:
     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
                                    "ncftp" "pine" "tin" "trn" "elm" "vim"
                                    "nmtui" "alsamixer" "htop" "el" "elinks"
-                                   "ssh" "nethack"))
+                                   "ssh" "nethack" "dtop" "dstat"))
     (setq eshell-visual-subcommands '(("git" "log" "diff" "show")
                                       ("vagrant" "ssh")))
 
@@ -386,6 +386,7 @@ alias se tar zxvf $*
 alias xanadu2org rsync -azP --delete xanadu:~/org/ ~/org
 alias xp cd ~/es/elasticsearch-extra/x-pack
 alias es cd ~/es/elasticsearch
+alias dtop dstat -cdnpmgs --top-bio --top-cpu --top-mem
 #+END_SRC
 
 And we need something to install them
