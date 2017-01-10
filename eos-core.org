@@ -370,24 +370,29 @@ the system will restore the remaining buffers.
 I've recently disabled this, because I enjoy starting clean when I restart
 Emacs, so it's nice to have the option if desired..
 
+Desktop+ will automatically save the desktop when Emacs exits
+
 #+BEGIN_src emacs-lisp
-(desktop-save-mode 1)
-(setq desktop-restore-eager 1)
+;; (desktop-save-mode 1) <-- handled by desktop+
+;; load all values eagerly
+(setq desktop-restore-eager t)
+;; Don't save TRAMP, ftp, or "KILL" buffers
 (setq desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\|KILL\\)")
+;; Don't restore different frames, only restore the one frame
 (setq desktop-restore-frames nil)
+
+(use-package desktop+
+  :ensure t
+  :init
+  (defun eos/load-default-desktop ()
+    "Load the default EOS desktop, assuming one has been saved
+with the name `default'."
+    (interactive)
+    (desktop+-load "default")
+    (message "Loaded \"default\" desktop."))
+
+  (add-hook 'after-init-hook #'eos/load-default-desktop))
 #+END_SRC
-
-Emacs should automatically save my state, and does so every two minutes.
-
-#+begin_src emacs-lisp
-(defun eos/desktop-save ()
-  "Write the desktop save file to ~/.emacs.d"
-  (desktop-save user-emacs-directory))
-
-(if (not (boundp 'eos/desktop-save-timer))
-    (setq eos/desktop-save-timer
-          (run-with-idle-timer 180 t #'eos/desktop-save)))
-#+end_src
 
 By default, my machine drops me in to a =*scratch*= buffer. Originally designed
 to be an lisp playground that you could dive right in to on start up, it's sort
