@@ -1322,10 +1322,11 @@ Eyebrowse is a great package for workspaces in Emacs.
     (defun eos/create-eyebrowse-setup ()
       (interactive)
       "Create a default window config, if none is present"
-      (when (not (eyebrowse--window-config-present-p 3))
-        ;; there's probably a better way to do this, creating tthree workspaces
+      (when (not (eyebrowse--window-config-present-p 4))
+        ;; there's probably a better way to do this, creating four workspaces
         (eyebrowse-switch-to-window-config-2)
         (eyebrowse-switch-to-window-config-3)
+        (eyebrowse-switch-to-window-config-4)
         (eyebrowse-switch-to-window-config-1)))
     (setq eyebrowse-wrap-around t
           eyebrowse-new-workspace t)
