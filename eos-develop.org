@@ -977,3 +977,12 @@ And support for flycheck and rust
   :init
   (add-hook 'rust-mode-hook #'flycheck-rust-setup))
 #+END_SRC
+
+* Groovy
+
+I tend to have to edit a lot of =build.gradle= files these days...
+
+#+BEGIN_SRC emacs-lisp
+(use-package groovy-mode
+  :ensure t)
+#+END_SRC
