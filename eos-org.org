@@ -185,14 +185,17 @@ And now the huge org-mode configuration
           org-agenda-span 4
           ;; Do not dim blocked tasks
           org-agenda-dim-blocked-tasks nil
+          ;; include the diary in the agenda
+          org-agenda-include-diary t
           ;; Compact the block agenda view
           org-agenda-compact-blocks t
           ;; Show all agenda dates - even if they are empty
           org-agenda-show-all-dates t
+          ;; Change the default column mode display to show clock sum
+          org-columns-default-format "%50ITEM(Task) %2PRIORITY %10CLOCKSUM %TAGS"
           ;; Agenda org-mode files
           org-agenda-files `(,(file-truename "~/org/refile.org")
                              ,(file-truename "~/org/todo.org")
-                             ,(file-truename "~/org/microsoft.org")
                              ,(file-truename "~/org/bibliography.org")
                              ,(file-truename "~/org/notes.org")
                              ,(file-truename "~/org/es-team.org")
@@ -202,16 +205,20 @@ And now the huge org-mode configuration
     (setq org-todo-keywords
           '((sequence "TODO(t)" "|" "DONE(d)")
             (sequence "TODO(t)"
-                      "SOMEDAY(s)"
+                      "STARTED(s)"
+                      "SOMEDAY(m)"
                       "INPROGRESS(i)"
                       "HOLD(h)"
                       "WAITING(w@/!)"
                       "NEEDSREVIEW(n@/!)"
                       "|" "DONE(d)")
-            (sequence "TODO(t)" "INPROGRESS(i)" "|" "CANCELLED(c@/!)")))
+            (sequence "TODO(t)" "INPROGRESS(i)" "|" "CANCELLED(c@/!)")
+            (sequence "TODO(t)" "STARTED(s)" "|" "CANCELLED(c@/!)")))
     ;; Org faces
     (setq org-todo-keyword-faces
           '(("TODO" :foreground "red" :weight bold)
+            ("MEETING" :foreground "red" :weight bold)
+            ("STARTED" :foreground "blue violet" :weight bold)
             ("INPROGRESS" :foreground "deep sky blue" :weight bold)
             ("SOMEDAY" :foreground "purple" :weight bold)
             ("NEEDSREVIEW" :foreground "#edd400" :weight bold)
@@ -227,6 +234,7 @@ And now the huge org-mode configuration
             (done ("WAITING") ("HOLD"))
             ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
             ("INPROGRESS" ("WAITING") ("CANCELLED") ("HOLD"))
+            ("STARTED" ("WAITING") ("CANCELLED") ("HOLD"))
             ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
     ;; refile targets all level 1 and 2 headers in current file and agenda files
     (setq org-refile-targets '((nil :maxlevel . 2)
@@ -236,7 +244,7 @@ And now the huge org-mode configuration
           '(("oss" . ?o)
             ("home" . ?h)
             ("work" . ?w)
-            ("xplugins" . ?x)
+            ("xpack" . ?x)
             ("book" . ?b)
             ("support" . ?s)
             ("docs" . ?d)
@@ -247,7 +255,9 @@ And now the huge org-mode configuration
     (setq org-capture-templates
           '(("t" "Todo" entry (file "~/org/refile.org")
              "* TODO %?\n")
-            ("m" "Email" entry (file "~/org/refile.org")
+            ("m" "Meeting" entry (file+headline "~/org/todo.org" "Meetings")
+             "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+            ("M" "Email" entry (file "~/org/refile.org")
              "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
             ("n" "Notes" entry (file+headline "~/org/notes.org" "Notes")
              "* %? :NOTE:\n")
@@ -274,6 +284,9 @@ And now the huge org-mode configuration
               ;; All "INPROGRESS" todo items
               (todo "INPROGRESS"
                     ((org-agenda-overriding-header "Current work")))
+              ;; All "STARTED" todo items
+              (todo "STARTED"
+                    ((org-agenda-overriding-header "Started tasks")))
               ;; All headings with the "support" tag
               (tags "support/!"
                     ((org-agenda-overriding-header "Support cases")))
@@ -398,10 +411,6 @@ And now the huge org-mode configuration
           (goto-char (point-min))
           (when (re-search-forward "^#\\+OPTIONS:.*auto-id:t" (point-max) t)
             (org-map-entries (lambda () (eos/org-custom-id-get (point) 'create))))))
-
-      ;; automatically add ids to captured headlines
-      (add-hook 'org-capture-prepare-finalize-hook
-                (lambda () (eos/org-custom-id-get (point) 'create)))
 
       ;; automatically add ids to saved org-mode headlines
       (add-hook 'org-mode-hook
