@@ -86,17 +86,7 @@ balanced of color and pleasing to my eyes.
         :ensure t
         :disabled t
         :init
-        (load-theme 'doom-one t)
-        :config
-        (eval-after-load "smartparens"
-          '(set-face-attribute 'sp-pair-overlay-face nil
-                               :background "#333333"
-                               :foreground "#bbc2cf"))
-        (add-hook 'after-init-hook
-                  (lambda ()
-                    (set-face-attribute 'show-paren-match nil
-                                        :foreground "#1f5582"
-                                        :background "#ffffff"))))
+        (load-theme 'doom-one t))
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
         :init
