@@ -135,24 +135,21 @@ nice to me on both Linux and any other computer. Even though it's called
 :END:
 
 #+BEGIN_SRC emacs-lisp
+;; The original font height (so it can be restored too at a later time)
+(setq eos/original-height 105)
+
 (defun eos/setup-x11-fonts ()
   (when (eq window-system 'x)
     ;; default font and variable-pitch fonts
-    (if (equal (system-name) "ivalice")
-        (progn
-          ;; Ivalice has a big monitor, the text needs to be bigger
-          (set-face-attribute 'default nil :family "Hack" :height 145)
-          (set-face-attribute 'variable-pitch nil
-                              :family "DejaVu Sans" :height 145))
-      (set-face-attribute 'default nil :family "Hack" :height 105)
-      (set-face-attribute 'variable-pitch nil :family "DejaVu Sans" :height 105))
+    (set-face-attribute 'default nil :family "Hack" :height eos/original-height)
+    (set-face-attribute 'variable-pitch nil
+                        :family "DejaVu Sans" :height eos/original-height)
     ;; font for all unicode characters
     (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)))
 
 (when (eq window-system 'x)
   (add-hook 'after-init-hook #'eos/setup-x11-fonts))
 #+END_SRC
-
 
 ** Config for OSX:
 :PROPERTIES:
@@ -167,6 +164,8 @@ nice to me on both Linux and any other computer. Even though it's called
     (set-face-attribute 'fixed-pitch nil :height 120)))
 
 (when (eq system-type 'darwin)
+  ;; The original font height (so it can be restored too at a later time)
+  (setq eos/original-height 120)
   (add-hook 'after-init-hook #'eos/setup-osx-fonts))
 #+END_SRC
 
@@ -176,7 +175,6 @@ Sometimes I want to plug my laptop into a larger monitor, so I'd like to have a
 single function I can call to adjust any sizes that are necessary.
 
 #+BEGIN_SRC emacs-lisp
-(setq eos/original-height (face-attribute 'default :height))
 (setq eos/height-increase 40)
 
 (defun eos/monitor-jack-in ()
