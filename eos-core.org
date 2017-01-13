@@ -1142,7 +1142,37 @@ In most non-programming modes, =M-.= can be used to spellcheck the word
   :ensure t
   :defer t
   :diminish ""
-  :init (add-hook 'prog-mode-hook #'flyspell-prog-mode)
+  :init
+  ;; So previously, I used to do this:
+  ;;(add-hook 'prog-mode-hook #'flyspell-prog-mode)
+
+  ;; start with it turned off
+  (setq eos/programming-spellcheck nil)
+
+  (use-package shut-up :ensure t)
+  (defun eos/flyspell-buffer-quietly ()
+    (interactive)
+    (when eos/programming-spellcheck
+      (save-excursion (shut-up (flyspell-buffer)))))
+
+  ;; But, the problem then is that you get spell checking as you go, instead,
+  ;; I think I'd rather have the buffer spellchecked when it's saved, and still
+  ;; be able to go through the errors
+  (defun eos/turn-on-programming-spellcheck ()
+    (interactive)
+    (flyspell-mode -1)
+    (when (not (and (boundp 'org-src-mode)
+                    org-src-mode))
+      ;; Tell the local buffer it's safe to flyspell this after save
+      (setq-local eos/programming-spellcheck t)
+      ;; Automatically becomes local
+      (setq flyspell-generic-check-word-predicate
+            #'flyspell-generic-progmode-verify)
+      ;; C-, is normally set in flyspell mode, but since we're not turning it on,
+      ;; we still need to be able to hit it, so bind it locally
+      (local-set-key (kbd "C-,") 'flyspell-goto-next-error)))
+  (add-hook 'after-save-hook #'eos/flyspell-buffer-quietly)
+  (add-hook 'prog-mode-hook #'eos/turn-on-programming-spellcheck)
   :config
   (define-key flyspell-mode-map (kbd "C-.") 'company-complete))
 #+END_SRC
