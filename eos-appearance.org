@@ -18,14 +18,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
-;;(defvar eos/background 'dark)
-
-;; On thulcandra (my laptop), I might want a light background for being outside
-;; and in very bright locations while having a lower brightness setting, so this
-;; can changed to be specific to my laptop
-(when (equal (system-name) "thulcandra")
-  (setq eos/background 'light))
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
 #+END_SRC
 
 * Emacs Appearance
@@ -84,16 +78,21 @@ balanced of color and pleasing to my eyes.
     (progn
       (use-package doom-themes
         :ensure t
-        :disabled t
         :init
         (load-theme 'doom-one t))
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
+        :disabled t
         :init
         (load-theme 'sanityinc-tomorrow-night t)
         ;; Just ever so slightly more bright foreground text, default is
         ;; "#c5c8c6". Makes it easier to see on a sunny day
-        (set-face-foreground 'default "#ffffff")))
+        (set-face-foreground 'default "#ffffff"))
+      (use-package zweilight-theme
+        :ensure t
+        :disabled t
+        :init
+        (load-theme 'zweilight t)))
   (use-package leuven-theme
     :ensure t
     :disabled t
