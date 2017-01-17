@@ -1171,7 +1171,8 @@ In most non-programming modes, =M-.= can be used to spellcheck the word
       ;; C-, is normally set in flyspell mode, but since we're not turning it on,
       ;; we still need to be able to hit it, so bind it locally
       (local-set-key (kbd "C-,") 'flyspell-goto-next-error)))
-  (add-hook 'after-save-hook #'eos/flyspell-buffer-quietly)
+  ;; Turned off right now, as I'm still tweaking this
+  ;;(add-hook 'after-save-hook #'eos/flyspell-buffer-quietly)
   (add-hook 'prog-mode-hook #'eos/turn-on-programming-spellcheck)
   :config
   (define-key flyspell-mode-map (kbd "C-.") 'company-complete))
@@ -1195,7 +1196,7 @@ interface to the parts of EOS.
 ^^^^^^^^----------------------
 _d_: debug-on-error             _+_: monitor jack in
 _D_: debug-on-quit              _-_: monitor jack out
-_f_: fixed/variable width mode
+_f_: fixed/variable width mode  _R_: code reading mode
 _F_: auto-fill-mode
 _l_: toggle-truncate-lines
 _h_: hl-line-mode
@@ -1218,6 +1219,7 @@ _q_: quit
   ("n" eos/narrow-or-widen-dwim :exit t)
   ("+" eos/monitor-jack-in :exit t)
   ("-" eos/monitor-jack-out :exit t)
+  ("R" eos/code-reading-mode :exit t)
   ("q" nil :exit t))
 
 (defhydra eos/hydra-next-error nil

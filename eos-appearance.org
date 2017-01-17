@@ -78,6 +78,7 @@ balanced of color and pleasing to my eyes.
     (progn
       (use-package doom-themes
         :ensure t
+        :disabled t
         :init
         (load-theme 'doom-one t))
       (use-package color-theme-sanityinc-tomorrow
@@ -88,11 +89,18 @@ balanced of color and pleasing to my eyes.
         ;; Just ever so slightly more bright foreground text, default is
         ;; "#c5c8c6". Makes it easier to see on a sunny day
         (set-face-foreground 'default "#ffffff"))
-      (use-package zweilight-theme
+      (use-package tao-theme
         :ensure t
-        :disabled t
         :init
-        (load-theme 'zweilight t)))
+        (load-theme 'tao-yin t)
+        (eval-after-load 'git-gutter
+          (progn
+            (set-face-attribute 'git-gutter:added nil :foreground "green")
+            (set-face-attribute 'git-gutter-fr:added nil :foreground "green")
+            (set-face-attribute 'git-gutter:deleted nil :foreground "red")
+            (set-face-attribute 'git-gutter-fr:deleted nil :foreground "red")
+            (set-face-attribute 'git-gutter:modified nil :foreground "light blue")
+            (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")))))
   (use-package leuven-theme
     :ensure t
     :disabled t
@@ -164,9 +172,12 @@ Sometimes I want to plug my laptop into a larger monitor, so I'd like to have a
 single function I can call to adjust any sizes that are necessary.
 
 #+BEGIN_SRC emacs-lisp
-(setq eos/height-increase 40)
+(defvar eos/height-increase 20
+  "Default value to increment the size by when jacking into a monitor.")
 
 (defun eos/monitor-jack-in ()
+  "Increase the font size by `eos/height-increase' amount, for
+when you jack into an external monitor."
   (interactive)
   (set-face-attribute 'default nil :height (+ (face-attribute 'default :height)
                                               eos/height-increase))
@@ -176,9 +187,26 @@ single function I can call to adjust any sizes that are necessary.
                                  eos/height-increase)))
 
 (defun eos/monitor-jack-out ()
+  "Go back to the default font size and `line-spacing'"
   (interactive)
   (set-face-attribute 'default nil :height eos/original-height)
-  (set-face-attribute 'variable-pitch nil :height eos/original-height))
+  (set-face-attribute 'variable-pitch nil :height eos/original-height)
+  (text-scale-adjust 0)
+  (when (fboundp 'minimap-mode)
+    (minimap-mode 0))
+  (setq line-spacing 0))
+
+(defun eos/code-reading-mode ()
+  "Do a bunch of fancy stuff to make reading/browsing code
+easier. When you're done, `eos/monitor-jack-out' is a great way
+to go back to a normal setup."
+  (interactive)
+  (delete-other-windows)
+  (text-scale-increase 1)
+  (setq line-spacing 5)
+  (use-package minimap :ensure t)
+  (minimap-mode 1)
+  (eos/turn-on-viewing-mode))
 #+END_SRC
 
 * Emacs' Mode-line
@@ -557,7 +585,8 @@ java-mode applies the color-identifiers configuration.
       (eos/make-local-face 'font-lock-builtin-face :foreground nil :weight 'bold)
       (color-identifiers-mode 1)))
   (add-hook 'java-mode-hook #'color-identifiers-mode)
-  (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode))
+  (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode)
+  (global-color-identifiers-mode 1))
 #+END_SRC
 
 * Visible marks in buffers
