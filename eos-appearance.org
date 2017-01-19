@@ -93,14 +93,14 @@ balanced of color and pleasing to my eyes.
         :ensure t
         :init
         (load-theme 'tao-yin t)
-        (eval-after-load 'git-gutter
-          (progn
-            (set-face-attribute 'git-gutter:added nil :foreground "green")
-            (set-face-attribute 'git-gutter-fr:added nil :foreground "green")
-            (set-face-attribute 'git-gutter:deleted nil :foreground "red")
-            (set-face-attribute 'git-gutter-fr:deleted nil :foreground "red")
-            (set-face-attribute 'git-gutter:modified nil :foreground "light blue")
-            (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")))))
+        (require 'git-gutter)
+        (require 'git-gutter-fringe)
+        (set-face-attribute 'git-gutter:added nil :foreground "green")
+        (set-face-attribute 'git-gutter-fr:added nil :foreground "green")
+        (set-face-attribute 'git-gutter:deleted nil :foreground "red")
+        (set-face-attribute 'git-gutter-fr:deleted nil :foreground "red")
+        (set-face-attribute 'git-gutter:modified nil :foreground "light blue")
+        (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")))
   (use-package leuven-theme
     :ensure t
     :disabled t
