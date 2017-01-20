@@ -205,8 +205,8 @@ to go back to a normal setup."
   (text-scale-increase 1)
   (setq line-spacing 5)
   (use-package minimap :ensure t)
-  (minimap-mode 1)
-  (eos/turn-on-viewing-mode))
+  (when (not minimap-mode)
+    (minimap-mode 1)))
 #+END_SRC
 
 * Emacs' Mode-line
