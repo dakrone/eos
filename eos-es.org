@@ -22,6 +22,16 @@
   (setq es-warn-on-delete-query nil))
 #+END_SRC
 
+Some setup for the Java-specific ES project, with EDE
+
+#+BEGIN_SRC emacs-lisp
+;; Enable EDE globally
+(global-ede-mode 1)
+(ede-java-root-project "elasticsearch"
+                       :file "/home/hinmanm/es/elasticsearch/build.gradle"
+                       :srcroot '("core/src"))
+#+END_SRC
+
 * Logstash
 :PROPERTIES:
 :CUSTOM_ID: logstash
