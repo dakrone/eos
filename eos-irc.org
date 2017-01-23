@@ -125,3 +125,23 @@ IRC in Emacs
     ;;          :password (format "%s-novoice" elastic-slack-pass))
     ))
 #+END_SRC
+
+* Slack
+
+I use Slack for work, not because it's better than IRC (it isn't), but because
+we have to :)
+
+#+BEGIN_SRC emacs-lisp
+(use-package slack
+  :ensure t
+  :commands (slack-start)
+  :init
+  (require 'slack)
+  (require 'slack-message-formatter)
+  ;; No Emoji (sorry internet)
+  (setq slack-buffer-emojify nil)
+  (setq slack-prefer-current-team t)
+  ;; The `slack-register-team' goes into ~/.slackpass
+  (when (file-exists-p "~/.slackpass")
+    (load-file "~/.slackpass")))
+#+END_SRC
