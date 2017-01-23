@@ -375,7 +375,7 @@ Desktop+ will automatically save the desktop when Emacs exits
 #+BEGIN_src emacs-lisp
 ;; (desktop-save-mode 1) <-- handled by desktop+
 ;; load all values eagerly
-(setq desktop-restore-eager t)
+(setq desktop-restore-eager 10)
 ;; Don't save TRAMP, ftp, or "KILL" buffers
 (setq desktop-files-not-to-save "\\(^/[^/:]*:\\|(ftp)$\\|KILL\\)")
 ;; Don't restore different frames, only restore the one frame
