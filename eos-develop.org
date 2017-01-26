@@ -946,6 +946,14 @@ There's =tern= also, but I leave it turned off by default, just installed
   :ensure t)
 #+END_SRC
 
+Finally, use json-mode for JSON instead of js-mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package json-mode
+  :ensure t
+  :mode "\\.json\\'")
+#+END_SRC
+
 * Shell scripting
 :PROPERTIES:
 :CUSTOM_ID: h:5fe30558-190d-476d-9174-cca2e986bb97
