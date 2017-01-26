@@ -231,6 +231,13 @@ And then things to set up semantic mode
     (require 'semantic/wisent/java)
     (require 'semantic/wisent/java-wy)
     (require 'semantic/ia)
+    (setq semantic-default-submodes
+          '(global-semantic-idle-scheduler-mode
+            global-semanticdb-minor-mode
+            global-semantic-decoration-mode
+            global-semantic-highlight-func-mode
+            global-semantic-idle-summary-mode
+            global-semantic-idle-breadcrumbs-mode))
     (semantic-mode t)
     ;; Fixing a bug in semantic, see #22287
     (defun semanticdb-save-all-db-idle ()
