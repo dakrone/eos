@@ -1196,8 +1196,8 @@ interface to the parts of EOS.
 ^^^^^^^^----------------------
 _d_: debug-on-error             _+_: monitor jack in
 _D_: debug-on-quit              _-_: monitor jack out
-_f_: fixed/variable width mode  _R_: code reading mode
-_F_: auto-fill-mode
+_f_: fixed/variable width mode  _0_: monitor reset
+_F_: auto-fill-mode             _R_: code reading mode
 _l_: toggle-truncate-lines
 _h_: hl-line-mode
 _r_: read-only-mode
@@ -1219,6 +1219,7 @@ _q_: quit
   ("n" eos/narrow-or-widen-dwim :exit t)
   ("+" eos/monitor-jack-in :exit t)
   ("-" eos/monitor-jack-out :exit t)
+  ("0" eos/monitor-reset :exit t)
   ("R" eos/code-reading-mode :exit t)
   ("q" nil :exit t))
 
