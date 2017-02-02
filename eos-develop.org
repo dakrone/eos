@@ -118,6 +118,19 @@ showing them."
           (setq-local eos/hs-fold-show-only-methods-active-p t))))))
 #+END_SRC
 
+Bring up the compilation buffer with =C-x c=
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/last-compilation-buffer ()
+  "Display last compilation buffer in current window."
+  (interactive)
+  (if (buffer-live-p compilation-last-buffer)
+      (set-window-buffer (get-buffer-window) compilation-last-buffer)
+    (message "Last compilation buffer is killed.")))
+
+(global-set-key (kbd "C-x c") #'eos/last-compilation-buffer)
+#+END_SRC
+
 Uses =M-n= and =M-p= to jump between the same variable in multiple places
 
 #+BEGIN_SRC emacs-lisp
