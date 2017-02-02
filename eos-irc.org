@@ -134,6 +134,7 @@ we have to :)
 #+BEGIN_SRC emacs-lisp
 (use-package slack
   :ensure t
+  :disabled t
   :commands (slack-start)
   :init
   (require 'slack)
