@@ -138,7 +138,7 @@ nice to me on both Linux and any other computer. Even though it's called
 
 #+BEGIN_SRC emacs-lisp
 ;; The original font height (so it can be restored too at a later time)
-(setq eos/original-height 105)
+(setq eos/original-height 90)
 
 (defun eos/setup-x11-fonts ()
   (when (eq window-system 'x)
