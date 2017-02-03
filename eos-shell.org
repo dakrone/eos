@@ -45,6 +45,15 @@ current emacs if I'm already inside of emacs
     (add-hook 'eshell-mode-hook 'with-editor-export-editor)))
 #+END_SRC
 
+Also, let's set up any SSH or GPG keychains that the [[http://www.funtoo.org/Keychain][Keychain]] tool has set up
+for us (which I use at the shell)
+
+#+BEGIN_SRC emacs-lisp
+(use-package keychain-environment
+  :ensure t
+  :init
+  (add-hook 'after-init-hook #'keychain-refresh-environment))
+#+END_SRC
 
 First, Emacs doesn't handle =less= well, so use =cat= instead for the shell
 pager:
