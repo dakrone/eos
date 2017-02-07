@@ -108,17 +108,13 @@ balanced of color and pleasing to my eyes.
         (load-theme 'madhat2r t)))
   (use-package leuven-theme
     :ensure t
-    :disabled t
     :init
     (load-theme 'leuven t)
-    (set-face-background 'default "#F7F7F7")
-    (set-face-attribute 'eyebrowse-mode-line-active nil
-                        :foreground "#000000"
-                        :underline t)
-    (set-face-attribute 'eyebrowse-mode-line-inactive nil
-                        :foreground "#888888"))
+    ;; Ever-so-slightly darker background
+    (set-face-background 'default "#F7F7F7"))
   (use-package github-theme
     :ensure t
+    :disabled t
     :init
     (load-theme 'github t)))
 #+END_SRC
@@ -269,6 +265,7 @@ responsiveness, so I go back and forth with it.
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
+  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
@@ -282,7 +279,7 @@ responsiveness, so I go back and forth with it.
   (add-to-list 'sml/replacer-regexp-list '("^~/es/elasticsearch/" ":ES:") t))
 #+END_SRC
 
-** spaceline
+** Spaceline
 :PROPERTIES:
 :CUSTOM_ID: h:ce37df26-84aa-4dd4-8c1e-c380a05f89c2
 :END:
@@ -310,6 +307,75 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
     (display-battery-mode -1)))
 #+END_SRC
 
+** Personal mode line
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/custom-mode-line ()
+  "Set up the customized EOS mode line (very basic)"
+  (interactive)
+
+  (setq mode-line-position
+        '(;; %p print percent of buffer above top of window, o Top, Bot or All
+          ;; (-3 "%p")
+          ;; %I print the size of the buffer, with kmG etc
+          ;; (size-indication-mode ("/" (-4 "%I")))
+          ;; " "
+          ;; %l print the current line number
+          ;; %c print the current column
+          (line-number-mode ("%l" (column-number-mode ":%c")))))
+
+  (defun shorten-directory (dir max-length)
+    "Show up to `max-length' characters of a directory name `dir'."
+    (let ((path (reverse (split-string (abbreviate-file-name dir) "/")))
+          (output ""))
+      (when (and path (equal "" (car path)))
+        (setq path (cdr path)))
+      (while (and path (< (length output) (- max-length 4)))
+        (setq output (concat (car path) "/" output))
+        (setq path (cdr path)))
+      (when path
+        (setq output (concat ".../" output)))
+      output))
+
+  (defvar mode-line-directory
+    '(:propertize
+      (:eval (if (buffer-file-name)
+                 (concat " " (shorten-directory default-directory 20)) " "))
+      face mode-line-directory)
+    "Formats the current directory.")
+
+  (put 'mode-line-directory 'risky-local-variable t)
+
+  (setq-default mode-line-buffer-identification
+                (propertized-buffer-identification "%b "))
+
+  (setq-default mode-line-format
+                '("%e"
+                  mode-line-front-space
+                  ;; I'm always on utf-8
+                  ;;mode-line-mule-info
+                  mode-line-client
+                  mode-line-modified
+                  " "
+                  mode-line-position
+                  ;; no need to indicate this specially
+                  ;;mode-line-remote
+                  ;; this is for text-mode emacs only
+                  ;;mode-line-frame-identification
+                  " "
+                  mode-line-directory
+                  mode-line-buffer-identification
+                  " "
+                  ;; I use magit, not vc-mode
+                  ;;(vc-mode vc-mode)
+                  (flycheck-mode flycheck-mode-line)
+                  " "
+                  mode-line-modes
+                  mode-line-misc-info
+                  mode-line-end-spaces)))
+
+(add-hook 'after-init-hook #'eos/custom-mode-line)
+#+END_SRC
 * Scrolling
 
 Smooth scrolling means when you hit =C-n= to go to the next line at the bottom
