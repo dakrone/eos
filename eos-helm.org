@@ -207,8 +207,8 @@ bindings I use more frequently:
         helm-apropos-fuzzy-match nil
         helm-lisp-fuzzy-completion nil
         helm-completion-in-region-fuzzy-match nil
-        helm-autoresize-min-height 10
-        helm-autoresize-max-height 40
+        helm-autoresize-min-height 6
+        helm-autoresize-max-height 25
         ;; Here are the things helm-mini shows, I add `helm-source-bookmarks'
         ;; here to the regular default list
         helm-mini-default-sources '(helm-source-buffers-list
