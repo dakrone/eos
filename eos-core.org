@@ -925,6 +925,13 @@ buffer writable, that's what wgrep does.
   :init (require 'wgrep))
 #+END_SRC
 
+Increase the auto-revert timer from its default of 5 seconds to a more
+reasonable value
+
+#+BEGIN_SRC emacs-lisp
+(setq auto-revert-interval 10)
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
 :CUSTOM_ID: gpg-agent
