@@ -340,8 +340,7 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
   (defvar mode-line-directory
     '(:propertize
       (:eval (if (buffer-file-name)
-                 (concat " " (shorten-directory default-directory 20)) " "))
-      face mode-line-directory)
+                 (concat " " (shorten-directory default-directory 20)) " ")))
     "Formats the current directory.")
 
   (put 'mode-line-directory 'risky-local-variable t)
@@ -376,6 +375,7 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 
 (add-hook 'after-init-hook #'eos/custom-mode-line)
 #+END_SRC
+
 * Scrolling
 
 Smooth scrolling means when you hit =C-n= to go to the next line at the bottom
