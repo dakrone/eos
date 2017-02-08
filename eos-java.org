@@ -172,8 +172,7 @@ but I don't need this. Crazy, I know. I've been meaning to write a blog post
 about it, I just need to find the time.
 
 #+BEGIN_SRC emacs-lisp
-(use-package emacs-eclim
-  :disabled t
+(use-package eclim
   :ensure t
   :init
   ;; only show errors
