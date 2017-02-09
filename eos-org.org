@@ -81,6 +81,9 @@ And now the huge org-mode configuration
     (modify-syntax-entry ?~ "(~" org-mode-syntax-table)
     (modify-syntax-entry ?= "(=" org-mode-syntax-table)
 
+    ;; Automatically save all org files every minute
+    (run-at-time "00:59" 3600 'org-save-all-org-buffers)
+
     (setq org-directory (file-truename "~/org")
           ;; follow links by pressing ENTER on them
           org-return-follows-link t
