@@ -11,6 +11,14 @@
 :PROPERTIES:
 :CUSTOM_ID: java
 :END:
+
+To start, decide between using meghanada, eclim, both, or neither
+
+#+BEGIN_SRC emacs-lisp
+(setq eos/use-meghanada nil)
+(setq eos/use-eclim t)
+#+END_SRC
+
 Java uses eclim and/or malabar to make life at least a little bit livable.
 
 =intellij-java-style= is a copy of our Intellij indentation rules for
@@ -126,9 +134,6 @@ work with the ES codebase.
   (when (fboundp 'eos/turn-on-whitespace-mode)
     (whitespace-mode -1)
     (eos/turn-on-whitespace-mode))
-  ;; remove the stupid company-eclim backend
-  (when (boundp 'company-backends)
-    (setq company-backends (delete 'company-eclim company-backends)))
   ;; hide the initial comment in the file (usually a license) if hs-minor-mode
   ;; is enabled
   (when (boundp' hs-minor-mode)
@@ -177,11 +182,11 @@ about it, I just need to find the time.
   :init
   ;; only show errors
   (setq-default eclim--problems-filter "e")
-  (add-hook 'java-mode-hook #'eclim-mode)
-  :config
-  (use-package company-emacs-eclim
-    :ensure t
-    :init (company-emacs-eclim-setup)))
+  (when eos/use-eclim
+    (global-eclim-mode)
+    (use-package company-emacs-eclim
+      :ensure t
+      :init (company-emacs-eclim-setup))))
 #+END_SRC
 
 * Configuring SDKMan for Groovy/Gradle
@@ -305,6 +310,7 @@ active development, so I'm trying it out.
   :init
   ;; Don't auto-start
   (setq meghanada-auto-start nil)
-  (add-hook 'java-mode-hook #'meghanada-mode)
-  (add-hook 'java-mode-hook 'flycheck-mode))
+  (when eos/use-meghanada
+    (add-hook 'java-mode-hook #'meghanada-mode)
+    (add-hook 'java-mode-hook 'flycheck-mode)))
 #+END_SRC
