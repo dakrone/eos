@@ -67,8 +67,8 @@ bindings I use more frequently:
 | C-x C-i | helm semantic or imenu (depending on the mode)  |
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm-config
-  :ensure helm
+(use-package helm
+  :ensure t
   :demand t ;; demand it be loaded!
   :diminish helm-mode
   :bind
@@ -86,78 +86,7 @@ bindings I use more frequently:
    ("C-x C-r" . helm-mini)
    ("C-x b" . helm-mini)
    ("C-h t" . helm-world-time))
-  :config
-  (use-package helm-files
-    :config (setq helm-ff-file-compressed-list '("gz" "bz2" "zip" "tgz" "xz" "txz")))
-  (use-package helm-buffers
-    :config
-    (add-to-list 'helm-boring-buffer-regexp-list "^TAGS$")
-    (add-to-list 'helm-boring-buffer-regexp-list "git-gutter:diff"))
-  (use-package helm-mode
-    :diminish helm-mode
-    :init
-    (add-hook 'after-init-hook #'helm-mode)
-    (add-hook 'after-init-hook #'helm-autoresize-mode)
-    (add-hook 'after-init-hook #'helm-adaptive-mode)
-    (add-hook 'after-init-hook #'helm-push-mark-mode)
-    (add-hook 'after-init-hook #'helm-popup-tip-mode))
-  (use-package helm-sys
-    :init (add-hook 'after-init-hook #'helm-top-poll-mode))
-  (use-package helm-grep
-    :config
-    (setq helm-grep-truncate-lines nil)
-    (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
-    (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
-    (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward))
-  (use-package helm-man)
-  (use-package helm-misc)
-  (use-package helm-elisp)
-  (use-package helm-imenu)
-  (use-package helm-semantic)
-  (use-package helm-ring)
-  (use-package smex :ensure t)
-  (use-package helm-smex :ensure t)
-  (use-package helm-bookmark
-    :bind ("C-x M-b" . helm-bookmarks)
-    :init (use-package bookmark+ :ensure t))
-  (use-package helm-projectile
-    :ensure t
-    :bind (:map projectile-command-map
-                ("b" . helm-projectile-switch-to-buffer)
-                ("d" . helm-projectile-find-dir)
-                ("f" . helm-projectile-find-file)
-                ("p" . helm-projectile-switch-project)
-                ("s s" . helm-projectile-ag))
-    :init
-    (helm-projectile-on)
-    (helm-delete-action-from-source
-     "Grep in projects `C-s'"
-     helm-source-projectile-projects)
-    (helm-add-action-to-source
-     "Ag in project C-s'"
-     'helm-do-ag helm-source-projectile-projects)
-    (bind-key "C-s" (defun helm-projectile-do-ag ()
-                      (interactive)
-                      (helm-exit-and-execute-action #'helm-do-ag))
-              helm-projectile-projects-map)
-    (global-set-key (kbd "C-x f") #'helm-projectile-find-file))
-
-  (global-set-key (kbd "C-c h") 'helm-command-prefix)
-  (global-unset-key (kbd "C-x c"))
-
-  ;; Shows helm input in the header instead of the footer
-  (setq helm-echo-input-in-header-line t)
-  (defun helm-hide-minibuffer-maybe ()
-  "Hide minibuffer in Helm session if we use the header line as input field."
-  (when (with-helm-buffer helm-echo-input-in-header-line)
-    (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-      (overlay-put ov 'window (selected-window))
-      (overlay-put ov 'face
-                   (let ((bg-color (face-background 'default nil)))
-                     `(:background ,bg-color :foreground ,bg-color)))
-      (setq-local cursor-type nil))))
-  (add-hook 'helm-minibuffer-set-up-hook #'helm-hide-minibuffer-maybe)
-
+  :init
   (setq helm-grep-default-command
         "grep -a -d skip %e -n%cH -e %p %f"
         ;; may be overridden if 'ggrep' is in path (see below)
@@ -215,6 +144,78 @@ bindings I use more frequently:
                                     helm-source-recentf
                                     helm-source-bookmarks
                                     helm-source-buffer-not-found))
+  :config
+  (use-package helm-files
+    :config (setq helm-ff-file-compressed-list '("gz" "bz2" "zip" "tgz" "xz" "txz")))
+  (use-package helm-buffers
+    :config
+    (add-to-list 'helm-boring-buffer-regexp-list "^TAGS$")
+    (add-to-list 'helm-boring-buffer-regexp-list "git-gutter:diff"))
+  (use-package helm-mode
+    :diminish helm-mode
+    :init
+    (add-hook 'after-init-hook #'helm-mode)
+    (add-hook 'after-init-hook #'helm-autoresize-mode)
+    (add-hook 'after-init-hook #'helm-adaptive-mode)
+    (add-hook 'after-init-hook #'helm-push-mark-mode)
+    (add-hook 'after-init-hook #'helm-popup-tip-mode))
+  (use-package helm-sys
+    :init (add-hook 'after-init-hook #'helm-top-poll-mode))
+  (use-package helm-grep
+    :config
+    (setq helm-grep-truncate-lines nil)
+    (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
+    (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
+    (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward))
+  (use-package helm-man)
+  (use-package helm-misc)
+  (use-package helm-elisp)
+  (use-package helm-imenu)
+  (use-package helm-semantic)
+  (use-package helm-ring)
+  (use-package smex :ensure t)
+  (use-package helm-smex :ensure t)
+  (use-package helm-bookmark
+    :bind ("C-x M-b" . helm-bookmarks)
+    :init (use-package bookmark+ :ensure t))
+  (use-package helm-projectile
+    :ensure t
+    :demand t ;; demand it be loaded!
+    :bind (:map projectile-command-map
+                ("b" . helm-projectile-switch-to-buffer)
+                ("d" . helm-projectile-find-dir)
+                ("f" . helm-projectile-find-file)
+                ("p" . helm-projectile-switch-project)
+                ("s s" . helm-projectile-ag))
+    :init
+    (helm-projectile-on)
+    (helm-delete-action-from-source
+     "Grep in projects `C-s'"
+     helm-source-projectile-projects)
+    (helm-add-action-to-source
+     "Ag in project C-s'"
+     'helm-do-ag helm-source-projectile-projects)
+    (bind-key "C-s" (defun helm-projectile-do-ag ()
+                      (interactive)
+                      (helm-exit-and-execute-action #'helm-do-ag))
+              helm-projectile-projects-map)
+    (global-set-key (kbd "C-x f") #'helm-projectile-find-file))
+
+  (global-set-key (kbd "C-c h") 'helm-command-prefix)
+  (global-unset-key (kbd "C-x c"))
+
+  ;; Shows helm input in the header instead of the footer
+  (setq helm-echo-input-in-header-line t)
+  (defun helm-hide-minibuffer-maybe ()
+    "Hide minibuffer in Helm session if we use the header line as input field."
+    (when (with-helm-buffer helm-echo-input-in-header-line)
+      (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
+        (overlay-put ov 'window (selected-window))
+        (overlay-put ov 'face
+                     (let ((bg-color (face-background 'default nil)))
+                       `(:background ,bg-color :foreground ,bg-color)))
+        (setq-local cursor-type nil))))
+  (add-hook 'helm-minibuffer-set-up-hook #'helm-hide-minibuffer-maybe)
 
   ;; Files that helm should know how to open
   (setq helm-external-programs-associations
@@ -248,9 +249,6 @@ bindings I use more frequently:
   (define-key helm-map (kbd "C-M-p") 'helm-previous-source)
   (define-key helm-map (kbd "M-N")   'helm-next-source)
   (define-key helm-map (kbd "M-P")   'helm-previous-source)
-  ;; The normal binding is C-c h M-g s which is insane
-  (global-set-key (kbd "C-c h g")    'helm-do-grep)
-  (global-set-key (kbd "C-c h a")    'helm-do-ag)
 
   (when (executable-find "curl")
     (setq helm-google-suggest-use-curl-p t))
