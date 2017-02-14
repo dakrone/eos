@@ -496,11 +496,7 @@ First, a function to use for clocking in
   ;; Insinuate it everywhere
   (org-clock-persistence-insinuate)
   ;; Show lot of clocking history so it's easy to pick items off the C-F11 list
-  (setq org-clock-history-length 23
-        ;; Resume clocking task on clock-in if the clock is open
-        org-clock-in-resume t
-        ;; Separate drawers for clocking and logs
-        org-drawers '("PROPERTIES" "CLOCK" "LOGBOOK" "RESULTS" "HIDDEN")
+  (setq org-clock-history-length 10
         ;; Save clock data and state changes and notes in the LOGBOOK drawer
         org-clock-into-drawer t
         ;; Sometimes I change tasks I'm clocking quickly -
@@ -508,21 +504,16 @@ First, a function to use for clocking in
         org-clock-out-remove-zero-time-clocks t
         ;; Clock out when moving task to a done state
         org-clock-out-when-done t
-        ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-        org-clock-persist t
-        ;; Prompt to resume an active clock
-        org-clock-persist-query-resume t
-        ;; Enable auto clock resolution for finding open clocks
-        org-clock-auto-clock-resolution #'when-no-clock-is-running
         ;; Include current clocking task in clock reports
         org-clock-report-include-clocking-task t
         ;; don't use pretty things for the clocktable
         org-pretty-entities nil
-        ;; If idle for more than 5 minutes, resolve the things
+        ;; If idle for more than 15 minutes, resolve the things
         org-clock-idle-time 15
         ;; some default parameters for the clock report
         org-agenda-clockreport-parameter-plist
-        '(:maxlevel 10 :fileskip0 t :score agenda :block thismonth :compact t :narrow 60)))
+        '(:maxlevel 10 :fileskip0 t :score agenda :block thismonth
+                    :compact t :narrow 60)))
 #+END_SRC
 
 ** org-publishing
