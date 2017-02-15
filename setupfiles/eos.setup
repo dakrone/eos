@@ -8,4 +8,4 @@
 #+EXPORT_EXCLUDE_TAGS: noexport
 #+OPTIONS: H:4 num:nil toc:t \n:nil @:t ::t |:t ^:{} -:t f:t *:t
 #+OPTIONS: skip:nil d:(HIDE) tags:not-in-toc
-#+STARTUP: fold nodlcheck lognotestate content
+#+STARTUP: nodlcheck lognotestate showall
