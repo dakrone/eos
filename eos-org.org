@@ -142,6 +142,8 @@ And now the huge org-mode configuration
           org-export-babel-evaluate nil
           ;; export tables as CSV instead of tab-delineated
           org-table-export-default-format "orgtbl-to-csv"
+          ;; don't show the "validate" link on org-html exports
+          org-html-validation-link nil
           ;; start up showing images
           org-startup-with-inline-images t
           ;; use #+ATTR: if defined, or real width otherwise
