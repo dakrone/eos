@@ -67,8 +67,8 @@ bindings I use more frequently:
 | C-x C-i | helm semantic or imenu (depending on the mode)  |
 
 #+BEGIN_SRC emacs-lisp
-(use-package helm
-  :ensure t
+(use-package helm-config
+  :ensure helm
   :demand t ;; demand it be loaded!
   :diminish helm-mode
   :bind
