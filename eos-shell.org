@@ -325,7 +325,7 @@ d=, if the buffer doesn't exist it is created.
         (default-directory "~/es/elasticsearch"))
     (eshell))
   (let ((eshell-buffer-name "*eshell*<4>")
-        (default-directory "~/es/elasticsearch-extra/x-pack"))
+        (default-directory "~/es/elasticsearch-extra/x-pack-elasticsearch"))
     (eshell))
   (let ((eshell-buffer-name "*eshell-delta*")
         (default-directory "~/eos"))
