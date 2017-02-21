@@ -78,6 +78,8 @@ to return the correct path depending on the account the email is from.
           user-full-name "Lee Hinman"
           user-mail-address "leehinman@fastmail.com"
           mail-host-address "fastmail.com"
+          ;; send email with format=flowed
+          mu4e-compose-format-flowed t
           ;; small signature
           mu4e-compose-signature ";; Lee"
           ;; compose in a new frame by default
