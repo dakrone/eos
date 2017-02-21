@@ -527,15 +527,15 @@ Publishing org-mode files to my hosting provider:
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :config
-;;  (require 'ox-rss)
-;;  (require 'ox-icalendar)
+  ;;  (require 'ox-rss)
+  ;;  (require 'ox-icalendar)
   (setq org-publish-project-alist
         `(;; Main website at http://writequit.org
           ("writequit-org"
            :base-directory ,(file-truename "~/org/writequit/")
            :base-extension "org"
            :publishing-directory "/ssh:writequit.org:~/www/"
-           :publishing-function org-html-publish-to-tufte-html
+           :publishing-function org-html-publish-to-html
            :with-toc nil
            :html-preamble t
            :html-head-extra
@@ -602,7 +602,7 @@ Publishing org-mode files to my hosting provider:
            :base-extension "org\\|html"
            :publishing-directory
            "/ssh:writequit.org:~/www/org/"
-           :publishing-function org-html-publish-to-tufte-html
+           :publishing-function org-html-publish-to-html
            :with-toc t
            :html-preamble t)
           ("org-images"
@@ -643,7 +643,7 @@ Publishing org-mode files to my hosting provider:
            :base-extension "org\\|html"
            :publishing-directory
            "/ssh:writequit.org:~/www/org/es/design"
-           :publishing-function org-html-publish-to-tufte-html
+           :publishing-function org-html-publish-to-html
            :with-toc t
            :html-preamble t)
           ("org-es-design-files"
