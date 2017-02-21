@@ -43,6 +43,7 @@ The all-seeing eye of Sauron
         sauron-watch-patterns '("dakrone" "thnetos" "okenezak")
         sauron-watch-nicks '("dakrone" "thnetos")
         sauron-nick-insensitivity 20
+        sauron-prio-twittering-new-tweets 2
         sauron-frame-geometry "120x36+0+0")
   ;; filter out IRC spam
   (defun tsp/hide-irc-user-spam (origin priority msg &optional properties)

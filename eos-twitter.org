@@ -35,10 +35,16 @@ immediately use Twitter :P
 And then a nice helper for starting that will be called from the main EOS hydra
 
 #+BEGIN_SRC emacs-lisp
+(defun eos/turn-on-twittering-notifications ()
+  (setq sauron-prio-twittering-mention 4))
+
 (defun eos/start-or-jump-to-twitter ()
   "If twittering-mode is already active, jump to it, otherwise start it."
   (interactive)
   (if (get-buffer "(:home+@)")
       (switch-to-buffer "(:home+@)")
-    (twittering-mode)))
+    ;; disable twitter notifications for ~10 seconds
+    (setq sauron-prio-twittering-mention 2)
+    (twittering-mode)
+    (run-at-time "10 sec" nil #'eos/turn-on-twittering-notifications)))
 #+END_SRC
