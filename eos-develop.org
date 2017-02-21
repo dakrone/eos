@@ -245,11 +245,17 @@ And then things to set up semantic mode
     (require 'semantic/wisent/java-wy)
     (require 'semantic/ia)
     (setq semantic-default-submodes
-          '(global-semantic-idle-scheduler-mode
+          '(;; Perform semantic actions during idle time
+            global-semantic-idle-scheduler-mode
+            ;; Use a database of parsed tags
             global-semanticdb-minor-mode
+            ;; Decorate buffers with additional semantic information
             global-semantic-decoration-mode
+            ;; Highlight the name of the function you're currently in
             global-semantic-highlight-func-mode
+            ;; Generate a summary of the current tag when idle
             global-semantic-idle-summary-mode
+            ;; Show a breadcrumb of location during idle time
             global-semantic-idle-breadcrumbs-mode))
     (semantic-mode t)
     ;; Fixing a bug in semantic, see #22287
@@ -520,7 +526,6 @@ viewing the magit buffer
 #+BEGIN_SRC emacs-lisp
 (use-package magit-gh-pulls
   :ensure t
-  :disabled t
   :init
   (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls)
   :config
@@ -533,6 +538,7 @@ As an alternative to magit-gh-pulls, there is magithub
 #+BEGIN_SRC emacs-lisp
 (use-package magithub
   :ensure t
+  :disabled t
   :after magit
   :config
   (magithub-feature-autoinject t)
