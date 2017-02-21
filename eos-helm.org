@@ -525,5 +525,5 @@ buffer up near the bottom of the screen.
             (popwin:popup-buffer-tail candidate)
           (message "No projectile eshell buffer found"))))))
 
-(global-set-key (kbd "C-x B") #'eos/popup-project-eshell)
+(global-set-key (kbd "C-x M-B") #'eos/popup-project-eshell)
 #+END_SRC
