@@ -7,7 +7,7 @@
 (provide 'eos-git)
 #+END_SRC
 
-* Git magic with Magit and friends
+* Git magic with Magit
 :PROPERTIES:
 :CUSTOM_ID: magit
 :END:
@@ -140,6 +140,19 @@ A nice helper to browse code whenever it remotely may be,
   :ensure t
   :commands browse-at-remote
   :bind ("C-c g g" . browse-at-remote))
+#+END_SRC
+
+* Git-annex integration
+
+I've been back and forth on git-annex, but when I want to use it, I want to have
+it integrated into Emacs/magit when possible.
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-annex
+  :ensure t)
+
+(use-package magit-annex
+  :ensure t)
 #+END_SRC
 
 * Ediff
