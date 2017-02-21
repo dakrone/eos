@@ -1,0 +1,169 @@
+#+TITLE: EOS: Git Module
+#+AUTHOR: Lee Hinman
+#+EMAIL: lee@writequit.org
+#+SETUPFILE: ~/eos/setupfiles/eos.setup
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-git)
+#+END_SRC
+
+* Git magic with Magit and friends
+:PROPERTIES:
+:CUSTOM_ID: magit
+:END:
+I use =C-x g= everywhere to go directly to Magit.
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status))
+  :init (add-hook 'magit-mode-hook 'eos/turn-on-hl-line)
+  :config
+  (setq git-commit-summary-max-length 70)
+  (setenv "GIT_PAGER" "")
+  (if (file-exists-p  "/usr/local/bin/emacsclient")
+      (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")
+    (setq magit-emacsclient-executable (executable-find "emacsclient")))
+  (defun eos/magit-browse ()
+    "Browse to the project's github URL, if available"
+    (interactive)
+    (let ((url (with-temp-buffer
+                 (unless (zerop (call-process-shell-command
+                                 "git remote -v" nil t))
+                   (error "Failed: 'git remote -v'"))
+                 (goto-char (point-min))
+                 (when (re-search-forward
+                        "github\\.com[:/]\\(.+?\\)\\.git" nil t)
+                   (format "https://github.com/%s" (match-string 1))))))
+      (unless url
+        (error "Can't find repository URL"))
+      (browse-url url)))
+
+  (define-key magit-mode-map (kbd "C-c C-b") #'eos/magit-browse)
+  ;; Magit has its own binding, so re-bind them
+  (bind-key "M-1" #'eos/create-or-switch-to-eshell-1 magit-mode-map)
+  (bind-key "M-2" #'eos/create-or-switch-to-eshell-2 magit-mode-map)
+  (bind-key "M-3" #'eos/create-or-switch-to-eshell-3 magit-mode-map)
+  (bind-key "M-4" #'eos/create-or-switch-to-eshell-4 magit-mode-map)
+
+  ;; Allow gpg signing merge commits
+  (magit-define-popup-option 'magit-merge-popup
+                             ?S "Sign using gpg" "--gpg-sign="
+                             #'magit-read-gpg-secret-key))
+#+END_SRC
+
+* Viewing Github PRs and Issues
+
+There's also a package called magit-gh-pulls that shows the pull requests when
+viewing the magit buffer
+
+#+BEGIN_SRC emacs-lisp
+(use-package magit-gh-pulls
+  :ensure t
+  :init
+  (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls)
+  :config
+  ;; work around https://github.com/sigma/magit-gh-pulls/issues/83
+  (setq magit-gh-pulls-pull-detail-limit 50))
+#+END_SRC
+
+As an alternative to magit-gh-pulls, there is magithub
+
+#+BEGIN_SRC emacs-lisp
+(use-package magithub
+  :ensure t
+  :disabled t
+  :after magit
+  :config
+  (magithub-feature-autoinject t)
+
+  ;; Workaround for https://github.com/vermiculus/magithub/issues/71
+  (defun magithub-issue--sort (issues)
+    "Sort ISSUES by issue number."
+    (sort issues
+          (lambda (a b) (> (plist-get a :number)
+                      (plist-get b :number))))))
+#+END_SRC
+
+* Visualizing git changes in a buffer
+Quite useful, as well as the =C-x n= and =C-x p= bindings.
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-gutter
+  :ensure t
+  :when window-system
+  :defer t
+  :bind (("C-x P" . git-gutter:popup-hunk)
+         ("C-x p" . git-gutter:previous-hunk)
+         ("C-x n" . git-gutter:next-hunk)
+         ("C-c G" . git-gutter:popup-hunk))
+  :diminish ""
+  :init
+  (add-hook 'prog-mode-hook #'git-gutter-mode)
+  (add-hook 'text-mode-hook #'git-gutter-mode)
+  :config
+  (use-package git-gutter-fringe
+    :ensure t
+    :init
+    (require 'git-gutter-fringe)
+    (when (fboundp 'define-fringe-bitmap)
+      (define-fringe-bitmap 'git-gutter-fr:added
+        [224 224 224 224 224 224 224 224 224 224 224 224 224
+             224 224 224 224 224 224 224 224 224 224 224 224]
+        nil nil 'center)
+      (define-fringe-bitmap 'git-gutter-fr:modified
+        [224 224 224 224 224 224 224 224 224 224 224 224 224
+             224 224 224 224 224 224 224 224 224 224 224 224]
+        nil nil 'center)
+      (define-fringe-bitmap 'git-gutter-fr:deleted
+        [0 0 0 0 0 0 0 0 0 0 0 0 0 128 192 224 240 248]
+        nil nil 'center))))
+#+END_SRC
+
+Git-messenger allows you to look up the commit message for the last commit that
+touched the line wherever your current cursor is.
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-messenger
+  :ensure t
+  :commands git-messenger:popup-message
+  :bind (("C-c M" . git-messenger:popup-message))
+  :config
+  (setq git-messenger:show-detail t))
+#+END_SRC
+
+A nice helper to browse code whenever it remotely may be,
+=browse-at-remote=
+
+#+BEGIN_SRC emacs-lisp
+(use-package browse-at-remote
+  :ensure t
+  :commands browse-at-remote
+  :bind ("C-c g g" . browse-at-remote))
+#+END_SRC
+
+* Ediff
+
+Ediff is fantastic for looking through diffs, and it's what magit can invoke on
+merge conflicts.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ediff
+  :init
+  (setq
+   ;; Always split nicely for wide screens
+   ediff-split-window-function 'split-window-horizontally)
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff
+     ediff-current-difference nil 'C nil
+     (concat
+      (ediff-get-region-contents
+       ediff-current-difference 'A ediff-control-buffer)
+      (ediff-get-region-contents
+       ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-d-to-ediff-mode-map ()
+    (define-key ediff-mode-map "d" 'ediff-copy-both-to-C))
+  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map))
+#+END_SRC
+

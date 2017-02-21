@@ -8,6 +8,7 @@ el-modules = eos-core.el \
 						 eos-navigation.el \
 						 eos-notify.el \
 						 eos-develop.el \
+						 eos-git.el \
 						 eos-completion.el \
 						 eos-es.el \
 						 eos-org.el \
