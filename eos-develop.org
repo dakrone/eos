@@ -253,10 +253,21 @@ And then things to set up semantic mode
             global-semantic-decoration-mode
             ;; Highlight the name of the function you're currently in
             global-semantic-highlight-func-mode
+            ;; show the name of the function at the top in a sticky
+            global-semantic-stickyfunc-mode
             ;; Generate a summary of the current tag when idle
             global-semantic-idle-summary-mode
             ;; Show a breadcrumb of location during idle time
-            global-semantic-idle-breadcrumbs-mode))
+            global-semantic-idle-breadcrumbs-mode
+            ;; Switch to recently changed tags with `semantic-mrub-switch-tags',
+            ;; or `C-x B'
+            global-semantic-mru-bookmark-mode))
+    ;; Enable global support in c/c++/java
+    (when (cedet-gnu-global-version-check t)
+      (semanticdb-enable-gnu-global-databases 'c-mode)
+      (semanticdb-enable-gnu-global-databases 'c++-mode)
+      (semanticdb-enable-gnu-global-databases 'java-mode))
+
     (semantic-mode t)
     ;; Fixing a bug in semantic, see #22287
     (defun semanticdb-save-all-db-idle ()
