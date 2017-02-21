@@ -183,7 +183,7 @@ about it, I just need to find the time.
   ;; only show errors
   (setq-default eclim--problems-filter "e")
   (when eos/use-eclim
-    (global-eclim-mode)
+    (add-hook 'java-mode-hook #'eclim-mode)
     (use-package company-emacs-eclim
       :ensure t
       :init (company-emacs-eclim-setup))))
