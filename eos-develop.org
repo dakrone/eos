@@ -262,12 +262,6 @@ And then things to set up semantic mode
             ;; Switch to recently changed tags with `semantic-mrub-switch-tags',
             ;; or `C-x B'
             global-semantic-mru-bookmark-mode))
-    ;; Enable global support in c/c++/java
-    (when (cedet-gnu-global-version-check t)
-      (semanticdb-enable-gnu-global-databases 'c-mode)
-      (semanticdb-enable-gnu-global-databases 'c++-mode)
-      (semanticdb-enable-gnu-global-databases 'java-mode))
-
     (semantic-mode t)
     ;; Fixing a bug in semantic, see #22287
     (defun semanticdb-save-all-db-idle ()
