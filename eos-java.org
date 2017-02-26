@@ -15,8 +15,8 @@
 To start, decide between using meghanada, eclim, both, or neither
 
 #+BEGIN_SRC emacs-lisp
-(setq eos/use-meghanada nil)
-(setq eos/use-eclim t)
+(setq eos/use-meghanada t)
+(setq eos/use-eclim nil)
 #+END_SRC
 
 Java uses eclim and/or malabar to make life at least a little bit livable.
@@ -179,6 +179,7 @@ about it, I just need to find the time.
 #+BEGIN_SRC emacs-lisp
 (use-package eclim
   :ensure t
+  :disabled t
   :init
   ;; only show errors
   (setq-default eclim--problems-filter "e")
