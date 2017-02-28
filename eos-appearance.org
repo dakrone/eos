@@ -57,17 +57,17 @@ Don't use dialog boxes, just ask inside Emacs
 (setq use-dialog-box nil)
 #+END_SRC
 
+Playing around with line spacing, with certain fonts I may or may not want to
+have more/less spacing. The number is in pixels.
+
+#+BEGIN_SRC emacs-lisp
+(setq-default line-spacing 0)
+#+END_SRC
+
 * Color Theme
 :PROPERTIES:
 :CUSTOM_ID: color-theme
 :END:
-If using OSX, the colors and fonts look a bit wonky, so let's fix that
-
-#+BEGIN_SRC emacs-lisp
-(setq ns-use-srgb-colorspace t)
-;; Anti-aliasing
-(setq mac-allow-anti-aliasing t)
-#+END_SRC
 
 For light-colored backgrounds, I used [[https://github.com/fniessen/emacs-leuven-theme][leuven-theme]]. For dark-colored backgrounds
 (most of the time), I use the tomorrow-night theme, which I find to be a good
@@ -76,11 +76,6 @@ balanced of color and pleasing to my eyes.
 #+BEGIN_SRC emacs-lisp
 (if (eq eos/background 'dark)
     (progn
-      (use-package doom-themes
-        :ensure t
-        :disabled t
-        :init
-        (load-theme 'doom-one t))
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
         :disabled t
@@ -91,23 +86,24 @@ balanced of color and pleasing to my eyes.
         (set-face-foreground 'default "#ffffff"))
       (use-package tao-theme
         :ensure t
-        :disabled t
         :init
         (load-theme 'tao-yin t)
         (require 'git-gutter)
         (require 'git-gutter-fringe)
-        (set-face-attribute 'git-gutter:added nil :foreground "green")
-        (set-face-attribute 'git-gutter-fr:added nil :foreground "green")
         (set-face-attribute 'git-gutter:deleted nil :foreground "red")
         (set-face-attribute 'git-gutter-fr:deleted nil :foreground "red")
         (set-face-attribute 'git-gutter:modified nil :foreground "light blue")
-        (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue"))
-      (use-package madhat2r-theme
+        (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")
+        (set-face-attribute 'git-gutter:added nil :foreground "green")
+        (set-face-attribute 'git-gutter-fr:added nil :foreground "green"))
+      (use-package ujelly-theme
         :ensure t
+        :disabled t
         :init
-        (load-theme 'madhat2r t)))
+        (load-theme 'ujelly t)))
   (use-package leuven-theme
     :ensure t
+    :disabled t
     :init
     (load-theme 'leuven t)
     ;; Ever-so-slightly darker background
@@ -116,7 +112,27 @@ balanced of color and pleasing to my eyes.
     :ensure t
     :disabled t
     :init
-    (load-theme 'github t)))
+    (load-theme 'github t))
+  (use-package tao-theme
+    :ensure t
+    :init
+    (load-theme 'tao-yang t)
+    (require 'git-gutter)
+    (require 'git-gutter-fringe)
+    (set-face-attribute 'git-gutter:deleted nil :foreground "red")
+    (set-face-attribute 'git-gutter-fr:deleted nil :foreground "red")
+    (set-face-attribute 'git-gutter:modified nil :foreground "light blue")
+    (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")
+    (set-face-attribute 'git-gutter:added nil :foreground "green")
+    (set-face-attribute 'git-gutter-fr:added nil :foreground "green")))
+#+END_SRC
+
+If using OSX, the colors and fonts look a bit wonky, so let's fix that
+
+#+BEGIN_SRC emacs-lisp
+(setq ns-use-srgb-colorspace t)
+;; Anti-aliasing
+(setq mac-allow-anti-aliasing t)
 #+END_SRC
 
 * Fonts
@@ -124,53 +140,49 @@ balanced of color and pleasing to my eyes.
 :CUSTOM_ID: fonts
 :END:
 I've been using [[http://sourcefoundry.org/hack/][Hack]] or DejaVu Sans almost exclusively lately, it looks pretty
-nice to me on both Linux and any other computer. Even though it's called
-"Bitstream Vera Sans Mono" on OSX, it's really the same.
+nice to me on both Linux and any other computer. I play with other fonts pretty
+regularly though.
 
-** Config for Linux/X11 systems:
-:PROPERTIES:
-:CUSTOM_ID: linux
-:END:
+Fonts I may or may not use (in no particular order):
+
+- Hack
+- Fantasque Sans Mono
+- PT Mono
+- Iosevka
+- Anonymous Pro
+- Fira Mono
+- Go Mono
+- Input Mono
+- Inconsolata
+- Source Code Pro
 
 #+BEGIN_SRC emacs-lisp
 ;; The original font height (so it can be restored too at a later time)
-(setq eos/original-height 90)
+(setq eos/original-height 100)
 
-(defun eos/setup-x11-fonts ()
+(defun eos/setup-fonts ()
   (when (eq window-system 'x)
     ;; default font and variable-pitch fonts
-    (set-face-attribute 'default nil :family "Hack" :height eos/original-height)
+    (set-face-attribute 'default nil
+                        :family "Hack"
+                        :height 100)
     (set-face-attribute 'variable-pitch nil
                         :family "DejaVu Sans" :height eos/original-height)
     ;; font for all unicode characters
     (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)))
 
 (when (eq window-system 'x)
-  (add-hook 'after-init-hook #'eos/setup-x11-fonts))
-#+END_SRC
-
-** Config for OSX:
-:PROPERTIES:
-:CUSTOM_ID: osx
-:END:
-
-#+BEGIN_SRC emacs-lisp
-(defun eos/setup-osx-fonts ()
-  (when (eq system-type 'darwin)
-    (set-default-font "Bitstream Vera Sans Mono")
-    (set-face-attribute 'default nil :height 120)
-    (set-face-attribute 'fixed-pitch nil :height 120)))
-
-(when (eq system-type 'darwin)
-  ;; The original font height (so it can be restored too at a later time)
-  (setq eos/original-height 120)
-  (add-hook 'after-init-hook #'eos/setup-osx-fonts))
+  (add-hook 'after-init-hook #'eos/setup-fonts))
 #+END_SRC
 
 ** Configuration for monitor switching
 
-Sometimes I want to plug my laptop into a larger monitor, so I'd like to have a
-single function I can call to adjust any sizes that are necessary.
+Sometimes I want to plug my laptop into a larger monitor, or give presentations,
+so I'd like to have a single function I can call to adjust any sizes that are
+necessary.
+
+The =eos/height-modifier= can be added or subtracted to the size of the font for
+Emacs. I usually bind this in the Hydra toggle map.
 
 #+BEGIN_SRC emacs-lisp
 (defvar eos/height-modifier 15
@@ -340,7 +352,7 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
   (defvar mode-line-directory
     '(:propertize
       (:eval (if (buffer-file-name)
-                 (concat " " (shorten-directory default-directory 20)) " ")))
+                 (concat " " (shorten-directory default-directory 15)) " ")))
     "Formats the current directory.")
 
   (put 'mode-line-directory 'risky-local-variable t)
@@ -497,7 +509,7 @@ systemctl --user enable redshift
 systemctl --user start redshift
 #+END_SRC
 
-* Variable width font hacks
+* Variable width text hacks
 :PROPERTIES:
 :CUSTOM_ID: variable-width-fonts
 :END:
@@ -671,6 +683,15 @@ java-mode applies the color-identifiers configuration.
   (add-hook 'java-mode-hook #'color-identifiers-mode)
   (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode)
   (global-color-identifiers-mode 1))
+#+END_SRC
+
+As an alternative to =color-identifiers-mode=, there is also
+=rainbow-identifiers=, so install that also, in case I want to manually test it
+out.
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-identifiers
+  :ensure t)
 #+END_SRC
 
 * Visible marks in buffers
