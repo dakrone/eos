@@ -127,6 +127,8 @@ don't have links between them.
   - [[./eos-java.org][Java]] - for the day job
   - [[./eos-clojure.org][Clojure]] - for the old day job and the open source work
   - [[./eos-es.org][Elasticsearch]] - so useful for things
+  - [[./eos-git.org][Git]] - usually the only VCS I use, so it has quite a few customizations
+- [[./eos-completion.org][Completion]] - auto-completing things while programming (and not programming)
 - [[./eos-org.org][Org-mode and agenda]] - org is a fantastic organization tool
 - [[./eos-writing.org][Writing]] - various settings for writing human language
 - [[./eos-dired.org][Dired]] - directory browsing and file management
@@ -377,6 +379,8 @@ quite sure how that would work for tangling, so for now it's hard-coded.
                (message "Loading %s...done (%.3fs) [after-init]"
                         ,load-file-name elapsed))) t)
 (run-hooks 'after-eos-hook)
+
+(setq initial-scratch-message ";; ╔═╗┌─┐┬─┐┌─┐┌┬┐┌─┐┬ ┬\n;; ╚═╗│  ├┬┘├─┤ │ │  ├─┤\n;; ╚═╝└─┘┴└─┴ ┴ ┴ └─┘┴ ┴\n")
 #+END_SRC
 
 Turn debugging back off, if there were no errors then things successfully got loaded.
@@ -385,3 +389,5 @@ Turn debugging back off, if there were no errors then things successfully got lo
 (setq debug-on-error nil)
 (setq debug-on-quit nil)
 #+END_SRC
+
+If you've checked this out so far, head back up and check out the [[#modules][Module Set]]!
