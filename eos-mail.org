@@ -34,7 +34,9 @@ to return the correct path depending on the account the email is from.
   (use-package mu4e
     :if window-system
     :config
-    (add-hook 'mu4e-compose-mode-hook 'turn-on-flyspell)
+    (add-hook 'message-mode-hook 'turn-on-flyspell)
+    (add-hook 'message-mode-hook 'turn-on-orgtbl)
+    (add-hook 'message-mode-hook 'turn-on-orgstruct++)
     ;; gpg stuff
     (use-package epa-file
       :init (epa-file-enable))
