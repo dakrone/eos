@@ -18,8 +18,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-;;(defvar eos/background 'light)
-(defvar eos/background 'dark)
+(defvar eos/background 'light)
+;;(defvar eos/background 'dark)
 #+END_SRC
 
 * Emacs Appearance
@@ -115,6 +115,7 @@ balanced of color and pleasing to my eyes.
     (load-theme 'github t))
   (use-package tao-theme
     :ensure t
+    :disabled t
     :init
     (load-theme 'tao-yang t)
     (require 'git-gutter)
@@ -124,7 +125,9 @@ balanced of color and pleasing to my eyes.
     (set-face-attribute 'git-gutter:modified nil :foreground "light blue")
     (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")
     (set-face-attribute 'git-gutter:added nil :foreground "green")
-    (set-face-attribute 'git-gutter-fr:added nil :foreground "green")))
+    (set-face-attribute 'git-gutter-fr:added nil :foreground "green"))
+  (progn
+    (set-face-background 'default "#F9F9F9")))
 #+END_SRC
 
 If using OSX, the colors and fonts look a bit wonky, so let's fix that
@@ -158,16 +161,19 @@ Fonts I may or may not use (in no particular order):
 
 #+BEGIN_SRC emacs-lisp
 ;; The original font height (so it can be restored too at a later time)
-(setq eos/original-height 100)
+(setq eos/original-height 120)
 
 (defun eos/setup-fonts ()
   (when (eq window-system 'x)
     ;; default font and variable-pitch fonts
     (set-face-attribute 'default nil
-                        :family "Hack"
-                        :height 100)
+                        :family "Inconsolata"
+                        :height eos/original-height)
+    (dolist (face '(mode-line mode-line-inactive minibuffer-prompt))
+      (set-face-attribute face nil :family "Inconsolata"
+                          :height (- eos/original-height 10)))
     (set-face-attribute 'variable-pitch nil
-                        :family "DejaVu Sans" :height eos/original-height)
+                        :family "Merriweather" :height (- eos/original-height 20))
     ;; font for all unicode characters
     (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)))
 
