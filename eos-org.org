@@ -430,7 +430,6 @@ Allow asynchronously executing org-babel blocks:
 
 #+BEGIN_SRC emacs-lisp
 (use-package ob-async
-  :ensure t
   :init
   (add-to-list 'org-ctrl-c-ctrl-c-hook
                'ob-async-org-babel-execute-src-block))
@@ -441,7 +440,6 @@ Depending on the theme, it may look better or worse
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
-  :ensure t
   :init
   (setq org-bullets-bullet-list '("✸" "•" "◦" "•" "◦" "•" "◦"))
   (add-hook 'org-mode-hook #'org-bullets-mode))
@@ -457,7 +455,6 @@ for an issue. So there's a nice exporter that does this for me: =ox-gfm=
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-gfm
-  :ensure t
   :init
   (when (boundp 'org-export-backends)
     (customize-set-variable 'org-export-backends
