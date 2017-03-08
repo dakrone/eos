@@ -63,368 +63,377 @@ And now the huge org-mode configuration
          ("C-c M-n" . org-babel-next-src-block))
   :defer 30
   :config
-  (progn
-    (use-package org-install)
-    (use-package ob-core)
-    ;; org-export
-    (use-package ox)
-    ;; Enable archiving things
-    (use-package org-archive)
-    (add-hook 'org-mode-hook #'hl-line-mode)
-    (add-hook 'org-agenda-mode-hook #'hl-line-mode)
-    (add-hook 'org-mode-hook #'eos/org-mode-hook)
-    ;; enabled export backends
-    ;; (use-package ox-rss)
-    (when (boundp 'org-export-backends)
-      (custom-set-variables '(org-export-backends '(ascii beamer html latex md))))
-    ;; Allow's electric-pair-mode to surround things with = and ~ in org-mode
-    (modify-syntax-entry ?~ "(~" org-mode-syntax-table)
-    (modify-syntax-entry ?= "(=" org-mode-syntax-table)
+  (use-package org-install)
+  (use-package ob-core)
+  ;; org-export
+  (use-package ox)
+  ;; Enable archiving things
+  (use-package org-archive)
+  (add-hook 'org-mode-hook #'hl-line-mode)
+  (add-hook 'org-agenda-mode-hook #'hl-line-mode)
+  (add-hook 'org-mode-hook #'eos/org-mode-hook)
+  ;; enabled export backends
+  ;; (use-package ox-rss)
+  (when (boundp 'org-export-backends)
+    (custom-set-variables '(org-export-backends '(ascii beamer html latex md))))
+  ;; Allow's electric-pair-mode to surround things with = and ~ in org-mode
+  (modify-syntax-entry ?~ "(~" org-mode-syntax-table)
+  (modify-syntax-entry ?= "(=" org-mode-syntax-table)
 
-    ;; Automatically save all org files every minute
-    (run-at-time "00:59" 3600 'org-save-all-org-buffers)
+  ;; Automatically save all org files every minute
+  (run-at-time "00:59" 3600 'org-save-all-org-buffers)
 
-    (setq org-directory (file-truename "~/org")
-          ;; follow links by pressing ENTER on them
-          org-return-follows-link t
-          ;; allow changing between todo stats directly by hotkey
-          org-use-fast-todo-selection t
-          ;; syntax highlight code in source blocks
-          org-src-fontify-natively t
-          ;; for the leuven theme, fontify the whole heading line
-          org-fontify-whole-heading-line t
-          ;; force UTF-8
-          org-export-coding-system 'utf-8
-          ;; don't use ido completion (I use helm)
-          org-completion-use-ido nil
-          ;; don't start up org files with indentation
-          ;; (same as #+STARTUP: noindent)
-          org-startup-indented t
-          ;; *don't* hide things like = and / for emphasis markers
-          org-hide-emphasis-markers nil
-          ;; don't indent source code
-          org-edit-src-content-indentation 0
-          ;; don't adapt indentation
-          org-adapt-indentation nil
-          ;; preserve the indentation inside of source blocks
-          org-src-preserve-indentation t
-          ;; Imenu should use 3 depth instead of 2
-          org-imenu-depth 3
-          ;; Use inline footnotes by default
-          org-footnote-define-inline t
-          ;; put state change log messages into a drawer
-          org-log-into-drawer t
-          ;; special begin/end of line to skip tags and stars
-          org-special-ctrl-a/e t
-          ;; special keys for killing a headline
-          org-special-ctrl-k t
-          ;; don't adjust subtrees that I copy
-          org-yank-adjusted-subtrees nil
-          ;; try to be smart when editing hidden things
-          org-catch-invisible-edits 'smart
-          ;; blank lines are removed when exiting the code edit buffer
-          org-src-strip-leading-and-trailing-blank-lines t
-          ;; how org-src windows are set up when hitting C-c '
-          org-src-window-setup 'current-window
-          ;; Overwrite the current window with the agenda
-          org-agenda-window-setup 'current-window
-          ;; Use 100 chars for the agenda width
-          org-agenda-tags-column -100
-          ;; Use full outline paths for refile targets - we file directly with IDO
-          org-refile-use-outline-path t
-          ;; Targets complete directly with IDO
-          org-outline-path-complete-in-steps nil
-          ;; Allow refile to create parent tasks with confirmation
-          org-refile-allow-creating-parent-nodes 'confirm
-          ;; leave this many empty lines in collapsed view
-          org-cycle-separator-lines 1
-          ;; don't run stuff automatically on export
-          org-export-babel-evaluate nil
-          ;; export tables as CSV instead of tab-delineated
-          org-table-export-default-format "orgtbl-to-csv"
-          ;; don't show the "validate" link on org-html exports
-          org-html-validation-link nil
-          ;; start up showing images
-          org-startup-with-inline-images t
-          ;; use #+ATTR: if defined, or real width otherwise
-          org-image-actual-width nil
-          ;; always enable noweb, results as code and exporting both
-          org-babel-default-header-args
-          (cons '(:noweb . "yes")
-                (assq-delete-all :noweb org-babel-default-header-args))
-          org-babel-default-header-args
-          (cons '(:exports . "both")
-                (assq-delete-all :exports org-babel-default-header-args))
-          ;; I don't want to be prompted on every code block evaluation
-          org-confirm-babel-evaluate nil
-          ;; Mark entries as done when archiving
-          org-archive-mark-done t
-          ;; Where to put headlines when archiving them
-          org-archive-location "%s_archive::* Archived Tasks"
-          ;; Sorting order for tasks on the agenda
-          org-agenda-sorting-strategy
-          '((agenda habit-down
-                    time-up
-                    priority-down
-                    user-defined-up
-                    effort-up
-                    category-keep)
-            (todo priority-down category-up effort-up)
-            (tags priority-down category-up effort-up)
-            (search priority-down category-up))
-          ;; Enable display of the time grid so we can see the marker for the
-          ;; current time
-          org-agenda-time-grid
-          '((daily today remove-match)
-            #("----------------" 0 16 (org-heading t))
-            (0900 1100 1300 1500 1700))
-          ;; keep the agenda filter until manually removed
-          org-agenda-persistent-filter t
-          ;; show all occurrences of repeating tasks
-          org-agenda-repeating-timestamp-show-all t
-          ;; always start the agenda on today
-          org-agenda-start-on-weekday nil
-          ;; Use sticky agenda's so they persist
-          org-agenda-sticky t
-          ;; show 4 agenda days
-          org-agenda-span 4
-          ;; Do not dim blocked tasks
-          org-agenda-dim-blocked-tasks nil
-          ;; include the diary in the agenda
-          org-agenda-include-diary t
-          ;; Compact the block agenda view
-          org-agenda-compact-blocks t
-          ;; Show all agenda dates - even if they are empty
-          org-agenda-show-all-dates t
-          ;; Change the default column mode display to show clock sum
-          org-columns-default-format "%50ITEM(Task) %2PRIORITY %10CLOCKSUM %TAGS"
-          ;; Agenda org-mode files
-          org-agenda-files `(,(file-truename "~/org/refile.org")
-                             ,(file-truename "~/org/todo.org")
-                             ,(file-truename "~/org/bibliography.org")
-                             ,(file-truename "~/org/notes.org")
-                             ,(file-truename "~/org/es-team.org")
-                             ,(file-truename "~/org/journal.org")))
+  (setq org-directory (file-truename "~/org")
+        ;; follow links by pressing ENTER on them
+        org-return-follows-link t
+        ;; allow changing between todo stats directly by hotkey
+        org-use-fast-todo-selection t
+        ;; syntax highlight code in source blocks
+        org-src-fontify-natively t
+        ;; for the leuven theme, fontify the whole heading line
+        org-fontify-whole-heading-line t
+        ;; force UTF-8
+        org-export-coding-system 'utf-8
+        ;; don't use ido completion (I use helm)
+        org-completion-use-ido nil
+        ;; don't start up org files with indentation
+        ;; (same as #+STARTUP: noindent)
+        org-startup-indented t
+        ;; *don't* hide things like = and / for emphasis markers
+        org-hide-emphasis-markers nil
+        ;; don't indent source code
+        org-edit-src-content-indentation 0
+        ;; don't adapt indentation
+        org-adapt-indentation nil
+        ;; preserve the indentation inside of source blocks
+        org-src-preserve-indentation t
+        ;; Imenu should use 3 depth instead of 2
+        org-imenu-depth 3
+        ;; Use inline footnotes by default
+        org-footnote-define-inline t
+        ;; put state change log messages into a drawer
+        org-log-into-drawer t
+        ;; special begin/end of line to skip tags and stars
+        org-special-ctrl-a/e t
+        ;; special keys for killing a headline
+        org-special-ctrl-k t
+        ;; don't adjust subtrees that I copy
+        org-yank-adjusted-subtrees nil
+        ;; try to be smart when editing hidden things
+        org-catch-invisible-edits 'smart
+        ;; blank lines are removed when exiting the code edit buffer
+        org-src-strip-leading-and-trailing-blank-lines t
+        ;; how org-src windows are set up when hitting C-c '
+        org-src-window-setup 'current-window
+        ;; Overwrite the current window with the agenda
+        org-agenda-window-setup 'current-window
+        ;; Use 100 chars for the agenda width
+        org-agenda-tags-column -100
+        ;; Use full outline paths for refile targets - we file directly with IDO
+        org-refile-use-outline-path t
+        ;; Targets complete directly with IDO
+        org-outline-path-complete-in-steps nil
+        ;; Allow refile to create parent tasks with confirmation
+        org-refile-allow-creating-parent-nodes 'confirm
+        ;; leave this many empty lines in collapsed view
+        org-cycle-separator-lines 1
+        ;; don't run stuff automatically on export
+        org-export-babel-evaluate nil
+        ;; export tables as CSV instead of tab-delineated
+        org-table-export-default-format "orgtbl-to-csv"
+        ;; don't show the "validate" link on org-html exports
+        org-html-validation-link nil
+        ;; start up showing images
+        org-startup-with-inline-images t
+        ;; use #+ATTR: if defined, or real width otherwise
+        org-image-actual-width nil
+        ;; always enable noweb, results as code and exporting both
+        org-babel-default-header-args
+        (cons '(:noweb . "yes")
+              (assq-delete-all :noweb org-babel-default-header-args))
+        org-babel-default-header-args
+        (cons '(:exports . "both")
+              (assq-delete-all :exports org-babel-default-header-args))
+        ;; I don't want to be prompted on every code block evaluation
+        org-confirm-babel-evaluate nil
+        ;; Mark entries as done when archiving
+        org-archive-mark-done t
+        ;; Where to put headlines when archiving them
+        org-archive-location "%s_archive::* Archived Tasks"
+        ;; Sorting order for tasks on the agenda
+        org-agenda-sorting-strategy
+        '((agenda habit-down
+                  time-up
+                  priority-down
+                  user-defined-up
+                  effort-up
+                  category-keep)
+          (todo priority-down category-up effort-up)
+          (tags priority-down category-up effort-up)
+          (search priority-down category-up))
+        ;; Enable display of the time grid so we can see the marker for the
+        ;; current time
+        org-agenda-time-grid
+        '((daily today remove-match)
+          #("----------------" 0 16 (org-heading t))
+          (0900 1100 1300 1500 1700))
+        ;; keep the agenda filter until manually removed
+        org-agenda-persistent-filter t
+        ;; show all occurrences of repeating tasks
+        org-agenda-repeating-timestamp-show-all t
+        ;; always start the agenda on today
+        org-agenda-start-on-weekday nil
+        ;; Use sticky agenda's so they persist
+        org-agenda-sticky t
+        ;; show 4 agenda days
+        org-agenda-span 4
+        ;; Do not dim blocked tasks
+        org-agenda-dim-blocked-tasks nil
+        ;; include the diary in the agenda
+        org-agenda-include-diary t
+        ;; Compact the block agenda view
+        org-agenda-compact-blocks t
+        ;; Show all agenda dates - even if they are empty
+        org-agenda-show-all-dates t
+        ;; Change the default column mode display to show clock sum
+        org-columns-default-format "%50ITEM(Task) %2PRIORITY %10CLOCKSUM %TAGS"
+        ;; Agenda org-mode files
+        org-agenda-files `(,(file-truename "~/org/refile.org")
+                           ,(file-truename "~/org/todo.org")
+                           ,(file-truename "~/org/bibliography.org")
+                           ,(file-truename "~/org/notes.org")
+                           ,(file-truename "~/org/es-team.org")
+                           ,(file-truename "~/org/journal.org")))
 
-    ;; Org todo keywords
-    (setq org-todo-keywords
-          '((sequence "TODO(t)" "|" "DONE(d)")
-            (sequence "TODO(t)"
-                      "STARTED(s)"
-                      "SOMEDAY(m)"
-                      "INPROGRESS(i)"
-                      "HOLD(h)"
-                      "WAITING(w@/!)"
-                      "NEEDSREVIEW(n@/!)"
-                      "|" "DONE(d)")
-            (sequence "TODO(t)" "INPROGRESS(i)" "|" "CANCELLED(c@/!)")
-            (sequence "TODO(t)" "STARTED(s)" "|" "CANCELLED(c@/!)")))
-    ;; Org faces
-    (setq org-todo-keyword-faces
-          '(("TODO" :foreground "red" :weight bold)
-            ("MEETING" :foreground "red" :weight bold)
-            ("STARTED" :foreground "blue violet" :weight bold)
-            ("INPROGRESS" :foreground "deep sky blue" :weight bold)
-            ("SOMEDAY" :foreground "purple" :weight bold)
-            ("NEEDSREVIEW" :foreground "#edd400" :weight bold)
-            ("DONE" :foreground "forest green" :weight bold)
-            ("WAITING" :foreground "orange" :weight bold)
-            ("HOLD" :foreground "magenta" :weight bold)
-            ("CANCELLED" :foreground "forest green" :weight bold)))
-    ;; add or remove tags on state change
-    (setq org-todo-state-tags-triggers
-          '(("CANCELLED" ("CANCELLED" . t))
-            ("WAITING" ("WAITING" . t))
-            ("HOLD" ("WAITING") ("HOLD" . t))
-            (done ("WAITING") ("HOLD"))
-            ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
-            ("INPROGRESS" ("WAITING") ("CANCELLED") ("HOLD"))
-            ("STARTED" ("WAITING") ("CANCELLED") ("HOLD"))
-            ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
-    ;; refile targets all level 1 and 2 headers in current file and agenda files
-    (setq org-refile-targets '((nil :maxlevel . 2)
-                               (org-agenda-files :maxlevel . 2)))
-    ;; quick access to common tags
-    (setq org-tag-alist
-          '(("oss" . ?o)
-            ("home" . ?h)
-            ("work" . ?w)
-            ("xpack" . ?x)
-            ("book" . ?b)
-            ("support" . ?s)
-            ("docs" . ?d)
-            ("emacs" . ?e)
-            ("noexport" . ?n)
-            ("recurring" . ?r)))
-    ;; capture templates
-    (setq org-capture-templates
-          '(("t" "Todo" entry (file "~/org/refile.org")
-             "* TODO %?\n")
-            ("m" "Meeting" entry (file+headline "~/org/todo.org" "Meetings")
-             "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
-            ("M" "Email" entry (file "~/org/refile.org")
-             "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
-            ("n" "Notes" entry (file+headline "~/org/notes.org" "Notes")
-             "* %? :NOTE:\n")
-            ("e" "Emacs note" entry
-             (file+headline "~/org/notes.org" "Emacs Links")
-             "* %? :NOTE:\n")
-            ("j" "Journal" entry (file+datetree "~/org/journal.org")
-             "* %?\n%U\n")
-            ("b" "Book/Bibliography" entry
-             (file+headline "~/org/bibliography.org" "Refile")
-             "* %?%^{TITLE}p%^{AUTHOR}p%^{TYPE}p")))
-    ;; Custom agenda command definitions
-    (setq org-agenda-custom-commands
-          '(("N" "Notes" tags "NOTE"
-             ((org-agenda-overriding-header "Notes")
-              (org-tags-match-list-sublevels t)))
-            (" " "Agenda"
-             ((agenda "" nil)
-              ;; All items with the "REFILE" tag, everything in refile.org
-              ;; automatically gets that applied
-              (tags "REFILE"
-                    ((org-agenda-overriding-header "Tasks to Refile")
-                     (org-tags-match-list-sublevels nil)))
-              ;; All "INPROGRESS" todo items
-              (todo "INPROGRESS"
-                    ((org-agenda-overriding-header "Current work")))
-              ;; All "STARTED" todo items
-              (todo "STARTED"
-                    ((org-agenda-overriding-header "Started tasks")))
-              ;; All headings with the "support" tag
-              (tags "support/!"
-                    ((org-agenda-overriding-header "Support cases")))
-              ;; All "NEESREVIEW" todo items
-              (todo "NEEDSREVIEW"
-                    ((org-agenda-overriding-header "Waiting on reviews")))
-              ;; All "WAITING" items without a "support" tag
-              (tags "WAITING-support"
-                    ((org-agenda-overriding-header "Waiting for something")))
-              ;; All TODO items
-              (todo "TODO"
-                    ((org-agenda-overriding-header "Task list")
-                     (org-agenda-sorting-strategy
-                      '(time-up priority-down category-keep))))
-              ;; Everything on hold
-              (todo "HOLD"
-                    ((org-agenda-overriding-header "On-hold")))
-              ;; All headings with the "recurring" tag
-              (tags "recurring/!"
-                    ((org-agenda-overriding-header "Recurring"))))
-             nil)))
+  ;; Org todo keywords
+  (setq org-todo-keywords
+        '((sequence "TODO(t)" "|" "DONE(d)")
+          (sequence "TODO(t)"
+                    "STARTED(s)"
+                    "SOMEDAY(m)"
+                    "INPROGRESS(i)"
+                    "HOLD(h)"
+                    "WAITING(w@/!)"
+                    "NEEDSREVIEW(n@/!)"
+                    "|" "DONE(d)")
+          (sequence "TODO(t)" "INPROGRESS(i)" "|" "CANCELLED(c@/!)")
+          (sequence "TODO(t)" "STARTED(s)" "|" "CANCELLED(c@/!)")))
+  ;; Org faces
+  (setq org-todo-keyword-faces
+        '(("TODO" :foreground "red" :weight bold)
+          ("MEETING" :foreground "red" :weight bold)
+          ("STARTED" :foreground "blue violet" :weight bold)
+          ("INPROGRESS" :foreground "deep sky blue" :weight bold)
+          ("SOMEDAY" :foreground "purple" :weight bold)
+          ("NEEDSREVIEW" :foreground "#edd400" :weight bold)
+          ("DONE" :foreground "forest green" :weight bold)
+          ("WAITING" :foreground "orange" :weight bold)
+          ("HOLD" :foreground "magenta" :weight bold)
+          ("CANCELLED" :foreground "forest green" :weight bold)))
+  ;; add or remove tags on state change
+  (setq org-todo-state-tags-triggers
+        '(("CANCELLED" ("CANCELLED" . t))
+          ("WAITING" ("WAITING" . t))
+          ("HOLD" ("WAITING") ("HOLD" . t))
+          (done ("WAITING") ("HOLD"))
+          ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+          ("INPROGRESS" ("WAITING") ("CANCELLED") ("HOLD"))
+          ("STARTED" ("WAITING") ("CANCELLED") ("HOLD"))
+          ("DONE" ("WAITING") ("CANCELLED") ("HOLD"))))
+  ;; refile targets all level 1 and 2 headers in current file and agenda files
+  (setq org-refile-targets '((nil :maxlevel . 2)
+                             (org-agenda-files :maxlevel . 2)))
+  ;; quick access to common tags
+  (setq org-tag-alist
+        '(("oss" . ?o)
+          ("home" . ?h)
+          ("work" . ?w)
+          ("xpack" . ?x)
+          ("book" . ?b)
+          ("support" . ?s)
+          ("docs" . ?d)
+          ("emacs" . ?e)
+          ("noexport" . ?n)
+          ("recurring" . ?r)))
+  ;; capture templates
+  (setq org-capture-templates
+        '(("t" "Todo" entry (file "~/org/refile.org")
+           "* TODO %?\n")
+          ("m" "Meeting" entry (file+headline "~/org/todo.org" "Meetings")
+           "* %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n")
+          ("M" "Email" entry (file "~/org/refile.org")
+           "* TODO [#B] %?\nSCHEDULED: %(org-insert-time-stamp (org-read-date nil t \"+0d\"))\n%a\n")
+          ("n" "Notes" entry (file+headline "~/org/notes.org" "Notes")
+           "* %? :NOTE:\n")
+          ("e" "Emacs note" entry
+           (file+headline "~/org/notes.org" "Emacs Links")
+           "* %? :NOTE:\n")
+          ("j" "Journal" entry (file+datetree "~/org/journal.org")
+           "* %?\n%U\n")
+          ("b" "Book/Bibliography" entry
+           (file+headline "~/org/bibliography.org" "Refile")
+           "* %?%^{TITLE}p%^{AUTHOR}p%^{TYPE}p")))
+  ;; Custom agenda command definitions
+  (setq org-agenda-custom-commands
+        '(("N" "Notes" tags "NOTE"
+           ((org-agenda-overriding-header "Notes")
+            (org-tags-match-list-sublevels t)))
+          (" " "Agenda"
+           ((agenda "" nil)
+            ;; All items with the "REFILE" tag, everything in refile.org
+            ;; automatically gets that applied
+            (tags "REFILE"
+                  ((org-agenda-overriding-header "Tasks to Refile")
+                   (org-tags-match-list-sublevels nil)))
+            ;; All "INPROGRESS" todo items
+            (todo "INPROGRESS"
+                  ((org-agenda-overriding-header "Current work")))
+            ;; All "STARTED" todo items
+            (todo "STARTED"
+                  ((org-agenda-overriding-header "Started tasks")))
+            ;; All headings with the "support" tag
+            (tags "support/!"
+                  ((org-agenda-overriding-header "Support cases")))
+            ;; All "NEESREVIEW" todo items
+            (todo "NEEDSREVIEW"
+                  ((org-agenda-overriding-header "Waiting on reviews")))
+            ;; All "WAITING" items without a "support" tag
+            (tags "WAITING-support"
+                  ((org-agenda-overriding-header "Waiting for something")))
+            ;; All TODO items
+            (todo "TODO"
+                  ((org-agenda-overriding-header "Task list")
+                   (org-agenda-sorting-strategy
+                    '(time-up priority-down category-keep))))
+            ;; Everything on hold
+            (todo "HOLD"
+                  ((org-agenda-overriding-header "On-hold")))
+            ;; All headings with the "recurring" tag
+            (tags "recurring/!"
+                  ((org-agenda-overriding-header "Recurring"))))
+           nil)))
 
-    ;; Exclude DONE state tasks from refile targets
-    (defun eos/verify-refile-target ()
-      "Exclude todo keywords with a done state from refile targets"
-      (not (member (nth 2 (org-heading-components)) org-done-keywords)))
-    (setq org-refile-target-verify-function 'eos/verify-refile-target)
+  ;; Exclude DONE state tasks from refile targets
+  (defun eos/verify-refile-target ()
+    "Exclude todo keywords with a done state from refile targets"
+    (not (member (nth 2 (org-heading-components)) org-done-keywords)))
+  (setq org-refile-target-verify-function 'eos/verify-refile-target)
 
-    ;; org-mode bindings
-    (define-key org-mode-map (kbd "C-c t") 'org-todo)
-    (define-key org-mode-map (kbd "RET") 'org-return-indent)
+  ;; org-mode bindings
+  (define-key org-mode-map (kbd "C-c t") 'org-todo)
+  (define-key org-mode-map (kbd "RET") 'org-return-indent)
 
-    ;; org-babel stuff
-    (use-package ob-clojure
-      :ensure clojure-mode)
-    (use-package ob-elasticsearch
-      :ensure es-mode)
+  ;; org-babel stuff
+  (use-package ob-clojure
+    :ensure clojure-mode)
+  (use-package ob-elasticsearch
+    :ensure es-mode)
 
-    (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((emacs-lisp . t)
-       (elasticsearch . t)
-       (clojure . t)
-       (dot . t)
-       (sh . t)
-       (js . t)
-       (haskell . t)
-       (ruby . t)
-       (python . t)
-       (gnuplot . t)
-       (plantuml . t)
-       (ditaa . t)
-       (latex . t)))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((emacs-lisp . t)
+     (elasticsearch . t)
+     (clojure . t)
+     (dot . t)
+     (sh . t)
+     (js . t)
+     (haskell . t)
+     (ruby . t)
+     (python . t)
+     (gnuplot . t)
+     (plantuml . t)
+     (ditaa . t)
+     (latex . t)))
 
-    ;; this is where Fedora installs it, YMMV
-    (setq org-plantuml-jar-path "/usr/share/java/plantuml.jar")
+  ;; this is where Fedora installs it, YMMV
+  (setq org-plantuml-jar-path "/usr/share/java/plantuml.jar")
 
-    ;; Use org.css from the :wq website for export document stylesheets
-    (setq org-html-head-include-default-style nil)
+  ;; Use org.css from the :wq website for export document stylesheets
+  (setq org-html-head-include-default-style nil)
 
-    ;; ensure this variable is defined
-    (unless (boundp 'org-babel-default-header-args:sh)
-      (setq org-babel-default-header-args:sh '()))
+  ;; ensure this variable is defined
+  (unless (boundp 'org-babel-default-header-args:sh)
+    (setq org-babel-default-header-args:sh '()))
 
-    ;; add a default shebang header argument shell scripts
-    (add-to-list 'org-babel-default-header-args:sh
-                 '(:shebang . "#!/usr/bin/env bash"))
+  ;; add a default shebang header argument shell scripts
+  (add-to-list 'org-babel-default-header-args:sh
+               '(:shebang . "#!/usr/bin/env bash"))
 
-    ;; add a default shebang header argument for python
-    (add-to-list 'org-babel-default-header-args:python
-                 '(:shebang . "#!/usr/bin/env python"))
+  ;; add a default shebang header argument for python
+  (add-to-list 'org-babel-default-header-args:python
+               '(:shebang . "#!/usr/bin/env python"))
 
-    (defun eos/org-inline-css-hook (exporter)
-      "Insert custom inline css to automatically set the
+  (defun eos/org-inline-css-hook (exporter)
+    "Insert custom inline css to automatically set the
    background of code to whatever theme I'm using's background"
-      (when (eq exporter 'html)
-        (let* ((my-pre-bg (face-background 'default))
-               (my-pre-fg (face-foreground 'default)))
-          ;;(setq org-html-head-include-default-style nil)
-          (setq
-           org-html-head-extra
-           (concat
-            org-html-head-extra
-            (format
-             "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
-             my-pre-bg my-pre-fg))))))
+    (when (eq exporter 'html)
+      (let* ((my-pre-bg (face-background 'default))
+             (my-pre-fg (face-foreground 'default)))
+        ;;(setq org-html-head-include-default-style nil)
+        (setq
+         org-html-head-extra
+         (concat
+          org-html-head-extra
+          (format
+           "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
+           my-pre-bg my-pre-fg))))))
 
-    ;; Uncomment to automatically set background color to theme background
-    ;; (add-hook 'org-export-before-processing-hook #'eos/org-inline-css-hook)
+  ;; Uncomment to automatically set background color to theme background
+  ;; (add-hook 'org-export-before-processing-hook #'eos/org-inline-css-hook)
 
-    (use-package org-id
-      :init
-      (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
+  (use-package org-id
+    :init
+    (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
 
-      (defun eos/org-custom-id-get (&optional pom create prefix)
-        "Get the CUSTOM_ID property of the entry at point-or-marker POM.
+    (defun eos/org-custom-id-get (&optional pom create prefix)
+      "Get the CUSTOM_ID property of the entry at point-or-marker POM.
    If POM is nil, refer to the entry at point. If the entry does
    not have an CUSTOM_ID, the function returns nil. However, when
    CREATE is non nil, create a CUSTOM_ID if none is present
    already. PREFIX will be passed through to `org-id-new'. In any
    case, the CUSTOM_ID of the entry is returned."
-        (interactive)
-        (org-with-point-at pom
-          (let ((id (org-entry-get nil "CUSTOM_ID")))
-            (cond
-             ((and id (stringp id) (string-match "\\S-" id))
-              id)
-             (create
-              (setq id (org-id-new (concat prefix "h")))
-              (org-entry-put pom "CUSTOM_ID" id)
-              (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
-              id)))))
+      (interactive)
+      (org-with-point-at pom
+        (let ((id (org-entry-get nil "CUSTOM_ID")))
+          (cond
+           ((and id (stringp id) (string-match "\\S-" id))
+            id)
+           (create
+            (setq id (org-id-new (concat prefix "h")))
+            (org-entry-put pom "CUSTOM_ID" id)
+            (org-id-add-location id (buffer-file-name (buffer-base-buffer)))
+            id)))))
 
-      (defun eos/org-add-ids-to-headlines-in-file ()
-        "Add CUSTOM_ID properties to all headlines in the current
+    (defun eos/org-add-ids-to-headlines-in-file ()
+      "Add CUSTOM_ID properties to all headlines in the current
    file which do not already have one. Only adds ids if the
    `auto-id' option is set to `t' in the file somewhere. ie,
    ,#+OPTIONS: auto-id:t"
-        (interactive)
-        (save-excursion
-          (widen)
-          (goto-char (point-min))
-          (when (re-search-forward "^#\\+OPTIONS:.*auto-id:t" (point-max) t)
-            (org-map-entries (lambda () (eos/org-custom-id-get (point) 'create))))))
+      (interactive)
+      (save-excursion
+        (widen)
+        (goto-char (point-min))
+        (when (re-search-forward "^#\\+OPTIONS:.*auto-id:t" (point-max) t)
+          (org-map-entries (lambda () (eos/org-custom-id-get (point) 'create))))))
 
-      ;; automatically add ids to saved org-mode headlines
-      (add-hook 'org-mode-hook
-                (lambda ()
-                  (add-hook 'before-save-hook
-                            (lambda ()
-                              (when (and (eq major-mode 'org-mode)
-                                         (eq buffer-read-only nil))
-                                (eos/org-add-ids-to-headlines-in-file)))))))))
+    ;; automatically add ids to saved org-mode headlines
+    (add-hook 'org-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook
+                          (lambda ()
+                            (when (and (eq major-mode 'org-mode)
+                                       (eq buffer-read-only nil))
+                              (eos/org-add-ids-to-headlines-in-file))))))))
+#+END_SRC
+
+Allow asynchronously executing org-babel blocks:
+
+#+BEGIN_SRC emacs-lisp
+(use-package ob-async
+  :ensure t
+  :init
+  (add-to-list 'org-ctrl-c-ctrl-c-hook
+               'ob-async-org-babel-execute-src-block))
 #+END_SRC
 
 This makes the bullets into fancy Unicode bullets, rather than ASCII '*' values.
