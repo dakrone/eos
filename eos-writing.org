@@ -404,6 +404,7 @@ And a helper to turn off whitespace mode when exporting org documents
 #+BEGIN_SRC emacs-lisp
 (use-package highlight-indent-guides
   :ensure t
+  :disabled t
   :init
   (setq highlight-indent-guides-method 'character)
   (add-hook 'prog-mode-hook #'highlight-indent-guides-mode))
