@@ -342,8 +342,14 @@ passed in. Also supports ignoring the msg at the point."
     ;; check for unread messages
     (mlh-mu4e-notify)
 
+    (defun mu4e-view-in-browser-generic (msg)
+      "Browse using the generic browser, regardless if `eww' is
+      configured to be Emacs' browser."
+      (let ((browse-url-browser-function '(("." . browse-url-generic))))
+        (mu4e-action-view-in-browser msg)))
+
     (add-to-list 'mu4e-view-actions
-                 '("ViewInBrowser" . mu4e-action-view-in-browser) t)
+                 '("View In Browser" . mu4e-view-in-browser-generic) t)
 
     (define-key mu4e-view-mode-map (kbd "j") 'next-line)
     (define-key mu4e-view-mode-map (kbd "k") 'previous-line)
