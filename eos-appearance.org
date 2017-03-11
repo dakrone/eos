@@ -18,8 +18,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
-;;(defvar eos/background 'dark)
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
 #+END_SRC
 
 * Emacs Appearance
@@ -115,7 +115,6 @@ balanced of color and pleasing to my eyes.
     (load-theme 'github t))
   (use-package tao-theme
     :ensure t
-    :disabled t
     :init
     (load-theme 'tao-yang t)
     (require 'git-gutter)
@@ -126,8 +125,12 @@ balanced of color and pleasing to my eyes.
     (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")
     (set-face-attribute 'git-gutter:added nil :foreground "green")
     (set-face-attribute 'git-gutter-fr:added nil :foreground "green"))
-  (progn
-    (set-face-background 'default "#F9F9F9")))
+  ;; (progn
+  ;;   (when (file-exists-p "~/src/elisp/dakrone-light-theme")
+  ;;     (add-to-list 'custom-theme-load-path
+  ;;                  "~/src/elisp/dakrone-light-theme")
+  ;;     (load-theme 'dakrone-light t)))
+  )
 #+END_SRC
 
 If using OSX, the colors and fonts look a bit wonky, so let's fix that
@@ -173,9 +176,10 @@ Fonts I may or may not use (in no particular order):
       (set-face-attribute face nil :family "Inconsolata"
                           :height (- eos/original-height 10)))
     (set-face-attribute 'variable-pitch nil
-                        :family "Merriweather" :height (- eos/original-height 20))
+                        :family "Merriweather" :height (- eos/original-height 10))
     ;; font for all unicode characters
-    (set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)))
+    ;;(set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)
+    ))
 
 (when (eq window-system 'x)
   (add-hook 'after-init-hook #'eos/setup-fonts))
@@ -570,9 +574,12 @@ To re-add support for the =org-block-background= face that was removed in 8.3+.
 Then, you can do something like this:
 
 #+BEGIN_SRC emacs-lisp
-(when (and window-system
-           ;; Only if I have a custom patched org-mode
-           (file-exists-p "~/src/elisp/org-mode"))
+(setq eos/variable-org-enabled nil)
+
+(when (and eos/variable-org-enabled
+           (and window-system
+                ;; Only if I have a custom patched org-mode
+                (file-exists-p "~/src/elisp/org-mode")))
   (add-hook 'org-mode-hook 'variable-pitch-mode)
   (add-hook 'markdown-mode-hook 'variable-pitch-mode)
 
