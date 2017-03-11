@@ -96,6 +96,10 @@ to return the correct path depending on the account the email is from.
           ;; check for new messages every 180 seconds (3 min)
           mu4e-update-interval 180)
 
+    ;; the default is html2text, and elinks does a slightly better option
+    (when (executable-find "elinks")
+      (setq mu4e-html2text-command (concat (executable-find "elinks") " -dump")))
+
     (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
     (use-package gnus-dired
       :config
