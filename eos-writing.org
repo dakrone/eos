@@ -366,24 +366,27 @@ There's also the built-in whitespace mode, which I use to highlight things over
 the fill-column (80 in most programming modes, 140 in Java :P)
 
 #+BEGIN_SRC emacs-lisp
+;; A subset, only training lines and whitespace
+(setq whitespace-style '(spaces tabs newline space-mark tab-mark newline-mark))
+
+(setq whitespace-display-mappings
+      ;; all numbers are Unicode codepoint in decimal.
+      '(;;(space-mark 32 [183] [46])
+        ;; (newline-mark 10 [172 10]) ;; the paragraph sign
+        (newline-mark 10 [172 10]) ;; mathematical "not"
+        (tab-mark 9 [187 9] [92 9])))
+
 (defun eos/turn-on-whitespace-mode ()
   (interactive)
   (setq-local whitespace-line-column fill-column)
-  ;; A subset, only training lines and whitespace
-  (setq-local whitespace-style '(face empty tabs lines-tail trailing))
-  ;; Everything
-  ;; (setq-local whitespace-style '(spaces tabs newline space-mark
-  ;;                                       tab-mark newline-mark
-  ;;                                       face empty tabs lines-tail trailing))
-  (setq-local whitespace-display-mappings
-              ;; all numbers are Unicode codepoint in decimal.
-              '((space-mark 32 [183] [46])
-                (newline-mark 10 [182 10])
-                (tab-mark 9 [187 9] [92 9])))
   (whitespace-mode +1)
   (diminish 'whitespace-mode))
 
 (add-hook 'prog-mode-hook #'eos/turn-on-whitespace-mode)
+
+;; Globally though, we'll turn on newline highlighting
+(global-whitespace-newline-mode 1)
+(diminish 'global-whitespace-newline-mode)
 #+END_SRC
 
 And a helper to turn off whitespace mode when exporting org documents
