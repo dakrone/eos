@@ -130,7 +130,7 @@ work with the ES codebase.
   (shut-up (toggle-truncate-lines 1))
   ;; Generic java stuff things
   (setq-local fci-rule-column 99)
-  (setq-local fill-column 140)
+  (setq-local fill-column 100)
   (when (fboundp 'eos/turn-on-whitespace-mode)
     (whitespace-mode -1)
     (eos/turn-on-whitespace-mode))
