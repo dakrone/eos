@@ -730,8 +730,8 @@ set-window-option -g mode-keys emacs
 # Make mouse useful in copy mode
 #set-window-option -g mode-mouse on
 
-# drew paste
-bind-key P run-shell 'tmux saveb -| curl -s -XPOST -H "Content-type: text/plain" --data-binary @- http://p.draines.com/'
+# termbin paste
+bind-key P run-shell 'tmux saveb -| nc termbin.com 9999'
 # x clipboard
 bind-key > run-shell "tmux saveb -| xclip -selection clipboard -i"
 
