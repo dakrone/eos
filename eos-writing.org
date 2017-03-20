@@ -386,6 +386,7 @@ the fill-column (80 in most programming modes, 140 in Java :P)
 
 ;; Globally though, we'll turn on newline highlighting
 (global-whitespace-newline-mode 1)
+(diminish 'global-whitespace-mode)
 (diminish 'global-whitespace-newline-mode)
 #+END_SRC
 
