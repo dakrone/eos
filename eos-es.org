@@ -19,7 +19,8 @@
   (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
   (add-hook 'es-mode-hook 'auto-indent-mode)
   :config
-  (setq es-warn-on-delete-query nil))
+  (setq es-warn-on-delete-query nil
+        es-always-pretty-print t))
 #+END_SRC
 
 Some setup for the Java-specific ES project, with EDE
