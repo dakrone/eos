@@ -14,22 +14,24 @@
 :END:
 I use [[http://orgmode.org/][org-mode]] a ton, so it get's its own page here.
 
-A great lot of this was taken from http://doc.norang.ca/org-mode.html, to which
-I owe almost all of the agenda configuration. The capture stuff and regular org
-settings are mine.
+A great lot of this was taken from http://doc.norang.ca/org-mode.html, to which I owe almost all of
+the agenda configuration. The capture stuff and regular org settings are mine.
 
-Also, in order to export nicely colored HTML of source code, we need htmlize
+Also, in order to export nicely colored HTML of source code, we need htmlize. Otherwise the source
+code is bland in HTML output.
 
 #+BEGIN_SRC emacs-lisp
 (install-pkgs '(htmlize))
 #+END_SRC
 
-First, the hook that gets run every time org-mode is started, to turn on certain
-modes
+First, the hook that gets run every time org-mode is started, to turn on certain modes. I increase
+the column width, turn on auto-filling, spellcheck, snippet expansion, and abbreviations, and then
+set up some custom keybindings that should take effect in every org mode buffer.
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/org-mode-hook ()
   (interactive)
+  (setq-local fill-column 100)
   (when (fboundp 'turn-on-auto-fill)
     (turn-on-auto-fill))
   (when (fboundp 'turn-on-flyspell)
@@ -50,7 +52,8 @@ modes
     (define-key org-agenda-mode-map (kbd "C-c C-x C-f") #'org-agenda-refile)))
 #+END_SRC
 
-And now the huge org-mode configuration
+And now the huge org-mode configuration. I =ensure= the =org-plus-contrib= package so that it
+installs not only the latest Org-mode, but also the included contribution packages.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
@@ -426,7 +429,8 @@ And now the huge org-mode configuration
                               (eos/org-add-ids-to-headlines-in-file))))))))
 #+END_SRC
 
-Allow asynchronously executing org-babel blocks:
+Allow asynchronously executing org-babel blocks. Sometimes I run long-running babel executions, and
+this allows Emacs not to hang while executing them.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ob-async
@@ -437,8 +441,9 @@ Allow asynchronously executing org-babel blocks:
                'ob-async-org-babel-execute-src-block)))
 #+END_SRC
 
-This makes the bullets into fancy Unicode bullets, rather than ASCII '*' values.
-Depending on the theme, it may look better or worse
+This makes the bullets into fancy Unicode bullets, rather than ASCII '*' values. Depending on the
+theme, it may look better or worse. I also customize the list of bullets because the defaults are a
+little wonky looking.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-bullets
@@ -452,8 +457,10 @@ Depending on the theme, it may look better or worse
 :CUSTOM_ID: ox-gfm
 :END:
 
-By and large, 90% of the exports I do are to Github's markdown. Usually to share
-for an issue. So there's a nice exporter that does this for me: =ox-gfm=
+By and large, 90% of the exports I do are to Github's markdown. Usually to share for an issue. So
+there's a nice exporter that does this for me: =ox-gfm=. While Github does support org-mode as a
+file format (or in gists), it doesn't support org syntax in the body of issues or PR comments, so I
+need a way to generate that syntax.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-gfm
@@ -468,7 +475,8 @@ for an issue. So there's a nice exporter that does this for me: =ox-gfm=
 :CUSTOM_ID: h:456bf59e-a548-4e53-b7dc-2c8c868029fe
 :END:
 
-I wrote [[https://github.com/dakrone/ox-tufte][a project]] to do this, but it is not yet available on MELPA.
+I wrote [[https://github.com/dakrone/ox-tufte][a project]] to do this, and even though it's available on MELPA, it's still useful to be able
+to use the development (read: local) version of it when available.
 
 #+BEGIN_SRC emacs-lisp
 (if (file-exists-p "~/src/elisp/ox-tufte")
@@ -484,9 +492,9 @@ I wrote [[https://github.com/dakrone/ox-tufte][a project]] to do this, but it is
 :PROPERTIES:
 :CUSTOM_ID: org-clock
 :END:
-Now, my org-mode clocking configuration:
 
-First, a function to use for clocking in
+I use org-mode's clocking for time management, and mostly to keep track of where the week went for
+our weekly emails.
 
 #+BEGIN_SRC emacs-lisp
 (defun eos/org-clock-in ()
@@ -499,7 +507,6 @@ First, a function to use for clocking in
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-;;  :ensure org-plus-contrib
   :bind (("C-c I" . eos/org-clock-in)
          ("C-c O" . org-clock-out))
   :config
@@ -530,7 +537,9 @@ First, a function to use for clocking in
 :PROPERTIES:
 :CUSTOM_ID: org-publishing
 :END:
-Publishing org-mode files to my hosting provider:
+I use org-publishing combined with TRAMP to publish org-mode files to https://writequit.org so
+others can see them, there's a nice built in way of doing it, so I don't even have to change
+anything!
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
@@ -698,16 +707,16 @@ Publishing org-mode files to my hosting provider:
                         "org-es-presentations-images")))))
 #+END_SRC
 
-Then, when I'm editing ~/org/es/feature-foo.org, I can hit =C-c C-e P f= and
-export the file to show up in http://p.writequit.org/org
+Then, when I'm editing ~/org/es/feature-foo.org, I can hit =C-c C-e P f= and export the file to show
+up in http://p.writequit.org/org
 
 * Tools used from within org-mode
 :PROPERTIES:
 :CUSTOM_ID: org-tools
 :END:
 
-I tend to use quite a few different tools from org buffers, so let's install the
-modes required:
+I tend to use quite a few different tools from org buffers, so let's install the modes required. In
+this case, it's mostly gnuplot and gnuplot-mode for generating graphs of data in org-mode buffers.
 
 #+BEGIN_SRC emacs-lisp
 (use-package gnuplot
@@ -738,8 +747,8 @@ There are a bunch of different ways to present things
 :CUSTOM_ID: h:a40400bb-3995-4963-9e45-183f1822e172
 :END:
 
-Beamer is actually built-into org-mode, but requires a few extra libraries I
-wanted to document here:
+Beamer is actually built-into org-mode, but requires a few extra libraries I wanted to document
+here:
 
 - texlive
 - texlive-latex
