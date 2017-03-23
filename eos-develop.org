@@ -131,6 +131,12 @@ Bring up the compilation buffer with =C-x c=
 (global-set-key (kbd "C-x c") #'eos/last-compilation-buffer)
 #+END_SRC
 
+Also, you don't need to prompt me about saving files for compilation, just do it.
+
+#+BEGIN_SRC emacs-lisp
+(setq compilation-ask-about-save nil)
+#+END_SRC
+
 Uses =M-n= and =M-p= to jump between the same variable in multiple places
 
 #+BEGIN_SRC emacs-lisp
