@@ -18,8 +18,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-;;(defvar eos/background 'light)
-(defvar eos/background 'dark)
+(defvar eos/background 'light)
+;;(defvar eos/background 'dark)
 #+END_SRC
 
 * Emacs Appearance
@@ -103,7 +103,6 @@ balanced of color and pleasing to my eyes.
         (load-theme 'ujelly t)))
   (use-package leuven-theme
     :ensure t
-    :disabled t
     :init
     (load-theme 'leuven t)
     ;; Ever-so-slightly darker background
@@ -115,6 +114,7 @@ balanced of color and pleasing to my eyes.
     (load-theme 'github t))
   (use-package tao-theme
     :ensure t
+    :disabled t
     :init
     (load-theme 'tao-yang t)
     (require 'git-gutter)
