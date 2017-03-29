@@ -109,6 +109,12 @@ So I configure prodigy like so:
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
+    :name "Elasticsearch 5.3.0"
+    :cwd "~/ies/elasticsearch-5.3.0"
+    :command "~/ies/elasticsearch-5.3.0/bin/elasticsearch"
+    :tags '(work test es)
+    :port 9200)
+  (prodigy-define-service
     :name "ES gradle run"
     :cwd "~/es/elasticsearch"
     :command "gradle"
