@@ -100,7 +100,11 @@ balanced of color and pleasing to my eyes.
         :ensure t
         :disabled t
         :init
-        (load-theme 'ujelly t)))
+        (load-theme 'ujelly t))
+      (use-package nord-theme
+        :ensure t
+        :init
+        (load-theme 'nord t)))
   (use-package leuven-theme
     :ensure t
     :init
