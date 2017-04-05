@@ -666,24 +666,22 @@ on today or earlier) show up in the agenda at the top.
 
 My day goes generally like this:
 
-- Punch in (this starts the clock on the default task)
+- Clock in (usually on the Meta task)
 - Look at the agenda and make a mental note of anything important to deal with today
-- Read email and news
+- Read email and news (clocked in to "Meta")
   - create notes, and tasks for things that need responses with org-capture
 - Check refile tasks and respond to emails
 - Look at my agenda and work on important tasks for today
   - Clock it in
   - Work on it until it is =DONE= or it gets interrupted
 - Work on tasks
-- Make journal entries (=C-c c j=) for interruptions
-- Punch out for lunch and punch back in after lunch
+- Clock out for lunch and clock back in after lunch
 - work on more tasks
 - Refile tasks to empty the list
   - Tag tasks to be refiled with =m= collecting all tasks for the same target
   - Bulk refile the tasks to the target location with =B r=
-  - Repeat (or refile individually with =C-c C-w=) until all refile tasks are gone
-- Mark habits done today as DONE
-- Punch out at the end of the work day
+  - Repeat (or refile individually with =C-c C-x C-f=) until all refile tasks are gone
+- Clock out at the end of the work day
 
 ** What should I work on next?
 :PROPERTIES:
@@ -719,16 +717,10 @@ with =NEXT= keywords since stuck projects initiate the need for marking or creat
 =NEXT= task is something that is available to work on /now/, it is the next logical step in some
 project.
 
-I used to have a special keyword =ONGOING= for things that I do a lot and want to clock but never
-really start/end. I had a special agenda view for =ONGOING= tasks that I would pull up to easily
-find the thing I want to clock.
-
-Since then I've moved away from using the =ONGOING= todo keyword. Having an agenda view that shows
-=NEXT= tasks makes it easy to pick the thing to clock - and I don't have to remember if I need to
-look in the =ONGOING= list or the =NEXT= list when looking for the task to clock-in. The =NEXT= list
-is basically 'what is current' - any task that moves a project forward. I want to find the thing to
-work on as fast as I can and actually do work on it - not spend time hunting through my org files
-for the task that needs to be clocked-in.
+Having an agenda view that shows =NEXT= tasks makes it easy to pick the thing to clock. The =NEXT=
+list is basically 'what is current' - any task that moves a project forward. I want to find the
+thing to work on as fast as I can and actually do work on it - not spend time hunting through my org
+files for the task that needs to be clocked-in.
 
 To drop a task off the =NEXT= list simply move it back to the =TODO= state.
 
@@ -737,24 +729,18 @@ To drop a task off the =NEXT= list simply move it back to the =TODO= state.
 :CUSTOM_ID: h:22c574a2-c9c3-44b7-8cb2-6c65a719d145
 :END:
 
-When reading email, RSS, and conversations on IRC I just let the default task (normally =**
-Organization=) clock the time I spend on these tasks. To read email I go to Mu4e and read everything
-in my inboxes. If there are emails that require a response I use org-capture to create a new task
-with a heading of 'Respond to <user>' for each one. This automatically links to the email in the
-task and makes it easy to find later. Some emails are quick to respond to and some take research and
-a significant amount of time to complete. I clock each one in it's own task just in case I need that
-clocked time later. The capture template for Repond To tasks is now scheduled for today so I can
-refile the task to the appropriate org file without losing the task for a week.
+When reading email, RSS, and conversations on IRC I just let the default task (normally =* Meta=)
+clock the time I spend on these tasks. To read email I go to Mu4e and read everything in my inboxes.
+If there are emails that require a response I use org-capture to create a new task with a heading of
+'Respond to <user>' for each one. This automatically links to the email in the task and makes it
+easy to find later. Some emails are quick to respond to and some take research and a significant
+amount of time to complete. I clock each one in it's own task just in case I need that clocked time
+later. The capture template for Repond To tasks is now scheduled for today so I can refile the task
+to the appropriate org file without losing the task for a week.
 
-Next, I go to my newly created tasks to be refiled from the block agenda with =F12 a= and clock in
-an email task and deal with it. Repeat this until all of the 'Respond to <user>' tasks are marked
+Next, I go to my newly created tasks to be refiled from the agenda with =M-t a= and clock in an
+email task and deal with it. Repeat this until all of the 'Respond to <user>' tasks are marked
 =DONE=.
-
-I read email and newgroups in Gnus so I don't separate clocked time for quickly looking at things.
-If an article has a useful piece of information I want to remember I create a note for it with =C-c
-c n= and enter the topic and file it. This takes practically no time at all and I know the note is
-safely filed for later retrieval. The time I spend in the capture buffer is clocked with that
-capture note.
 
 ** Filtering
 :PROPERTIES:
@@ -822,26 +808,16 @@ estimates so they are more accurate.
 
 Without clocking data it's hard to tell how long something took to do after the fact.
 
-I now use the concept of =punching in= and =punching out= at the start and end of my work day. I
-punch in when I arrive at work, punch out for lunch, punch in after lunch, and punch out at the end
-of the day. Every minute is clocked between punch-in and punch-out times.
-
-Punching in defines a default task to clock time on whenever the clock would normally stop. I found
-that with the default org-mode setup I would lose clocked minutes during the day, a minute here, a
-minute there, and that all adds up. This is especially true if you write notes when moving to a DONE
-state - in this case the clock normally stops before you have composed the note -- and good notes
-take a few minutes to write.
-
 My clocking setup basically works like this:
 
-- Punch in (start the clock)
+- Clock in to the "Meta" task
   - This clocks in a predefined task by =org-id= that is the default task to clock in whenever the
     clock normally stops
 - Clock in tasks normally, and let moving to a DONE state clock out
   - clocking out automatically clocks time on a parent task or moves back to the predefined default
     task if no parent exists.
 - Continue clocking whatever tasks you work on
-- Punch out (stop the clock)
+- Clock out (stop the clock)
 
 I'm free to change the default task multiple times during the day but with the clock moving up the
 project tree on clock out I no longer need to do this. I simply have a single task that gets clocked
@@ -1110,15 +1086,15 @@ When I start or continue working on a task I clock it in with any of the followi
 :CUSTOM_ID: ClockingInDefaultTask
 :END:
 
-I have a default =** Organization= task in my todo.org file that I tend to put miscellaneous clock
-time on. This is the task I clock in on when I punch in at the start of my work day with =F9-I=.
-While reorganizing my org-files, reading email, clearing my inbox, and doing other planning work
-that isn't for a specific project I'll clock in this task. Punching-in anywhere clocks in this
+I have a default =** Meta= task in my todo.org file that I tend to put miscellaneous clock time on.
+This is the task I clock in on when I punch in at the start of my work day with =C-c I=. While
+reorganizing my org-files, reading email, clearing my inbox, and doing other planning work that
+isn't for a specific project I'll clock in this task. Punching-in anywhere clocks in this
 Organization task as the default task.
 
 If I want to change the default clocking task I just visit the new task in any org buffer and clock
-it in with =C-u C-u C-c C-x C-i=. Now this new task that collects miscellaneous clock minutes when
-the clock would normally stop.
+it in with =C-c C-x C-i=. Now this new task that collects miscellaneous clock minutes when the clock
+would normally stop.
 
 You can quickly clock in the default clocking task with =C-u C-c C-x C-i d=. Another option is to
 repeatedly clock out so the clock moves up the project tree until you clock out the top-level task
@@ -1152,14 +1128,14 @@ entry.
 *Clock history selection buffer for C-u C-c C-x C-i*
 #+begin_example
 Default Task
-[d] norang          Organization                          <-- Task B
+[d] todo            Meta                                  <-- Task B
 The task interrupted by starting the last one
-[i] norang          Organization                          <-- Task B
+[i] todo            Organization                          <-- Task B
 Current Clocking Task
 [c] org             NEXT Document my use of org-mode      <-- Task A
 Recent Tasks
 [1] org             NEXT Document my use of org-mode      <-- Task A
-[2] norang          Organization                          <-- Task B
+[2] todo            Organization                          <-- Task B
 ...
 [Z] org             DONE Fix default section links        <-- 35 clock task entries ago
 #+end_example
@@ -1199,7 +1175,7 @@ done, and applied to some project then I create a capture task instead which fil
 To find a task to work on I use one of the following options (generally listed most frequently used
 first)
 
-- Use the clock history C-u C-c C-x C-i
+- Use the clock history =C-c I=
   Go back to something I was clocking that is not finished
 - Pick something off today's block agenda
   =SCHEDULED= or =DEADLINE= items that need to be done soon
@@ -1306,7 +1282,7 @@ so I override the =:narrow= value.
 #+begin_src emacs-lisp
 ;; Agenda clock report parameters
 (setq org-agenda-clockreport-parameter-plist
-      '(:link t :maxlevel 10 :fileskip0 t :compact t :narrow 60 :score 0))
+      '(:link t :maxlevel 6 :fileskip0 t :compact t :narrow 60 :score 0))
 #+end_src
 
 I have since moved to using agenda clock reports shortly after that feature was added. I find this
@@ -1334,8 +1310,8 @@ I use =properties= and =column view= to do project estimates.
 I set up column view globally with the following headlines
 
 #+begin_src emacs-lisp
-;; Set default column view headings: Task Effort Clock_Summary
-(setq org-columns-default-format "%50ITEM(Task) %10Effort(Effort){:} %10CLOCKSUM")
+;; Set default column view headings: Task Priority Effort Clock_Summary
+(setq org-columns-default-format "%50ITEM(Task) %2PRIORITY %10Effort(Effort){:} %10CLOCKSUM")
 #+end_src
 
 This makes column view show estimated task effort and clocked times side-by-side which is great for
@@ -1503,6 +1479,7 @@ Filetags look like this:
 The following tags are automatically added or removed by todo state triggers described previously in
 [[#h:42ae1cf6-0ca0-4283-9d6f-00129c8612ce][Todo state triggers]]
 
+- =REVIEW=
 - =WAITING=
 - =HOLD=
 - =CANCELLED=
@@ -2289,6 +2266,7 @@ appointment list is erased and rebuilt from the current agenda
 details for today.  This means everytime I reschedule something, add
 or remove tasks that are time related the appointment list is
 automatically updated the next time I look at the agenda.
+
 ** Reminder Setup
 :PROPERTIES:
 :CUSTOM_ID: ReminderSetup
@@ -2377,66 +2355,7 @@ automatically updated the next time I look at the agenda.
       ;; export tables as CSV instead of tab-delineated
       org-table-export-default-format "orgtbl-to-csv"
       ;; use #+ATTR: if defined, or real width otherwise
-      org-image-actual-width nil
-      ;; Sorting order for tasks on the agenda
-      ;; org-agenda-sorting-strategy
-      ;; '((agenda habit-down
-      ;;           time-up
-      ;;           priority-down
-      ;;           user-defined-up
-      ;;           effort-up
-      ;;           category-keep)
-      ;;   (todo priority-down category-up effort-up)
-      ;;   (tags priority-down category-up effort-up)
-      ;;   (search priority-down category-up))
-      ;; Enable display of the time grid so we can see the marker for the
-      ;; current time
-      ;; org-agenda-time-grid
-      ;; '((daily today remove-match)
-      ;;   #("----------------" 0 16 (org-heading t))
-      ;;   (0900 1100 1300 1500 1700))
-      ;; Change the default column mode display to show clock sum
-      org-columns-default-format "%50ITEM(Task) %2PRIORITY %10CLOCKSUM %TAGS")
-
-;; Custom agenda command definitions
-;; (setq org-agenda-custom-commands
-;;       '(("N" "Notes" tags "NOTE"
-;;          ((org-agenda-overriding-header "Notes")
-;;           (org-tags-match-list-sublevels t)))
-;;         (" " "Agenda"
-;;          ((agenda "" nil)
-;;           ;; All items with the "REFILE" tag, everything in refile.org
-;;           ;; automatically gets that applied
-;;           (tags "REFILE"
-;;                 ((org-agenda-overriding-header "Tasks to Refile")
-;;                  (org-tags-match-list-sublevels nil)))
-;;           ;; All "INPROGRESS" todo items
-;;           (todo "INPROGRESS"
-;;                 ((org-agenda-overriding-header "Current work")))
-;;           ;; All "STARTED" todo items
-;;           (todo "STARTED"
-;;                 ((org-agenda-overriding-header "Started tasks")))
-;;           ;; All headings with the "support" tag
-;;           (tags "support/!"
-;;                 ((org-agenda-overriding-header "Support cases")))
-;;           ;; All "NEESREVIEW" todo items
-;;           (todo "NEEDSREVIEW"
-;;                 ((org-agenda-overriding-header "Waiting on reviews")))
-;;           ;; All "WAITING" items without a "support" tag
-;;           (tags "WAITING-support"
-;;                 ((org-agenda-overriding-header "Waiting for something")))
-;;           ;; All TODO items
-;;           (todo "TODO"
-;;                 ((org-agenda-overriding-header "Task list")
-;;                  (org-agenda-sorting-strategy
-;;                   '(time-up priority-down category-keep))))
-;;           ;; Everything on hold
-;;           (todo "HOLD"
-;;                 ((org-agenda-overriding-header "On-hold")))
-;;           ;; All headings with the "recurring" tag
-;;           (tags "recurring/!"
-;;                 ((org-agenda-overriding-header "Recurring"))))
-;;          nil)))
+      org-image-actual-width nil)
 
 ;; org-mode bindings
 (define-key org-mode-map (kbd "C-c t") 'org-todo)
@@ -2475,7 +2394,11 @@ little wonky looking.
          "<style type=\"text/css\">\n pre.src {background-color: %s; color: %s;}</style>\n"
          my-pre-bg my-pre-fg))))))
 
-;; Uncomment to automatically set background color to theme background
+#+END_SRC
+
+Uncomment to automatically set background color to theme background
+
+#+BEGIN_SRC emacs-lisp
 ;; (add-hook 'org-export-before-processing-hook #'eos/org-inline-css-hook)
 #+END_SRC
 
@@ -2578,13 +2501,13 @@ can safely ignore these until the appropriate time.
 :CUSTOM_ID: DiaryForAppointments
 :END:
 
-I don't use the emacs Diary for anything but I like seeing the holidays on my agenda. This helps
-with planning for those days when you're not supposed to be working.
+I don't use the emacs Diary for anything other than birthdays but I like seeing the holidays on my
+agenda. This helps with planning for those days when you're not supposed to be working.
 
 #+header: :tangle yes
 #+begin_src emacs-lisp
-(setq org-agenda-include-diary nil)
-(setq org-agenda-diary-file "~/org/diary.org")
+(setq org-agenda-include-diary t)
+(setq org-agenda-diary-file "~/diary")
 #+end_src
 
 The diary file keeps =date-tree= entries created by the capture mode 'appointment' template. I use
