@@ -173,7 +173,7 @@ BH's keybindings
 The following diagram shows the possible state transitions for a task. Different than BH's because I
 use a =NEEDSREVIEW= state to indicate a pull request is waiting for review
 
-#+begin_src plantuml :file normal_task_states.png :cache yes
+#+begin_src plantuml :file images/normal_task_states.png :cache yes
 title Task States
 [*] -> TODO
 TODO -> NEXT
@@ -211,8 +211,8 @@ CANCELLED:c
 WAITING --> DONE
 #+end_src
 
-#+results[364789fd46903bbe64c3647b5ef5fb79ea51c882]:
-[[file:normal_task_states.png]]
+#+results[bed0043ecbef564cdaffcedd58d2ad583a3277b7]:
+[[file:images/normal_task_states.png]]
 
 *** Project Task States
 :PROPERTIES:
@@ -243,14 +243,14 @@ other details and want to close the capture task early I can just =C-c C-c= to c
 task (stopping the clock) and then =f9 SPC= to resume the clock in the meeting task while I do other
 things.
 
-#+begin_src plantuml :file meeting_states.png :cache yes
+#+begin_src plantuml :file images/meeting_states.png :cache yes
 title Meeting Task State
 [*] -> MEETING
 MEETING -> [*]
 #+end_src
 
-#+RESULTS[b06bc08eb5b830ed8a7764caf75198df1fde85d8]:
-[[file:meeting_states.png]]
+#+results[9826799bd1737dcf87a0e9eb33b4f64d7f4b2b94]:
+[[file:images/meeting_states.png]]
 
 ** Fast Todo Selection
 :PROPERTIES:
@@ -303,14 +303,14 @@ The tags are used to filter tasks in the agenda views conveniently.
 
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-state-tags-triggers
-      (quote (("CANCELLED" ("CANCELLED" . t))
-              ("WAITING" ("WAITING" . t))
-              ("NEEDSREVIEW") ("REVIEW" . t)
-              ("HOLD" ("WAITING") ("HOLD" . t))
-              (done ("WAITING") ("HOLD") ("REVIEW"))
-              ("TODO" ("WAITING") ("CANCELLED") ("HOLD") ("REVIEW"))
-              ("NEXT" ("WAITING") ("CANCELLED") ("HOLD") ("REVIEW"))
-              ("DONE" ("WAITING") ("CANCELLED") ("HOLD") ("REVIEW")))))
+      '(("CANCELLED" ("CANCELLED" . t))
+        ("WAITING" ("WAITING" . t))
+        ("NEEDSREVIEW" ("REVIEW" . t))
+        ("HOLD" ("WAITING") ("HOLD" . t))
+        (done ("WAITING") ("HOLD") ("REVIEW"))
+        ("TODO" ("WAITING") ("CANCELLED") ("HOLD") ("REVIEW"))
+        ("NEXT" ("WAITING") ("CANCELLED") ("HOLD") ("REVIEW"))
+        ("DONE" ("WAITING") ("CANCELLED") ("HOLD") ("REVIEW"))))
 #+END_SRC
 
 * Adding tasks with org capture

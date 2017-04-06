@@ -5,4 +5,4 @@ initialize.sh
 *.elc
 out/
 sh/
-*.png
+images/
