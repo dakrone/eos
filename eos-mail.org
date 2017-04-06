@@ -80,9 +80,6 @@ to return the correct path depending on the account the email is from.
           user-full-name "Lee Hinman"
           user-mail-address "leehinman@fastmail.com"
           mail-host-address "fastmail.com"
-          ;; send email with format=flowed off, it doesn't work correctly for my
-          ;; co-workers
-          mu4e-compose-format-flowed nil
           ;; small signature
           mu4e-compose-signature ";; Lee"
           ;; compose in a new frame by default
@@ -94,7 +91,11 @@ to return the correct path depending on the account the email is from.
           ;; show slightly more lines
           mu4e-headers-visible-lines 12
           ;; check for new messages every 180 seconds (3 min)
-          mu4e-update-interval 180)
+          mu4e-update-interval 180
+          ;; Works better for mbsync
+          mu4e-change-filenames-when-moving t
+          ;; Try out format-lowed again
+          mu4e-compose-format-flowed t)
 
     ;; the default is html2text, and elinks does a slightly better option
     (when (executable-find "elinks")
