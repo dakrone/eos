@@ -88,12 +88,13 @@ To start, some global org-mode bindings
 #+BEGIN_SRC emacs-lisp
 (setq org-directory (file-truename "~/org"))
 
-(setq org-agenda-files `(,(file-truename "~/org/refile.org")
-                         ,(file-truename "~/org/todo.org")
-                         ,(file-truename "~/org/bibliography.org")
-                         ,(file-truename "~/org/notes.org")
-                         ,(file-truename "~/org/es-team.org")
-                         ,(file-truename "~/org/journal.org")))
+(when (file-exists-p "~/org")
+  (setq org-agenda-files `(,(file-truename "~/org/refile.org")
+                           ,(file-truename "~/org/todo.org")
+                           ,(file-truename "~/org/bibliography.org")
+                           ,(file-truename "~/org/notes.org")
+                           ,(file-truename "~/org/es-team.org")
+                           ,(file-truename "~/org/journal.org"))))
 #+END_SRC
 
 
