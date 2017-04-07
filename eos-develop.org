@@ -353,6 +353,7 @@ Now, the smartparens configuration:
 #+BEGIN_SRC emacs-lisp
 (use-package smartparens
   :ensure t
+  :diminish smartparens-mode
   :init
   (electric-pair-mode -1)
   (require 'smartparens-config)
