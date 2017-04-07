@@ -94,8 +94,8 @@ to return the correct path depending on the account the email is from.
           mu4e-update-interval 180
           ;; Works better for mbsync
           mu4e-change-filenames-when-moving t
-          ;; Try out format-lowed again
-          mu4e-compose-format-flowed t)
+          ;; Try out format-lowed again - nope, still doesn't work
+          mu4e-compose-format-flowed nil)
 
     ;; the default is html2text, and elinks does a slightly better option
     (when (executable-find "elinks")
