@@ -836,6 +836,7 @@ tool that it uses.
 #+BEGIN_SRC emacs-lisp
 (use-package pdf-tools
   :ensure t
+  :when window-system
   :init (pdf-tools-install))
 #+END_SRC
 
