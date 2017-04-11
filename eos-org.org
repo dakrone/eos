@@ -159,10 +159,15 @@ BH's keybindings
         (sequence "MEETING" "|" "DONE(d)")
         (sequence "WAITING(w@/!)" "HOLD(h@/!)"
                   "|" "CANCELLED(c@/!)" "MEETING")))
-;; Org faces
+;; Org faces, TODO and NEXT differ slightly depending on whether a dark or light
+;; background is used.
 (setq org-todo-keyword-faces
-      '(("TODO" :foreground "red" :weight bold)
-        ("NEXT" :foreground "blue" :weight bold)
+      `(,(if (eq eos/background 'dark)
+             '("TODO" :foreground "#cd5c5c" :weight bold)
+           '("TODO" :foreground "red" :weight bold))
+        ,(if (eq eos/background 'dark)
+             '("NEXT" :foreground "#00ffff" :weight bold)
+           '("NEXT" :foreground "blue" :weight bold))
         ("NEEDSREVIEW" :foreground "#edd400" :weight bold)
         ("WAITING" :foreground "orange" :weight bold)
         ("HOLD" :foreground "magenta" :weight bold)
