@@ -624,7 +624,7 @@ time waiting for it to be generated.
                   bh/hide-scheduled-and-waiting-next-tasks)
                  (org-agenda-sorting-strategy
                   '(category-keep))))
-     (tags-todo "-REFILE-CANCELLED-WAITING-HOLD/!"
+     (tags-todo "-REFILE-CANCELLED-WAITING-HOLD-REVIEW/!"
                 ((org-agenda-overriding-header
                   (concat "Standalone Tasks"
                           (if bh/hide-scheduled-and-waiting-next-tasks
@@ -906,14 +906,12 @@ I have the following org-mode settings for clocking:
 #+begin_src emacs-lisp
 ;; Resume clocking task when emacs is restarted
 (org-clock-persistence-insinuate)
-;; Show lot of clocking history so it's easy to pick items off the C-F11 list
+;; Show lot of clocking history so it's easy to pick items off the `C-c I` list
 (setq org-clock-history-length 23)
 ;; Resume clocking task on clock-in if the clock is open
 (setq org-clock-in-resume t)
 ;; Change tasks to NEXT when clocking in
 (setq org-clock-in-switch-to-state 'bh/clock-in-to-next)
-;; Separate drawers for clocking and logs
-(setq org-drawers (quote ("PROPERTIES" "LOGBOOK")))
 ;; Save clock data and state changes and notes in the LOGBOOK drawer
 (setq org-clock-into-drawer t)
 ;; Sometimes I change tasks I'm clocking quickly - this removes clocked tasks
@@ -1276,7 +1274,7 @@ To get a report of time spent on tasks for =XYZ.org= you simply visit the =XYZ.o
 agenda clock report for the last month with =F12 < a v m b R=. This limits the agenda to this one
 file, shows the agenda for a full month, moves to last month, and generates a clock report.
 
-My agenda org clock report settings show 5 levels of detail with links
+My agenda org clock report settings show 6 levels of detail with links
 to the tasks.  I like wider reports than the default compact setting
 so I override the =:narrow= value.
 
@@ -2273,24 +2271,23 @@ automatically updated the next time I look at the agenda.
 :CUSTOM_ID: ReminderSetup
 :END:
 
-#+header: :tangle yes
 #+begin_src emacs-lisp
-; Erase all reminders and rebuilt reminders for today from the agenda
+;; Erase all reminders and rebuilt reminders for today from the agenda
 (defun bh/org-agenda-to-appt ()
   (interactive)
   (setq appt-time-msg-list nil)
   (org-agenda-to-appt))
 
-; Rebuild the reminders everytime the agenda is displayed
+;; Rebuild the reminders everytime the agenda is displayed
 (add-hook 'org-finalize-agenda-hook 'bh/org-agenda-to-appt 'append)
 
-; This is at the end of my .emacs - so appointments are set up when Emacs starts
+;; This is at the end of my .emacs - so appointments are set up when Emacs starts
 (bh/org-agenda-to-appt)
 
-; Activate appointments so we get notifications
+;; Activate appointments so we get notifications
 (appt-activate t)
 
-; If we leave Emacs running overnight - reset the appointments one minute after midnight
+;; If we leave Emacs running overnight - reset the appointments one minute after midnight
 (run-at-time "24:01" nil 'bh/org-agenda-to-appt)
 #+end_src
 
