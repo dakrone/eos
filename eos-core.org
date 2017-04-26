@@ -740,6 +740,8 @@ using a big font size and I need more eshell space
                                      ediff-mode
                                      calendar-mode
                                      wget-mode
+                                     calc-mode
+                                     calc-trail-mode
                                      mu4e-view-mode
                                      mu4e-headers-mode
                                      magit-popup-mode)
