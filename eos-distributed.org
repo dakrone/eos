@@ -23,7 +23,7 @@ matrix, so I can join from my Emacs instance.
 
 #+BEGIN_SRC emacs-lisp
 (use-package matrix-client
-  :ensure t
+  :disabled t
   :init
   (setq matrix-homeserver-base-url "https://writequit.org"
         matrix-client-render-html nil)
@@ -36,7 +36,7 @@ Add Matrix sauron support (for notifications)
 
 #+BEGIN_SRC emacs-lisp
 (use-package matrix-client
-  :ensure t
+  :disabled t
   :config
   (require 'matrix-sauron)
   (add-to-list 'sauron-modules 'matrix-sauron)
