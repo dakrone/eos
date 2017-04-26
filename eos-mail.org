@@ -56,6 +56,10 @@ to return the correct path depending on the account the email is from.
     ;; store link to message if in header view, not to header query
     (setq org-mu4e-link-query-in-headers-mode nil)
 
+    ;; Use tab to navigate links
+    (bind-key "<tab>" 'shr-next-link mu4e-view-mode-map)
+    (bind-key "<backtab>" 'shr-previous-link mu4e-view-mode-map)
+
     ;; Various mu4e settings
     (setq mu4e-mu-binary (executable-find "mu")
           ;;mu4e-sent-messages-behavior 'delete
@@ -70,6 +74,8 @@ to return the correct path depending on the account the email is from.
           mu4e-hide-index-messages t
           ;; attempt to show images
           mu4e-view-show-images t
+          ;; always show email addresses also
+          mu4e-view-show-addresses t
           mu4e-view-image-max-width 800
           ;; start in non-queuing mode
           smtpmail-queue-mail nil
@@ -108,8 +114,9 @@ to return the correct path depending on the account the email is from.
           mu4e-compose-format-flowed nil)
 
     ;; the default is html2text, and elinks does a slightly better option
-    (when (executable-find "elinks")
-      (setq mu4e-html2text-command (concat (executable-find "elinks") " -dump")))
+    (setq mu4e-html2text-command 'mu4e-shr2text)
+    ;; (when (executable-find "elinks")
+    ;;   (setq mu4e-html2text-command (concat (executable-find "elinks") " -dump")))
 
     (add-hook 'dired-mode-hook 'turn-on-gnus-dired-mode)
     (use-package gnus-dired
