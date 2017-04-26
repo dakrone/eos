@@ -84,6 +84,8 @@
           ("https://faithandselfdefense.com/feed/" blog christianity)
           ("http://www.challies.com/feed" blog christianity)
           ("http://www.thepoachedegg.net/the-poached-egg/atom.xml" christianity)
+          ("https://feeds.feedburner.com/secondnaturejournal/HfHT" christianity)
+          ("http://blogs.mereorthodoxy.com/samuel/feed/" christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
