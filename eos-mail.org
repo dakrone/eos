@@ -41,9 +41,19 @@ to return the correct path depending on the account the email is from.
     (use-package epa-file
       :init (epa-file-enable))
 
-    ;;store org-mode links to messages
-    (require 'org-mu4e)
-    ;;store link to message if in header view, not to header query
+    ;; store org-mode links to messages
+    (use-package org-mu4e
+      :demand t
+      ;; Use C-c x to toggle between org-mode and mu4e-compose-mode
+      :bind (:map mu4e-compose-mode-map
+                  ("C-c x" . org~mu4e-mime-switch-headers-or-body))
+      :init
+      ;; when mail is sent, automatically convert org body to HTML
+      (setq org-mu4e-convert-to-html t)
+      ;; Use C-c x to toggle between org-mode and mu4e-compose-mode
+      (use-package org
+        :bind ("C-c x" . org~mu4e-mime-switch-headers-or-body)))
+    ;; store link to message if in header view, not to header query
     (setq org-mu4e-link-query-in-headers-mode nil)
 
     ;; Various mu4e settings
@@ -82,8 +92,8 @@ to return the correct path depending on the account the email is from.
           mail-host-address "fastmail.com"
           ;; small signature
           mu4e-compose-signature ";; Lee"
-          ;; compose in a new frame by default
-          mu4e-compose-in-new-frame t
+          ;; compose in a new frame by default (or don't)
+          mu4e-compose-in-new-frame nil
           ;; mu4e defaults
           mu4e-maildir       "~/.mail"
           ;; don't use unicode
