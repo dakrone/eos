@@ -89,14 +89,13 @@ I use =company= for a lot of things, so let's just enable it everywhere.
   :config
   (setq company-selection-wrap-around t
         ;; do or don't automatically start completion after <idle time>
-        company-idle-delay 0.2
+        company-idle-delay 1.0
         ;; at least 3 letters need to be there though
         company-minimum-prefix-length 3
         ;; show completion numbers for hotkeys
         company-show-numbers t
         ;; align annotations to the right
         company-tooltip-align-annotations t
-        company-tooltip-flip-when-above t
         company-search-regexp-function #'company-search-flex-regexp)
   (bind-keys :map company-active-map
              ("C-n" . company-select-next)
