@@ -175,13 +175,14 @@ A custom version of [[http://cedet.sourceforge.net/][CEDET]]:
   (load "~/src/elisp/cedet/cedet-devel-load.el"))
 #+END_SRC
 
-And a custom version of [[http://orgmode.org/][Org-mode]]:
+I hardcode a version of of [[http://orgmode.org/][Org-mode]]:
 
 #+BEGIN_SRC emacs-lisp
 ;; Load a custom version of org-mode, if available
-;;(when (file-exists-p "~/src/elisp/org-mode/lisp")
-;;  (add-to-list 'load-path "~/src/elisp/org-mode/lisp")
-;;  (require 'org))
+(when (file-exists-p "~/src/elisp/org-mode/lisp")
+  (add-to-list 'load-path "~/src/elisp/org-mode/lisp")
+  (add-to-list 'load-path "~/src/elisp/org-mode/contrib/lisp")
+  (require 'org))
 #+END_SRC
 
 Also, let's make =cl= things available right from the start
