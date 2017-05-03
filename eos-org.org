@@ -1231,11 +1231,11 @@ daily agenda and clock gaps and overlaps are identified.
 
 I want my clock entries to be as accurate as possible.
 
-The following setting shows 1 minute clocking gaps.
+The following setting shows things with > 10 minute clocking gaps.
 
 #+begin_src emacs-lisp
 (setq org-agenda-clock-consistency-checks
-      '(:max-duration "4:00" :min-duration 0 :max-gap 0 :gap-ok-around ("4:00")))
+      '(:max-duration "4:00" :min-duration 0 :max-gap 10 :gap-ok-around ("4:00")))
 #+end_src
 
 * Time reporting and tracking
