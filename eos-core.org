@@ -506,6 +506,12 @@ Change the clipboard settings to better integrate into Linux:
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+END_SRC
 
+All restoring window placement with Emacs' built-in =winner-mode=
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'after-init-hook #'winner-mode)
+#+END_SRC
+
 Save whatever's in the current (system) clipboard before replacing it with the
 Emacs' text.
 
