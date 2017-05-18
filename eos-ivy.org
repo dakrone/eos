@@ -1,0 +1,50 @@
+#+TITLE: EOS: Helm Module
+#+AUTHOR: Lee Hinman
+#+EMAIL: lee@writequit.org
+#+SETUPFILE: ~/eos/setupfiles/eos.setup
+#+OPTIONS: auto-id:t
+
+#+BEGIN_SRC emacs-lisp
+(provide 'eos-ivy)
+#+END_SRC
+
+* Ivy
+:PROPERTIES:
+:CUSTOM_ID: h:244007e8-ab30-4d1c-8636-c30732083550
+:END:
+
+I'm still experimenting with Ivy, so this might not be as full-featured as my helm setup.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ivy
+  :ensure t
+  :demand t
+  :diminish (ivy-mode . "")
+  :bind
+  (("C-M-z" . ivy-resume)
+   ("C-x C-r" . ivy-switch-buffer)
+   ("C-x o" . swiper)
+   :init
+  (ivy-mode 1)
+  :config
+  (bind-key "C-s" 'swiper)
+  ;; add ‘recentf-mode’ and bookmarks to ‘ivy-switch-buffer’.
+  (setq ivy-use-virtual-buffers t)
+  ;; number of result lines to display
+  ;; (setq ivy-height 10)
+  ;; does not count candidates
+  (setq ivy-count-format "%d/%d ")
+  ;; no regexp by default
+  ;; (setq ivy-initial-inputs-alist nil)
+  ;; configure regexp engine.
+  ;; (setq ivy-re-builders-alist
+  ;;       ;; allow input not in order
+  ;;       '((t   . ivy--regex-ignore-order)))
+
+  ;; included out of the box with ivy
+  (use-package counsel-ag)
+  (use-package counsel-projectile
+    :ensure t
+    :init
+    (counsel-projectile-on)))
+#+END_SRC

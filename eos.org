@@ -335,8 +335,9 @@ quite sure how that would work for tangling, so for now it's hard-coded.
 
 ;; The EOS modules
 (try-load 'eos-core)
+;; (try-load 'eos-ido)
 (try-load 'eos-helm)
-;;(try-load 'eos-ido)
+;; (try-load 'eos-ivy)
 (try-load 'eos-appearance)
 (try-load 'eos-navigation)
 (try-load 'eos-notify)
