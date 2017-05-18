@@ -2161,7 +2161,6 @@ to use the development (read: local) version of it when available.
     :init (require 'ox-tufte)))
 #+END_SRC
 
-
 * Org Babel
 :PROPERTIES:
 :CUSTOM_ID: h:56e1f704-96d7-4769-9e18-db47ce9d50e4
@@ -2354,7 +2353,7 @@ automatically updated the next time I look at the agenda.
       ;; how org-src windows are set up when hitting C-c '
       org-src-window-setup 'current-window
       ;; leave this many empty lines in collapsed view
-      org-cycle-separator-lines 1
+      org-cycle-separator-lines 2
       ;; export tables as CSV instead of tab-delineated
       org-table-export-default-format "orgtbl-to-csv"
       ;; use #+ATTR: if defined, or real width otherwise
@@ -2793,4 +2792,16 @@ A simple presentation mode for org-mode
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-reveal :ensure t)
+#+END_SRC
+
+* Org Brain
+:PROPERTIES:
+:CUSTOM_ID: h:ffb95129-c50e-41fc-86ab-c9b5e6541dfc
+:END:
+
+TODO: document me
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-brain
+  :ensure t)
 #+END_SRC
