@@ -95,7 +95,7 @@ bindings I use more frequently:
         ;; use CURL, not url-retrieve-synchronously
         helm-net-prefer-curl t
         ;; be idle for this many seconds, before updating in delayed sources.
-        helm-input-idle-delay 0.05
+        helm-input-idle-delay 0.1
         ;; wider buffer name in helm-buffers-list
         helm-buffer-max-length 28 ;; default is 20
         ;; instead of "..." use a smaller unicode ellipsis
@@ -130,9 +130,9 @@ bindings I use more frequently:
         helm-locate-fuzzy-match nil ;; locate fuzzy is worthless
         helm-M-x-fuzzy-match t
         helm-buffers-fuzzy-matching t
-        helm-semantic-fuzzy-match t
-        helm-gtags-fuzzy-match t
-        helm-imenu-fuzzy-match t
+        helm-semantic-fuzzy-match nil
+        helm-gtags-fuzzy-match nil
+        helm-imenu-fuzzy-match nil
         helm-apropos-fuzzy-match nil
         helm-lisp-fuzzy-completion nil
         helm-completion-in-region-fuzzy-match nil
