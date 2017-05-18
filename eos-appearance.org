@@ -82,7 +82,10 @@ balanced of color and pleasing to my eyes.
         (load-theme 'sanityinc-tomorrow-night t)
         ;; Just ever so slightly more bright foreground text, default is
         ;; "#c5c8c6". Makes it easier to see on a sunny day
-        (set-face-foreground 'default "#e5e8e6"))
+        (set-face-foreground 'default "#e5e8e6")
+        ;; darken newline whitespace marks and blend in to the background
+        (set-face-foreground 'whitespace-newline "#555856")
+        (set-face-background 'whitespace-newline (face-attribute 'default :background)))
       (use-package tao-theme
         :ensure t
         :disabled t
