@@ -84,6 +84,7 @@ balanced of color and pleasing to my eyes.
         ;; "#c5c8c6". Makes it easier to see on a sunny day
         (set-face-foreground 'default "#e5e8e6")
         ;; darken newline whitespace marks and blend in to the background
+        (require 'whitespace)
         (set-face-foreground 'whitespace-newline "#555856")
         (set-face-background 'whitespace-newline (face-attribute 'default :background)))
       (use-package tao-theme
@@ -187,9 +188,9 @@ Fonts I may or may not use (in no particular order):
                         :height eos/original-height)
     (dolist (face '(mode-line mode-line-inactive minibuffer-prompt))
       (set-face-attribute face nil :family "Inconsolata"
-                          :height (- eos/original-height 10)))
+                          :height eos/original-height))
     (set-face-attribute 'variable-pitch nil
-                        :family "Merriweather" :height (- eos/original-height 10))
+                        :family "DejaVu Sans" :height eos/original-height)
     ;; font for all unicode characters
     ;;(set-fontset-font t 'unicode "DejaVu Sans Mono" nil 'prepend)
     ))
