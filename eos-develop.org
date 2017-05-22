@@ -718,6 +718,12 @@ modes:
   (add-hook 'haskell-mode-hook #'eos/turn-off-flyspell))
 #+END_SRC
 
+I tend to want to align things by regex (ie, ~=~) a lot in Haskell, so bind =C-c M-a= to do it.
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c M-a") #'align-regexp)
+#+END_SRC
+
 * PureScript
 :PROPERTIES:
 :CUSTOM_ID: haskell
