@@ -71,6 +71,7 @@
           ("http://yosefk.com/blog/feed" blog)
           ("http://www.benkuhn.net/rss/" blog)
           ("https://emacsgifs.github.io/feed.xml" blog emacs)
+          ("http://www.alfredodinapoli.com/rss.xml" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
