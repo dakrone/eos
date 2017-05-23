@@ -1983,25 +1983,11 @@ anything!
          :exclude ".*"
          :include ("posts.org")
          :html-link-use-abs-url t)
-        ("writequit-images"
-         :base-directory ,(file-truename  "~/org/writequit/images")
-         :base-extension "png\\|jpg\\|gif"
-         :publishing-directory "/ssh:writequit.org:~/www/images"
-         :publishing-function org-publish-attachment)
-        ("writequit-files"
-         :base-directory ,(file-truename  "~/org/writequit/files")
-         :base-extension "*"
-         :publishing-directory "/ssh:writequit.org:~/www/files/"
-         :publishing-function org-publish-attachment)
-        ("writequit" :components ("writequit-org"
-                                  "writequit-images"
-                                  "writequit-files"
-                                  "writequit-rss"))
 
         ;; Denver emacs site
         ("denver-emacs"
          :base-directory ,(file-truename "~/org/denver-emacs-meetup/")
-         :base-extension "org\\|html"
+         :base-extension "org"
          :publishing-directory
          "/ssh:writequit.org:~/www/denver-emacs"
          :publishing-function org-html-publish-to-html
@@ -2011,7 +1997,7 @@ anything!
         ;; Org-mode files for ~/.emacs.d/settings.org
         ("dotfiles"
          :base-directory ,(file-truename "~/.emacs.d/../")
-         :base-extension "org\\|html"
+         :base-extension "org"
          :publishing-directory
          "/ssh:writequit.org:~/www/org/"
          :publishing-function org-html-publish-to-html
@@ -2031,95 +2017,42 @@ anything!
         ;; Org-mode files for ~/org files
         ("org-org"
          :base-directory ,(file-truename "~/org/")
-         :base-extension "org\\|html"
+         :base-extension "org"
          :publishing-directory
          "/ssh:writequit.org:~/www/org/"
          :publishing-function org-html-publish-to-html
          :with-toc t
          :html-preamble t)
-        ("org-images"
-         :base-directory ,(file-truename "~/org/images")
-         :base-extension "png\\|jpg"
-         :publishing-directory
-         "/ssh:writequit.org:~/www/org/images"
-         :publishing-function org-publish-attachment)
-        ("org" :components ("org-org" "org-images"))
 
         ;; Org-mode for the ~/org/es files
         ("org-es-org"
          :base-directory ,(file-truename "~/org/es/")
-         :base-extension "org\\|html"
+         :base-extension "org"
          :publishing-directory
          "/ssh:writequit.org:~/www/org/es"
          :publishing-function org-html-publish-to-html
          :with-toc t
          :html-preamble t)
-        ("org-es-files"
-         :base-directory ,(file-truename "~/org/es/")
-         :base-extension "css\\|pdf\\|sh\\|es\\|zsh\\|py\\|org"
-         :publishing-directory
-         "/ssh:writequit.org:~/www/org/es"
-         :publishing-function org-publish-attachment)
-        ("org-es-images"
-         :base-directory ,(file-truename "~/org/es/images")
-         :base-extension "png\\|jpg"
-         :publishing-directory
-         "/ssh:writequit.org:~/www/org/es/images"
-         :publishing-function org-publish-attachment)
-        ("org-es"
-         :components ("org-es-org" "org-es-files" "org-es-images"))
 
         ;; Org-mode for the ~/org/es/design files
         ("org-es-design-org"
          :base-directory ,(file-truename "~/org/es/design")
-         :base-extension "org\\|html"
+         :base-extension "org"
          :publishing-directory
          "/ssh:writequit.org:~/www/org/es/design"
          :publishing-function org-html-publish-to-html
          :with-toc t
          :html-preamble t)
-        ("org-es-design-files"
-         :base-directory ,(file-truename "~/org/es/design")
-         :base-extension "css\\|pdf\\|sh\\|es\\|zsh\\|py\\|org"
-         :publishing-directory
-         "/ssh:writequit.org:~/www/org/es/design"
-         :publishing-function org-publish-attachment)
-        ("org-es-designs-images"
-         :base-directory ,(file-truename "~/org/es/design/images")
-         :base-extension "png\\|jpg"
-         :publishing-directory
-         "/ssh:writequit.org:~/www/org/es/design/images"
-         :publishing-function org-publish-attachment)
-        ("org-es-design"
-         :components ("org-es-design-org"
-                      "org-es-design-files"
-                      "org-es-design-images"))
 
         ;; Org-mode for the ~/org/es/presentations files
         ("org-es-presentations-org"
          :base-directory ,(file-truename "~/org/es/presentations")
-         :base-extension "org\\|html"
+         :base-extension "org"
          :publishing-directory
          "/ssh:writequit.org:~/www/org/es/presentations"
          :publishing-function org-html-publish-to-html
          :with-toc t
-         :html-preamble t)
-        ("org-es-presentations-files"
-         :base-directory ,(file-truename "~/org/es/presentations")
-         :base-extension "css\\|pdf\\|sh\\|es\\|zsh\\|py\\|org"
-         :publishing-directory
-         "/ssh:writequit.org:~/www/org/es/presentations"
-         :publishing-function org-publish-attachment)
-        ("org-es-presentations-images"
-         :base-directory ,(file-truename "~/org/es/presentations/images")
-         :base-extension "png\\|jpg"
-         :publishing-directory
-         "/ssh:writequit.org:~/www/org/es/presentations/images"
-         :publishing-function org-publish-attachment)
-        ("org-es-presentations"
-         :components ("org-es-presentations-org"
-                      "org-es-presentations-files"
-                      "org-es-presentations-images"))))
+         :html-preamble t)))
 #+END_SRC
 
 Then, when I'm editing ~/org/es/feature-foo.org, I can hit =C-c C-e P f= and export the file to show
@@ -2276,6 +2209,9 @@ automatically updated the next time I look at the agenda.
 :END:
 
 #+begin_src emacs-lisp
+(setq appt-message-warning-time 15
+      appt-display-interval 5)
+
 ;; Erase all reminders and rebuilt reminders for today from the agenda
 (defun bh/org-agenda-to-appt ()
   (interactive)
