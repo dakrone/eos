@@ -95,7 +95,7 @@ bindings I use more frequently:
         ;; use CURL, not url-retrieve-synchronously
         helm-net-prefer-curl t
         ;; be idle for this many seconds, before updating in delayed sources.
-        helm-input-idle-delay 0.1
+        helm-input-idle-delay 0
         ;; wider buffer name in helm-buffers-list
         helm-buffer-max-length 28 ;; default is 20
         ;; instead of "..." use a smaller unicode ellipsis
@@ -115,7 +115,7 @@ bindings I use more frequently:
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
-        helm-candidate-number-limit 150
+        helm-candidate-number-limit 100
         ;; don't use recentf stuff in helm-ff, I use C-x C-r for this
         helm-ff-file-name-history-use-recentf nil
         ;; move to end or beginning of source when reaching top or bottom
@@ -124,7 +124,7 @@ bindings I use more frequently:
         ;; don't display the header line
         helm-display-header-line nil
         ;; be semi-verbose for helm tramp messages
-        helm-tramp-verbose 3
+        helm-tramp-verbose 1
         ;; fuzzy matching
         helm-recentf-fuzzy-match t
         helm-locate-fuzzy-match nil ;; locate fuzzy is worthless
@@ -136,7 +136,7 @@ bindings I use more frequently:
         helm-apropos-fuzzy-match nil
         helm-lisp-fuzzy-completion nil
         helm-completion-in-region-fuzzy-match nil
-        helm-autoresize-min-height 6
+        helm-autoresize-min-height 25
         helm-autoresize-max-height 25
         ;; Here are the things helm-mini shows, I add `helm-source-bookmarks'
         ;; here to the regular default list
@@ -219,11 +219,11 @@ bindings I use more frequently:
 
   ;; Files that helm should know how to open
   (setq helm-external-programs-associations
-        '(("avi" . "vlc")
-          ("part" . "vlc")
-          ("mkv" . "vlc")
-          ("webm" . "vlc")
-          ("mp4" . "vlc")))
+        '(("avi"  . "mpv")
+          ("part" . "mpv")
+          ("mkv"  . "mpv")
+          ("webm" . "mpv")
+          ("mp4"  . "mpv")))
 
   ;; List of times to show in helm-world-time
   (setq display-time-world-list '(("PST8PDT" "Los Altos")
