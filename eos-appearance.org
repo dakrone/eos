@@ -752,9 +752,10 @@ java-mode applies the color-identifiers configuration.
       (eos/make-local-face 'font-lock-keyword-face :foreground nil :weight 'bold)
       (eos/make-local-face 'font-lock-builtin-face :foreground nil :weight 'bold)
       (color-identifiers-mode 1)))
-  (add-hook 'java-mode-hook #'color-identifiers-mode)
-  (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode)
-  (global-color-identifiers-mode 1))
+  ;;(add-hook 'java-mode-hook #'color-identifiers-mode)
+  ;;(add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode)
+  ;;(global-color-identifiers-mode 1)
+  )
 #+END_SRC
 
 As an alternative to =color-identifiers-mode=, there is also
