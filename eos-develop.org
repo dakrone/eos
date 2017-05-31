@@ -157,6 +157,28 @@ was surprised by how often I use this.
   :bind ("C-c C-b" . bool-flip-do-flip))
 #+END_SRC
 
+** Navigating programming modes
+
+I like using =C-c C-p= and =C-c C-n= to navigate by headlines in org-mode, so I'd also like to
+navigate by function declaration in all development modes with the same thing.
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/previous-function ()
+  (interactive)
+  (beginning-of-defun))
+
+(defun eos/next-function ()
+  (interactive)
+  (beginning-of-defun -1))
+
+(bind-key "C-c C-p" 'eos/previous-function prog-mode-map)
+(bind-key "C-c C-n" 'eos/next-function prog-mode-map)
+
+;; cc-mode likes to have its own things, so bind them there too
+;;(bind-key "C-c C-p" 'eos/previous-function c-mode-base-map)
+;;(bind-key "C-c C-n" 'eos/next-function c-mode-base-map)
+#+END_SRC
+
 ** Indentation
 :PROPERTIES:
 :CUSTOM_ID: h:f91026bf-ebbc-4dfb-b8e4-728f87835c6a
@@ -572,8 +594,9 @@ First, turn on paredit and eldoc everywhere it's useful:
   :init
   (add-hook 'emacs-lisp-mode-hook #'eldoc-mode)
   (add-hook 'ielm-mode-hook #'eldoc-mode)
+  (add-hook 'lisp-interaction-mode-hook #'eldoc-mode)
   :config
-  (setq eldoc-idle-delay 0.3))
+  (setq eldoc-idle-delay 0.1))
 #+END_SRC
 
 Define some niceties for popping up an ielm buffer:
@@ -678,7 +701,6 @@ I'm using the [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenv
     (setq venv-location (or (getenv "WORKON_HOME")
                             "~/.venvs"))))
 #+END_SRC
-
 
 * Ruby
 :PROPERTIES:
