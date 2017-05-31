@@ -103,7 +103,7 @@ bindings I use more frequently:
         ;; open helm buffer in another window
         ;;helm-split-window-default-side 'other
         ;; set to nil and use <C-backspace> to toggle it in helm-find-files
-        helm-ff-auto-update-initial-value nil
+        helm-ff-auto-update-initial-value t
         ;; if I change the resplit state, re-use my settings
         ;; helm-reuse-last-window-split-state t
         ;; don't delete windows to always have 2
@@ -143,7 +143,12 @@ bindings I use more frequently:
         helm-mini-default-sources '(helm-source-buffers-list
                                     helm-source-recentf
                                     helm-source-bookmarks
-                                    helm-source-buffer-not-found))
+                                    helm-source-buffer-not-found)
+        ;; Reduce the list of things for helm-apropos
+        helm-apropos-function-list '(helm-def-source--emacs-commands
+                                     helm-def-source--emacs-functions
+                                     helm-def-source--emacs-variables
+                                     helm-def-source--emacs-faces))
   :config
   (use-package helm-files
     :config (setq helm-ff-file-compressed-list '("gz" "bz2" "zip" "tgz" "xz" "txz")))
@@ -199,7 +204,10 @@ bindings I use more frequently:
                       (interactive)
                       (helm-exit-and-execute-action #'helm-do-ag))
               helm-projectile-projects-map)
-    (global-set-key (kbd "C-x f") #'helm-projectile-find-file))
+    (global-set-key (kbd "C-x f") #'helm-projectile-find-file)
+    :config
+    (setq-default helm-truncate-lines t
+                  helm-projectile-truncate-lines t))
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))
