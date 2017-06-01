@@ -216,23 +216,25 @@ Emacs. I usually bind this in the Hydra toggle map.
   "Increase the font size by `eos/height-modifier' amount, for
 when you jack into an external monitor."
   (interactive)
-  (set-face-attribute 'default nil :height (+ (face-attribute 'default :height)
-                                              eos/height-modifier))
-  (set-face-attribute 'variable-pitch
-                      nil
-                      :height (+ (face-attribute 'variable-pitch :height)
-                                 eos/height-modifier)))
+  (dolist (face '(default
+                   mode-line
+                   mode-line-inactive
+                   minibuffer-prompt
+                   variable-pitch))
+    (set-face-attribute face nil :height (+ (face-attribute face :height)
+                                            eos/height-modifier))))
 
 (defun eos/monitor-jack-out ()
   "Decreas the font size by `eos/height-modifier' amount, for
 when you jack out of an external monitor."
   (interactive)
-  (set-face-attribute 'default nil :height (- (face-attribute 'default :height)
-                                              eos/height-modifier))
-  (set-face-attribute 'variable-pitch
-                      nil
-                      :height (- (face-attribute 'variable-pitch :height)
-                                 eos/height-modifier)))
+  (dolist (face '(default
+                   mode-line
+                   mode-line-inactive
+                   minibuffer-prompt
+                   variable-pitch))
+    (set-face-attribute face nil :height (- (face-attribute face :height)
+                                            eos/height-modifier))))
 
 (defun eos/monitor-reset ()
   "Go back to the default font size and `line-spacing'"
