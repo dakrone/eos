@@ -313,5 +313,6 @@ active development, so I'm trying it out.
   (setq meghanada-auto-start nil)
   (when eos/use-meghanada
     (add-hook 'java-mode-hook #'meghanada-mode)
-    (add-hook 'java-mode-hook 'flycheck-mode)))
+    (add-hook 'java-mode-hook 'flycheck-mode)
+    (bind-key "C-c M-." 'meghanada-jump-declaration java-mode-map)))
 #+END_SRC
