@@ -137,6 +137,12 @@ Also, you don't need to prompt me about saving files for compilation, just do it
 (setq compilation-ask-about-save nil)
 #+END_SRC
 
+Need to be able to have buffers shared between machines with Syncthing
+
+#+BEGIN_SRC emacs-lisp
+(global-auto-revert-mode t)
+#+END_SRC
+
 Uses =M-n= and =M-p= to jump between the same variable in multiple places
 
 #+BEGIN_SRC emacs-lisp
