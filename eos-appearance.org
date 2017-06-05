@@ -178,16 +178,16 @@ Fonts I may or may not use (in no particular order):
 
 #+BEGIN_SRC emacs-lisp
 ;; The original font height (so it can be restored too at a later time)
-(setq eos/original-height 120)
+(setq eos/original-height 90)
 
 (defun eos/setup-fonts ()
   (when (eq window-system 'x)
     ;; default font and variable-pitch fonts
     (set-face-attribute 'default nil
-                        :family "Inconsolata"
+                        :family "Hack"
                         :height eos/original-height)
     (dolist (face '(mode-line mode-line-inactive minibuffer-prompt))
-      (set-face-attribute face nil :family "Inconsolata"
+      (set-face-attribute face nil :family "Hack"
                           :height eos/original-height))
     (set-face-attribute 'variable-pitch nil
                         :family "DejaVu Sans" :height eos/original-height)
