@@ -110,9 +110,15 @@ So I configure prodigy like so:
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
-    :name "Elasticsearch 5.3.0"
-    :cwd "~/ies/elasticsearch-5.3.0"
-    :command "~/ies/elasticsearch-5.3.0/bin/elasticsearch"
+    :name "Elasticsearch 5.3.3"
+    :cwd "~/ies/elasticsearch-5.3.3"
+    :command "~/ies/elasticsearch-5.3.3/bin/elasticsearch"
+    :tags '(work test es)
+    :port 9200)
+  (prodigy-define-service
+    :name "Elasticsearch 5.4.1"
+    :cwd "~/ies/elasticsearch-5.4.1"
+    :command "~/ies/elasticsearch-5.4.1/bin/elasticsearch"
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
