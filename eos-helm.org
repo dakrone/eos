@@ -457,53 +457,6 @@ Per-project navigation
       (kbd "M-m")  #'helm-projectile-multi-compile-project)))
 #+END_SRC
 
-* Multi-compile for different compilations I run
-:PROPERTIES:
-:CUSTOM_ID: multi-compile
-:END:
-
-So, there are a bunch of ways to compile things in the ES codebase, so I'm
-checking out [[https://github.com/ReanGD/emacs-multi-compile][multi-compile]] to see if it works well for this sort of thing.
-
-#+BEGIN_SRC emacs-lisp
-(use-package multi-compile
-  :ensure t
-  :commands multi-compile-run
-  :bind ("<f5>" . multi-compile-run)
-  :init
-  (defun eshell/comp ()
-    "Run multi-compile from the directory you are currently located in"
-    (multi-compile-run))
-  :config
-  (require 's)
-  (setq multi-compile-completion-system 'helm
-        multi-compile-alist
-        '(;; Elasticsearch-specific compilation commands
-          ((s-contains? "es/elasticsearch" default-directory)
-           . (("ES core compile" .
-               "gradle :core:compileJava :core:compileTestJava --console=plain")
-              ("ES everything compile" .
-               "gradle compileJava compileTestJava precommit --console=plain")
-              ("ES precommit" .
-               "gradle precommit --console=plain")))
-          ;; X-pack specific compilation commands
-          ((s-contains? "elasticsearch-extra/x-pack" default-directory)
-           . (("x-pack compile" .
-               "gradle :x-pack:elasticsearch:x-pack:compileJava :x-pack:elasticsearch:x-pack:compileTestJava --console=plain")
-              ("x-pack everything compile" .
-               "gradle compileJava compileTestJava precommit --console=plain")
-              ("x-pack precommit" .
-               "gradle precommit --console=plain")))
-          ;; Java compilation commands
-          (java-mode
-           . (("ant compile" .
-               "ant compile compile-test")
-              ("mvn compile" .
-               "mvn compile test-compile")
-              ("gradle compile" .
-               "gradle compileJava compileTestJava --console=plain"))))))
-#+END_SRC
-
 * Automatically popping up the project's Eshell buffer
 
 This is a neat function I wrote that looks to see if the current buffer is part
