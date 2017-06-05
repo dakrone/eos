@@ -185,6 +185,21 @@ navigate by function declaration in all development modes with the same thing.
 ;;(bind-key "C-c C-n" 'eos/next-function c-mode-base-map)
 #+END_SRC
 
+There's also a mode called =navi-mode= / =outshine= that aims to bring some of org-mode into
+development, so let's try that out.
+
+#+BEGIN_SRC emacs-lisp
+(defvar outline-minor-mode-prefix "\M-#")
+
+(use-package navi-mode
+  :ensure t
+  :init
+  (require 'outshine)
+  (add-hook 'outline-minor-mode-hook 'outshine-hook-function)
+  (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
+  (add-hook 'clojure-mode-hook 'outline-minor-mode))
+#+END_SRC
+
 ** Indentation
 :PROPERTIES:
 :CUSTOM_ID: h:f91026bf-ebbc-4dfb-b8e4-728f87835c6a
