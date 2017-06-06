@@ -618,6 +618,12 @@ that pretty easily.
               ("ES core check"
                "gradle :core:check --console=plain"
                "~/es/elasticsearch")
+              ("ES documentation tests"
+               "gradle :docs:check"
+               "~/es/elasticsearch")
+              ("ES REST tests"
+               "gradle :distribution:integ-test-zip:integTest -Dtests.class=\"org.elasticsearch.test.rest.*Yaml*IT\""
+               "~/es/elasticsearch")
               ("ES precommit" .
                "gradle precommit --console=plain")))
           ;; X-pack specific compilation commands
