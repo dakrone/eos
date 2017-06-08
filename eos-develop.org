@@ -619,13 +619,16 @@ that pretty easily.
                "gradle :core:check --console=plain"
                "~/es/elasticsearch")
               ("ES documentation tests"
-               "gradle :docs:check"
+               "gradle :docs:check --console=plain"
                "~/es/elasticsearch")
               ("ES REST tests"
-               "gradle :distribution:integ-test-zip:integTest -Dtests.class=\"org.elasticsearch.test.rest.*Yaml*IT\""
+               "gradle :distribution:integ-test-zip:integTest -Dtests.class=\"org.elasticsearch.test.rest.*Yaml*IT\" --console=plain"
                "~/es/elasticsearch")
               ("ES precommit" .
-               "gradle precommit --console=plain")))
+               "gradle precommit --console=plain")
+              ("ES qa check"
+               "gradle check --console=plain"
+               "~/es/elasticsearch/qa")))
           ;; X-pack specific compilation commands
           ((s-contains? "elasticsearch-extra/x-pack" default-directory)
            . (("x-pack compile" .
@@ -642,6 +645,22 @@ that pretty easily.
                "mvn compile test-compile")
               ("gradle compile" .
                "gradle compileJava compileTestJava --console=plain"))))))
+#+END_SRC
+
+Also, we need compilation-mode to truncate lines immediately
+
+#+BEGIN_SRC emacs-lisp
+(add-hook 'compilation-mode-hook #'toggle-truncate-lines)
+#+END_SRC
+
+* Determining the test at point and copying the syntax for running it
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/test-at-point ()
+  (interactive)
+  (if (not (eq major-mode 'java-mode))
+      (message "Buffer is not currently in java-mode")
+    "foo"))
 #+END_SRC
 
 * Emacs Lisp (Elisp)
