@@ -401,7 +401,11 @@ And a helper to turn off whitespace mode when exporting org documents
                   result))))
 #+END_SRC
 
-* Highlighting indentation with highlight-indent-guid
+* Highlighting indentation
+
+There are basically two ways to do this, either with [[https://github.com/DarthFennec/highlight-indent-guides][highlight-indent-guides]] or with
+[[https://github.com/antonj/Highlight-Indentation-for-Emacs][highlight-indentation]]. The names are confusing, and they each have pros and cons, so it's hard to
+tell which is the better option...
 
 #+BEGIN_SRC emacs-lisp
 (use-package highlight-indent-guides
