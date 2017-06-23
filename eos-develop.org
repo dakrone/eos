@@ -631,7 +631,10 @@ that pretty easily.
                "~/es/elasticsearch")
               ("ES qa check"
                "gradle check --console=plain"
-               "~/es/elasticsearch/qa")))
+               "~/es/elasticsearch/qa")
+              ("ES check all"
+               "gradle check --console=plain"
+               "~/es/elasticsearch")))
           ;; X-pack specific compilation commands
           ((s-contains? "elasticsearch-extra/x-pack" default-directory)
            . (("x-pack compile" .
