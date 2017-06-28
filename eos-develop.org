@@ -642,7 +642,10 @@ that pretty easily.
               ("x-pack everything compile" .
                "gradle compileJava compileTestJava precommit --console=plain")
               ("x-pack precommit" .
-               "gradle precommit --console=plain")))
+               "gradle precommit --console=plain")
+              ("x-pack check"
+               "gradle check --console=plain"
+               "~/es/elasticsearch-extra/x-pack-elasticsearch")))
           ;; Java compilation commands
           (java-mode
            . (("ant compile" .
