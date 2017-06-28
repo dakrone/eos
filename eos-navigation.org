@@ -242,3 +242,45 @@ This is a nice package used to move text around
   :ensure t
   :init (move-text-default-bindings))
 #+END_SRC
+
+* Navigating without control
+
+I don't use EVIL mode, as I think that on a Dvorak keyboard, VI-like keys aren't really that
+helpful.
+
+What I do want though, is something that is I can toggle to make a buffer "view-like", and navigate
+it how I want
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra :ensure t)
+(require 'view)
+
+(defhydra eos/nav-mode (:foreign-keys run)
+  "[NAV-MODE] q or i to exit"
+  ("C-h" hl-line-mode)
+  ("t" toggle-truncate-lines)
+  ("a" beginning-of-line)
+  ("l" forward-char)
+  ("h" backward-char)
+  ("n" next-line)
+  ("j" next-line)
+  ("p" previous-line)
+  ("k" previous-line)
+  ("e" View-scroll-half-page-forward)
+  ("u" View-scroll-half-page-backward)
+  ("SPC" scroll-up-command)
+  ("S-SPC" scroll-down-command)
+  ("<" beginning-of-buffer)
+  (">" end-of-buffer)
+  ("." end-of-buffer)
+  ("C-'" nil)
+  ("d" (when (y-or-n-p "Kill buffer?")
+         (kill-this-buffer))
+   :exit t)
+  ("/" isearch-forward-regexp :exit t)
+  ("?" isearch-backward-regexp :exit t)
+  ("i" nil :exit t)
+  ("q" nil :exit t))
+
+(global-set-key (kbd "M-V") 'eos/nav-mode/body)
+#+END_SRC
