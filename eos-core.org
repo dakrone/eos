@@ -1327,13 +1327,13 @@ And finally, the main EOS Hydra for entry:
 (defhydra eos/hydra nil
   "
 ╭────────────────────────────────────────────────────────╯
-  [_a_] Org Agenda     [_E_] ERC       [_m_] Mail
-  [_t_] Toggle map     [_T_] Twitter   [_M_] Music
-  [_s_] Skeletons      [_P_] Prodigy   [_g_] Gnus
-  [_p_] Proced         [_W_] Weather   [(] Macros
-  [_c_] Multi-compile  [_R_] RSS       [`] Errors
-  [_d_] Downloads      [_D_] Debbugs   [_C_] ES-CC
-  [_b_] Project's Eshell               [_B_] Bookmarks
+  [_a_] Org Agenda       [_E_] ERC       [_m_] Mail
+  [_t_] Toggle map       [_T_] Twitter   [_M_] Music
+  [_s_] Skeletons        [_P_] Prodigy   [_g_] Gnus
+  [_p_] Proced           [_W_] Weather   [(] Macros
+  [_c_] Multi-compile    [_R_] RSS       [`] Errors
+  [_d_] Downloads        [_D_] Debbugs   [_C_] ES-CC
+  [_b_] Project's Eshell [_S_] Smerge    [_B_] Bookmarks
   [_q_] quit
 "
 
@@ -1355,6 +1355,7 @@ And finally, the main EOS Hydra for entry:
   ("E" (when (y-or-n-p "Really start ERC?") (start-erc)) :exit t)
   ("R" elfeed :exit t)
   ("s" eos/hydra-skeleton/body :exit t)
+  ("S" eos/hydra-smerge/body :exit t)
   ("p" proced :exit t)
   ("P" prodigy :exit t)
   ("W" wttrin :exit t)
