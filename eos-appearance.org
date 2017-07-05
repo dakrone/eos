@@ -303,7 +303,6 @@ responsiveness, so I go back and forth with it.
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
-  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
@@ -455,7 +454,7 @@ enabled."
                    ("" global-mode-string " "))
                   mode-line-end-spaces)))
 
-(add-hook 'after-init-hook #'eos/custom-mode-line)
+;; (add-hook 'after-init-hook #'eos/custom-mode-line)
 #+END_SRC
 
 * Scrolling
