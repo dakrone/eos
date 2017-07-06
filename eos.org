@@ -215,14 +215,15 @@ up the sources at least
 (require 'package)
 (package-initialize)
 
+;; orgmode.org unfortunately does not support https
 (add-to-list 'package-archives
              '("org" . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives
-             '("gnu" . "http://elpa.gnu.org/packages/") t)
+             '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa-stable" . "http://stable.melpa.org/packages/") t)
+             '("melpa-stable" . "https://stable.melpa.org/packages/") t)
 (add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+             '("melpa" . "https://melpa.org/packages/") t)
 #+END_SRC
 
 Let's also set up a custom file and load it before we do anything too fancy, we
