@@ -100,3 +100,15 @@ cool.
   :init
   (add-hook 'dired-mode-hook 'all-the-icons-dired-mode))
 #+END_SRC
+
+* Collapsing multiple directories in Dired
+
+Fuco1 has a nice blog post about this,
+https://fuco1.github.io/2017-07-15-Collapse-unique-nested-paths-in-dired-with-dired-collapse-mode.html
+
+#+BEGIN_SRC emacs-lisp
+(use-package dired-collapse
+  :ensure t
+  :init
+  (add-hook 'dired-mode-hook 'dired-collapse-mode))
+#+END_SRC
