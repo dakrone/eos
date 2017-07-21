@@ -2180,12 +2180,10 @@ Allow asynchronously executing org-babel blocks. Sometimes I run long-running ba
 this allows Emacs not to hang while executing them.
 
 #+BEGIN_SRC emacs-lisp
-(use-package ob-async
-  :init
-  (use-package org
-    :config
-    (add-to-list 'org-ctrl-c-ctrl-c-hook
-                 'ob-async-org-babel-execute-src-block)))
+(eval-after-load "org"
+  (use-package ob-async
+    :ensure t
+    :init (require 'ob-async)))
 #+END_SRC
 
 * Reminders
