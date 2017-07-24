@@ -23,29 +23,9 @@ here.
 #+BEGIN_SRC emacs-lisp
 (use-package helm-flx
   :ensure t
-  :disabled t
   :init
-  (helm-flx-mode 1)
-  ;; garbage collection
-  (defun eos/minibuffer-setup-hook ()
-    (setq gc-cons-threshold most-positive-fixnum))
-
-  (defun eos/minibuffer-exit-hook ()
-    ;; 20mb
-    (setq gc-cons-threshold (* 20 1024 1024)))
-
-  (add-hook 'minibuffer-setup-hook #'eos/minibuffer-setup-hook)
-  (add-hook 'minibuffer-exit-hook #'eos/minibuffer-exit-hook))
-#+END_SRC
-
-Also, use helm-fuzzier in addition to helm-flx
-
-#+BEGIN_SRC emacs-lisp
-(use-package helm-fuzzier
-  :ensure t
-  :disabled t
-  :init
-  (helm-fuzzier-mode))
+  (setq helm-flx-for-helm-find-files nil)
+  (helm-flx-mode 1))
 #+END_SRC
 
 Now we can load the big Helm configuration. Here is a breakdown of the helm
@@ -55,6 +35,7 @@ bindings I use more frequently:
 |---------+-------------------------------------------------|
 | M-x     | helm meta-x                                     |
 | C-x C-f | helm find files                                 |
+| C-x C-d | helm browse project                             |
 | C-x f   | helm projectile                                 |
 | C-x C-r | helm mini (includes recentf)                    |
 | C-x C-o | helm occur (search in buffer)                   |
@@ -194,6 +175,7 @@ bindings I use more frequently:
                 ("p" . helm-projectile-switch-project)
                 ("s s" . helm-projectile-ag))
     :init
+    (setq projectile-switch-project-action 'helm-projectile)
     (helm-projectile-on)
     (helm-delete-action-from-source
      "Grep in projects `C-s'"
@@ -403,7 +385,10 @@ Best way to search in a buffer ever
         helm-swoop-split-with-multiple-windows t
         ;; Split direcion. 'split-window-vertically or 'split-window-horizontally
         helm-swoop-split-direction 'split-window-vertically
-        ;; If nil, you can slightly boost invoke speed in exchange for text color
+        ;; don't auto select the thing at point
+        helm-swoop-pre-input-function (lambda () "")
+        ;; If nil, you can slightly boost invoke speed in exchange for text
+        ;; color. If I want pretty I'll use helm-occur since it keeps colors
         helm-swoop-speed-or-color nil))
 #+END_SRC
 
