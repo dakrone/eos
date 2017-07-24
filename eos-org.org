@@ -910,7 +910,7 @@ I have the following org-mode settings for clocking:
 
 #+begin_src emacs-lisp
 ;; Resume clocking task when emacs is restarted
-(org-clock-persistence-insinuate)
+;; (org-clock-persistence-insinuate)
 ;; Show lot of clocking history so it's easy to pick items off the `C-c I` list
 (setq org-clock-history-length 23)
 ;; Resume clocking task on clock-in if the clock is open
@@ -925,9 +925,9 @@ I have the following org-mode settings for clocking:
 ;; Clock out when moving task to a done state
 (setq org-clock-out-when-done t)
 ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-(setq org-clock-persist t)
+;; (setq org-clock-persist t)
 ;; Do not prompt to resume an active clock
-(setq org-clock-persist-query-resume nil)
+;; (setq org-clock-persist-query-resume nil)
 ;; Enable auto clock resolution for finding open clocks
 (setq org-clock-auto-clock-resolution (quote when-no-clock-is-running))
 ;; Include current clocking task in clock reports

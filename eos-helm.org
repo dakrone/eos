@@ -103,7 +103,7 @@ bindings I use more frequently:
         ;; open helm buffer in another window
         ;;helm-split-window-default-side 'other
         ;; set to nil and use <C-backspace> to toggle it in helm-find-files
-        helm-ff-auto-update-initial-value t
+        helm-ff-auto-update-initial-value nil
         ;; if I change the resplit state, re-use my settings
         ;; helm-reuse-last-window-split-state t
         ;; don't delete windows to always have 2
@@ -211,6 +211,11 @@ bindings I use more frequently:
 
   (global-set-key (kbd "C-c h") 'helm-command-prefix)
   (global-unset-key (kbd "C-x c"))
+
+  ;; Use popwin for helm buffers, otherwise I can't get helm to display the way
+  ;; I want (at the bottom, without deleting windows)
+  (push '("^\*helm.+\*$" :regexp t :height 20) popwin:special-display-config)
+  (setq helm-display-function 'popwin:pop-to-buffer)
 
   ;; Shows helm input in the header instead of the footer
   (setq helm-echo-input-in-header-line t)

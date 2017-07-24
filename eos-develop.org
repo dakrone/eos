@@ -778,6 +778,7 @@ Display the ugly =^L= lines in Elisp files as actual lines
 (use-package page-break-lines
   :ensure t
   :commands (turn-on-page-break-lines-mode)
+  :diminish page-break-lines-mode
   :init
   (add-hook 'emacs-lisp-mode-hook #'turn-on-page-break-lines-mode))
 #+END_SRC

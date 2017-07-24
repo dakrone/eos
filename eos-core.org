@@ -582,7 +582,8 @@ when they are popped up. I do this with Popwin
   :config
   (progn
     (defvar popwin:special-display-config-backup popwin:special-display-config)
-    (setq display-buffer-function 'popwin:display-buffer)
+    (setq display-buffer-function 'popwin:display-buffer
+          popwin:popup-window-height 20)
 
     ;; remove compilation-mode from popwin, I want a full window
     (setq popwin:special-display-config
@@ -636,6 +637,8 @@ when they are popped up. I do this with Popwin
 
     ;; async shell commands
     (push '("*Async Shell Command*" :stick t) popwin:special-display-config)
+
+    (push '(" *undo-tree*" :width 0.3 :position right) popwin:special-display-config)
 
     (global-set-key (kbd "C-h e") 'popwin:messages)))
 #+END_SRC
