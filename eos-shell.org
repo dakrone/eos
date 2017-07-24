@@ -438,8 +438,8 @@ And some nice glue for quickly closing eshell windows
 #+BEGIN_SRC emacs-lisp
 (defun eshell/x ()
   "Closes the EShell session and gets rid of the EShell window."
-  (kill-buffer)
-  (delete-window))
+  (delete-window)
+  (eshell/exit))
 #+END_SRC
 
 ** Open an eshell window there
