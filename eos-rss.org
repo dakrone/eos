@@ -36,7 +36,6 @@
           ("http://whatthefuck.computer/rss.xml" blog)
           ("http://feeds.feedburner.com/jamesshelley" blog)
           ("http://www.marco.org/rss" blog)
-          ("http://gnuvince.wordpress.com/feed/" blog)
           ("http://elliotth.blogspot.com/feeds/posts/default" blog)
           ("http://feeds.feedburner.com/Hyperbole-and-a-half" blog)
           ("http://lcamtuf.blogspot.com/feeds/posts/default" blog)
@@ -115,7 +114,6 @@
           ("http://www.masteringemacs.org/feed/" emacs)
           ("http://planet.emacsen.org/atom.xml" emacs)
           ("http://endlessparentheses.com/atom.xml" emacs)
-          ("http://s-expressions.com/feed/" emacs)
 
           ;; News
           ("http://feeds.arstechnica.com/arstechnica/index/" news)
