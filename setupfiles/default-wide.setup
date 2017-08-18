@@ -1,0 +1,16 @@
+# -*- mode: org; -*-
+
+#+LANGUAGE: en
+#+PROPERTY: header-args :results code replace :exports both :noweb yes :tangle no
+#+HTML_HEAD: <link rel="stylesheet" href="https://writequit.org/css/org3.css" type="text/css" />
+#+HTML_HEAD: <link rel="stylesheet" href="/css/org3.css" type="text/css" />
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+OPTIONS: H:4 num:nil toc:t \\n:nil ::t |:t ^:{} -:t f:t *:t
+#+OPTIONS: d:(HIDE) tags:not-in-toc
+#+TODO: MEETING
+#+TODO: TODO(t) | DONE(d)
+#+TODO: TODO(t) STARTED(s) SOMEDAY(m) INPROGRESS(i) HOLD(h) WAITING(w@/!) NEEDSREVIEW(n@/!) | DONE(d)
+#+TODO: TODO(t) INPROGRESS(i) | CANCELLED(c@/!)
+#+TAGS: export(e) noexport(n)
+#+STARTUP: fninline fold nodlcheck lognotestate content
+#+HTML_HEAD_EXTRA: <style>div#content { max-width: 2000px; }</style>
