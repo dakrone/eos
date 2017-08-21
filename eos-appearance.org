@@ -239,8 +239,12 @@ when you jack out of an external monitor."
 (defun eos/monitor-reset ()
   "Go back to the default font size and `line-spacing'"
   (interactive)
-  (set-face-attribute 'default nil :height eos/original-height)
-  (set-face-attribute 'variable-pitch nil :height eos/original-height)
+  (dolist (face '(default
+                   mode-line
+                   mode-line-inactive
+                   minibuffer-prompt
+                   variable-pitch))
+    (set-face-attribute face nil :height eos/original-height))
   (text-scale-adjust 0)
   (when (fboundp 'minimap-mode)
     (condition-case err
