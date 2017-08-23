@@ -149,6 +149,7 @@
           "https://github.com/blog.atom"
           "http://blog.chromium.org/feeds/posts/default"
           "http://classicprogrammerpaintings.tumblr.com/rss"
+          "http://www.thepublicdiscourse.com/feed/"
           ))
   :config
   (define-key elfeed-show-mode-map (kbd "j") 'next-line)
