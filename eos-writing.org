@@ -78,6 +78,13 @@ all over the place and take forever to load ಠ_ಠ
 ,* Introduction
 " \n)
 
+(define-skeleton eos/org-wrap-diagram-drawer
+  "Wrap text with a :DIAGRAM: / :END: drawer for org-mode"
+  nil
+  > ":DIAGRAM:" \n
+  > _ \n
+  > ":END:" \n)
+
 (define-skeleton eos/org-wrap-elisp
   "Wrap text with #+BEGIN_SRC / #+END_SRC for the emacs-lisp code"
   nil
@@ -129,6 +136,7 @@ And now let's add a hydra for the skeletons
 #+BEGIN_SRC emacs-lisp
 (defhydra eos/hydra-skeleton nil
   "Insert Skeleton"
+  ("d" eos/org-wrap-diagram-drawer "Wrap as drawer" :exit t)
   ("e" eos/org-wrap-elisp "Wrap as elisp" :exit t)
   ("s" eos/org-wrap-source "Wrap as source" :exit t)
   ("i" eos/es-make-index "ES Index" :exit t)
