@@ -72,6 +72,8 @@
           ("https://emacsgifs.github.io/feed.xml" blog emacs)
           ("http://www.alfredodinapoli.com/rss.xml" blog)
           ("https://icosahedron.website/users/technomancy.atom" blog microblog)
+          ("http://stapletonion.com/feed/" blog)
+          ("http://outoflivingbooks.com/feed/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
@@ -87,6 +89,8 @@
           ("http://www.thepoachedegg.net/the-poached-egg/atom.xml" christianity)
           ("https://feeds.feedburner.com/secondnaturejournal/HfHT" christianity)
           ("http://blogs.mereorthodoxy.com/samuel/feed/" christianity)
+          ("https://civilamericablog.wordpress.com/feed/" blog christianity)
+          ("http://blog.ayjay.org/feed/" blog christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
