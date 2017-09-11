@@ -91,6 +91,8 @@
           ("http://blogs.mereorthodoxy.com/samuel/feed/" christianity)
           ("https://civilamericablog.wordpress.com/feed/" blog christianity)
           ("http://blog.ayjay.org/feed/" blog christianity)
+          ("https://mereorthodoxy.com/feed/" christianity)
+          ("http://www.travisdickinson.com/feed/" blog christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
