@@ -515,15 +515,18 @@ D= ('D' for Documentation) to activate it.
   :ensure t
   :bind (("C-c D" . helm-dash))
   :init
-  (setq helm-dash-common-docsets '("ElasticSearch")
-        helm-dash-min-length 2)
+  (setq helm-dash-common-docsets '("ElasticSearch" "Java")
+        helm-dash-min-length 1)
   :config
   (defun eos/use-java-docset ()
     (setq-local helm-dash-docsets '("Java")))
   (defun eos/use-elisp-docset ()
     (setq-local helm-dash-docsets '("Emacs Lisp")))
+  (defun eos/use-haskell-docset ()
+    (setq-local helm-dash-docsets '("Haskell")))
   (add-hook 'java-mode-hook #'eos/use-java-docset)
-  (add-hook 'emacs-lisp-mode-hook #'eos/use-elisp-docset))
+  (add-hook 'emacs-lisp-mode-hook #'eos/use-elisp-docset)
+  (add-hook 'haskell-mode-hook #'eos/use-haskell-docset))
 #+END_SRC
 
 * Flycheck - Syntax Checking On The Fly
