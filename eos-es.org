@@ -67,13 +67,6 @@ So I configure prodigy like so:
   :config
   (setq prodigy-services '())
   (prodigy-define-service
-    :name "Kibana 5.0.1"
-    :cwd "~/ies/kibana-5.0.1-linux-x64_86"
-    :command "~/ies/kibana-5.0.1-linux-x64_64/bin/kibana"
-    :tags '(work kibana)
-    :port 5601)
-
-  (prodigy-define-service
     :name "Elasticsearch 1.7.6"
     :cwd "~/ies/elasticsearch-1.7.6"
     :command "~/ies/elasticsearch-1.7.6/bin/elasticsearch"
@@ -122,14 +115,27 @@ So I configure prodigy like so:
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
-    :name "Elasticsearch 5.5.0"
-    :cwd "~/ies/elasticsearch-5.5.0"
-    :command "~/ies/elasticsearch-5.5.0/bin/elasticsearch"
+    :name "Elasticsearch 5.5.3"
+    :cwd "~/ies/elasticsearch-5.5.3"
+    :command "~/ies/elasticsearch-5.5.3/bin/elasticsearch"
+    :tags '(work test es)
+    :port 9200)
+  (prodigy-define-service
+    :name "Elasticsearch 5.6.0"
+    :cwd "~/ies/elasticsearch-5.6.0"
+    :command "~/ies/elasticsearch-5.6.0/bin/elasticsearch"
     :tags '(work test es)
     :port 9200)
   (prodigy-define-service
     :name "ES gradle run"
     :cwd "~/es/elasticsearch"
+    :command "gradle"
+    :args '("run")
+    :tags '(work es)
+    :port 9200)
+  (prodigy-define-service
+    :name "ES x-pack gradle run"
+    :cwd "~/es/elasticsearch-extra/x-pack-elasticsearch"
     :command "gradle"
     :args '("run")
     :tags '(work es)
