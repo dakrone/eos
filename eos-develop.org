@@ -626,6 +626,9 @@ that pretty easily.
               ("ES REST tests"
                "gradle :distribution:integ-test-zip:integTest -Dtests.class=\"org.elasticsearch.test.rest.*Yaml*IT\" --console=plain"
                "~/es/elasticsearch")
+              ("ES core precommit"
+               "gradle :core:precommit --console=plain"
+               "~/es/elasticsearch")
               ("ES precommit"
                "gradle precommit --console=plain"
                "~/es/elasticsearch")
