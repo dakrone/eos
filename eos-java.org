@@ -125,6 +125,7 @@ work with the ES codebase.
   (interactive)
   (define-key java-mode-map (kbd "M-,") 'pop-tag-mark)
   (define-key java-mode-map (kbd "C-c M-i") 'java-imports-add-import-dwim)
+  (define-key java-mode-map (kbd "C-c C-b") 'bool-flip-do-flip)
   (c-set-style "intellij" t)
   (subword-mode 1)
   (shut-up (toggle-truncate-lines 1))
