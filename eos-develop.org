@@ -37,6 +37,13 @@ I need to hide the lighter for subword mode:
   (add-hook #'log4j-mode-hook 'eos/turn-on-hl-line))
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(use-package logview
+  :ensure t
+  :init
+  (add-hook #'logview-mode-hook 'eos/turn-on-hl-line))
+#+END_SRC
+
 Highlight idle things, but only in certain modes
 
 #+BEGIN_SRC emacs-lisp
@@ -95,6 +102,7 @@ much slower than hideshow for large buffers.
               (bibtex-mode ("@\\S(*\\(\\s(\\)" 1))
               (java-mode "{" "}" "/[*/]" nil nil)
               (js-mode "{" "}" "/[*/]" nil)
+              (json-mode "{" "}" "/[*/]" nil)
               (javascript-mode  "{" "}" "/[*/]" nil))))
 
   (defvar eos/hs-level 2
