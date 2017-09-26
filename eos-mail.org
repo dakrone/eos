@@ -407,17 +407,140 @@ ln -sfv $PWD/out/gnus.el ~/.gnus.el
 (setq user-full-name "Lee Hinman"
       user-mail-address "lee@writequit.org"
       message-user-fqdn "writequit.org"
-      gnus-use-adaptive-scoring t)
+      gnus-use-adaptive-scoring t
+      gnus-list-groups-with-ticked-articles nil)
 
-;; Modify the summary line to show score
-(setq gnus-summary-line-format
-      "%U%R%z %d %I%(%[%4L: %-23,23f%]%') %[%3V%] %s\n")
+;; Display images in articles
+(setq mm-inline-text-html-with-images t
+      mm-text-html-renderer 'shr
+      mm-inline-text-html-with-images t)
 
+(setq gnus-summary-line-format ;; Modify the summary line to show score
+      "%U%R%z %d %I%(%[%4L: %-23,23f%]%') %[%3V%] %s\n"
+      ;; "%*%U%R%z %(%&user-date; %-15,15f  %B%s%)\n"
+      gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+      gnus-thread-sort-functions '(gnus-thread-sort-by-score)
+      gnus-sum-thread-tree-false-root ""
+      gnus-sum-thread-tree-indent " "
+      gnus-sum-thread-tree-leaf-with-other "├► "
+      gnus-sum-thread-tree-root ""
+      gnus-sum-thread-tree-single-leaf "╰► "
+      gnus-sum-thread-tree-vertical "│"
+      gnus-user-date-format-alist '((t . "%d %b %Y %H:%M")))
+
+(setq mm-discouraged-alternatives '("text/html" "text/richtext")
+      mm-automatic-display (remove "text/html" mm-automatic-display))
+
+(add-to-list 'gnus-buffer-configuration
+             '(article (horizontal 1.0
+                                   (vertical 55
+                                             (group 1.0))
+                                   (vertical 1.0
+                                             (summary 0.25 point)
+                                             (article 1.0)))))
+
+;; Original selection method, for news
 (setq gnus-select-method '(nntp "news.gmane.org"))
 
+;; Email selection method
+(setq gnus-secondary-select-methods
+      `((nnimap "email"
+                (nnimap-stream shell)
+                (nnimap-inbox ".")
+                (nnir-search-engine imap)
+                (nnimap-shell-program
+                 ,(cond ((file-exists-p "/usr/lib/dovecot/imap") "/usr/lib/dovecot/imap")
+                        ((file-exists-p "/usr/libexec/dovecot/imap") "/usr/libexec/dovecot/imap"))))))
+
+(setq message-sendmail-f-is-evil 't)
+(setq message-sendmail-extra-arguments '("--read-envelope-from"))
+(setq message-send-mail-function 'message-send-mail-with-sendmail)
+
+(setq sendmail-program (cond
+                        ((file-exists-p "/usr/bin/msmtp") "/usr/bin/msmtp")
+                        ((file-exists-p "/usr/local/bin/msmtp") "/usr/local/bin/msmtp")))
+
+(setq message-sendmail-extra-arguments '("-a" "fastmail"))
+(setq mail-host-address "writequit.org")
+
+(setq gnus-parameters
+      '((".*fastmail.*"
+         (posting-style
+          (address "leehinman@fastmail.com")
+          (name "Lee Hinman")
+          (body "")
+          (eval (setq message-sendmail-extra-arguments '("-a" "fastmail")))
+          ;; (signature-file "~/sync/personal-sig")
+          (user-mail-address "leehinman@fastmail.com")))
+        (".*writequit.org.*"
+         (posting-style
+          (address "lee@writequit.org")
+          (name "Lee Hinman")
+          (body "")
+          (eval (setq message-sendmail-extra-arguments '("-a" "fastmail")))
+          ;; (signature-file "~/sync/personal-sig")
+          (user-mail-address "lee@writequit.org")))
+        (".*gmail.*"
+         (posting-style
+          (address "matthew.hinman@gmail.com")
+          (name "Lee Hinman")
+          (body "")
+          ;; (signature-file "~/sync/work-sig")
+          (eval (setq message-sendmail-extra-arguments '("-a" "gmail")))
+          (user-mail-address "matthew.hinman@gmail.com")))
+        (".*elastic.co.*"
+         (posting-style
+          (address "lee@elastic.co")
+          (name "Lee Hinman")
+          (body "")
+          ;; (signature-file "~/sync/work-sig")
+          (eval (setq message-sendmail-extra-arguments '("-a" "elastic")))
+          (user-mail-address "lee@elastic.co")))))
+
+;; Correctly set the MSMTP account based on the "from" header
+(defun eos/feed-msmtp ()
+  (if (message-mail-p)
+      (save-excursion
+        (let* ((from
+                (save-restriction
+                  (message-narrow-to-headers)
+                  (message-fetch-field "from")))
+               (account
+                (cond
+                 ((string-match "leehinman@fastmail.com" from) "fastmail")
+                 ((string-match "lee@writequit.org" from) "fastmail")
+                 ((string-match "matthew.hinman@gmail.com" from) "gmail")
+                 ((string-match "lee@elastic.co" from) "elastic"))))
+          (setq message-sendmail-extra-arguments (list '"--read-envelope-from" "-a" account))))))
+
+(setq message-sendmail-envelope-from 'header)
+(add-hook 'message-send-mail-hook 'eos/feed-msmtp)
+
 (setq gnus-thread-sort-functions
-      '((not gnus-thread-sort-by-date)
-        (not gnus-thread-sort-by-number)))
+      '(gnus-thread-sort-by-subject
+        gnus-thread-sort-by-date
+        gnus-thread-sort-by-total-score))
+
+(setq gnus-use-adaptive-scoring '(word line))
+(setq gnus-adaptive-word-length-limit 5)
+(setq gnus-adaptive-word-no-group-words t)
+
+(setq gnus-default-adaptive-score-alist
+      '((gnus-unread-mark)
+        (gnus-ticked-mark (from 4))
+        (gnus-dormant-mark (from 5))
+        (gnus-del-mark (from -4) (subject -1))
+        (gnus-read-mark (from 4) (subject 2))
+        (gnus-expirable-mark (from -1) (subject -1))
+        (gnus-killed-mark (from -1) (subject -3))
+        (gnus-kill-file-mark)
+        (gnus-ancient-mark)
+        (gnus-low-score-mark)
+        (gnus-catchup-mark (from -1) (subject -1))))
+
+(add-hook 'gnus-summary-exit-hook 'gnus-summary-bubble-group)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun my-gnus-group-list-subscribed-groups ()
   "List all subscribed groups with or without un-read messages"
@@ -475,5 +598,4 @@ ln -sfv $PWD/out/gnus.el ~/.gnus.el
 
 (define-key gnus-article-mode-map (kbd "j") 'next-line)
 (define-key gnus-article-mode-map (kbd "k") 'previous-line)
-
 #+END_SRC
