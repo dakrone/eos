@@ -105,7 +105,6 @@ BH's keybindings
 (global-set-key (kbd "<f12>") 'org-agenda)
 (global-set-key (kbd "<f5>") 'bh/org-todo)
 (global-set-key (kbd "<S-f5>") 'bh/widen)
-(global-set-key (kbd "<f8>") 'org-cycle-agenda-files)
 (global-set-key (kbd "<f9> <f9>") 'bh/show-org-agenda)
 (global-set-key (kbd "<f9> b") 'bbdb)
 (global-set-key (kbd "<f9> c") 'calendar)
@@ -2183,6 +2182,7 @@ this allows Emacs not to hang while executing them.
 (eval-after-load "org"
   (use-package ob-async
     :ensure t
+    :disabled t
     :init (require 'ob-async)))
 #+END_SRC
 
