@@ -2,6 +2,7 @@
 #+AUTHOR: Lee Hinman
 #+EMAIL: lee@writequit.org
 #+SETUPFILE: ~/eos/setupfiles/eos.setup
+#+OPTIONS: auto-id:t
 
 #+BEGIN_SRC emacs-lisp
 (provide 'eos-java)
@@ -316,4 +317,54 @@ active development, so I'm trying it out.
     (add-hook 'java-mode-hook #'meghanada-mode)
     (add-hook 'java-mode-hook 'flycheck-mode)
     (bind-key "C-c M-." 'meghanada-jump-declaration java-mode-map)))
+#+END_SRC
+
+* Running tests from a test file
+:PROPERTIES:
+:CUSTOM_ID: h:fbcda62e-7f57-4083-b5aa-6acf86900441
+:END:
+
+A lot of the time I want to run the particular test-at-point, or tests for the class-at-point. This
+allows me to do it.
+
+#+BEGIN_SRC emacs-lisp
+(use-package s
+  :ensure t
+  :init
+  (require 's)
+  (defun eos/run-java-tests-for-method ()
+    (interactive)
+    (if (projectile-project-p)
+        (let* ((bName (buffer-name))
+               (className (car (s-split "\\." bName)))
+               (testType (if (s-ends-with? "Tests" className)
+                             ":core:test"
+                           ":core:integTest"))
+               (methodName "test") // TODO: get real test name
+               (cmd (format "gradle %s -Dtests.class=*%s -Dtests.method=%s" testType className methodName))
+               (buff (window-buffer (eos/popup-project-eshell))))
+          (with-current-buffer buff
+            (insert cmd)))
+      (message "Not currently in a projectile project")))
+
+  (defun eos/run-java-tests-for-class ()
+    (interactive)
+    (if (projectile-project-p)
+        (let* ((bName (buffer-name))
+               (className (car (s-split "\\." bName)))
+               (testType (if (s-ends-with? "Tests" className)
+                             ":core:test"
+                           ":core:integTest"))
+               (cmd (format "gradle %s -Dtests.class=*%s" testType className))
+               (buff (window-buffer (eos/popup-project-eshell))))
+          (with-current-buffer buff
+            (insert cmd)))
+      (message "Not currently in a projectile project")))
+
+  (defun eos/run-java-test ()
+    (interactive)
+    (let ((toRun (completing-read "Test: " '("class" "method") nil t)))
+      (if (s-equals? toRun "method")
+          (eos/run-java-tests-for-method)
+        (eos/run-java-tests-for-class)))))
 #+END_SRC
