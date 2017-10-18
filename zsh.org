@@ -74,6 +74,9 @@ if [ -f ~/.sdkman/bin/sdkman-init.sh ]; then
     source ~/.sdkman/bin/sdkman-init.sh
 fi
 
+# Vault
+export VAULT_ADDR=https://secrets.elastic.co:8200
+
 # history
 HISTFILE=$HOME/.zsh-history
 HISTSIZE=10000
