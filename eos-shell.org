@@ -163,7 +163,27 @@ completion, prompt and term settings:
   (use-package esh-opt
     :config
     (use-package em-cmpl)
-    (use-package em-prompt)
+    (use-package em-prompt
+      :init
+      ;; Taken from https://www.reddit.com/r/emacs/comments/772b3h/what_are_you_using_eshell_for/
+      ;;; Reported at https://debbugs.gnu.org/cgi/bugreport.cgi?bug=27405.
+      (with-eval-after-load 'em-prompt
+        (defun eshell-next-prompt (n)
+          "Move to end of Nth next prompt in the buffer.
+See `eshell-prompt-regexp'."
+          (interactive "p")
+          (re-search-forward eshell-prompt-regexp nil t n)
+          (when eshell-highlight-prompt
+            (while (not (get-text-property (line-beginning-position) 'read-only) )
+              (re-search-forward eshell-prompt-regexp nil t n)))
+          (eshell-skip-prompt))
+
+        (defun eshell-previous-prompt (n)
+          "Move to end of Nth previous prompt in the buffer.
+See `eshell-prompt-regexp'."
+          (interactive "p")
+          (backward-char)
+          (eshell-next-prompt (- n)))))
     (use-package em-term)
 
     (setq eshell-cmpl-cycle-completions nil
