@@ -2445,6 +2445,9 @@ agenda. This helps with planning for those days when you're not supposed to be w
 #+begin_src emacs-lisp
 (setq org-agenda-include-diary t)
 (setq org-agenda-diary-file "~/diary")
+(setq calendar-holidays
+      (append holiday-general-holidays
+              holiday-christian-holidays))
 #+end_src
 
 The diary file keeps =date-tree= entries created by the capture mode 'appointment' template. I use
