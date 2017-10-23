@@ -423,3 +423,21 @@ tell which is the better option...
   (setq highlight-indent-guides-method 'character)
   (add-hook 'prog-mode-hook #'highlight-indent-guides-mode))
 #+END_SRC
+
+* Plumbing writing on Firefox pages
+
+Sometimes I need to type really long responses in things. There are a couple of nice tools for this.
+Both are required for it to work.
+
+First, [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]] is needed on the Emacs side, and then [[https://github.com/GhostText/GhostText][GhostText]] on the Firefox side.
+
+#+BEGIN_SRC emacs-lisp
+(use-package atomic-chrome
+  :ensure t
+  :defer 10
+  :init
+  (atomic-chrome-start-server)
+  (setq atomic-chrome-default-major-mode 'markdown-mode
+        atomic-chrome-url-major-mode-alist
+        '(("github\\.com" . gfm-mode))))
+#+END_SRC
