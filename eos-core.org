@@ -1439,3 +1439,14 @@ but they also have a bit of downsides...
 
   (add-hook 'so-long-hook #'eos/so-long-hook))
 #+END_SRC
+
+* Displaying help information
+
+It's helpful to know what key to press when a delay happens. Which-key is nice for this.
+
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :init
+  (which-key-mode 1))
+#+END_SRC
