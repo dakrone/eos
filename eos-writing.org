@@ -436,7 +436,23 @@ First, [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]] is needed o
   :ensure t
   :defer 10
   :init
-  (atomic-chrome-start-server)
+  ;; See: https://github.com/alpha22jp/atomic-chrome/pull/28
+  (defun atomic-chrome-server-running-p ()
+    "Returns `t' if the atomic-chrome server is currently running,
+`nil' otherwise."
+    (let ((retval nil))
+      (condition-case ex
+          (progn
+            (delete-process
+             (make-network-process
+              :name "atomic-client-test" :host "localhost"
+              :noquery t :service "64292"))
+            (setq retval t))
+        ('error nil))
+      retval))
+
+  (when (not (atomic-chrome-server-running-p))
+    (atomic-chrome-start-server))
   (setq atomic-chrome-default-major-mode 'markdown-mode
         atomic-chrome-url-major-mode-alist
         '(("github\\.com" . gfm-mode))))
