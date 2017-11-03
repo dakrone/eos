@@ -18,8 +18,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
-;;(defvar eos/background 'dark)
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
 #+END_SRC
 
 * Emacs Appearance
@@ -78,6 +78,7 @@ balanced of color and pleasing to my eyes.
     (progn
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
+        :disabled t
         :init
         (load-theme 'sanityinc-tomorrow-night t)
         ;; Just ever so slightly more bright foreground text, default is
@@ -89,7 +90,6 @@ balanced of color and pleasing to my eyes.
         (set-face-background 'whitespace-newline (face-attribute 'default :background)))
       (use-package tao-theme
         :ensure t
-        :disabled t
         :init
         (load-theme 'tao-yin t)
         (require 'git-gutter)
@@ -99,24 +99,7 @@ balanced of color and pleasing to my eyes.
         (set-face-attribute 'git-gutter:modified nil :foreground "light blue")
         (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")
         (set-face-attribute 'git-gutter:added nil :foreground "green")
-        (set-face-attribute 'git-gutter-fr:added nil :foreground "green")
-        (require 'linum)
-        (set-face-attribute 'linum nil :foreground "#444444"))
-      (use-package doom-themes
-        :ensure t
-        :disabled t
-        :init
-        (load-theme 'doom-one t)
-        (diminish 'doom-buffer-mode)
-        ;; Doom currently has a broken modeline
-        (set-face-attribute 'mode-line-buffer-id nil
-                            :foreground "white" :bold t))
-      (use-package zerodark-theme
-        :ensure t
-        :disabled t
-        :init
-        (load-theme 'zerodark t)
-        (zerodark-setup-modeline-format)))
+        (set-face-attribute 'git-gutter-fr:added nil :foreground "green")))
   (use-package leuven-theme
     :ensure t
     :disabled t
@@ -124,11 +107,6 @@ balanced of color and pleasing to my eyes.
     (load-theme 'leuven t)
     ;; Ever-so-slightly darker background
     (set-face-background 'default "#F7F7F7"))
-  (use-package github-theme
-    :ensure t
-    :disabled t
-    :init
-    (load-theme 'github t))
   (use-package tao-theme
     :ensure t
     :disabled t
@@ -757,9 +735,9 @@ java-mode applies the color-identifiers configuration.
       (eos/make-local-face 'font-lock-keyword-face :foreground nil :weight 'bold)
       (eos/make-local-face 'font-lock-builtin-face :foreground nil :weight 'bold)
       (color-identifiers-mode 1)))
-  ;;(add-hook 'java-mode-hook #'color-identifiers-mode)
-  ;;(add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode)
-  ;;(global-color-identifiers-mode 1)
+  (add-hook 'java-mode-hook #'color-identifiers-mode)
+  (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode)
+  (global-color-identifiers-mode 1)
   )
 #+END_SRC
 
