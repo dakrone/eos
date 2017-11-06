@@ -100,10 +100,10 @@ balanced of color and pleasing to my eyes.
         (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")
         (set-face-attribute 'git-gutter:added nil :foreground "green")
         (set-face-attribute 'git-gutter-fr:added nil :foreground "green")
-        (eval-after-load "semantic-mode"
-          (set-face-attribute 'semantic-tag-boundary-face nil :overline "grey25")
-          (set-face-attribute 'semantic-decoration-on-unknown-includes
-                              nil :background "grey15"))))
+        (require 'semantic/decorate/mode)
+        (set-face-attribute 'semantic-tag-boundary-face nil :overline "grey25")
+        (set-face-attribute 'semantic-decoration-on-unknown-includes
+                            nil :background "grey15")))
   (use-package leuven-theme
     :ensure t
     :disabled t
