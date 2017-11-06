@@ -137,6 +137,8 @@ Bring up the compilation buffer with =C-x c=
     (message "Last compilation buffer is killed.")))
 
 (global-set-key (kbd "C-x c") #'eos/last-compilation-buffer)
+
+(setq compilation-scroll-output 'first-error)
 #+END_SRC
 
 Also, you don't need to prompt me about saving files for compilation, just do it.
