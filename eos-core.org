@@ -86,8 +86,8 @@ default, so set the threshold up higher:
 (setq gc-cons-threshold (* 50 1024 1024)) ;; 50 mb
 ;; Allow font-lock-mode to do background parsing
 (setq jit-lock-defer-time nil
-      ;; jit-lock-stealth-nice 0.1
-      jit-lock-stealth-time 1
+      jit-lock-stealth-nice 0.1
+      jit-lock-stealth-time 0.2
       jit-lock-stealth-verbose nil)
 #+END_SRC
 
