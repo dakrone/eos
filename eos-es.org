@@ -139,7 +139,14 @@ So I configure prodigy like so:
     :command "gradle"
     :args '("run")
     :tags '(work es)
-    :port 9200))
+    :port 9200)
+  (prodigy-define-service
+    :name "Simple HTTP server"
+    :cwd "~/"
+    :command "python"
+    :args '("-m" "SimpleHTTPServer" "8000")
+    :port 8000
+    :tags '(http)))
 #+END_SRC
 
 * ESVM configuration
