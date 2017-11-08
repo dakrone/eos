@@ -37,7 +37,7 @@ The all-seeing eye of Sauron
   (setq sauron-modules
         '(sauron-compilation
           sauron-dbus
-          sauron-elfeed
+          ;; sauron-elfeed
           sauron-erc
           sauron-mu4e
           sauron-notifications
