@@ -427,15 +427,16 @@ I restart emacs a lot, and it is nice to have the history of things like =M-x=
 saved across those sessions. =savehist= mode gives us that.
 
 #+begin_src emacs-lisp
-(require 'savehist)
-(setq savehist-file (concat user-emacs-directory "savehist"))
-(savehist-mode 1)
-(setq savehist-save-minibuffer-history 1)
-(setq savehist-additional-variables
-      '(kill-ring
-        search-ring
-        regexp-search-ring))
-(setq-default save-place t)
+;; (require 'savehist)
+;; (setq savehist-file (concat user-emacs-directory "savehist"))
+;; (savehist-mode 1)
+;; (setq savehist-save-minibuffer-history 1)
+;; (setq savehist-additional-variables
+;;       '(kill-ring
+;;         search-ring
+;;         regexp-search-ring))
+(save-place-mode 1)
+;; (setq-default save-place t)
 #+end_src
 
 Toggle line wrapping with =C-x C-l=
