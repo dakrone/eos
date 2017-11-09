@@ -83,12 +83,29 @@ We don't really need to garbage collect as frequently as Emacs would like to by
 default, so set the threshold up higher:
 
 #+BEGIN_SRC emacs-lisp
-(setq gc-cons-threshold (* 50 1024 1024)) ;; 50 mb
-;; Allow font-lock-mode to do background parsing
-(setq jit-lock-defer-time nil
-      jit-lock-stealth-nice 0.1
-      jit-lock-stealth-time 0.2
-      jit-lock-stealth-verbose nil)
+(defvar eos/default-gc-threshold (* 20 1024 1024)
+  "Default `gc-cons-threshold' after startup")
+
+;; Set to `t' to display GC messages
+(setq garbage-collection-messages nil)
+
+;; 100mb during startup
+(setq gc-cons-threshold (* 100 1024 1024))
+
+;; set back to default after startup finishes
+(add-hook 'after-init-hook
+          (lambda ()
+            (message "Resetting garbage collection..")
+            (setq gc-cons-threshold eos/default-gc-threshold)))
+
+(defun eos/minibuffer-setup-hook ()
+  (setq gc-cons-threshold (* 100 1024 1024)))
+
+(defun eos/minibuffer-exit-hook ()
+  (setq gc-cons-threshold eos/default-gc-threshold))
+
+(add-hook 'minibuffer-setup-hook #'eos/minibuffer-setup-hook)
+(add-hook 'minibuffer-exit-hook #'eos/minibuffer-exit-hook)
 #+END_SRC
 
 Wait a bit longer than the default (0.5 seconds) before assuming Emacs is idle
