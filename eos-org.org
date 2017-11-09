@@ -2236,7 +2236,8 @@ automatically updated the next time I look at the agenda.
 
 #+BEGIN_SRC emacs-lisp
 ;; Automatically save all org files every minute
-(run-at-time "00:59" 3600 'org-save-all-org-buffers)
+(eval-after-load "org"
+  (run-at-time "00:59" 3600 'org-save-all-org-buffers))
 #+END_SRC
 
 * Org-mode look & feel
