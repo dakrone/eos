@@ -290,6 +290,7 @@ responsiveness, so I go back and forth with it.
 #+BEGIN_SRC emacs-lisp
 (use-package smart-mode-line
   :ensure t
+  :disabled t
   :init
   (if (eq eos/background 'dark)
       (setq sml/theme eos/background)
@@ -313,7 +314,6 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 #+BEGIN_SRC emacs-lisp
 (use-package spaceline
   :ensure t
-  :disabled t
   :init
   (setq powerline-default-separator 'arrow-fade
         spaceline-minor-modes-separator " ")
@@ -337,6 +337,7 @@ And then there's [[https://github.com/domtronn/spaceline-all-the-icons.el][Space
 (use-package spaceline-all-the-icons
   :after spaceline
   :ensure t
+  :disabled t
   :config
   (spaceline-all-the-icons-theme)
   (spaceline-all-the-icons--setup-anzu))
