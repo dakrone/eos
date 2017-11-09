@@ -848,7 +848,9 @@ tool that it uses.
 (use-package pdf-tools
   :ensure t
   :when window-system
-  :init (pdf-tools-install))
+  :init (pdf-tools-install)
+  :config
+  (setq pdf-view-resize-factor 1.1))
 #+END_SRC
 
 Expand region is useful it's insane.
