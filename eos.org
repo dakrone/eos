@@ -284,6 +284,8 @@ because we require it everywhere else.
 (require 'use-package nil t)
 ;; Set to t to debug package loading or nil to disable
 (setq use-package-verbose nil)
+;; Set to t to always defer package loading
+(setq use-package-always-defer t)
 #+END_SRC
 
 ** =el-get= setup
