@@ -972,7 +972,8 @@ And racer, for rust completion
   :init
   (use-package company-racer
     :ensure t
-    :init
+    :after company
+    :config
     (push 'company-racer company-backends))
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'rust-mode-hook #'eldoc-mode)
