@@ -39,6 +39,7 @@ current emacs if I'm already inside of emacs
 #+BEGIN_SRC emacs-lisp
 (use-package with-editor
   :ensure t
+  :commands with-editor-export-editor
   :init
   (progn
     (add-hook 'shell-mode-hook  'with-editor-export-editor)
@@ -142,6 +143,17 @@ Also, after eshell has loaded its options, let's load some other niceties like
 completion, prompt and term settings:
 
 #+BEGIN_SRC emacs-lisp
+;; See: https://github.com/kaihaosw/eshell-prompt-extras
+(use-package eshell-prompt-extras
+  :ensure t
+  :commands epe-theme-dakrone
+  :init
+  (progn
+    (setq eshell-highlight-prompt nil
+          epe-git-dirty-char " Ϟ"
+          ;; epe-git-dirty-char "*"
+          eshell-prompt-function 'epe-theme-dakrone)))
+
 (use-package eshell
   :commands (eshell eshell-command)
   :bind ("C-c m" . eshell)
@@ -284,16 +296,6 @@ See `eshell-prompt-regexp'."
   (if (boundp 'eshell-save-history-on-exit)
       ;; Don't ask, just save
       (setq eshell-save-history-on-exit t))
-
-  ;; See: https://github.com/kaihaosw/eshell-prompt-extras
-  (use-package eshell-prompt-extras
-    :ensure t
-    :init
-    (progn
-      (setq eshell-highlight-prompt nil
-            epe-git-dirty-char " Ϟ"
-            ;; epe-git-dirty-char "*"
-            eshell-prompt-function 'epe-theme-dakrone)))
 
   (defun eshell/magit ()
     "Function to open magit-status for the current directory"
