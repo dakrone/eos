@@ -16,7 +16,7 @@
 To start, decide between using meghanada, eclim, both, or neither
 
 #+BEGIN_SRC emacs-lisp
-(setq eos/use-meghanada t)
+(setq eos/use-meghanada nil)
 (setq eos/use-eclim nil)
 #+END_SRC
 
