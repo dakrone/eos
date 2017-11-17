@@ -59,6 +59,7 @@ The all-seeing eye of Sauron
         sauron-prio-erc-default 1
         sauron-prio-erc-privmsg-root 1
         sauron-prio-erc-privmsg-default 1
+        sauron-zeroconf-priority 2
         sauron-prio-org-minutes-left-list '((10 3) (2 4))
         sauron-frame-geometry "120x36+0+0")
 
