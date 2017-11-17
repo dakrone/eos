@@ -64,7 +64,10 @@ To start, some global org-mode bindings
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c l") 'org-store-link)
 (global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c b") 'org-iswitchb)
+(when (fboundp 'org-iswitchb)
+  (global-set-key (kbd "C-c b") 'org-iswitchb))
+(when (fboundp 'org-switchb)
+  (global-set-key (kbd "C-c b") 'org-switchb))
 (global-set-key (kbd "C-c c") 'org-capture)
 #+END_SRC
 
