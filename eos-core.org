@@ -1467,6 +1467,7 @@ It's helpful to know what key to press when a delay happens. Which-key is nice f
 #+BEGIN_SRC emacs-lisp
 (use-package which-key
   :ensure t
+  :diminish which-key-mode
   :init
   (which-key-mode 1))
 #+END_SRC
