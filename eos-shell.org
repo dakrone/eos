@@ -311,7 +311,7 @@ See `eshell-prompt-regexp'."
     (with-eval-after-load 'company
       (setq-local company-backends '(company-eshell-autosuggest))
       (setq-local company-frontends '(company-preview-frontend))))
-  (add-hook 'eshell-mode-hook 'setup-company-eshell-autosuggest))
+  (add-hook 'eshell-mode-hook 'eos/setup-company-eshell-autosuggest))
 #+END_SRC
 
 I use a dedicated buffer for connection to my desktop, with a binding of =C-x
