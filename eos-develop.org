@@ -151,6 +151,8 @@ Need to be able to have buffers shared between machines with Syncthing
 
 #+BEGIN_SRC emacs-lisp
 (global-auto-revert-mode t)
+(diminish 'global-auto-revert-mode)
+(diminish 'auto-revert-mode)
 #+END_SRC
 
 Uses =M-n= and =M-p= to jump between the same variable in multiple places
