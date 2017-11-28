@@ -43,7 +43,8 @@ The all-seeing eye of Sauron
           sauron-notifications
           sauron-org
           sauron-twittering
-          sauron-zeroconf))
+          ;; sauron-zeroconf
+          ))
 
   (when (not (boundp 'dbus-compiled-version))
     ;; Remove dbus if it is not compiled
