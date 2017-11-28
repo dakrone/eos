@@ -74,6 +74,7 @@
           ("https://icosahedron.website/users/technomancy.atom" blog microblog)
           ("http://stapletonion.com/feed/" blog)
           ("http://outoflivingbooks.com/feed/" blog)
+          ("http://slatestarcodex.com/feed/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
