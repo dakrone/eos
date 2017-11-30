@@ -314,6 +314,7 @@ This is the modeline built into spacemacs, but a separate package. Worth a try, 
 #+BEGIN_SRC emacs-lisp
 (use-package spaceline
   :ensure t
+  :disabled t
   :init
   (setq powerline-default-separator 'arrow-fade
         spaceline-minor-modes-separator " ")
