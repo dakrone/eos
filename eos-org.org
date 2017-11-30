@@ -2130,6 +2130,7 @@ to use the development (read: local) version of it when available.
    (haskell . t)
    (ruby . t)
    (python . t)
+   (ipython . t)
    (gnuplot . t)
    (plantuml . t)
    (ditaa . t)
