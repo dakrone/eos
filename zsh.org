@@ -63,6 +63,9 @@ export RUST_SRC_PATH=~/src/rust/rustc-1.9.0/src
 # rbenv
 export PATH=~/.rbenv/bin:$PATH
 
+# anaconda3
+export PATH=$PATH:~/anaconda3/bin
+
 # Virtualenvwrapper environment home
 export WORKON_HOME=~/.venvs
 if [ -d "$WORKON_HOME" ]; then
