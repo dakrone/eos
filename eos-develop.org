@@ -819,13 +819,14 @@ I'd also like to (eventually) do some data science-y things with Python, so the 
 is supposed to be nice for that. I certainly hope it's better than gnuplot is.
 
 #+BEGIN_SRC emacs-lisp
-(use-package ob-ipython
-  :ensure t
-  :config
-  (use-package company
+(when (executable-find "jupyter")
+  (use-package ob-ipython
+    :ensure t
     :config
-    (add-to-list 'company-backends 'company-ob-ipython))
-  (add-to-list 'org-latex-minted-langs '(ipython "python")))
+    (use-package company
+      :config
+      (add-to-list 'company-backends 'company-ob-ipython))
+    (add-to-list 'org-latex-minted-langs '(ipython "python"))))
 #+END_SRC
 
 I'm using the [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]] package for managing these
