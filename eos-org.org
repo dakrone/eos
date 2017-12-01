@@ -2101,11 +2101,28 @@ to use the development (read: local) version of it when available.
 :CUSTOM_ID: h:56e1f704-96d7-4769-9e18-db47ce9d50e4
 :END:
 
+First, let's make sure some things I use always exist
+
 #+BEGIN_SRC emacs-lisp
-;; org-babel stuff
 (use-package ob-clojure :ensure clojure-mode)
 (use-package ob-elasticsearch :ensure es-mode)
+#+END_SRC
 
+Then, some magic from [[https://emacs.stackexchange.com/questions/20577/org-babel-load-all-languages-on-demand][StackOverflow]] about loading the org-babel language magically when executed
+
+#+BEGIN_SRC emacs-lisp
+(defadvice org-babel-execute-src-block (around load-language nil activate)
+  "Load language if needed"
+  (let ((language (org-element-property :language (org-element-at-point))))
+    (unless (cdr (assoc (intern language) org-babel-load-languages))
+      (add-to-list 'org-babel-load-languages (cons (intern language) t))
+      (org-babel-do-load-languages 'org-babel-load-languages org-babel-load-languages))
+    ad-do-it))
+#+END_SRC
+
+And finally, the other configuration settings
+
+#+BEGIN_SRC emacs-lisp
 ;; don't run stuff automatically on export
 (setq org-export-babel-evaluate nil
       ;; always enable noweb, results as code and exporting both
@@ -2118,23 +2135,17 @@ to use the development (read: local) version of it when available.
       ;; I don't want to be prompted on every code block evaluation
       org-confirm-babel-evaluate nil)
 
-;; Load the languages we want to allow execution of
+;; Load the languages we want to allow execution of, note that other languages
+;; will be automatically loaded using the advice around
+;; `org-babel-execute-src-block'
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((emacs-lisp . t)
    (elasticsearch . t)
    (clojure . t)
-   (dot . t)
    (shell . t)
-   (js . t)
-   (haskell . t)
    (ruby . t)
-   (python . t)
-   (ipython . t)
-   (gnuplot . t)
-   (plantuml . t)
-   (ditaa . t)
-   (latex . t)))
+   (python . t)))
 
 ;; this is where Fedora installs it, YMMV
 (setq org-plantuml-jar-path "/usr/share/java/plantuml.jar")
