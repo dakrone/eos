@@ -53,7 +53,7 @@ export PATH=$PATH:~/node_modules/.bin
 # Cask
 export PATH=$PATH:~/.cask/bin
 
-# Stack/cabal/haskell
+# Stack/cabal/haskell/pip
 export PATH=$PATH:~/.local/bin:~/.cabal/bin
 
 # Cargo/rustup
