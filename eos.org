@@ -279,7 +279,7 @@ installation/configuration, in particular, use-package needs to be installed
 because we require it everywhere else.
 
 #+BEGIN_SRC emacs-lisp
-(install-pkgs '(use-package))
+(install-pkgs '(use-package diminish))
 ;; Load use-package, used for loading packages everywhere else
 (require 'use-package nil t)
 ;; Set to t to debug package loading or nil to disable
