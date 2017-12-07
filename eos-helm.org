@@ -68,6 +68,30 @@ bindings I use more frequently:
    ("C-x b" . helm-mini)
    ("C-h t" . helm-world-time))
   :init
+  (defvar eos/helm-display-help-buffer-regexp '("*.*Helm.*Help.**"))
+  (defvar eos/helm-display-buffer-regexp
+    `("*.*helm.**"
+      (display-buffer-in-side-window)
+      (inhibit-same-window . t)
+      (side . bottom)
+      (window-width . 0.6)
+      (window-height . 0.4)))
+
+  (defun eos/display-helm-window (buffer)
+    "Display the Helm window."
+    (let ((display-buffer-alist
+           (list eos/helm-display-help-buffer-regexp
+                 ;; this or any specialized case of Helm buffer must be
+                 ;; added AFTER `eos/helm-display-buffer-regexp'.
+                 ;; Otherwise, `eos/helm-display-buffer-regexp' will
+                 ;; be used before
+                 ;; `eos/helm-display-help-buffer-regexp' and display
+                 ;; configuration for normal Helm buffer is applied for helm
+                 ;; help buffer, making the help buffer unable to be
+                 ;; displayed.
+                 eos/helm-display-buffer-regexp)))
+      (helm-default-display-buffer buffer)))
+
   (setq helm-grep-default-command
         "grep -a -d skip %e -n%cH -e %p %f"
         ;; may be overridden if 'ggrep' is in path (see below)
@@ -86,13 +110,13 @@ bindings I use more frequently:
         ;; set to nil and use <C-backspace> to toggle it in helm-find-files
         helm-ff-auto-update-initial-value nil
         ;; if I change the resplit state, re-use my settings
-        ;; helm-reuse-last-window-split-state t
+        helm-reuse-last-window-split-state t
         ;; don't delete windows to always have 2
         helm-always-two-windows nil
         ;; open helm buffer inside current window, don't occupy whole other window
-        helm-split-window-in-side-p t
-        ;; fit buffer to width automatically
-        ;; fit-window-to-buffer-horizontally 1
+        helm-split-window-inside-p t
+        ;; display using my function, not helm's (helm is too slow here)
+        helm-display-function #'eos/display-helm-window
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
@@ -198,8 +222,9 @@ bindings I use more frequently:
 
   ;; Use popwin for helm buffers, otherwise I can't get helm to display the way
   ;; I want (at the bottom, without deleting windows)
-  (push '("^\*helm.+\*$" :regexp t :height 20) popwin:special-display-config)
-  (setq helm-display-function 'popwin:pop-to-buffer)
+  ;; (when (fboundp 'popwin:special-display-config)
+  ;;   (push '("^\*helm.+\*$" :regexp t :height 20) popwin:special-display-config)
+  ;;   (setq helm-display-function 'popwin:pop-to-buffer))
 
   ;; Shows helm input in the header instead of the footer
   (setq helm-echo-input-in-header-line t)

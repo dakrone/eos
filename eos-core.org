@@ -595,6 +595,7 @@ when they are popped up. I do this with Popwin
 #+BEGIN_SRC emacs-lisp
 (use-package popwin
   :ensure t
+  :disabled t ;; doesn't work well in emacs 26
   :commands popwin-mode
   :init (popwin-mode 1)
   :config
