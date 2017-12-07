@@ -244,7 +244,9 @@ Jumping to things, in a dumb way, with ag. It's usually bound to =C-M-g= (for
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
   :ensure t
-  :init (dumb-jump-mode))
+  :init (dumb-jump-mode)
+  :config
+  (setq dumb-jump-selector 'helm))
 #+END_SRC
 
 * Move-text
