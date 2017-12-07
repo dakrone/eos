@@ -244,9 +244,93 @@ Jumping to things, in a dumb way, with ag. It's usually bound to =C-M-g= (for
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
   :ensure t
+  :bind (("M-g o" . dumb-jump-go-other-window)
+         ("M-g j" . dumb-jump-go)
+         ("M-g i" . dumb-jump-go-prompt)
+         ("M-g x" . dumb-jump-go-prefer-external)
+         ("M-g z" . dumb-jump-go-prefer-external-other-window))
   :init (dumb-jump-mode)
   :config
   (setq dumb-jump-selector 'helm))
+#+END_SRC
+
+* Smart-jump
+
+I can hear what you're thinking "Wait. Right after dumb-jump you're configuring something called
+'smart-jump'? Why would you even have both?".
+
+Smart-jump lets you wrap a bunch of different jumping methods in a single command.
+
+#+BEGIN_SRC emacs-lisp
+(use-package smart-jump
+  :ensure t
+  :init
+  (require 'smart-jump)
+  ;; Java
+  ;; First try meghanada-mode if enabled
+  (smart-jump-register :modes 'java-mode
+                       :jump-fn 'meghanada-jump-declaration
+                       :pop-fn 'meghanada-back-jump
+                       :refs-fn 'meghanada-reference
+                       :should-jump t
+                       :heuristic 'point
+                       :async 700
+                       :order 1)
+  ;; Second, try helm-gtags
+  (smart-jump-register :modes 'java-mode
+                       :jump-fn 'helm-gtags-dwim
+                       :pop-fn 'helm-gtags-pop-stack
+                       :should-jump t
+                       :heuristic 'point
+                       :async 700
+                       :order 2)
+  ;; Third fall back to regular ggtags
+  (smart-jump-register :modes 'java-mode
+                       :jump-fn 'ggtags-find-tag-dwim
+                       :pop-fn 'ggtags-prev-mark
+                       :refs-fn 'ggtags-find-reference
+                       :should-jump t
+                       :heuristic 'point
+                       :async 700
+                       :order 3)
+
+  ;; Elisp
+  (smart-jump-register :modes '(emacs-lisp-mode lisp-interaction-mode)
+                       :jump-fn 'elisp-slime-nav-find-elisp-thing-at-point
+                       :pop-fn 'pop-tag-mark
+                       :should-jump t
+                       :heuristic 'error
+                       :async nil)
+  ;; C/C++
+  (smart-jump-register :modes '(c-mode c++-mode)
+                       :jump-fn 'ggtags-find-tag-dwim
+                       :pop-fn 'ggtags-prev-mark
+                       :refs-fn 'ggtags-find-reference
+                       :should-jump t
+                       :heuristic 'point
+                       :async 500)
+  ;; Clojure
+  (smart-jump-register :modes '(clojure-mode cider-mode cider-repl-mode)
+                       :jump-fn 'cider-find-var
+                       :pop-fn 'cider-pop-back
+                       :refs-fn 'cljr-find-usages
+                       :should-jump 'cider-connected-p
+                       :heuristic 'point
+                       :async 500)
+  ;; Javascript
+  (smart-jump-register :modes '(js2-mode))
+  ;; Python
+  (smart-jump-register :modes '(python-mode))
+  ;; Ruby
+  (smart-jump-register :modes '(ruby-mode))
+  ;; Haskell
+  (smart-jump-register :modes '(haskell-mode)
+                       :jump-fn 'intero-goto-definition
+                       :pop-fn 'xref-pop-marker-stack
+                       :refs-fn 'intero-uses-at
+                       :should-jump t
+                       :heuristic 'point
+                       :async nil))
 #+END_SRC
 
 * Move-text

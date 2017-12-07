@@ -243,7 +243,8 @@ I actually choose to do this because the fedora/debian/ubuntu version of
         helm-gtags-suggested-key-mapping t)
   (use-package helm-gtags
     :ensure t
-    :init (helm-gtags-mode t)
+    ;; not needed because of smart-jump
+    ;; :init (helm-gtags-mode t)
     :diminish "")
   ;; key bindings
   (define-key helm-gtags-mode-map (kbd "M-S") 'helm-gtags-select)
