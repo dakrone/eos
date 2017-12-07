@@ -164,6 +164,7 @@ bindings I use more frequently:
   (use-package helm-bookmark
     :bind ("C-x M-b" . helm-bookmarks)
     :init (use-package bookmark+ :ensure t))
+  (use-package projectile-ripgrep :ensure t)
   (use-package helm-projectile
     :ensure t
     :demand t ;; demand it be loaded!
@@ -172,7 +173,8 @@ bindings I use more frequently:
                 ("d" . helm-projectile-find-dir)
                 ("f" . helm-projectile-find-file)
                 ("p" . helm-projectile-switch-project)
-                ("s s" . helm-projectile-ag))
+                ("s s" . helm-projectile-ag)
+                ("s r" . projectile-ripgrep))
     :init
     (setq projectile-switch-project-action 'helm-projectile)
     (helm-projectile-on)
