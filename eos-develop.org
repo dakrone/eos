@@ -812,6 +812,7 @@ keys, the custom hook only loads jedi when editing python files:
 (use-package python
   :defer t
   :config
+  (setq-default python-indent-offset 4)
   (define-key python-mode-map (kbd "<backtab>") 'python-back-indent))
 #+END_SRC
 
