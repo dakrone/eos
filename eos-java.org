@@ -244,14 +244,14 @@ I actually choose to do this because the fedora/debian/ubuntu version of
   (use-package helm-gtags
     :ensure t
     ;; not needed because of smart-jump
-    ;; :init (helm-gtags-mode t)
-    :diminish "")
-  ;; key bindings
-  (define-key helm-gtags-mode-map (kbd "M-S") 'helm-gtags-select)
-  (define-key helm-gtags-mode-map (kbd "M-.") 'helm-gtags-dwim)
-  (define-key helm-gtags-mode-map (kbd "M-,") 'helm-gtags-pop-stack)
-  (define-key helm-gtags-mode-map (kbd "C-c <") 'helm-gtags-previous-history)
-  (define-key helm-gtags-mode-map (kbd "C-c >") 'helm-gtags-next-history))
+    :init (helm-gtags-mode t)
+    :diminish ""
+    :bind (:map helm-gtags-mode-map
+                ("M-S" . helm-gtags-select)
+                ("M-." . helm-gtags-dwim)
+                ("M-," . helm-gtags-pop-stack)
+                ("C-c <" . helm-gtags-previous-history)
+                ("C-c >" . helm-gtags-next-history))))
 
 (defun eos/setup-ggtags ()
   (interactive)
