@@ -161,7 +161,7 @@ Fonts I may or may not use (in no particular order):
 
 #+BEGIN_SRC emacs-lisp
 ;; The original font height (so it can be restored too at a later time)
-(setq eos/original-height 105)
+(setq eos/original-height 130)
 
 (defun eos/setup-fonts ()
   (when (eq window-system 'x)
