@@ -251,7 +251,8 @@ I actually choose to do this because the fedora/debian/ubuntu version of
                 ("M-." . helm-gtags-dwim)
                 ("M-," . helm-gtags-pop-stack)
                 ("C-c <" . helm-gtags-previous-history)
-                ("C-c >" . helm-gtags-next-history))))
+                ("C-c >" . helm-gtags-next-history)))
+  (helm-gtags-mode t))
 
 (defun eos/setup-ggtags ()
   (interactive)
