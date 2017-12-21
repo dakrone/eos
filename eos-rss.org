@@ -112,6 +112,7 @@
           ("http://psy-lob-saw.blogspot.com/feeds/posts/default" blog java)
           ("http://vanillajava.blogspot.de/feeds/posts/default" blog java)
           ("http://feeds.feedburner.com/DanielMitterdorfer?format=xml" blog java)
+          ("http://www.nurkiewicz.com/feeds/posts/default" blog java)
 
           ;; Clojure
           ("http://feeds.feedburner.com/ClojureAndMe" clojure)
