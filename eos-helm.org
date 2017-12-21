@@ -66,7 +66,10 @@ bindings I use more frequently:
    ("C-x C-b" . helm-buffers-list)
    ("C-x C-r" . helm-mini)
    ("C-x b" . helm-mini)
-   ("C-h t" . helm-world-time))
+   ("C-h t" . helm-world-time)
+   ("M-g a" . helm-do-grep-ag)
+   ("M-g p" . helm-do-ag-project-root)
+   ("M-g g" . helm-grep-do-git-grep))
   :init
   (defvar eos/helm-display-help-buffer-regexp '("*.*Helm.*Help.**"))
   (defvar eos/helm-display-buffer-regexp
@@ -176,7 +179,10 @@ bindings I use more frequently:
     (setq helm-grep-truncate-lines nil)
     (define-key helm-grep-mode-map (kbd "<return>")  'helm-grep-mode-jump-other-window)
     (define-key helm-grep-mode-map (kbd "n")  'helm-grep-mode-jump-other-window-forward)
-    (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward))
+    (define-key helm-grep-mode-map (kbd "p")  'helm-grep-mode-jump-other-window-backward)
+    (when (executable-find "rg")
+      (setq helm-grep-ag-command "rg --color=always --colors 'match:fg:black' --colors 'match:bg:yellow' --smart-case --no-heading --line-number %s %s %s"
+            helm-grep-ag-pipe-cmd-switches '("--colors 'match:fg:black'" "--colors 'match:bg:yellow'"))))
   (use-package helm-man)
   (use-package helm-misc)
   (use-package helm-elisp)
@@ -386,10 +392,22 @@ bindings I use more frequently:
 
 #+RESULTS:
 
+These are required for some of the helm-project things
+
 #+BEGIN_SRC emacs-lisp
 (use-package helm-ls-git
   :ensure t
   :bind ("C-x C-d" . helm-browse-project))
+
+(use-package helm-ls-hg
+  :ensure t)
+#+END_SRC
+
+And searching through files
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-ag
+  :ensure t)
 #+END_SRC
 
 Best way to search in a buffer ever
@@ -454,8 +472,6 @@ Per-project navigation
   (use-package helm-projectile
     :ensure t
     :init
-    (use-package helm-ag
-      :ensure t)
     (use-package grep) ;; required for helm-ag to work properly
     (setq projectile-completion-system 'helm)
     ;; no fuzziness for projectile-helm
