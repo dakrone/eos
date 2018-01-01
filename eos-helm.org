@@ -69,7 +69,7 @@ bindings I use more frequently:
    ("C-h t" . helm-world-time)
    ("M-g a" . helm-do-grep-ag)
    ("M-g p" . helm-do-ag-project-root)
-   ("M-g g" . helm-grep-do-git-grep))
+   ("M-g G" . helm-grep-do-git-grep))
   :init
   (defvar eos/helm-display-help-buffer-regexp '("*.*Helm.*Help.**"))
   (defvar eos/helm-display-buffer-regexp
