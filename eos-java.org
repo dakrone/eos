@@ -149,6 +149,15 @@ work with the ES codebase.
              '("^:[^/.\n]+\\(/.+\\):\\([[:digit:]]+\\):" 1 2))
 #+END_SRC
 
+Let's make the Backspace key act more like Intellij's backspace, in that I almost never want to just
+go back, I want to remove a whole line
+
+#+BEGIN_SRC emacs-lisp
+(use-package smart-backspace
+  :ensure t
+  :bind ("<C-M-backspace>" . smart-backspace))
+#+END_SRC
+
 * Managing Java Imports with the =java-imports= Package
 :PROPERTIES:
 :CUSTOM_ID: java-imports
