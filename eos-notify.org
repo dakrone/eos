@@ -39,7 +39,7 @@ The all-seeing eye of Sauron
           sauron-dbus
           ;; sauron-elfeed
           sauron-erc
-          sauron-mu4e
+          ;; sauron-mu4e
           sauron-notifications
           sauron-org
           sauron-twittering
