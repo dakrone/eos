@@ -192,8 +192,7 @@ bindings I use more frequently:
   (use-package smex :ensure t)
   (use-package helm-smex :ensure t)
   (use-package helm-bookmark
-    :bind ("C-x M-b" . helm-bookmarks)
-    :init (use-package bookmark+ :ensure t))
+    :bind ("C-x M-b" . helm-bookmarks))
   (use-package projectile-ripgrep :ensure t)
   (use-package helm-projectile
     :ensure t
