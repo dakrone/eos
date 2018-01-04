@@ -86,16 +86,15 @@ As an alternative to magit-gh-pulls, there is magithub
 #+END_SRC
 
 * Visualizing git changes in a buffer
-Quite useful, as well as the =C-x n= and =C-x p= bindings.
+Quite useful, as well as the =C-x N= and =C-x P= bindings.
 
 #+BEGIN_SRC emacs-lisp
 (use-package git-gutter
   :ensure t
   :when window-system
   :defer t
-  :bind (("C-x P" . git-gutter:popup-hunk)
-         ("C-x p" . git-gutter:previous-hunk)
-         ("C-x n" . git-gutter:next-hunk)
+  :bind (("C-x P" . git-gutter:previous-hunk)
+         ("C-x N" . git-gutter:next-hunk)
          ("C-c G" . git-gutter:popup-hunk))
   :diminish ""
   :init
