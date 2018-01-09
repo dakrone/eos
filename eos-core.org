@@ -696,7 +696,7 @@ for my webserver, in case I want to manually copy things around.
 
 #+BEGIN_SRC emacs-lisp
 (use-package bookmark+
-  :ensure t
+  :load-path "site-lisp/bookmark+"
   :demand t
   :init (setq bmkp-replace-EWW-keys-flag t)
   :config

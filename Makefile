@@ -42,18 +42,24 @@ clean:
 init: initialize.sh
 initialize.sh: eos.org
 	bin/tangle eos.org
+
 install.sh: eos.org
 	bin/tangle eos.org
+
 run-init: init
 	zsh initialize.sh
 
 out/zshrc: zsh.org
 	bin/tangle zsh.org
+
 out/zshenv: zsh.org
 	bin/tangle zsh.org
 
 %.el: %.org
 	bin/tangle $<
+
+byte-compile-site-lisp: all
+	find site-lisp -name "*.el" -exec bin/byte-compile {} \;
 
 byte-compile-all: all
 	for f in *.el; do \
