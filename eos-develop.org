@@ -50,11 +50,9 @@ Highlight idle things, but only in certain modes
 (use-package idle-highlight-mode
   :ensure t
   :init
-  (add-hook 'java-mode-hook #'idle-highlight-mode)
-  (add-hook 'emacs-lisp-mode-hook #'idle-highlight-mode)
-  (add-hook 'clojure-lisp-mode-hook #'idle-highlight-mode)
+  (add-hook 'prog-mode-hook #'idle-highlight-mode)
   :config
-  (setq idle-highlight-idle-time 1.5))
+  (setq idle-highlight-idle-time 1.0))
 #+END_SRC
 
 Hide-show is kind of like Vim's folding, but manually done right now.
