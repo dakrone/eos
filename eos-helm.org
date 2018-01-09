@@ -442,6 +442,16 @@ Best way to search in a buffer ever
   :init (fset 'describe-bindings 'helm-descbinds))
 #+END_SRC
 
+Some flyspell and helm integration
+
+#+BEGIN_SRC emacs-lisp
+(use-package helm-flyspell
+  :ensure t
+  :after helm
+  :bind (:map flyspell-mode-map
+              ("C-;" . helm-flyspell-correct)))
+#+END_SRC
+
 * Projects with Helm and Helm-projectile
 :PROPERTIES:
 :CUSTOM_ID: helm-projectile
