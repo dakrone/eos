@@ -135,7 +135,7 @@ So I configure prodigy like so:
   (prodigy-define-service
     :name "ES gradle run"
     :cwd "~/es/elasticsearch"
-    :command "gradle"
+    :command "gradlew"
     :args '("run")
     :tags '(work es)
     :port 9200)
