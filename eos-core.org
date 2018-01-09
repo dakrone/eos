@@ -966,6 +966,32 @@ reasonable value
 (setq auto-revert-interval 10)
 #+END_SRC
 
+* Various Highlighting of words
+
+Sometimes I just want words to be highlighted. I've decided to use overlays for this, and [[https://github.com/ShingoFukuyama/ov.el][ov.el]] in
+particular.
+
+#+BEGIN_SRC emacs-lisp
+(use-package ov
+  :ensure t
+  :commands (ov-match ov-set)
+  :init
+
+  (defun eos/add-buffer-hl-overlays ()
+    (interactive)
+    ;; Highlight dakrone everywhere you see it
+    (ov-set (ov-match "dakrone") '(face '(:foreground "blue" :weight bold))))
+
+  (defun eos/add-file-hl-overlays ()
+    (interactive)
+    ;; Only when less than 100k characters
+    (when (< (buffer-size) 100000)
+      (eos/add-buffer-hl-overlays)))
+
+  (add-hook 'find-file-hook #'eos/add-file-hl-overlays)
+  (add-hook 'mu4e-view-mode #'eos/add-buffer-hl-overlays))
+#+END_SRC
+
 * GPG and gpg-agent (as well as SSH agent)
 :PROPERTIES:
 :CUSTOM_ID: gpg-agent
