@@ -66,6 +66,7 @@ bindings I use more frequently:
    ("C-x C-b" . helm-buffers-list)
    ("C-x C-r" . helm-mini)
    ("C-x b" . helm-mini)
+   ("C-x R" . helm-register)
    ("C-h t" . helm-world-time)
    ("M-g a" . helm-do-grep-ag)
    ("M-g p" . helm-do-ag-project-root)
