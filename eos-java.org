@@ -379,3 +379,15 @@ allows me to do it.
           (eos/run-java-tests-for-method)
         (eos/run-java-tests-for-class)))))
 #+END_SRC
+
+* Automatically disassemble class files
+:PROPERTIES:
+:CUSTOM_ID: h:4b087a83-74c3-4388-911b-5e0008515e9a
+:END:
+
+On the rare occasion I open a =.class= file, I want to be prompted to disassemble it.
+
+#+BEGIN_SRC emacs-lisp
+(use-package autodisass-java-bytecode
+  :ensure t)
+#+END_SRC
