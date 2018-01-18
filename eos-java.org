@@ -13,11 +13,12 @@
 :CUSTOM_ID: java
 :END:
 
-To start, decide between using meghanada, eclim, both, or neither
+To start, decide between using meghanada, eclim, lsp, all, some, or neither
 
 #+BEGIN_SRC emacs-lisp
 (setq eos/use-meghanada nil)
 (setq eos/use-eclim nil)
+(setq eos/use-lsp nil)
 #+END_SRC
 
 Java uses eclim and/or malabar to make life at least a little bit livable.
@@ -328,6 +329,30 @@ active development, so I'm trying it out.
     (add-hook 'java-mode-hook #'meghanada-mode)
     (add-hook 'java-mode-hook 'flycheck-mode)
     (bind-key "C-c M-." 'meghanada-jump-declaration java-mode-map)))
+#+END_SRC
+
+* LSP-mode and Java
+:PROPERTIES:
+:CUSTOM_ID: h:113092e8-da01-4e16-b80d-f2a6ad12fc51
+:END:
+
+LSP and Java doesn't really work too well right now, but I'm hopeful that in the future it will.
+
+#+BEGIN_SRC emacs-lisp
+(when (file-exists-p "~/.emacs.d/eclipse.jdt.ls")
+  (use-package lsp-mode
+    :ensure t
+    :init
+    (when eos/use-lsp
+      (use-package lsp-java
+        :ensure t
+        :init
+        (require 'lsp-java)
+        (require 'lsp-mode)
+        (add-hook 'java-mode-hook #'lsp-java-enable)))
+    :config
+    (use-package lsp-ui
+      :ensure t)))
 #+END_SRC
 
 * Running tests from a test file
