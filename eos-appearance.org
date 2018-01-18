@@ -90,6 +90,7 @@ balanced of color and pleasing to my eyes.
         (set-face-background 'whitespace-newline (face-attribute 'default :background)))
       (use-package tao-theme
         :ensure t
+        :disabled t
         :init
         (load-theme 'tao-yin t)
         (require 'git-gutter)
@@ -100,6 +101,17 @@ balanced of color and pleasing to my eyes.
         (set-face-attribute 'git-gutter-fr:modified nil :foreground "light blue")
         (set-face-attribute 'git-gutter:added nil :foreground "green")
         (set-face-attribute 'git-gutter-fr:added nil :foreground "green")
+        (require 'semantic/decorate/mode)
+        (require 'semantic/decorate/include)
+        (set-face-attribute 'semantic-tag-boundary-face nil :overline "grey25")
+        (set-face-attribute 'semantic-decoration-on-unknown-includes
+                            nil :background "grey15"))
+      (use-package nord-theme
+        :ensure t
+        :init
+        ;; Make comments 15% brighter
+        (setq nord-comment-brightness 15)
+        (load-theme 'nord t)
         (require 'semantic/decorate/mode)
         (require 'semantic/decorate/include)
         (set-face-attribute 'semantic-tag-boundary-face nil :overline "grey25")
