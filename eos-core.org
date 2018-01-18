@@ -1265,14 +1265,16 @@ _d_: debug-on-error             _+_: monitor jack in
 _D_: debug-on-quit              _-_: monitor jack out
 _f_: fixed/variable width mode  _0_: monitor reset
 _F_: auto-fill-mode             _R_: code reading mode
-_l_: toggle-truncate-lines
-_h_: hl-line-mode
+_l_: toggle-truncate-lines      _c_: color-identifiers-mode
+_h_: hl-line-mode               _a_: auto-fill-mode
 _r_: read-only-mode
 _v_: viewing-mode
 _n_: narrow-or-widen-dwim
 _g_: golden-ratio-mode
 _q_: quit
 "
+  ("a" auto-fill-mode :exit t)
+  ("c" color-identifiers-mode :exit t)
   ("d" toggle-debug-on-error :exit t)
   ("D" toggle-debug-on-quit :exit t)
   ("g" golden-ratio-mode :exit t)
