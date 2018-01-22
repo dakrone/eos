@@ -204,7 +204,7 @@ The =eos/height-modifier= can be added or subtracted to the size of the font for
 Emacs. I usually bind this in the Hydra toggle map.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/height-modifier 15
+(defvar eos/height-modifier 10
   "Default value to increment the size by when jacking into a monitor.")
 
 (defun eos/monitor-jack-in ()
