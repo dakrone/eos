@@ -81,7 +81,7 @@ bindings I use more frequently:
       (window-width . 0.6)
       (window-height . 0.4)))
 
-  (defun eos/display-helm-window (buffer)
+  (defun eos/display-helm-window (buffer &optional resume)
     "Display the Helm window."
     (let ((display-buffer-alist
            (list eos/helm-display-help-buffer-regexp
