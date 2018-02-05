@@ -89,6 +89,7 @@ SAVEHIST=5000
 export JAVA_HOME=/opt/java/current
 # ES uses Java 8 home if it exists
 export JAVA_8_HOME=/opt/java/current8
+export RUNTIME_JAVA_HOME=$JAVA_8_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 #+END_SRC
 
