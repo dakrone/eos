@@ -120,7 +120,15 @@ bindings I use more frequently:
         ;; open helm buffer inside current window, don't occupy whole other window
         helm-split-window-inside-p t
         ;; display using my function, not helm's (helm is too slow here)
-        helm-display-function #'eos/display-helm-window
+        ;; helm-display-function #'eos/display-helm-window
+        ;; display helm in a separate frame
+        helm-display-function 'helm-display-buffer-in-own-frame
+        ;; reuse frame so display is faster on Emacs 26+
+        helm-display-buffer-reuse-frame t
+        helm-display-buffer-width 144
+        helm-display-buffer-height 24
+        ;; use undecorated frame on Emacs 26+
+        helm-use-undecorated-frame-option t
         ;; don't check if the file exists on remote files
         helm-buffer-skip-remote-checking t
         ;; limit the number of displayed canidates
@@ -363,6 +371,7 @@ bindings I use more frequently:
         (":keystore-type - type of SSL keystore")
         (":length - manually specified length of body")
         (":max-redirects - maximum number of redirects to follow")
+        (":mime-subtype - type for multipart mime parts")
         (":multipart - vector of multipart options")
         (":oauth-token - oauth token")
         (":proxy-host - hostname of proxy server")
