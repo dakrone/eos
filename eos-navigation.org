@@ -263,6 +263,7 @@ Smart-jump lets you wrap a bunch of different jumping methods in a single comman
 
 #+BEGIN_SRC emacs-lisp
 (use-package smart-jump
+  :disabled t
   :ensure t
   :init
   (require 'smart-jump)
