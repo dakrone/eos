@@ -389,3 +389,42 @@ it how I want
 
 (global-set-key (kbd "M-V") 'eos/nav-mode/body)
 #+END_SRC
+
+* Search engines
+
+Frequently I want to search for a particular thing from Emacs (most of the time it's a class name,
+or a failure message, or something of that sort). Engine-mode does that.
+
+#+BEGIN_SRC emacs-lisp
+(use-package engine-mode
+  :ensure t
+  :defer 10
+  :init (engine-mode 1)
+  :config
+  ;; Use an external browser for these
+  (setq engine/browser-function 'browse-url-generic)
+
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+
+  (defengine elasticsearch
+    "https://github.com/elastic/elasticsearch/search?q=%s&type="
+    :keybinding "e")
+
+  (defengine x-pack
+    "https://github.com/elastic/x-pack-elasticsearch/search?q=%s&type="
+    :keybinding "x")
+
+  (defengine google-maps
+    "http://maps.google.com/maps?q=%s"
+    :keybinding "m")
+
+  (defengine stack-overflow
+    "https://stackoverflow.com/search?q=%s"
+    :keybinding "s")
+
+  (defengine wikipedia
+    "http://www.wikipedia.org/search-redirect.php?language=en&go=Go&search=%s"
+    :keybinding "w"))
+#+END_SRC
