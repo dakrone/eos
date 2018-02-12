@@ -619,19 +619,19 @@ that pretty easily.
         '(;; Elasticsearch-specific compilation commands
           ((s-contains? "es/elasticsearch" default-directory)
            . (("ES core compile"
-               "./gradlew :core:compileJava :core:compileTestJava --console=plain"
+               "./gradlew :server:compileJava :server:compileTestJava --console=plain"
                "~/es/elasticsearch")
               ("ES everything compile"
                "./gradlew compileJava compileTestJava precommit --console=plain"
                "~/es/elasticsearch")
               ("ES core unit test"
-               "./gradlew :core:test --console=plain"
+               "./gradlew :server:test --console=plain"
                "~/es/elasticsearch")
               ("ES core integ test"
-               "./gradlew :core:integTest --console=plain"
+               "./gradlew :server:integTest --console=plain"
                "~/es/elasticsearch")
               ("ES core check"
-               "./gradlew :core:check --console=plain"
+               "./gradlew :server:check --console=plain"
                "~/es/elasticsearch")
               ("ES documentation tests"
                "./gradlew :docs:check --console=plain"
@@ -640,7 +640,7 @@ that pretty easily.
                "./gradlew :distribution:integ-test-zip:integTest -Dtests.class=\"org.elasticsearch.test.rest.*Yaml*IT\" --console=plain"
                "~/es/elasticsearch")
               ("ES core precommit"
-               "./gradlew :core:precommit --console=plain"
+               "./gradlew :server:precommit --console=plain"
                "~/es/elasticsearch")
               ("ES precommit"
                "./gradlew precommit --console=plain"
@@ -654,7 +654,7 @@ that pretty easily.
           ;; X-pack specific compilation commands
           ((s-contains? "elasticsearch-extra/x-pack" default-directory)
            . (("x-pack compile"
-               "./gradlew :x-pack:elasticsearch:x-pack:compileJava :x-pack:elasticsearch:x-pack:compileTestJava --console=plain"
+               "./gradlew :x-pack-elasticsearch:plugin:compileJava :x-pack-elasticsearch:plugin:compileTestJava --console=plain"
                "~/es/elasticsearch-extra/x-pack-elasticsearch")
               ("x-pack everything compile"
                "./gradlew compileJava compileTestJava precommit --console=plain"
