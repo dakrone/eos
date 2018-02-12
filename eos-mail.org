@@ -74,6 +74,8 @@ to return the correct path depending on the account the email is from.
             mu4e-attachment-dir "~/Downloads"
             ;; don't show info about indexing new messages
             mu4e-hide-index-messages t
+            ;; don't show related messages in the header view
+            mu4e-headers-include-related nil
             ;; attempt to show images
             mu4e-view-show-images t
             ;; always show email addresses also
