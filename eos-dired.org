@@ -35,7 +35,7 @@ writable-dired mode is aawwweeeesssoooommee, it makes renames super easy.
     (add-to-list 'dired-omit-extensions ".DS_Store"))
   (customize-set-variable 'diredp-hide-details-initially-flag nil)
   (use-package dired+
-    :ensure t)
+    :ensure nil)
   (use-package dired-aux
     :init
     (use-package dired-async
