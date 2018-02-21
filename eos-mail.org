@@ -33,7 +33,6 @@ to return the correct path depending on the account the email is from.
   (when (file-exists-p "~/src/mu/mu4e")
     (add-to-list 'load-path "~/src/mu/mu4e")
     (use-package mu4e
-      :if window-system
       :commands (mu4e mu4e-view)
       :config
       (add-hook 'message-mode-hook 'turn-on-flyspell)
