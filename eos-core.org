@@ -897,7 +897,8 @@ sometimes I need to look at someone's 5gb log file.
 
 #+BEGIN_SRC emacs-lisp
 (use-package vlf-setup
-  :ensure vlf)
+  :ensure vlf
+  :init (require 'vlf-setup))
 #+END_SRC
 
 I use M-x =proced= a lot to get a top-like (or htop-like) display of processes,
