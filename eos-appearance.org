@@ -119,6 +119,7 @@ balanced of color and pleasing to my eyes.
                             nil :background "grey15")))
   (use-package tao-theme
     :ensure t
+    :disabled t
     :init
     (load-theme 'tao-yang t)
     (setq-default line-spacing 1)
@@ -132,7 +133,6 @@ balanced of color and pleasing to my eyes.
     (set-face-attribute 'git-gutter-fr:added nil :foreground "green"))
   (use-package dakrone-light-theme
     :ensure t
-    :disabled t
     :init (load-theme 'dakrone-light t)))
 #+END_SRC
 
