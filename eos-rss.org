@@ -98,6 +98,7 @@
           ("http://thinktheology.co.uk/rss" christianity)
           ("http://www.readingaugustine.com/?feed=rss2" blog christianity)
           ("http://www.theolatte.com/feed/atom/" christianity)
+          ("https://letterandliturgy.com/feed/" christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
