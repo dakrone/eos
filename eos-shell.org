@@ -24,6 +24,7 @@ run. I use it for the path on OSX and JAVA_HOME everywhere else.
   (setq exec-path-from-shell-variables '("JAVA_HOME"
                                          "JAVA_8_HOME"
                                          "RUNTIME_JAVA_HOME"
+                                         "ES_JAVA_OPTS"
                                          "PATH"
                                          "NVM_PATH"
                                          "WORKON_HOME"
