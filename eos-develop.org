@@ -622,7 +622,7 @@ that pretty easily.
                "./gradlew :server:compileJava :server:compileTestJava --console=plain"
                "~/es/elasticsearch")
               ("ES everything compile"
-               "./gradlew compileJava compileTestJava precommit --console=plain"
+               "./gradlew :server:compileJava :server:compileTestJava compileJava compileTestJava precommit --console=plain"
                "~/es/elasticsearch")
               ("ES core unit test"
                "./gradlew :server:test --console=plain"
