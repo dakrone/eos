@@ -75,7 +75,7 @@
           ("http://outoflivingbooks.com/feed/" blog)
           ("http://slatestarcodex.com/feed/" blog)
           ("http://quillette.com/feed/" blog)
-          ("https://alastairadversaria.com/feed/" blog)
+          ("http://www.baconbridge.com/feed/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
@@ -99,6 +99,7 @@
           ("http://www.readingaugustine.com/?feed=rss2" blog christianity)
           ("http://www.theolatte.com/feed/atom/" christianity)
           ("https://letterandliturgy.com/feed/" christianity)
+          ("https://alastairadversaria.com/feed/" blog christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
