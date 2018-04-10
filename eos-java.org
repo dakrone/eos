@@ -374,8 +374,8 @@ allows me to do it.
         (let* ((bName (buffer-name))
                (className (car (s-split "\\." bName)))
                (testType (if (s-ends-with? "Tests" className)
-                             ":core:test"
-                           ":core:integTest"))
+                             ":server:test"
+                           ":server:integTest"))
                (methodName "test") // TODO: get real test name
                (cmd (format "gradle %s -Dtests.class=*%s -Dtests.method=%s" testType className methodName))
                (buff (window-buffer (eos/popup-project-eshell))))
@@ -389,8 +389,8 @@ allows me to do it.
         (let* ((bName (buffer-name))
                (className (car (s-split "\\." bName)))
                (testType (if (s-ends-with? "Tests" className)
-                             ":core:test"
-                           ":core:integTest"))
+                             ":server:test"
+                           ":server:integTest"))
                (cmd (format "gradle %s -Dtests.class=*%s" testType className))
                (buff (window-buffer (eos/popup-project-eshell))))
           (with-current-buffer buff
