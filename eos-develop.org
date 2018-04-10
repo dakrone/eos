@@ -634,7 +634,7 @@ that pretty easily.
                "./gradlew :server:check --console=plain"
                "~/es/elasticsearch")
               ("ES backport check"
-               "./gradlew compileJava compileTestJava precommit :server:check --console=plain"
+               "./gradlew :server:compileJava :server:compileTestJava compileJava compileTestJava precommit :server:check --console=plain"
                "~/es/elasticsearch")
               ("ES documentation tests"
                "./gradlew :docs:check --console=plain"
