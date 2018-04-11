@@ -124,6 +124,8 @@ First, a function to be called when eshell-mode is entered
   (interactive)
   ;; turn off semantic-mode in eshell buffers
   (semantic-mode -1)
+  ;; turn on subword mode
+  (subword-mode 1)
   ;; turn off hl-line-mode
   (when (fboundp 'eos/turn-off-hl-line)
     (eos/turn-off-hl-line))
