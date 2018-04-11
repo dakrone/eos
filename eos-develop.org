@@ -480,7 +480,8 @@ Now, the smartparens configuration:
     (sp-local-pair "/*" "*/" :post-handlers '((" | " "SPC")
                                               ("* ||\n[i]" "RET"))))
 
-  (smartparens-global-strict-mode 1))
+  (smartparens-global-strict-mode 1)
+  (add-hook 'eshell-mode-hook 'turn-on-smartparens-mode))
 #+END_SRC
 
 * Paredit everywhere
