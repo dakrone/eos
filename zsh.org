@@ -87,9 +87,12 @@ SAVEHIST=5000
 
 # Default JAVA_HOME
 export JAVA_HOME=/opt/java/current
-# ES uses Java 8 home if it exists
-export JAVA_8_HOME=/opt/java/current8
-export RUNTIME_JAVA_HOME=$JAVA_8_HOME
+# Elasticsearch dev requires quite a few others
+export JAVA7_HOME=/opt/java/current7
+export JAVA8_HOME=/opt/java/current8
+export JAVA9_HOME=/opt/java/current9
+export JAVA10_HOME=/opt/java/current10
+export RUNTIME_JAVA_HOME=$JAVA8_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
 export ES_JAVA_OPTS="-XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=75 -XX:-UseConcMarkSweepGC -XX:-UseCMSInitiatingOccupancyOnly"

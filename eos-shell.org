@@ -22,7 +22,10 @@ run. I use it for the path on OSX and JAVA_HOME everywhere else.
   :defer t
   :init
   (setq exec-path-from-shell-variables '("JAVA_HOME"
-                                         "JAVA_8_HOME"
+                                         "JAVA7_HOME"
+                                         "JAVA8_HOME"
+                                         "JAVA9_HOME"
+                                         "JAVA10_HOME"
                                          "RUNTIME_JAVA_HOME"
                                          "ES_JAVA_OPTS"
                                          "PATH"
