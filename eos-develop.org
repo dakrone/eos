@@ -641,7 +641,7 @@ that pretty easily.
                "./gradlew :docs:check --console=plain"
                "~/es/elasticsearch")
               ("ES REST tests"
-               "./gradlew :distribution:integ-test-zip:integTest -Dtests.class=\"org.elasticsearch.test.rest.*Yaml*IT\" --console=plain"
+               "./gradlew :distribution:archives:integ-test-zip:integTest -Dtests.class=\"org.elasticsearch.test.rest.*Yaml*IT\" --console=plain"
                "~/es/elasticsearch")
               ("ES core precommit"
                "./gradlew :server:precommit --console=plain"
@@ -654,21 +654,19 @@ that pretty easily.
                "~/es/elasticsearch/qa")
               ("ES check all"
                "./gradlew check --console=plain"
-               "~/es/elasticsearch")))
-          ;; X-pack specific compilation commands
-          ((s-contains? "elasticsearch-extra/x-pack" default-directory)
-           . (("x-pack compile"
-               "./gradlew :x-pack-elasticsearch:plugin:compileJava :x-pack-elasticsearch:plugin:compileTestJava --console=plain"
-               "~/es/elasticsearch-extra/x-pack-elasticsearch")
+               "~/es/elasticsearch")
+              ("x-pack compile"
+               "./gradlew :x-pack:plugin:compileJava :x-pack:plugin:compileTestJava --console=plain"
+               "~/es/elasticsearch/x-pack")
               ("x-pack everything compile"
                "./gradlew compileJava compileTestJava precommit --console=plain"
-               "~/es/elasticsearch-extra/x-pack-elasticsearch")
+               "~/es/elasticsearch/x-pack")
               ("x-pack precommit"
                "./gradlew precommit --console=plain"
-               "~/es/elasticsearch-extra/x-pack-elasticsearch")
+               "~/es/elasticsearch/x-pack")
               ("x-pack check"
                "./gradlew check --console=plain"
-               "~/es/elasticsearch-extra/x-pack-elasticsearch")))
+               "~/es/elasticsearch/x-pack")))
           ;; Java compilation commands
           (java-mode
            . (("ant compile" .
