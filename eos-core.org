@@ -1386,6 +1386,7 @@ And finally, the main EOS Hydra for entry:
   [_c_] Multi-compile    [_R_] RSS       [`] Errors
   [_d_] Downloads        [_D_] Debbugs   [_C_] ES-CC
   [_b_] Project's Eshell [_S_] Smerge    [_B_] Bookmarks
+  [_+_] Start profiling  [_-_] End profiling and report
   [_q_] quit
 "
 
@@ -1408,6 +1409,8 @@ And finally, the main EOS Hydra for entry:
   ("R" elfeed :exit t)
   ("s" eos/hydra-skeleton/body :exit t)
   ("S" eos/hydra-smerge/body :exit t)
+  ("+" (profiler-start 'cpu) :exit t)
+  ("-" (progn (profiler-report) (profiler-stop)) :exit t)
   ("p" proced :exit t)
   ("P" prodigy :exit t)
   ("W" wttrin :exit t)
