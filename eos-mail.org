@@ -359,7 +359,7 @@ passed in. Also supports ignoring the msg at the point."
               ("maildir:/elastic/Inbox"      "Elastic"              ?s)
               ("maildir:/gmail/Inbox"        "Gmail"                ?g)
               ("maildir:/elastic/github"     "Issues (github)"      ?i)
-              ("maildir:/elastic/Inbox OR maildir:/gmail/Inbox OR maildir:/fastmail/Inbox"
+              ("maildir:/elastic/Inbox OR maildir:/elastic/github OR maildir:/gmail/Inbox OR maildir:/fastmail/Inbox"
                "All Mail" ?a)))
 
       ;; start mu4e
