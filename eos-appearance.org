@@ -186,6 +186,11 @@ Fonts I may or may not use (in no particular order):
 
 (when (eq window-system 'x)
   (add-hook 'after-init-hook #'eos/setup-fonts))
+
+;; Prevent crashing Emacs on colored Emoji
+;; See: https://debbugs.gnu.org/cgi/bugreport.cgi?bug=30045
+(add-to-list 'face-ignored-fonts "Noto Color Emoji")
+(add-to-list 'face-ignored-fonts "Noto Color")
 #+END_SRC
 
 ** Configuration for monitor switching
