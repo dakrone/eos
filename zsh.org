@@ -94,8 +94,6 @@ export JAVA9_HOME=/opt/java/current9
 export JAVA10_HOME=/opt/java/current10
 export RUNTIME_JAVA_HOME=$JAVA8_HOME
 export PATH=$JAVA_HOME/bin:$PATH
-
-export ES_JAVA_OPTS="-XX:+UseG1GC -XX:InitiatingHeapOccupancyPercent=75 -XX:-UseConcMarkSweepGC -XX:-UseCMSInitiatingOccupancyOnly"
 #+END_SRC
 
 I read OS and machine-specific things in .zshenv, usually because they're pretty
