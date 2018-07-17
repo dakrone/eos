@@ -472,9 +472,9 @@ Per-project navigation
 (use-package projectile
   :ensure t
   :defer 5
-  :commands projectile-global-mode
+  :commands projectile-mode
   :diminish projectile-mode
-  :init (add-hook 'after-init-hook #'projectile-global-mode)
+  :init (add-hook 'after-init-hook #'projectile-mode)
   :config
   (bind-key "C-c p b" #'projectile-switch-to-buffer #'projectile-command-map)
   (bind-key "C-c p K" #'projectile-kill-buffers #'projectile-command-map)
