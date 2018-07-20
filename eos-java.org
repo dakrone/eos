@@ -377,7 +377,7 @@ allows me to do it.
                              ":server:test"
                            ":server:integTest"))
                (methodName "test") // TODO: get real test name
-               (cmd (format "gradle %s -Dtests.class=*%s -Dtests.method=%s" testType className methodName))
+               (cmd (format "./gradlew %s -Dtests.class=*%s -Dtests.method=%s" testType className methodName))
                (buff (window-buffer (eos/popup-project-eshell))))
           (with-current-buffer buff
             (insert cmd)))
@@ -391,7 +391,7 @@ allows me to do it.
                (testType (if (s-ends-with? "Tests" className)
                              ":server:test"
                            ":server:integTest"))
-               (cmd (format "gradle %s -Dtests.class=*%s" testType className))
+               (cmd (format "./gradlew %s -Dtests.class=*%s" testType className))
                (buff (window-buffer (eos/popup-project-eshell))))
           (with-current-buffer buff
             (insert cmd)))
