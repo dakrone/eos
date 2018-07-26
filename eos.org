@@ -341,6 +341,10 @@ quite sure how that would work for tangling, so for now it's hard-coded.
      ('error
       (message "EOS: Unable to load [%s] module: %s" ,module ex))))
 
+;; Override projectile's default map back to C-c p before it gets loaded by
+;; anything
+(setq projectile-keymap-prefix (kbd "C-c p"))
+
 ;; The EOS modules
 (try-load 'eos-core)
 ;; (try-load 'eos-ido)
