@@ -63,8 +63,8 @@ Always, *always*, prefer UTF-8, anything else is insanity
 (set-keyboard-coding-system 'utf-8)
 (set-selection-coding-system 'utf-8)
 (prefer-coding-system 'utf-8)
+(setq-default buffer-file-coding-system 'utf-8)
 (setq default-process-coding-system '(utf-8-unix . utf-8-unix))
-
 #+END_SRC
 
 Turn on syntax highlighting for all buffers:
@@ -255,7 +255,7 @@ Uniquify buffers, using angle brackets, so you get =foo= and
 #+BEGIN_SRC emacs-lisp
 (use-package uniquify
   :config
-  (setq uniquify-buffer-name-style 'post-forward-angle-brackets))
+  (setq uniquify-buffer-name-style 'forward))
 #+END_SRC
 
 Search (and search/replace) using regex by default, since that's
