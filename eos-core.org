@@ -1444,6 +1444,7 @@ Eyebrowse is a great package for workspaces in Emacs.
         eyebrowse-mode-line-separator " ")
   (eyebrowse-mode 1)
   (global-set-key (kbd "C-'") 'eyebrowse-next-window-config)
+  (global-set-key (kbd "C-\"") 'eyebrowse-prev-window-config)
   (add-hook 'after-init-hook #'eos/create-eyebrowse-setup))
 #+END_SRC
 

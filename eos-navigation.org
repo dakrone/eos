@@ -379,6 +379,7 @@ it how I want
   (">" end-of-buffer)
   ("." end-of-buffer)
   ("C-'" nil)
+  ("C-\"" nil)
   ("d" (when (y-or-n-p "Kill buffer?")
          (kill-this-buffer))
    :exit t)

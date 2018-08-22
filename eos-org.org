@@ -31,6 +31,7 @@ Org-mode likes to overwrite some of the keybindings I like to use, so I need to 
 
 #+BEGIN_SRC emacs-lisp
 (define-key org-mode-map (kbd "C-'") #'eyebrowse-next-window-config)
+(define-key org-mode-map (kbd "C-\"") #'eyebrowse-prev-window-config)
 (define-key org-mode-map (kbd "C-c C-x C-f") #'org-refile)
 (define-key org-mode-map (kbd "<C-tab>") #'other-window)
 (define-key org-mode-map (kbd "C-c M-p") 'org-babel-previous-src-block)
