@@ -947,6 +947,8 @@ Finally, use json-mode for JSON instead of js-mode
 (use-package json-mode
   :ensure t
   :mode "\\.json\\'"
+  :init
+  (add-hook 'json-mode-hook 'eos/turn-on-viewing-mode)
   :config
   (bind-key "C-c TAB" 'hs-toggle-hiding json-mode-map))
 #+END_SRC
