@@ -297,6 +297,7 @@ passed in. Also supports ignoring the msg at the point."
       (add-hook 'mu4e-view-mode-hook 'mlh-mu4e-notify)
       ;; wrap lines
       (add-hook 'mu4e-view-mode-hook 'visual-line-mode)
+      (add-hook 'mu4e-view-mode-hook #'eos/turn-on-hl-line)
 
       (defun mlh-mu4e-quit-and-notify ()
         "Bury the buffer and check for new messages. Mainly this is intended
