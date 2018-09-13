@@ -379,7 +379,7 @@ d=, if the buffer doesn't exist it is created.
         (default-directory "~/eos"))
     (eshell))
   (let ((eshell-buffer-name "*eshell downloads*")
-        (default-directory "~/Downloads"))
+        (default-directory "~/Downloads/videos"))
     (eshell)))
 
 (global-set-key (kbd "M-@") #'eos/create-all-eshell-buffers)
