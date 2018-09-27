@@ -170,6 +170,7 @@ balanced of color and pleasing to my eyes.
                             nil :background "grey15")))
   (use-package tao-theme
     :ensure t
+    :disabled t
     :init
     (setq tao-theme-use-height t
           tao-theme-use-sepia t)
@@ -187,7 +188,6 @@ balanced of color and pleasing to my eyes.
     (set-face-attribute 'git-gutter-fr:added nil :foreground "green"))
   (use-package dakrone-light-theme
     :ensure t
-    :disabled t
     :init (load-theme 'dakrone-light t)))
 #+END_SRC
 
