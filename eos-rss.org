@@ -19,6 +19,7 @@
   :init
   ;; URLs in no particular order
   (setq elfeed-use-curl t)
+  (add-hook 'elfeed-show-mode-hook #'eos/turn-on-hl-line)
   (setq elfeed-feeds
         '(;; Blogs
           ("http://harryrschwartz.com/atom.xml" blog)
