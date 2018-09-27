@@ -3,11 +3,14 @@
 set -eou pipefail
 
 URL=$1
-
-if [[ $URL == *"gametrailers.com"* ]]; then
-    echo "Downloading from Gametrailers..."
-    youtube-dl "$1" -o "gt_$2_%(title)s-%(id)s.%(ext)s" --restrict-filenames
-else
-    echo "Downloading generic..."
-    youtube-dl "$1" --restrict-filenames
-fi
+shift
+# youtube-dl --restrict-filenames --force-ipv4 --format best -o '%(uploader)s_%(title)s.%(ext)s' "$URL" $@
+youtube-dl --no-mtime --restrict-filenames --force-ipv4 -o '%(uploader)s_%(title)s.%(ext)s' "$URL" $@
+# youtube-dl --restrict-filenames \
+#            --force-ipv4 \
+#            --prefer-ffmpeg \
+#            --external-downloader aria2c \
+#            --external-downloader-args "-x 8 -j 8 -s 8 --summary-interval=10" \
+#            -o '%(uploader)s_%(title)s.%(ext)s' \
+#            "$URL" \
+#            $@
