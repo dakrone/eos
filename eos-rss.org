@@ -169,6 +169,7 @@
           "http://blog.chromium.org/feeds/posts/default"
           "http://classicprogrammerpaintings.tumblr.com/rss"
           "http://www.thepublicdiscourse.com/feed/"
+          "https://www.intellectualtakeout.org/rss/blog.xml"
           ))
   :config
   (define-key elfeed-show-mode-map (kbd "j") 'next-line)
