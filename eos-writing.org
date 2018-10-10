@@ -18,6 +18,14 @@ Used more often than you'd think...
 (global-set-key (kbd "C-c M-d") #'lod)
 #+END_SRC
 
+Sometimes I need to unfill paragraphs (the undo of =M-q=):
+
+#+BEGIN_SRC emacs-lisp
+(use-package unfill
+  :ensure t
+  :bind ("M-Q" . unfill-paragraph))
+#+END_SRC
+
 * Installing Markup Languages
 :PROPERTIES:
 :CUSTOM_ID: markup
