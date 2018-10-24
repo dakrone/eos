@@ -4,4 +4,4 @@ set -eou pipefail
 
 URL=$1
 
-streamlink $1 source
+streamlink -p mpv $1 best
