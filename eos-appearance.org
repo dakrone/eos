@@ -26,7 +26,7 @@ well as the general theme for look-and-feel things.
 (defvar eos/fringe-width 12
   "The fringe width to use.")
 
-(defvar eos/default-font-height 130
+(defvar eos/default-font-height 170
   "The default font height to use.")
 
 (defvar eos/font "Iosevka Slab"
@@ -222,13 +222,13 @@ Fonts I may or may not use (in no particular order):
 
 #+BEGIN_SRC emacs-lisp
 ;; The original font height (so it can be restored too at a later time)
-(setq eos/original-height 130)
+(setq eos/original-height 170)
 
 (defun eos/setup-fonts ()
   (when (or (display-graphic-p) (daemonp))
     (with-demoted-errors "FONT ERROR: %s"
-      (set-face-attribute 'default nil :height eos/default-font-height :family eos/font)
-      (set-face-attribute 'fixed-pitch nil :family eos/font)
+      (set-face-attribute 'default nil :height eos/original-height :family eos/font)
+      (set-face-attribute 'fixed-pitch nil :height eos/original-height :family eos/font)
       (when eos/variable-pitch-font
         (set-face-attribute 'variable-pitch nil :family eos/variable-pitch-font))))
   ;; (when (eq window-system 'x)
