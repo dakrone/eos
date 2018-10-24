@@ -219,7 +219,7 @@ See `eshell-prompt-regexp'."
           (setq eshell-history-global-ring eshell-history-ring))
         (unless eshell-history-ring (setq eshell-history-global-ring (make-ring eshell-history-size))))
       (setq eshell-history-ring eshell-history-global-ring))
-    (add-hook 'eshell-mode-hook 'eshell-hist-use-global-history)
+    ;; (add-hook 'eshell-mode-hook 'eshell-hist-use-global-history)
 
     (setq eshell-cmpl-cycle-completions nil
           ;; auto truncate after 12k lines
