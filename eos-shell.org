@@ -445,8 +445,8 @@ alias xanadu2org rsync -azP --delete xanadu:~/org/ ~/org
 alias xp cd ~/es/elasticsearch-extra/x-pack-elasticsearch
 alias es cd ~/es/elasticsearch
 alias dtop dstat -cdnpmgs --top-bio --top-cpu --top-mem
-alias resttest gradle :distribution:integ-test-zip:integTest -Dtests.class="org.elasticsearch.test.rest.*Yaml*IT"
-alias buildes gradle :distribution:zip:assemble && find . -name "elasticsearch-*.zip"
+alias resttest ./gradlew :distribution:integ-test-zip:integTest -Dtests.class="org.elasticsearch.test.rest.*Yaml*IT"
+alias buildes ./gradlew -p distribution/archives/tar assemble --parallel && find . -name "elasticsearch-*.zip"
 alias gg gw
 #+END_SRC
 
