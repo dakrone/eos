@@ -846,7 +846,7 @@ java-mode applies the color-identifiers configuration.
   ;; (add-hook 'java-mode-hook #'color-identifiers-mode)
   (add-hook 'emacs-lisp-mode-hook #'color-identifiers-mode)
   :config
-  (global-color-identifiers-mode 1)
+  ;; (global-color-identifiers-mode 1)
   )
 #+END_SRC
 
