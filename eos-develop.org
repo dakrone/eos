@@ -205,7 +205,6 @@ development, so let's try that out.
   :ensure t
   :init
   (require 'outshine)
-  (add-hook 'outline-minor-mode-hook 'outshine-hook-function)
   (add-hook 'emacs-lisp-mode-hook 'outline-minor-mode)
   (add-hook 'clojure-mode-hook 'outline-minor-mode))
 #+END_SRC
