@@ -212,8 +212,10 @@ This will have to be downloaded from http://sdkman.io, there is no package for i
 Let's also add it to the tramp remote path
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'tramp-remote-path "/home/hinmanm/.sdkman/candidates/gradle/current/bin")
-(add-to-list 'tramp-remote-path "/home/hinmanm/.sdkman/candidates/groovy/current/bin")
+(eval-after-load "tramp"
+  '(progn
+     (add-to-list 'tramp-remote-path "/home/hinmanm/.sdkman/candidates/gradle/current/bin")
+     (add-to-list 'tramp-remote-path "/home/hinmanm/.sdkman/candidates/groovy/current/bin")))
 #+END_SRC
 
 * Configure GNU Global and Gtags
