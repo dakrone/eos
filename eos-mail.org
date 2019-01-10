@@ -37,7 +37,6 @@ to return the correct path depending on the account the email is from.
       :config
       (add-hook 'message-mode-hook 'turn-on-flyspell)
       (add-hook 'message-mode-hook 'turn-on-orgtbl)
-      (add-hook 'message-mode-hook 'turn-on-orgstruct++)
       ;; gpg stuff
       (use-package epa-file
         :init (epa-file-enable))
