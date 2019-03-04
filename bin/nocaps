@@ -1,0 +1,3 @@
+#!/usr/bin/sh
+
+setxkbmap -option ctrl:nocaps
