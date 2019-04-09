@@ -78,6 +78,7 @@
           ("http://quillette.com/feed/" blog)
           ("http://www.baconbridge.com/feed/" blog)
           ("https://fridaywithflo.wordpress.com/feed/" blog)
+          ("https://oakamel.wordpress.com/feed/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
