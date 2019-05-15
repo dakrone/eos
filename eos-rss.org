@@ -104,6 +104,7 @@
           ("https://letterandliturgy.com/feed/" christianity)
           ("https://alastairadversaria.com/feed/" blog christianity)
           ("https://chab123.wordpress.com/feed/" blog christianity)
+          ("https://cogentchristianity.com/feed/" blog christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
