@@ -223,10 +223,10 @@ Hide the mouse while typing:
 (setq make-pointer-invisible t)
 #+END_SRC
 
-Set up the fill-column to 80 characters and set tab width to 2
+Set up the fill-column to 100 characters and set tab width to 2
 
 #+BEGIN_SRC emacs-lisp
-(setq-default fill-column 80)
+(setq-default fill-column 100)
 (setq-default default-tab-width 2)
 (setq-default indent-tabs-mode nil)
 #+END_SRC
@@ -309,13 +309,24 @@ Switch to unified diffs by default:
 (setq diff-switches "-u")
 #+END_SRC
 
-Turn on auto-fill mode in text buffers:
+Use either auto-fill or visual fill mode in text buffers:
+
+If, rather than auto-fill I want to use visual fill, I use [[https://github.com/joostkremers/visual-fill-column][visual fill column]] to wrap at the regular
+fill column when =visual-fill-mode= is turned on.
 
 #+BEGIN_SRC emacs-lisp
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
+;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'turn-on-visual-line-mode)
 
 (use-package diminish
   :init (diminish 'auto-fill-function ""))
+
+(use-package visual-fill-column
+  :ensure t
+  :init
+  (add-hook 'visual-line-mode-hook #'visual-fill-column-mode)
+  (setq split-window-preferred-function 'visual-fill-column-split-window-sensibly)
+  (advice-add 'text-scale-adjust :after #'visual-fill-column-adjust))
 #+END_SRC
 
 Set the internal calculator not to go to scientific form quite so quickly:

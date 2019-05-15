@@ -34,6 +34,7 @@ to return the correct path depending on the account the email is from.
     (add-to-list 'load-path "~/src/mu/mu4e")
     (use-package mu4e
       :commands (mu4e mu4e-view)
+      :init (add-hook 'message-mode-hook 'turn-off-autospell)
       :config
       (add-hook 'message-mode-hook 'turn-on-flyspell)
       (add-hook 'message-mode-hook 'turn-on-orgtbl)
@@ -138,6 +139,10 @@ to return the correct path depending on the account the email is from.
               (nreverse buffers)))
 
           (setq gnus-dired-mail-mode 'mu4e-user-agent)))
+
+      ;; Use hardlines
+      (add-hook 'mu4e-compose-pre-hook 'turn-off-auto-fill)
+      (add-hook 'mu4e-compose-mode-hook 'turn-off-auto-fill)
 
       ;; Vars used below
       (defvar mlh-mu4e-new-mail nil

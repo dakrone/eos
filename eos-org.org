@@ -45,9 +45,9 @@ set up some custom keybindings that should take effect in every org mode buffer.
 #+BEGIN_SRC emacs-lisp
 (defun eos/org-mode-hook ()
   (interactive)
-  (setq-local fill-column 100)
-  (when (fboundp 'turn-on-auto-fill)
-    (turn-on-auto-fill))
+  (setq-local fill-column 120)
+  ;; (when (fboundp 'turn-on-auto-fill)
+  ;;   (turn-on-auto-fill))
   (when (fboundp 'turn-on-flyspell)
     (turn-on-flyspell))
   (when (fboundp 'yas-minor-mode)
@@ -2148,8 +2148,8 @@ And finally, the other configuration settings
    (ruby . t)
    (python . t)))
 
-;; this is where Fedora installs it, YMMV
-(setq org-plantuml-jar-path "/usr/share/java/plantuml.jar")
+(setq org-plantuml-jar-path "~/bin/plantuml.jar")
+(setq plantuml-jar-path "~/bin/plantuml.jar")
 
 ;; Use org.css from the :wq website for export document stylesheets
 (setq org-html-head-include-default-style nil)
