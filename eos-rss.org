@@ -146,6 +146,7 @@
           ("http://acculturated.com/feed/" news)
           ("https://opensource.com/feed" news)
           ("https://submittedforyourperusal.com/feed/" news)
+          ("https://arcdigital.media/feed" news)
 
           ;; Flickr
           ("http://api.flickr.com/services/feeds/photos_public.gne?id=76499814@N00&format=atom" flickr)
