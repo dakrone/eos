@@ -11,19 +11,15 @@
 :PROPERTIES:
 :CUSTOM_ID: mu4e
 :END:
-I usually install [[http://www.djcbsoftware.nl/code/mu/][mu]] from source. I unpack it to ~/src/mu-0.9.18 (or whatever
-version) so I can reference the mu4e elisp files. Then run the following to
-install mu:
+
+I usually install [[http://www.djcbsoftware.nl/code/mu/][mu]] from source. I unpack it to ~/src/mu-0.9.18 (or whatever version) so I can reference the mu4e elisp files. Then run the following to install mu:
 
 : autoreconf -i
 : ./configure --prefix=/usr/local
 : make
 : sudo make install
 
-Keep in mind this configuration is a lot more complex than it needs to be, but
-that's because I manage 3 different email accounts from a single mu4e session,
-and they have account-specific mail directories so a lot of functions are needed
-to return the correct path depending on the account the email is from.
+Keep in mind this configuration is a lot more complex than it needs to be, but that's because I manage 3 different email accounts from a single mu4e session, and they have account-specific mail directories so a lot of functions are needed to return the correct path depending on the account the email is from.
 
 #+BEGIN_SRC emacs-lisp
 ;; This hides behind a function because it's a lot to load otherwise
@@ -34,7 +30,7 @@ to return the correct path depending on the account the email is from.
     (add-to-list 'load-path "~/src/mu/mu4e")
     (use-package mu4e
       :commands (mu4e mu4e-view)
-      :init (add-hook 'message-mode-hook 'turn-off-autospell)
+      :init (add-hook 'message-mode-hook 'turn-off-auto-fill)
       :config
       (add-hook 'message-mode-hook 'turn-on-flyspell)
       (add-hook 'message-mode-hook 'turn-on-orgtbl)
