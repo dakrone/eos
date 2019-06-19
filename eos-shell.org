@@ -239,7 +239,7 @@ See `eshell-prompt-regexp'."
     (setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
                                    "ncftp" "pine" "tin" "trn" "elm" "vim"
                                    "nmtui" "alsamixer" "htop" "el" "elinks"
-                                   "ssh" "nethack" "dtop" "dstat"))
+                                   "ssh" "nethack" "dtop" "dstat" "backport"))
     (setq eshell-visual-subcommands '(("git" "log" "diff" "show")
                                       ("vagrant" "ssh")))
 
