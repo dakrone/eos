@@ -79,6 +79,7 @@
           ("http://www.baconbridge.com/feed/" blog)
           ("https://fridaywithflo.wordpress.com/feed/" blog)
           ("https://oakamel.wordpress.com/feed/" blog)
+          ("https://social.ayjay.org/feed.xml" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
@@ -106,6 +107,7 @@
           ("https://chab123.wordpress.com/feed/" blog christianity)
           ("https://cogentchristianity.com/feed/" blog christianity)
           ("https://christandpopculture.com/feed/" blog christianity)
+          ("https://mindyourmaker.com/feed/" christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
