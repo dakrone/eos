@@ -175,8 +175,6 @@ balanced of color and pleasing to my eyes.
     (setq tao-theme-use-height t
           tao-theme-use-sepia t)
     (load-theme 'tao-yang t)
-    (load "~/.emacs.d/site-lisp/local-theme.el")
-    ;;(load-theme 'local t)
     (setq-default line-spacing 1)
     (require 'git-gutter)
     (require 'git-gutter-fringe)
