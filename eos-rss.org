@@ -58,7 +58,6 @@
           ("http://davidad.github.io/atom.xml" blog)
           ("http://www.evanjones.ca/index.rss" blog)
           ("http://neverworkintheory.org/feed.xml" blog)
-          ("http://blog.jessitron.com/feeds/posts/default" blog)
           ("http://feeds.feedburner.com/GustavoDuarte?format=xml" blog)
           ("http://blog.regehr.org/feed" blog)
           ("https://www.snellman.net/blog/rss-index.xml" blog)
