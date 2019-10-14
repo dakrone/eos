@@ -42,6 +42,7 @@ middle.
           ("melpa.org" . browse-url-generic)
           ("build.*\.elastic.co" . browse-url-generic)
           (".*-ci\.elastic.co" . browse-url-generic)
+          ("gradle-enterprise.elastic.co" . browse-url-generic)
           ("internal-ci\.elastic\.co" . browse-url-generic)
           ("zendesk\.com" . browse-url-generic)
           ("salesforce\.com" . browse-url-generic)
