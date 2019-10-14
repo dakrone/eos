@@ -19,6 +19,9 @@
   (add-to-list 'auto-mode-alist '("\\.es$" . es-mode))
   (add-hook 'es-mode-hook 'auto-indent-mode)
   (add-hook 'es-result-mode-hook 'hs-minor-mode)
+  (defun eos/turn-off-visual-fill ()
+    (visual-fill-column-mode -1))
+  (add-hook 'es-result-mode-hook #'eos/turn-off-visual-fill)
   :config
   (setq es-warn-on-delete-query nil
         es-always-pretty-print t))
