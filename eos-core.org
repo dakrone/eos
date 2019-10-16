@@ -1036,7 +1036,7 @@ rpm-install keychain
 And make sure bash uses it
 
 #+BEGIN_SRC sh :tangle out/bashrc.d/keychain.sh
-eval $(keychain --noask --eval --agents ssh,gpg -Q id_rsa)
+eval $(keychain --noask --eval --agents gpg,ssh -Q id_rsa)
 #+END_SRC
 
 Let's make sure that all the GPG things we need are installed, and GPG-Agent is configured to enable
@@ -1045,7 +1045,7 @@ the SSH agent support.
 #+BEGIN_SRC sh :tangle sh/core-eos.sh
 rpm-install gnupg2 gnupg2-smime
 deb-install gnupg2
-echo enable-ssh-support > ~/.gnupg/gpg-agent.conf
+echo enable-ssh-support >> ~/.gnupg/gpg-agent.conf
 ln -sfv $PWD/out/gpg.conf ~/.gnupg/gpg.conf
 #+END_SRC
 
