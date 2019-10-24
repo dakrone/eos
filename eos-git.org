@@ -41,10 +41,10 @@ I use =C-x g= everywhere to go directly to Magit.
 
   (define-key magit-mode-map (kbd "C-c C-b") #'eos/magit-browse)
   ;; Magit has its own binding, so re-bind them
-  (bind-key "M-1" 'eyebrowse-switch-to-window-config-1 magit-mode-map)
-  (bind-key "M-2" 'eyebrowse-switch-to-window-config-2 magit-mode-map)
-  (bind-key "M-3" 'eyebrowse-switch-to-window-config-3 magit-mode-map)
-  (bind-key "M-4" 'eyebrowse-switch-to-window-config-4 magit-mode-map)
+  (bind-key "M-1" #'eos/create-or-switch-to-eshell-1 magit-mode-map)
+  (bind-key "M-2" #'eos/create-or-switch-to-eshell-2 magit-mode-map)
+  (bind-key "M-3" #'eos/create-or-switch-to-eshell-3 magit-mode-map)
+  (bind-key "M-4" #'eos/create-or-switch-to-eshell-4 magit-mode-map)
 
   ;; Allow gpg signing merge commits
   (magit-define-popup-option 'magit-merge-popup

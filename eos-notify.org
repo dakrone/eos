@@ -83,7 +83,7 @@ The all-seeing eye of Sauron
   (add-hook 'sauron-event-added-functions 'sauron-alert-el-adapter)
 
   :commands (sauron-toggle-hide-show)
-  :bind ("M-O" . sauron-toggle-hide-show))
+  :bind ("M-o" . sauron-toggle-hide-show))
 #+END_SRC
 
 * Notifications for running commands in Eshell
