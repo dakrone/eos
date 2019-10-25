@@ -94,6 +94,8 @@ export JAVA9_HOME=/opt/java/current9
 export JAVA10_HOME=/opt/java/current10
 export JAVA11_HOME=/opt/java/current11
 export JAVA12_HOME=/opt/java/current12
+export JAVA13_HOME=/opt/java/current13
+export JAVA14_HOME=/opt/java/current14
 export RUNTIME_JAVA_HOME=$JAVA11_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 #+END_SRC
