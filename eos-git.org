@@ -52,39 +52,6 @@ I use =C-x g= everywhere to go directly to Magit.
                              #'magit-read-gpg-secret-key))
 #+END_SRC
 
-* Viewing Github PRs and Issues
-
-There's also a package called magit-gh-pulls that shows the pull requests when
-viewing the magit buffer
-
-#+BEGIN_SRC emacs-lisp
-(use-package magit-gh-pulls
-  :ensure t
-  :init
-  (add-hook 'magit-mode-hook #'turn-on-magit-gh-pulls)
-  :config
-  ;; work around https://github.com/sigma/magit-gh-pulls/issues/83
-  (setq magit-gh-pulls-pull-detail-limit 50))
-#+END_SRC
-
-As an alternative to magit-gh-pulls, there is magithub
-
-#+BEGIN_SRC emacs-lisp
-(use-package magithub
-  :ensure t
-  :disabled t
-  :after magit
-  :config
-  (magithub-feature-autoinject t)
-
-  ;; Workaround for https://github.com/vermiculus/magithub/issues/71
-  (defun magithub-issue--sort (issues)
-    "Sort ISSUES by issue number."
-    (sort issues
-          (lambda (a b) (> (plist-get a :number)
-                      (plist-get b :number))))))
-#+END_SRC
-
 * Visualizing git changes in a buffer
 Quite useful, as well as the =C-x N= and =C-x P= bindings.
 
