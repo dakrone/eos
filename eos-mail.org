@@ -179,7 +179,7 @@ passed in. Also supports ignoring the msg at the point."
       ;; Support for multiple accounts
       (setq mu4e-sent-folder   (lambda (msg)
                                  (mlh-folder-for (mlh-mu4e-current-account msg)
-                                                 "Sent Mail" "Sent"))
+                                                 "Sent Mail" "Sent Items"))
             mu4e-drafts-folder (lambda (msg)
                                  (mlh-folder-for (mlh-mu4e-current-account msg)
                                                  "Drafts" "Drafts"))
