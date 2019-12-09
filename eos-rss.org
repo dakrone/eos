@@ -179,6 +179,7 @@
           "http://classicprogrammerpaintings.tumblr.com/rss"
           "http://www.thepublicdiscourse.com/feed/"
           "https://www.intellectualtakeout.org/rss/blog.xml"
+          "https://www.bibledesignblog.com/blog?format=rss"
           ))
   :config
   (define-key elfeed-show-mode-map (kbd "j") 'next-line)
