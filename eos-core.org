@@ -1257,6 +1257,15 @@ In most non-programming modes, =M-.= can be used to spellcheck the word
   (define-key flyspell-mode-map (kbd "C-.") 'company-complete))
 #+END_SRC
 
+Here's a helper method for creating a projectile project for the current directory (I use this when inspecting diagnostics tarballs)
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/make-projectile ()
+  "Make the current dired directory a projectile project"
+  (interactive)
+  (shell-command (format "touch %s.projectile" (dired-current-directory))))
+#+END_SRC
+
 * Binding the EOS mega-map with Hydra
 :PROPERTIES:
 :CUSTOM_ID: eos-hydra-map
@@ -1389,8 +1398,8 @@ And finally, the main EOS Hydra for entry:
 #+BEGIN_SRC emacs-lisp
 (defhydra eos/hydra nil
   "
-╭────────────────────────────────────────────────────────╯
-  [_a_] Org Agenda       [_E_] ERC       [_m_] Mail
+╭───────────────────────────────────────────────────────────────────────────────────────╯
+  [_a_] Org Agenda       [_E_] ERC       [_m_] Mail      [_._] Make dired project
   [_t_] Toggle map       [_T_] Twitter   [_M_] Music
   [_s_] Skeletons        [_P_] Prodigy   [_g_] Gnus
   [_p_] Proced           [_W_] Weather   [(] Macros
@@ -1414,6 +1423,7 @@ And finally, the main EOS Hydra for entry:
   ("B" helm-bookmarks :exit t)
   ("C" es-command-center :exit t)
   ("m" eos/switch-to-mail :exit t)
+  ("." eos/make-projectile :exit t)
   ("M" eos/hydra-mpd/body :exit t)
   ("c" multi-compile-run :exit t)
   ("E" (when (y-or-n-p "Really start ERC?") (start-erc)) :exit t)
