@@ -54,7 +54,7 @@ set up some custom keybindings that should take effect in every org mode buffer.
     (yas-minor-mode 1))
   (when (fboundp 'my/enable-abbrev-mode)
     (my/enable-abbrev-mode))
-
+  (require 'org-tempo)
   (diminish 'org-indent-mode)
   (when (boundp 'org-agenda-mode-map)
     (define-key org-agenda-mode-map (kbd "C-c C-x C-f") #'org-agenda-refile)))
