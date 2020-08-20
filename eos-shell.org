@@ -30,6 +30,7 @@ run. I use it for the path on OSX and JAVA_HOME everywhere else.
                                          "JAVA12_HOME"
                                          "JAVA13_HOME"
                                          "JAVA14_HOME"
+                                         "JAVA15_HOME"
                                          "RUNTIME_JAVA_HOME"
                                          "ES_JAVA_OPTS"
                                          "PATH"
@@ -447,6 +448,9 @@ alias se tar zxvf $*
 alias xanadu2org rsync -azP --delete xanadu:~/org/ ~/org
 alias xp cd ~/es/elasticsearch-extra/x-pack-elasticsearch
 alias es cd ~/es/elasticsearch
+alias 7x cd ~/es/elasticsearch-7.x
+alias 78 cd ~/es/elasticsearch-7.8
+alias scratch cd ~/es/elasticsearch-scratch
 alias dtop dstat -cdnpmgs --top-bio --top-cpu --top-mem
 alias resttest ./gradlew :distribution:integ-test-zip:integTest -Dtests.class="org.elasticsearch.test.rest.*Yaml*IT"
 alias buildes ./gradlew -p distribution/archives/tar assemble --parallel && find . -name "elasticsearch-*.zip"
