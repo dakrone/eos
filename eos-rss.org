@@ -83,6 +83,7 @@
           ("https://sixdayscience.com/feed/" blog)
           ("https://mckinleyvalentine.com/feed/" blog)
           ("https://vicki.substack.com/feed/" blog)
+          ("https://pluralistic.net/feed/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
