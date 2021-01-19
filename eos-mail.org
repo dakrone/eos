@@ -34,6 +34,9 @@ Keep in mind this configuration is a lot more complex than it needs to be, but t
       :config
       (add-hook 'message-mode-hook 'turn-on-flyspell)
       (add-hook 'message-mode-hook 'turn-on-orgtbl)
+      (use-package mu4e-marker-icons
+        :ensure t
+        :init (mu4e-marker-icons-mode 1))
       ;; gpg stuff
       (use-package epa-file
         :init (epa-file-enable))
