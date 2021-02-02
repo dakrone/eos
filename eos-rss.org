@@ -84,6 +84,7 @@
           ("https://mckinleyvalentine.com/feed/" blog)
           ("https://vicki.substack.com/feed/" blog)
           ("https://pluralistic.net/feed/" blog)
+          ("https://astralcodexten.substack.com/feed/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
@@ -112,6 +113,7 @@
           ("https://cogentchristianity.com/feed/" blog christianity)
           ("https://christandpopculture.com/feed/" blog christianity)
           ("https://mindyourmaker.com/feed/" christianity)
+          ("https://letterandliturgy.wordpress.com/feed/" blog christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
