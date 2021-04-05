@@ -99,6 +99,9 @@ export JAVA14_HOME=/opt/java/current14
 export JAVA15_HOME=/opt/java/current15
 export RUNTIME_JAVA_HOME=$JAVA11_HOME
 export PATH=$JAVA_HOME/bin:$PATH
+
+# Default Elasticsearch to 2gb heap, otherwise it'll use 50%
+export ES_JAVA_OPTS="-Xms2g -Xmx2g"
 #+END_SRC
 
 I read OS and machine-specific things in .zshenv, usually because they're pretty
