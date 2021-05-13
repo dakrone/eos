@@ -792,17 +792,6 @@ A couple of helpers for the minibuffer:
 (add-hook 'eval-expression-minibuffer-setup-hook #'paredit-mode)
 #+END_SRC
 
-Display the ugly =^L= lines in Elisp files as actual lines
-
-#+BEGIN_SRC emacs-lisp
-(use-package page-break-lines
-  :ensure t
-  :commands (turn-on-page-break-lines-mode)
-  :diminish page-break-lines-mode
-  :init
-  (add-hook 'emacs-lisp-mode-hook #'turn-on-page-break-lines-mode))
-#+END_SRC
-
 * Python
 :PROPERTIES:
 :CUSTOM_ID: python
