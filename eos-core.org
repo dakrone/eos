@@ -813,7 +813,7 @@ re-indenting and un-tabification is done."
   (delete-trailing-whitespace))
 
 ;; Perform general cleanup.
-(global-set-key (kbd "C-c n") #'cleanup-buffer)
+(global-set-key (kbd "C-c i") #'cleanup-buffer)
 #+END_SRC
 
 Read-only viewing of files is quite useful. Keybindings for paging through stuff
