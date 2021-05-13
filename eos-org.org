@@ -2761,3 +2761,26 @@ TODO: document me
 (use-package org-brain
   :ensure t)
 #+END_SRC
+
+* Org Roam
+:PROPERTIES:
+:CUSTOM_ID: h:0b28379f-ba18-4729-838d-32101c841444
+:END:
+
+[[https://github.com/org-roam/org-roam][org-roam]] is a note taking tool similar to a Zettelkasten, but using org-mode instead of Markdown. I'm giving it a try.
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-roam
+  :ensure t
+  :hook
+  (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory (file-truename "~/org/zk"))
+  :bind (:map org-roam-mode-map
+              (("C-c n l" . org-roam)
+               ("C-c n f" . org-roam-find-file)
+               ("C-c n g" . org-roam-graph))
+              :map org-mode-map
+              (("C-c n i" . org-roam-insert))
+              (("C-c n I" . org-roam-insert-immediate))))
+#+END_SRC
