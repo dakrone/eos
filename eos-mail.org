@@ -101,7 +101,7 @@ Keep in mind this configuration is a lot more complex than it needs to be, but t
             ;; small signature
             mu4e-compose-signature ";; Lee"
             ;; compose in a new frame by default (or don't)
-            mu4e-compose-in-new-frame nil
+            mu4e-compose-in-new-frame t
             ;; mu4e defaults
             mu4e-maildir       "~/.mail"
             ;; don't use unicode
