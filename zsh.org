@@ -58,7 +58,6 @@ export PATH=$PATH:~/.local/bin:~/.cabal/bin
 
 # Cargo/rustup
 export PATH=$PATH:~/.cargo/bin
-export RUST_SRC_PATH=~/src/rust/rustc-1.9.0/src
 
 # rbenv
 export PATH=~/.rbenv/bin:$PATH

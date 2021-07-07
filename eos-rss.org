@@ -86,6 +86,7 @@
           ("https://astralcodexten.substack.com/feed/" blog)
           ("https://samueldjames.substack.com/feed" blog christianity)
           ("https://www.etymologynerd.com/1/feed" blog)
+          ("https://austinkleon.com/feed/" blog)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
