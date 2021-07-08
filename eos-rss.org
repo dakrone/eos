@@ -116,6 +116,7 @@
           ("https://christandpopculture.com/feed/" blog christianity)
           ("https://mindyourmaker.com/feed/" christianity)
           ("https://letterandliturgy.wordpress.com/feed/" blog christianity)
+          ("https://adfontesjournal.com/feed/" christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
