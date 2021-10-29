@@ -32,6 +32,7 @@ run. I use it for the path on OSX and JAVA_HOME everywhere else.
                                          "JAVA14_HOME"
                                          "JAVA15_HOME"
                                          "JAVA16_HOME"
+                                         "JAVA17_HOME"
                                          "RUNTIME_JAVA_HOME"
                                          "ES_JAVA_OPTS"
                                          "PATH"

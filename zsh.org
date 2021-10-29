@@ -97,7 +97,8 @@ export JAVA13_HOME=/opt/java/current13
 export JAVA14_HOME=/opt/java/current14
 export JAVA15_HOME=/opt/java/current15
 export JAVA16_HOME=/opt/java/current16
-export RUNTIME_JAVA_HOME=$JAVA11_HOME
+export JAVA17_HOME=/opt/java/current17
+export RUNTIME_JAVA_HOME=$JAVA17_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
 # Default Elasticsearch to 2gb heap, otherwise it'll use 50%
