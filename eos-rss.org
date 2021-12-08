@@ -117,6 +117,7 @@
           ("https://mindyourmaker.com/feed/" christianity)
           ("https://letterandliturgy.wordpress.com/feed/" blog christianity)
           ("https://adfontesjournal.com/feed/" christianity)
+          ("https://www.oakamel.com/rss/" blog christianity)
 
           ;; Github feeds
           ("https://github.com/milkypostman/melpa/commits/master.atom" github emacs)
