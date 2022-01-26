@@ -89,19 +89,19 @@ HISTSIZE=10000
 SAVEHIST=5000
 
 # Default JAVA_HOME
-export JAVA_HOME=/opt/java/current
+export JAVA_HOME=~/java/current
 # Elasticsearch dev requires quite a few others
-export JAVA7_HOME=/opt/java/current7
-export JAVA8_HOME=/opt/java/current8
-export JAVA9_HOME=/opt/java/current9
-export JAVA10_HOME=/opt/java/current10
-export JAVA11_HOME=/opt/java/current11
-export JAVA12_HOME=/opt/java/current12
-export JAVA13_HOME=/opt/java/current13
-export JAVA14_HOME=/opt/java/current14
-export JAVA15_HOME=/opt/java/current15
-export JAVA16_HOME=/opt/java/current16
-export JAVA17_HOME=/opt/java/current17
+export JAVA7_HOME=~/java/current7
+export JAVA8_HOME=~/java/current8
+export JAVA9_HOME=~/java/current9
+export JAVA10_HOME=~/java/current10
+export JAVA11_HOME=~/java/current11
+export JAVA12_HOME=~/java/current12
+export JAVA13_HOME=~/java/current13
+export JAVA14_HOME=~/java/current14
+export JAVA15_HOME=~/java/current15
+export JAVA16_HOME=~/java/current16
+export JAVA17_HOME=~/java/current17
 export RUNTIME_JAVA_HOME=$JAVA17_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 

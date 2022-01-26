@@ -87,15 +87,14 @@
           ("https://samueldjames.substack.com/feed" blog christianity)
           ("https://www.etymologynerd.com/1/feed" blog)
           ("https://austinkleon.com/feed/" blog)
+          ("http://babylonbee.com/feed/" humor)
 
           ;; Theology
           ("http://www.speculativefaith.com/feed/" christianity)
-          ("http://feeds.feedburner.com/christiangeekcentral?format=xml" christianity)
           ("http://feeds.feedburner.com/canon-fodder" christianity)
           ("http://feeds.feedburner.com/tgcblog?format=xml" christianity)
           ("http://www.rzim.org/let-my-people-think-broadcasts/feed/" christianity)
           ("http://adam4d.com/feed/" christianity)
-          ("http://babylonbee.com/feed/" christianity)
           ("https://chesed297.wordpress.com/feed/" blog christianity)
           ("https://faithandselfdefense.com/feed/" blog christianity)
           ("http://www.challies.com/feed" blog christianity)
