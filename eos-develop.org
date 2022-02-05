@@ -867,6 +867,7 @@ modes:
   :ensure t
   :init
   (use-package intero
+    :disabled
     :ensure t
     :init
     (add-hook 'haskell-mode-hook 'intero-mode))

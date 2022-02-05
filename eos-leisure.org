@@ -60,5 +60,6 @@ Especially when looking at emacs themes, rainbow-mode is nice.
 
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-mode
+  :disabled
   :ensure t)
 #+END_SRC
