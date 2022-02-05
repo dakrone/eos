@@ -47,6 +47,14 @@ export PAGER=less
 # Update path with local ~/bin and cabal's bin dir
 export PATH=~/bin:/usr/local/bin:/usr/local/sbin:$PATH
 
+# Homebrew
+export HOMEBREW_PREFIX="/opt/homebrew";
+export HOMEBREW_CELLAR="/opt/homebrew/Cellar";
+export HOMEBREW_REPOSITORY="/opt/homebrew";
+export PATH="/opt/homebrew/bin:/opt/homebrew/sbin${PATH+:$PATH}";
+export MANPATH="/opt/homebrew/share/man${MANPATH+:$MANPATH}:";
+export INFOPATH="/opt/homebrew/share/info:${INFOPATH:-}";
+
 # Node/npm
 export PATH=$PATH:~/node_modules/.bin
 
@@ -69,15 +77,13 @@ export PATH=$PATH:~/anaconda3/bin
 export PATH=$PATH:~/.pyenv/bin
 eval "$(pyenv virtualenv-init -)"
 
+# pip3 local on OSX
+export PATH=$PATH:~/Library/Python/3.8/bin
+
 # Virtualenvwrapper environment home
 export WORKON_HOME=~/.venvs
 if [ -d "$WORKON_HOME" ]; then
     mkdir -p "$WORKON_HOME"
-fi
-
-# Read sdkman config for all shells
-if [ -f ~/.sdkman/bin/sdkman-init.sh ]; then
-    source ~/.sdkman/bin/sdkman-init.sh
 fi
 
 # Vault
@@ -107,6 +113,12 @@ export PATH=$JAVA_HOME/bin:$PATH
 
 # Default Elasticsearch to 2gb heap, otherwise it'll use 50%
 export ES_JAVA_OPTS="-Xms2g -Xmx2g"
+
+# Read sdkman config for all shells
+if [ -f ~/.sdkman/bin/sdkman-init.sh ]; then
+    source ~/.sdkman/bin/sdkman-init.sh
+fi
+
 #+END_SRC
 
 I read OS and machine-specific things in .zshenv, usually because they're pretty
