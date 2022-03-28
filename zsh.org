@@ -803,7 +803,9 @@ if [ -s /usr/local/bin/emacs ]; then
 fi
 
 # Remove ctrl+y from the keybinds for delayed suspend
-stty dsusp undef
+if [[ -o login ]]; then
+    stty dsusp undef
+fi
 
 alias emacs="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs -nw"
 alias gemacs="TERM=xterm-256color PATH=$EMACS_HOME/bin:$PATH $EMACS_HOME/Emacs 2>&1 > /dev/null &"
