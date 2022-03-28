@@ -291,17 +291,17 @@ And then things to set up semantic mode
 
 #+BEGIN_SRC emacs-lisp
 ;; Use the full Java 1.5 grammar to parse Java files
-(autoload 'wisent-java-default-setup "semantic/wisent/java"
-  "Hook run to setup Semantic in `java-mode'." nil nil)
+;; (autoload 'wisent-java-default-setup "semantic/wisent/java"
+;;   "Hook run to setup Semantic in `java-mode'." nil nil)
 
 (defun eos/setup-semantic-mode ()
   (interactive)
   (use-package semantic
     :init
-    (require 'semantic/wisent)
-    (require 'semantic/wisent/java)
-    (require 'semantic/wisent/java-wy)
-    (require 'semantic/ia)
+    ;; (require 'semantic/wisent)
+    ;; (require 'semantic/wisent/java)
+    ;; (require 'semantic/wisent/java-wy)
+    ;; (require 'semantic/ia)
     (setq semantic-default-submodes
           '(;; Perform semantic actions during idle time
             global-semantic-idle-scheduler-mode
