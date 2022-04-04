@@ -684,6 +684,7 @@ visualize it in ascii art if needed.
   :diminish ""
   :config
   (progn
+    (setq undo-tree-auto-save-history nil)
     (define-key undo-tree-map (kbd "C-x u") 'undo-tree-visualize)
     (define-key undo-tree-map (kbd "C-/") 'undo-tree-undo)))
 #+END_SRC
