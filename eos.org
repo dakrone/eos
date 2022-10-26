@@ -215,9 +215,6 @@ up the sources at least
 (require 'package)
 (package-initialize)
 
-;; orgmode.org unfortunately does not support https
-(add-to-list 'package-archives
-             '("org" . "https://orgmode.org/elpa/") t)
 (add-to-list 'package-archives
              '("gnu" . "https://elpa.gnu.org/packages/") t)
 (add-to-list 'package-archives
