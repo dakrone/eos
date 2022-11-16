@@ -396,6 +396,86 @@ Tree-sitter is a newish language parser that supports Emacs, and supposedly has 
   (global-tree-sitter-mode t))
 
 #+END_SRC
+
+* Projects with Helm and Helm-projectile
+:PROPERTIES:
+:CUSTOM_ID: helm-projectile
+:END:
+Per-project navigation
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :defer 5
+  :commands projectile-mode
+  :diminish projectile-mode
+  :init (add-hook 'after-init-hook #'projectile-mode)
+  :config
+  (bind-key "C-c p b" #'projectile-switch-to-buffer #'projectile-command-map)
+  (bind-key "C-c p K" #'projectile-kill-buffers #'projectile-command-map)
+
+  ;; global ignores
+  (add-to-list 'projectile-globally-ignored-files ".tern-port")
+  (add-to-list 'projectile-globally-ignored-files "GTAGS")
+  (add-to-list 'projectile-globally-ignored-files "GPATH")
+  (add-to-list 'projectile-globally-ignored-files "GRTAGS")
+  (add-to-list 'projectile-globally-ignored-files "GSYMS")
+  (add-to-list 'projectile-globally-ignored-files ".DS_Store")
+  ;; always ignore .class files
+  (add-to-list 'projectile-globally-ignored-file-suffixes ".class")
+  (use-package helm-projectile
+    :ensure t
+    :init
+    (use-package grep) ;; required for helm-ag to work properly
+    (setq projectile-completion-system 'helm)
+    ;; no fuzziness for projectile-helm
+    (setq helm-projectile-fuzzy-match nil)
+    (helm-projectile-on)
+    :config
+    ;; Add multi-compile to the mix for projects
+    (defun helm-projectile-multi-compile-project (dir)
+      "A Helm action to invoke multi-compile on a project.
+`dir' is the project root."
+      (let ((default-directory dir))
+        (multi-compile-run)))
+
+    ;; Add new projectile binding for multi-compile
+    (helm-projectile-define-key helm-projectile-projects-map
+      (kbd "M-m")  #'helm-projectile-multi-compile-project)))
+#+END_SRC
+
+* Automatically popping up the project's Eshell buffer
+
+This is a neat function I wrote that looks to see if the current buffer is part
+of a projectile project. If it is, then it tries to find an eshell buffer that
+belongs to the same project. If it does, then it uses =popwin= to pop that
+buffer up near the bottom of the screen.
+
+#+BEGIN_SRC emacs-lisp
+(defun eos/popup-project-eshell ()
+  (interactive)
+  (when (projectile-project-p)
+    (save-excursion
+      (let ((project (projectile-project-name))
+            (candidate nil)
+            (i 0)
+            (buffers (buffer-list))
+            (found-p nil))
+        (while (and (not candidate)
+                    (<= i (length buffers)))
+          (let ((buffer (elt buffers i)))
+            (with-current-buffer buffer
+              (when (and (eq major-mode 'eshell-mode)
+                         (equal (projectile-project-name) project))
+                (setq candidate buffer))))
+          (setq i (+ i 1)))
+        (if candidate
+            (popwin:popup-buffer-tail candidate)
+          (message "No projectile eshell buffer found"))))))
+
+(global-set-key (kbd "C-x M-B") #'eos/popup-project-eshell)
+#+END_SRC
+
 * Paren matching with electric-pair-mode and Smartparens
 :PROPERTIES:
 :CUSTOM_ID: h:3a834588-e39d-467f-bf01-7afad9d09063
