@@ -382,6 +382,20 @@ highlighted so they stand out:
 (add-hook 'prog-mode-hook #'eos/add-watchwords)
 #+END_SRC
 
+** Tree-sitter
+
+Tree-sitter is a newish language parser that supports Emacs, and supposedly has better support for some languages than the built-in methods.
+
+#+BEGIN_SRC emacs-lisp
+(use-package tree-sitter
+  :ensure t
+  :init
+  (use-package tree-sitter-langs
+    :ensure t)
+  (add-hook 'tree-sitter-after-on-hook #'tree-sitter-hl-mode)
+  (global-tree-sitter-mode t))
+
+#+END_SRC
 * Paren matching with electric-pair-mode and Smartparens
 :PROPERTIES:
 :CUSTOM_ID: h:3a834588-e39d-467f-bf01-7afad9d09063
