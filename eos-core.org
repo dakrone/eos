@@ -789,7 +789,7 @@ using a big font size and I need more eshell space
         golden-ratio-recenter t))
 #+END_SRC
 
-Add a generic cleanup method that can be called everywhere, bound to =C-c n=:
+Add a generic cleanup method that can be called everywhere, bound to =C-c i=:
 
 #+BEGIN_SRC emacs-lisp
 (defun untabify-buffer ()
