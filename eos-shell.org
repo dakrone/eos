@@ -143,7 +143,24 @@ First, a function to be called when eshell-mode is entered
   (local-set-key (kbd "M-P") 'eshell-previous-prompt)
   (local-set-key (kbd "M-N") 'eshell-next-prompt)
   (local-set-key (kbd "M-R") 'eshell-previous-matching-input)
-  (local-set-key (kbd "M-r") 'helm-eshell-history))
+  (define-key eshell-hist-mode-map (kbd "M-s") nil)
+  (define-key eshell-mode-map (kbd "M-s") nil)
+  (if (fboundp 'consult-find)
+      (progn
+        (local-set-key (kbd "M-r") 'consult-history)
+        (local-set-key (kbd "M-s d") 'consult-find)
+        (local-set-key (kbd "M-s D") 'consult-locate)
+        (local-set-key (kbd "M-s g") 'consult-grep)
+        (local-set-key (kbd "M-s G") 'consult-git-grep)
+        (local-set-key (kbd "M-s r") 'consult-ripgrep)
+        (local-set-key (kbd "C-c C-s") 'consult-ripgrep)
+        (local-set-key (kbd "M-s l") 'consult-line)
+        (local-set-key (kbd "C-c C-l") 'consult-line)
+        (local-set-key (kbd "C-x L") 'consult-line)
+        (local-set-key (kbd "M-s L") 'consult-line-multi)
+        (local-set-key (kbd "M-s m") 'consult-multi-occur)
+        (local-set-key (kbd "M-s k") 'consult-keep-lines)
+        (local-set-key (kbd "M-s u") 'consult-focus-lines))))
 #+END_SRC
 
 Add a nice helper to sudo-edit a file

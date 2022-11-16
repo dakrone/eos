@@ -72,6 +72,7 @@ I use =company= for a lot of things, so let's just enable it everywhere.
 #+BEGIN_SRC emacs-lisp :tangle yes
 (use-package company
   :ensure t
+  :disabled t
   :diminish company-mode
   ;; stupid flyspell steals the binding I really want, `C-.`
   :bind (("C-c ." . company-complete)
@@ -109,6 +110,7 @@ There are also a few things to configure for Company's dabbrev completion:
 
 #+BEGIN_SRC emacs-lisp
 (use-package company-dabbrev
+  :disabled t
   :init
   (setq company-dabbrev-ignore-case nil
         ;; don't downcase dabbrev suggestions
@@ -116,6 +118,7 @@ There are also a few things to configure for Company's dabbrev completion:
         company-dabbrev-downcase nil))
 
 (use-package company-dabbrev-code
+  :disabled t
   :init
   (setq company-dabbrev-code-modes t
         company-dabbrev-code-ignore-case nil))

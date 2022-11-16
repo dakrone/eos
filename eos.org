@@ -123,6 +123,7 @@ don't have links between them.
 - [[./eos-navigation.org][Navigation]] - helpers when navigating around Emacs
 - [[./eos-notify.org][Notification System]] - unifying notifications in Emacs with sauron
 - [[./eos-helm.org][Helm]] - incremental completion and selection framework
+- [[./eos-vertico.org][Vertico]] - an alternative completion and selection framework
 - [[./eos-develop.org][Development (programming) System]] - various development settings
   - [[./eos-java.org][Java]] - for the day job
   - [[./eos-clojure.org][Clojure]] - for the old day job and the open source work
@@ -344,8 +345,10 @@ quite sure how that would work for tangling, so for now it's hard-coded.
 
 ;; The EOS modules
 (try-load 'eos-core)
+;; Only load one completion framework (ido/helm/vertico/ivy)
 ;; (try-load 'eos-ido)
-(try-load 'eos-helm)
+;; (try-load 'eos-helm)
+(try-load 'eos-vertico)
 ;; (try-load 'eos-ivy)
 (try-load 'eos-appearance)
 (try-load 'eos-navigation)

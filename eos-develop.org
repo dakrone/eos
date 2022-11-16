@@ -397,7 +397,7 @@ Tree-sitter is a newish language parser that supports Emacs, and supposedly has 
 
 #+END_SRC
 
-* Projects with Helm and Helm-projectile
+* Projects with Projectile and Helm-projectile
 :PROPERTIES:
 :CUSTOM_ID: helm-projectile
 :END:
@@ -406,6 +406,7 @@ Per-project navigation
 #+BEGIN_SRC emacs-lisp
 (use-package projectile
   :ensure t
+  :disabled t
   :defer 5
   :commands projectile-mode
   :diminish projectile-mode
@@ -589,8 +590,8 @@ Note that I need to unbind =M-s= because it's the new isearch prefix in 25.1, so
 I set it to =nil= in the map.
 
 #+BEGIN_SRC emacs-lisp
-(eval-after-load 'paredit-everywhere
-  '(define-key paredit-everywhere-mode-map (kbd "M-s") nil))
+;; (eval-after-load 'paredit-everywhere
+;;   '(define-key paredit-everywhere-mode-map (kbd "M-s") nil))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -616,6 +617,7 @@ D= ('D' for Documentation) to activate it.
 
 #+BEGIN_SRC emacs-lisp
 (use-package helm-dash
+  :disabled t
   :ensure t
   :bind (("C-c D" . helm-dash))
   :init
@@ -807,7 +809,8 @@ First, turn on paredit and eldoc everywhere it's useful:
   (bind-key "C-(" #'paredit-forward-barf-sexp paredit-mode-map)
   (bind-key "C-)" #'paredit-forward-slurp-sexp paredit-mode-map)
   (bind-key ")" #'paredit-close-parenthesis paredit-mode-map)
-  (bind-key "M-\"" #'my/other-window-backwards paredit-mode-map))
+  (bind-key "M-\"" #'my/other-window-backwards paredit-mode-map)
+  (define-key paredit-mode-map (kbd "M-s") nil))
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
