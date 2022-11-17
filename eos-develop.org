@@ -995,7 +995,6 @@ It's like Haskell, but for Javascript!
       (interactive)
       (flyspell-mode -1)
       (psc-ide-mode)
-      (company-mode 1)
       (flycheck-mode 1)
       (turn-on-purescript-indentation))
     (add-hook 'purescript-mode-hook #'eos/setup-purescript)))

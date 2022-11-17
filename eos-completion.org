@@ -18,8 +18,14 @@ Dabbrev is built in to Emacs, being something that is great at greedy
 completion.
 
 #+BEGIN_SRC emacs-lisp
+;; Use Dabbrev with Corfu!
 (use-package dabbrev
-  :init
+  ;; Swap M-/ and C-M-/
+  :bind (("M-/" . dabbrev-completion)
+         ("C-M-/" . dabbrev-expand))
+  ;; Other useful Dabbrev configurations.
+  :custom
+  (dabbrev-ignored-buffer-regexps '("\\.\\(?:pdf\\|jpe?g\\|png\\)\\'"))
   (setq dabbrev-case-fold-search nil))
 #+END_SRC
 
