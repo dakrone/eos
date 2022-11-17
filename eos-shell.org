@@ -445,6 +445,15 @@ package. Eh, disabled this for now, not sure I actually like it.
   (add-hook 'eshell-mode-hook 'eshell-fringe-status-mode))
 #+END_SRC
 
+Eshell pcmpl args
+
+#+BEGIN_SRC emacs-lisp
+(use-package pcmpl-args
+  :ensure t
+  :init
+  (require 'pcmpl-args))
+  #+END_SRC
+
 ** Eshell aliases
 :PROPERTIES:
 :CUSTOM_ID: eshell-aliases
