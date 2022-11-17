@@ -292,3 +292,15 @@ Vertico is a completion framework alternative to Helm.
   ;; `completion-at-point' is often bound to M-TAB.
   (setq tab-always-indent 'complete))
 #+END_SRC
+
+* Kind-icon for Corfu
+
+#+BEGIN_SRC emacs-lisp
+(use-package kind-icon
+  :ensure t
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
+  :config
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+#+END_SRC
