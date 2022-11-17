@@ -241,3 +241,54 @@ Vertico is a completion framework alternative to Helm.
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
 #+END_SRC
+
+* Corfu
+
+#+BEGIN_SRC emacs-lisp
+(use-package corfu
+  :ensure t
+  ;; Optional customizations
+  ;; :custom
+  ;; (corfu-auto t)                 ;; Enable auto completion
+  ;; (corfu-separator ?\s)          ;; Orderless field separator
+  ;; (corfu-quit-at-boundary nil)   ;; Never quit at completion boundary
+  ;; (corfu-quit-no-match nil)      ;; Never quit, even if there is no match
+  ;; (corfu-preview-current nil)    ;; Disable current candidate preview
+  ;; (corfu-preselect-first nil)    ;; Disable candidate preselection
+  ;; (corfu-on-exact-match nil)     ;; Configure handling of exact matches
+  ;; (corfu-echo-documentation nil) ;; Disable documentation in the echo area
+  ;; (corfu-scroll-margin 5)        ;; Use scroll margin
+
+  ;; Enable Corfu only for certain modes.
+  ;; :hook ((prog-mode . corfu-mode)
+  ;;        (shell-mode . corfu-mode)
+  ;;        (eshell-mode . corfu-mode))
+
+  ;; Recommended: Enable Corfu globally.
+  ;; This is recommended since Dabbrev can be used globally (M-/).
+  ;; See also `corfu-excluded-modes'.
+  :init
+  (global-corfu-mode)
+  :config
+  (setq corfu-cycle t)                ;; Enable cycling for `corfu-next/previous'
+  (use-package corfu-terminal
+    :ensure t
+    :init
+    (unless (display-graphic-p)
+      (corfu-terminal-mode +1))))
+
+;; A few more useful configurations...
+(use-package emacs
+  :init
+  ;; TAB cycle if there are only few candidates
+  (setq completion-cycle-threshold 3)
+
+  ;; Emacs 28: Hide commands in M-x which do not apply to the current mode.
+  ;; Corfu commands are hidden, since they are not supposed to be used via M-x.
+  ;; (setq read-extended-command-predicate
+  ;;       #'command-completion-default-include-p)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (setq tab-always-indent 'complete))
+#+END_SRC
