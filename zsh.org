@@ -109,6 +109,8 @@ export JAVA15_HOME=~/java/current15
 export JAVA16_HOME=~/java/current16
 export JAVA17_HOME=~/java/current17
 export JAVA18_HOME=~/java/current18
+export JAVA19_HOME=~/java/current19
+export JAVA20_HOME=~/java/current20
 export RUNTIME_JAVA_HOME=$JAVA17_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
