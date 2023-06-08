@@ -79,6 +79,7 @@ eval "$(pyenv virtualenv-init -)"
 
 # pip3 local on OSX
 export PATH=$PATH:~/Library/Python/3.8/bin
+export PATH=$PATH:~/Library/Python/3.11/bin
 
 # Virtualenvwrapper environment home
 export WORKON_HOME=~/.venvs
