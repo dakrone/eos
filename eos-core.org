@@ -1443,6 +1443,19 @@ And finally, the main EOS Hydra for entry:
 (global-set-key (kbd "M-t") 'eos/hydra/body)
 #+END_SRC
 
+#+BEGIN_SRC emacs-lisp
+(defun eos/start-profiler ()
+  (interactive)
+  (profiler-start 'cpu))
+(defun eos/stop-profiler ()
+  (interactive)
+  (profiler-report)
+  (profiler-stop))
+
+(global-set-key (kbd "<f8>") #'eos/start-profiler)
+(global-set-key (kbd "<f9>") #'eos/stop-profiler)
+#+END_SRC
+
 * Multiple Emacs Perspectives with Eyebrowse
 :PROPERTIES:
 :CUSTOM_ID: eyebrowse
