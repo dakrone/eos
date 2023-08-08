@@ -240,9 +240,10 @@ ln -sfv $PWD/out/esvmrc ~/.esvmrc
 And, unfortunately, esvm needs node, so I have been using nvm for that
 
 #+BEGIN_SRC emacs-lisp
-(when (file-exists-p "~/.nvm")
-  (use-package nvm
-    :ensure t
-    :commands (nvm-use nvm-use-for)
-    :init (nvm-use "v6.4.0")))
+  (when (file-exists-p "~/.nvm")
+    (use-package nvm
+      :ensure t
+      :disabled t
+      :commands (nvm-use nvm-use-for)
+      :init (nvm-use "v6.4.0")))
 #+END_SRC
