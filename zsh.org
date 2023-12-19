@@ -513,21 +513,6 @@ else
 fi
 #+END_SRC
 
-*** HTTP helpers
-:PROPERTIES:
-:CUSTOM_ID: zsh-http
-:END:
-Very small, but since I do so much HTTP testing for Elasticsearch on the command
-line, they end up saving a lot of time.
-
-#+BEGIN_SRC sh :tangle out/zsh.d/10-http.zsh
-# HTTP verbs
-alias get='curl -s -XGET'
-alias post='curl -s -XPOST'
-alias put='curl -s -XPUT'
-alias delete='curl -s -XDELETE'
-#+END_SRC
-
 *** Gtags
 :PROPERTIES:
 :CUSTOM_ID: zsh-gtags
