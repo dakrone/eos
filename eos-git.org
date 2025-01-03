@@ -14,42 +14,43 @@
 I use =C-x g= everywhere to go directly to Magit.
 
 #+BEGIN_SRC emacs-lisp
-(use-package magit
-  :ensure t
-  :bind (("C-x g" . magit-status))
-  :init (add-hook 'magit-mode-hook 'eos/turn-on-hl-line)
-  :config
-  (setq git-commit-summary-max-length 70)
-  (setenv "GIT_PAGER" "")
-  (if (file-exists-p  "/usr/local/bin/emacsclient")
-      (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")
-    (setq magit-emacsclient-executable (executable-find "emacsclient")))
-  (defun eos/magit-browse ()
-    "Browse to the project's github URL, if available"
-    (interactive)
-    (let ((url (with-temp-buffer
-                 (unless (zerop (call-process-shell-command
-                                 "git remote -v" nil t))
-                   (error "Failed: 'git remote -v'"))
-                 (goto-char (point-min))
-                 (when (re-search-forward
-                        "github\\.com[:/]\\(.+?\\)\\.git" nil t)
-                   (format "https://github.com/%s" (match-string 1))))))
-      (unless url
-        (error "Can't find repository URL"))
-      (browse-url url)))
+  (use-package magit
+    :ensure t
+    :bind (("C-x g" . magit-status))
+    :init (add-hook 'magit-mode-hook 'eos/turn-on-hl-line)
+    :config
+    (setq git-commit-summary-max-length 70)
+    (setenv "GIT_PAGER" "")
+    (if (file-exists-p  "/usr/local/bin/emacsclient")
+        (setq magit-emacsclient-executable "/usr/local/bin/emacsclient")
+      (setq magit-emacsclient-executable (executable-find "emacsclient")))
+    (defun eos/magit-browse ()
+      "Browse to the project's github URL, if available"
+      (interactive)
+      (let ((url (with-temp-buffer
+                   (unless (zerop (call-process-shell-command
+                                   "git remote -v" nil t))
+                     (error "Failed: 'git remote -v'"))
+                   (goto-char (point-min))
+                   (when (re-search-forward
+                          "github\\.com[:/]\\(.+?\\)\\.git" nil t)
+                     (format "https://github.com/%s" (match-string 1))))))
+        (unless url
+          (error "Can't find repository URL"))
+        (browse-url url)))
 
-  (define-key magit-mode-map (kbd "C-c C-b") #'eos/magit-browse)
-  ;; Magit has its own binding, so re-bind them
-  (bind-key "M-1" #'eos/create-or-switch-to-eshell-1 magit-mode-map)
-  (bind-key "M-2" #'eos/create-or-switch-to-eshell-2 magit-mode-map)
-  (bind-key "M-3" #'eos/create-or-switch-to-eshell-3 magit-mode-map)
-  (bind-key "M-4" #'eos/create-or-switch-to-eshell-4 magit-mode-map)
+    (define-key magit-mode-map (kbd "C-c C-b") #'eos/magit-browse)
+    ;; Magit has its own binding, so re-bind them
+    (bind-key "M-1" #'eos/create-or-switch-to-eshell-1 magit-mode-map)
+    (bind-key "M-2" #'eos/create-or-switch-to-eshell-2 magit-mode-map)
+    (bind-key "M-3" #'eos/create-or-switch-to-eshell-3 magit-mode-map)
+    (bind-key "M-4" #'eos/create-or-switch-to-eshell-4 magit-mode-map)
 
-  ;; Allow gpg signing merge commits
-  (magit-define-popup-option 'magit-merge-popup
-                             ?S "Sign using gpg" "--gpg-sign="
-                             #'magit-read-gpg-secret-key))
+    ;; Allow gpg signing merge commits
+    ;; (magit-define-popup-option 'magit-merge-popup
+    ;;                            ?S "Sign using gpg" "--gpg-sign="
+    ;;                            #'magit-read-gpg-secret-key))
+  )
 #+END_SRC
 
 * Visualizing git changes in a buffer

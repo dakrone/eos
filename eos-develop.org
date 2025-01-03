@@ -875,13 +875,6 @@ the contents, and other such things. It's a package called "eval-expr".
   (add-hook 'after-init-hook #'eval-expr-install))
 #+END_SRC
 
-Set up some things for developing Emacs itself:
-
-#+BEGIN_SRC emacs-lisp
-(use-package debbugs
-  :ensure t)
-#+END_SRC
-
 A couple of helpers for the minibuffer:
 
 #+BEGIN_SRC emacs-lisp

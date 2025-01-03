@@ -17,7 +17,6 @@ for file in $@; do
     echo "File: $file"
     $EMACSCMD -nw --batch --eval "
 (progn
-  (require 'org-install)
   (find-file (expand-file-name \"$file\" \"$DIR\"))
   (org-babel-tangle)
   (kill-buffer))" 2>&1 | grep "Tangled"
