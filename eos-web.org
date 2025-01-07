@@ -33,7 +33,7 @@ middle.
 (use-package eww
   :defer t
   :init
-  (setq browse-url-browser-function
+  (setq browse-url-handlers
         '((".*google.*maps.*" . browse-url-generic)
           ;; Github goes to firefox, but not gist
           ("http.*\/\/github.com" . browse-url-generic)
