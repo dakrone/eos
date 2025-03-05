@@ -2073,6 +2073,7 @@ need a way to generate that syntax.
 
 #+BEGIN_SRC emacs-lisp
 (use-package ox-gfm
+  :disabled t
   :init
   (when (boundp 'org-export-backends)
     (customize-set-variable 'org-export-backends

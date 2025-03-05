@@ -18,8 +18,8 @@ whatever I'm in the mood for. This is used later on for the modeline theme, as
 well as the general theme for look-and-feel things.
 
 #+BEGIN_SRC emacs-lisp
-(defvar eos/background 'light)
-;;(defvar eos/background 'dark)
+;;(defvar eos/background 'light)
+(defvar eos/background 'dark)
 #+END_SRC
 
 #+BEGIN_SRC emacs-lisp
@@ -129,7 +129,6 @@ balanced of color and pleasing to my eyes.
     (progn
       (use-package color-theme-sanityinc-tomorrow
         :ensure t
-        :disabled t
         :init
         (load-theme 'sanityinc-tomorrow-night t)
         ;; Just ever so slightly more bright foreground text, default is
@@ -159,6 +158,7 @@ balanced of color and pleasing to my eyes.
                             nil :background "grey15"))
       (use-package nord-theme
         :ensure t
+        :disabled t
         :init
         ;; Make comments 15% brighter
         (setq nord-comment-brightness 15)

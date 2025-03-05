@@ -18,6 +18,7 @@ immediately use Twitter :P
 #+BEGIN_SRC emacs-lisp
 (use-package twittering-mode
   :ensure t
+  :disabled t
   :config
   (setq twittering-icon-mode t
         twittering-use-master-password t
