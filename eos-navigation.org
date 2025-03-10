@@ -381,7 +381,7 @@ it how I want
   ("C-'" nil)
   ("C-\"" nil)
   ("d" (when (y-or-n-p "Kill buffer?")
-         (kill-this-buffer))
+         (kill-currenty-buffer))
    :exit t)
   ("/" isearch-forward-regexp :exit t)
   ("?" isearch-backward-regexp :exit t)

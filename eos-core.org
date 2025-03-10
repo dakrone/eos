@@ -274,7 +274,7 @@ Just kill this buffer, don't prompt me. I'll use helm if I want to kill a
 different buffer
 
 #+BEGIN_SRC emacs-lisp
-(global-set-key (kbd "C-x k") #'kill-this-buffer)
+(global-set-key (kbd "C-x k") #'kill-current-buffer)
 #+END_SRC
 
 Single space still ends a sentence:
