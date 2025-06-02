@@ -465,7 +465,7 @@ I'm using [[http://www.funtoo.org/Keychain][Keychain]] to manage SSH agent inher
 eval-ed when nodes start up. It loads the key in =~/.ssh/id_rsa=.
 
 #+BEGIN_SRC sh :tangle out/zsh.d/03-ssh.zsh
-eval $(keychain --eval --agents ssh)
+eval $(keychain --eval)
 #+END_SRC
 
 *** Git
