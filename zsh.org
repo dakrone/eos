@@ -115,6 +115,7 @@ export JAVA20_HOME=~/java/current20
 export JAVA21_HOME=~/java/current21
 export JAVA22_HOME=~/java/current22
 export JAVA23_HOME=~/java/current23
+export JAVA25_HOME=~/java/current25
 export RUNTIME_JAVA_HOME=$JAVA21_HOME
 export PATH=$JAVA_HOME/bin:$PATH
 
